@@ -174,6 +174,7 @@ namespace platformer
         void setup(const Context & context, const AvatarType & type);
         void update(Context & context, const float frameTimeSec);
         void draw(sf::RenderTarget & target, sf::RenderStates states);
+        void setPosition(const sf::Vector2f & pos) { m_sprite.setPosition(pos); }
 
       private:
         sf::Sprite m_sprite;

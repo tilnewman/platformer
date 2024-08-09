@@ -20,7 +20,7 @@ namespace platformer
         , m_settings(settings)
         , m_random()
         , m_avatarTextures()
-        , m_avatar()
+        , m_avatars()
         , m_context(m_settings, m_window, m_random, m_avatarTextures)
     {}
 
@@ -30,7 +30,17 @@ namespace platformer
         std::cout << "video mode: " << m_settings.video_mode << std::endl;
 
         m_avatarTextures.setup(m_settings);
-        m_avatar.setup(m_context, AvatarType::Assassin);
+
+        m_avatars.resize(static_cast<std::size_t>(AvatarType::Count));
+        float posLeft{ 0.0f };
+        for (std::size_t typeIndex(0); typeIndex < static_cast<std::size_t>(AvatarType::Count);
+             ++typeIndex)
+        {
+            const AvatarType type{ static_cast<AvatarType>(typeIndex) };
+            m_avatars.at(typeIndex).setup(m_context, type);
+            m_avatars.at(typeIndex).setPosition({ posLeft, 0.0f });
+            posLeft += 128.0f;
+        }
     }
 
     void Coordinator::teardown() { m_window.close(); }
@@ -82,11 +92,22 @@ namespace platformer
     void Coordinator::draw()
     {
         m_window.clear(sf::Color::Black);
-        m_avatar.draw(m_window, {});
+
+        for (Avatar & avatar : m_avatars)
+        {
+            avatar.draw(m_window, {});
+        }
+
         m_window.display();
     }
 
-    void Coordinator::update(const float frameTimeSec) { m_avatar.update(m_context, frameTimeSec); }
+    void Coordinator::update(const float frameTimeSec)
+    {
+        for (Avatar & avatar : m_avatars)
+        {
+            avatar.update(m_context, frameTimeSec);
+        }
+    }
 
     void Coordinator::handleSleepUntilEndOfFrame(const float elapsedTimeSec)
     {

@@ -8,6 +8,8 @@
 #include "random.hpp"
 #include "settings.hpp"
 
+#include <vector>
+
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/VideoMode.hpp>
@@ -38,7 +40,7 @@ namespace platformer
         Settings m_settings;
         util::Random m_random;
         AvatarTextureManager m_avatarTextures;
-        Avatar m_avatar;
+        std::vector<Avatar> m_avatars;
 
         Context m_context;
     };
