@@ -3,6 +3,7 @@
 //
 // coordinator.hpp
 //
+#include "avatar.hpp"
 #include "context.hpp"
 #include "random.hpp"
 #include "settings.hpp"
@@ -36,6 +37,8 @@ namespace platformer
         sf::RenderWindow m_window;
         Settings m_settings;
         util::Random m_random;
+        AvatarTextureManager m_avatarTextures;
+        Avatar m_avatar;
 
         Context m_context;
     };

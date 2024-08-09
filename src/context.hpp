@@ -20,20 +20,24 @@ namespace platformer
 {
 
     struct Settings;
+    class AvatarTextureManager;
 
     //
 
     struct Context
     {
-        Context(const Settings & set, sf::Window & win, util::Random & ran)
+        Context(
+            const Settings & set, sf::Window & win, util::Random & ran, AvatarTextureManager & atm)
             : settings(set)
             , window(win)
             , random(ran)
+            , avatar_textures(atm)
         {}
 
         const Settings & settings;
         sf::Window & window;
         util::Random & random;
+        AvatarTextureManager & avatar_textures;
     };
 
 } // namespace platformer

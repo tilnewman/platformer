@@ -19,13 +19,18 @@ namespace platformer
         : m_window()
         , m_settings(settings)
         , m_random()
-        , m_context(m_settings, m_window, m_random)
+        , m_avatarTextures()
+        , m_avatar()
+        , m_context(m_settings, m_window, m_random, m_avatarTextures)
     {}
 
     void Coordinator::setup()
     {
         setupRenderWindow(m_settings.video_mode);
         std::cout << "video mode: " << m_settings.video_mode << std::endl;
+
+        m_avatarTextures.setup(m_settings);
+        m_avatar.setup(m_context, AvatarType::Assassin);
     }
 
     void Coordinator::teardown() { m_window.close(); }
@@ -77,14 +82,11 @@ namespace platformer
     void Coordinator::draw()
     {
         m_window.clear(sf::Color::Black);
-        // TODO
+        m_avatar.draw(m_window, {});
         m_window.display();
     }
 
-    void Coordinator::update(const float)
-    {
-        // TODO
-    }
+    void Coordinator::update(const float frameTimeSec) { m_avatar.update(m_context, frameTimeSec); }
 
     void Coordinator::handleSleepUntilEndOfFrame(const float elapsedTimeSec)
     {
