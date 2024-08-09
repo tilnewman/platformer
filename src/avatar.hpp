@@ -109,7 +109,7 @@ namespace platformer
             case AvatarAnim::Death:         { return 0.1f;  }
             case AvatarAnim::Fire:          { return 0.1f;  }
             case AvatarAnim::FireExtra:     { return 0.1f;  }
-            case AvatarAnim::Hurt:          { return 0.2f;  }
+            case AvatarAnim::Hurt:          { return 0.1f;  }
             case AvatarAnim::Idle:          { return 0.1f;  }
             case AvatarAnim::Jump:          { return 0.15f; }
             case AvatarAnim::JumpHigh:      { return 0.15f; }
@@ -174,7 +174,9 @@ namespace platformer
         void setup(const Context & context, const AvatarType & type);
         void update(Context & context, const float frameTimeSec);
         void draw(sf::RenderTarget & target, sf::RenderStates states);
-        void setPosition(const sf::Vector2f & pos) { m_sprite.setPosition(pos); }
+        inline void setPosition(const sf::Vector2f & pos) { m_sprite.setPosition(pos); }
+        inline AvatarAnim getAnim() const { return m_anim; }
+        void advanceAnim();
 
       private:
         sf::Sprite m_sprite;

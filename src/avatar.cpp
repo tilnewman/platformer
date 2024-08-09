@@ -111,13 +111,33 @@ namespace platformer
                 m_animIndex = 0;
             }
 
-            m_sprite.setTexture(textureSet.textures.at(m_animIndex), true);
+            if (textureSet.textures.empty())
+            {
+                m_sprite.setTexture(context.avatar_textures.getDefault(m_type), true);
+            }
+            else
+            {
+                m_sprite.setTexture(textureSet.textures.at(m_animIndex), true);
+            }
         }
     }
 
     void Avatar::draw(sf::RenderTarget & target, sf::RenderStates states)
     {
         target.draw(m_sprite, states);
+    }
+
+    void Avatar::advanceAnim()
+    {
+        std::size_t animIndex{ static_cast<std::size_t>(m_anim) };
+
+        ++animIndex;
+        if (animIndex >= static_cast<std::size_t>(AvatarAnim::Count))
+        {
+            animIndex = 0;
+        }
+
+        m_anim = static_cast<AvatarAnim>(animIndex);
     }
 
 } // namespace platformer

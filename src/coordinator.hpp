@@ -10,7 +10,9 @@
 
 #include <vector>
 
+#include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Text.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/VideoMode.hpp>
 
@@ -41,6 +43,8 @@ namespace platformer
         util::Random m_random;
         AvatarTextureManager m_avatarTextures;
         std::vector<Avatar> m_avatars;
+        sf::Font m_font;
+        sf::Text m_text;
 
         Context m_context;
     };

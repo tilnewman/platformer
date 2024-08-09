@@ -21,6 +21,8 @@ namespace platformer
         , m_random()
         , m_avatarTextures()
         , m_avatars()
+        , m_font()
+        , m_text()
         , m_context(m_settings, m_window, m_random, m_avatarTextures)
     {}
 
@@ -41,6 +43,14 @@ namespace platformer
             m_avatars.at(typeIndex).setPosition({ posLeft, 0.0f });
             posLeft += 128.0f;
         }
+
+        m_font.loadFromFile((m_settings.media_path / "font/mops-antiqua.ttf").string());
+        m_text.setFont(m_font);
+        m_text.setCharacterSize(60);
+        m_text.setFillColor(sf::Color(100, 100, 255));
+        m_text.setString("idle");
+        util::setOriginToPosition(m_text);
+        m_text.setPosition(0.0f, 200.0f);
     }
 
     void Coordinator::teardown() { m_window.close(); }
@@ -87,6 +97,16 @@ namespace platformer
             // TEMP TODO REMOVE
             m_window.close();
         }
+        else if (event.type == sf::Event::KeyReleased)
+        {
+            for (Avatar & avatar : m_avatars)
+            {
+                avatar.advanceAnim();
+            }
+
+            m_text.setString(std::string(toString(m_avatars.front().getAnim())));
+            util::setOriginToPosition(m_text);
+        }
     }
 
     void Coordinator::draw()
@@ -97,6 +117,8 @@ namespace platformer
         {
             avatar.draw(m_window, {});
         }
+
+        m_window.draw(m_text, {});
 
         m_window.display();
     }
