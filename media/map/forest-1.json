@@ -416,7 +416,7 @@
         {
          "name":"background",
          "type":"string",
-         "value":"underground-cave"
+         "value":"castle"
         }],
  "renderorder":"right-down",
  "tiledversion":"1.11.0",

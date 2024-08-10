@@ -185,6 +185,61 @@ namespace platformer
 
             return info;
         }
+        else if (name == "mountains")
+        {
+            std::vector<SlidingImageInfo> slidingImages;
+
+            slidingImages.push_back(
+                { 0.1f, (context.settings.media_path / "image/background/mountains/clouds1.png") });
+
+            slidingImages.push_back(
+                { 0.2f, (context.settings.media_path / "image/background/mountains/clouds2.png") });
+
+            slidingImages.push_back(
+                { 0.4f,
+                  (context.settings.media_path / "image/background/mountains/rocks-back.png") });
+
+            slidingImages.push_back(
+                { 0.6f,
+                  (context.settings.media_path / "image/background/mountains/rocks-middle.png") });
+
+            slidingImages.push_back(
+                { 0.8f, (context.settings.media_path / "image/background/mountains/mist.png") });
+
+            slidingImages.push_back(
+                { 1.0f,
+                  (context.settings.media_path / "image/background/mountains/rocks-front.png") });
+
+            BackgroundImagesInfo info(
+                (context.settings.media_path / "image/background/mountains/sky.png"),
+                slidingImages,
+                {});
+
+            return info;
+        }
+        else if (name == "castle")
+        {
+            std::vector<SlidingImageInfo> slidingImages;
+
+            slidingImages.push_back(
+                { 0.2f, (context.settings.media_path / "image/background/castle/sky.png") });
+
+            slidingImages.push_back(
+                { 0.4f, (context.settings.media_path / "image/background/castle/trees.png") });
+
+            slidingImages.push_back(
+                { 0.6f, (context.settings.media_path / "image/background/castle/wall.png") });
+
+            slidingImages.push_back(
+                { 0.8f, (context.settings.media_path / "image/background/castle/floor.png") });
+
+            slidingImages.push_back(
+                { 1.0f, (context.settings.media_path / "image/background/castle/pillars.png") });
+
+            BackgroundImagesInfo info({}, slidingImages, {});
+
+            return info;
+        }
         else
         {
             std::cout << "Error: BackgroundImages::infoFactory(\"" << name
