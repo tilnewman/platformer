@@ -5,7 +5,9 @@
 //
 #include "coordinator.hpp"
 
+#include "map-textures.hpp"
 #include "sfml-util.hpp"
+#include "tileset.hpp"
 
 #include <iostream>
 
@@ -21,10 +23,21 @@ namespace platformer
         , m_random()
         , m_avatarTextures()
         , m_layout()
+        , m_levelLoader()
+        , m_level()
+        , m_mapTextures()
         , m_avatars()
         , m_font()
         , m_text()
-        , m_context(m_settings, m_window, m_random, m_avatarTextures, m_layout)
+        , m_context(
+              m_settings,
+              m_window,
+              m_random,
+              m_avatarTextures,
+              m_layout,
+              m_levelLoader,
+              m_level,
+              m_mapTextures)
     {}
 
     void Coordinator::setup()
@@ -34,6 +47,7 @@ namespace platformer
 
         m_layout.setup(m_window.getSize());
         m_avatarTextures.setup(m_settings);
+        m_mapTextures.setup(m_settings);
 
         m_avatars.resize(static_cast<std::size_t>(AvatarType::Count));
         float posLeft{ 0.0f };
@@ -45,6 +59,8 @@ namespace platformer
             m_avatars.at(typeIndex).setPosition({ posLeft, 0.0f });
             posLeft += 128.0f;
         }
+
+        m_level.load(m_context);
 
         m_font.loadFromFile((m_settings.media_path / "font/mops-antiqua.ttf").string());
         m_text.setFont(m_font);
@@ -113,14 +129,23 @@ namespace platformer
 
     void Coordinator::draw()
     {
+        sf::RenderStates states;
+
         m_window.clear(sf::Color::Black);
 
         for (Avatar & avatar : m_avatars)
         {
-            avatar.draw(m_window, {});
+            avatar.draw(m_window, states);
         }
 
-        m_window.draw(m_text, {});
+        for (TileLayer & layer : m_level.tiles.layers)
+        {
+            states.texture = &m_context.map_textures.get(layer.image).texture;
+            m_window.draw(&layer.visibleVerts[0], layer.visibleVerts.size(), sf::Quads, states);
+            states.texture = nullptr;
+        }
+
+        m_window.draw(m_text, states);
 
         m_window.display();
     }

@@ -21,6 +21,8 @@ namespace platformer
         float frame_rate            = 60;
         bool will_display_fps       = false;
         bool will_display_fps_graph = false;
+
+        float tile_scale = 0.75f;
     };
 
 } // namespace platformer

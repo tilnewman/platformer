@@ -19,8 +19,11 @@ namespace util
 namespace platformer
 {
 
+    struct Level;
     struct Settings;
+    class MapTextures;
     class ScreenLayout;
+    class LevelFileLoader;
     class AvatarTextureManager;
 
     //
@@ -32,12 +35,18 @@ namespace platformer
             sf::Window & win,
             util::Random & ran,
             AvatarTextureManager & atm,
-            ScreenLayout & scl)
+            ScreenLayout & scl,
+            LevelFileLoader & lfl,
+            Level & lvl,
+            MapTextures & mtx)
             : settings(set)
             , window(win)
             , random(ran)
             , avatar_textures(atm)
             , layout(scl)
+            , level_loader(lfl)
+            , level(lvl)
+            , map_textures(mtx)
         {}
 
         const Settings & settings;
@@ -45,6 +54,9 @@ namespace platformer
         util::Random & random;
         AvatarTextureManager & avatar_textures;
         ScreenLayout & layout;
+        LevelFileLoader & level_loader;
+        Level & level;
+        MapTextures & map_textures;
     };
 
 } // namespace platformer

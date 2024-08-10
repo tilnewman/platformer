@@ -5,6 +5,9 @@
 //
 #include "avatar.hpp"
 #include "context.hpp"
+#include "level-file-loader.hpp"
+#include "level.hpp"
+#include "map-textures.hpp"
 #include "random.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
@@ -44,6 +47,10 @@ namespace platformer
         util::Random m_random;
         AvatarTextureManager m_avatarTextures;
         ScreenLayout m_layout;
+        LevelFileLoader m_levelLoader;
+        Level m_level;
+        MapTextures m_mapTextures;
+
         std::vector<Avatar> m_avatars;
         sf::Font m_font;
         sf::Text m_text;

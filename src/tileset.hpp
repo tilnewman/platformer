@@ -6,6 +6,7 @@
 #include <cassert>
 #include <ostream>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <SFML/Graphics/Rect.hpp>
@@ -26,11 +27,24 @@ namespace platformer
         // clang-format off
         switch (image)
         {
-            case TileImage::ForestGround:   { return "ground";   }
-            case TileImage::ForestTrees:    { return "object-1"; }
+            case TileImage::ForestGround:   { return "forest-ground";           }
+            case TileImage::ForestTrees:    { return "forest-trees";            }
             default:                        { return "error_TileImage_unknown"; }
         }
         // clang-format on
+    }
+
+    inline std::ostream & operator<<(std::ostream & os, const TileImage image)
+    {
+        os << toString(image);
+        return os;
+    }
+
+    inline const std::string toFilename(const TileImage image)
+    {
+        std::string filename{ toString(image) };
+        filename += ".tsx";
+        return filename;
     }
 
     //
