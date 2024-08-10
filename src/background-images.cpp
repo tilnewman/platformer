@@ -154,6 +154,37 @@ namespace platformer
 
             return info;
         }
+        else if (name == "underground-cave")
+        {
+            std::vector<SlidingImageInfo> slidingImages;
+
+            slidingImages.push_back({ 0.2f,
+                                      (context.settings.media_path /
+                                       "image/background/underground-cave/rock-back.png") });
+
+            slidingImages.push_back({ 0.4f,
+                                      (context.settings.media_path /
+                                       "image/background/underground-cave/rock-middle.png") });
+
+            slidingImages.push_back(
+                { 0.7f,
+                  (context.settings.media_path / "image/background/underground-cave/mist.png") });
+
+            slidingImages.push_back({ 1.0f,
+                                      (context.settings.media_path /
+                                       "image/background/underground-cave/rock-front1.png") });
+
+            slidingImages.push_back({ 1.0f,
+                                      (context.settings.media_path /
+                                       "image/background/underground-cave/rock-front2.png") });
+
+            BackgroundImagesInfo info(
+                (context.settings.media_path / "image/background/underground-cave/background.png"),
+                slidingImages,
+                {});
+
+            return info;
+        }
         else
         {
             std::cout << "Error: BackgroundImages::infoFactory(\"" << name

@@ -4,7 +4,7 @@
   <export target="../map/forest-1.json" format="json"/>
  </editorsettings>
  <properties>
-  <property name="background" value="underground-swamp"/>
+  <property name="background" value="underground-cave"/>
  </properties>
  <tileset firstgid="1" source="forest-ground.tsx"/>
  <tileset firstgid="1025" source="forest-trees.tsx"/>
