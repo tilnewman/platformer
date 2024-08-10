@@ -416,7 +416,7 @@
         {
          "name":"background",
          "type":"string",
-         "value":"castle"
+         "value":"forest"
         }],
  "renderorder":"right-down",
  "tiledversion":"1.11.0",

@@ -11,6 +11,7 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Vertex.hpp>
 
 namespace platformer
 {
@@ -39,14 +40,17 @@ namespace platformer
     struct BackgroundImagesInfo
     {
         BackgroundImagesInfo(
+            const sf::Uint8 fadeAlpha,
             const std::filesystem::path & backgroundPath,
             const std::vector<SlidingImageInfo> & slidingImages,
             const std::filesystem::path & overlayPath)
-            : background_path(backgroundPath)
+            : fade_alpha(fadeAlpha)
+            , background_path(backgroundPath)
             , sliding_images(slidingImages)
             , overlay_path(overlayPath)
         {}
 
+        sf::Uint8 fade_alpha;
         std::filesystem::path background_path;
         std::vector<SlidingImageInfo> sliding_images;
         std::filesystem::path overlay_path;
@@ -84,6 +88,8 @@ namespace platformer
         sf::Sprite m_overlaySprite;
 
         std::vector<SlidingImage> m_slidingImages;
+
+        std::vector<sf::Vertex> m_fadeQuads;
     };
 
 } // namespace platformer

@@ -20,6 +20,7 @@ namespace platformer
         , m_backgroundSprite()
         , m_overlaySprite()
         , m_slidingImages()
+        , m_fadeQuads()
     {}
 
     void BackgroundImages::setup(const Context & context, const std::string & name)
@@ -63,6 +64,12 @@ namespace platformer
             util::scaleAndCenterInside(slidingImage.sprite_right, context.layout.wholeRect());
             slidingImage.sprite_right.move(slidingImage.sprite_left.getGlobalBounds().width, 0.0f);
         }
+
+        if (infoPack.fade_alpha > 0)
+        {
+            util::appendQuadVerts(
+                context.layout.wholeRect(), m_fadeQuads, sf::Color(0, 0, 0, infoPack.fade_alpha));
+        }
     }
 
     void BackgroundImages::draw(sf::RenderTarget & target, sf::RenderStates states) const
@@ -76,6 +83,8 @@ namespace platformer
         }
 
         target.draw(m_overlaySprite, states);
+
+        target.draw(&m_fadeQuads[0], m_fadeQuads.size(), sf::Quads, states);
     }
 
     void BackgroundImages::move(const float amount)
@@ -98,6 +107,8 @@ namespace platformer
     const BackgroundImagesInfo
         BackgroundImages::infoFactory(const Context & context, const std::string & name)
     {
+        const sf::Uint8 fadeAlpha{ 32 };
+
         if (name == "forest")
         {
             std::vector<SlidingImageInfo> slidingImages;
@@ -111,15 +122,19 @@ namespace platformer
                   (context.settings.media_path / "image/background/forest/clouds-front.png") });
 
             slidingImages.push_back(
-                { 0.8f, (context.settings.media_path / "image/background/forest/mountains.png") });
+                { 0.7f, (context.settings.media_path / "image/background/forest/mountains.png") });
+
+            slidingImages.push_back(
+                { 0.8f, (context.settings.media_path / "image/background/forest/mist.png") });
 
             slidingImages.push_back(
                 { 1.0f, (context.settings.media_path / "image/background/forest/trees.png") });
 
             BackgroundImagesInfo info(
+                fadeAlpha,
                 (context.settings.media_path / "image/background/forest/sky.png"),
                 slidingImages,
-                (context.settings.media_path / "image/background/forest/mist.png"));
+                {});
 
             return info;
         }
@@ -148,6 +163,7 @@ namespace platformer
                                        "image/background/underground-swamp/chains.png") });
 
             BackgroundImagesInfo info(
+                fadeAlpha,
                 (context.settings.media_path / "image/background/underground-swamp/background.png"),
                 slidingImages,
                 {});
@@ -179,6 +195,7 @@ namespace platformer
                                        "image/background/underground-cave/rock-front2.png") });
 
             BackgroundImagesInfo info(
+                fadeAlpha,
                 (context.settings.media_path / "image/background/underground-cave/background.png"),
                 slidingImages,
                 {});
@@ -211,6 +228,7 @@ namespace platformer
                   (context.settings.media_path / "image/background/mountains/rocks-front.png") });
 
             BackgroundImagesInfo info(
+                fadeAlpha,
                 (context.settings.media_path / "image/background/mountains/sky.png"),
                 slidingImages,
                 {});
@@ -236,7 +254,7 @@ namespace platformer
             slidingImages.push_back(
                 { 1.0f, (context.settings.media_path / "image/background/castle/pillars.png") });
 
-            BackgroundImagesInfo info({}, slidingImages, {});
+            BackgroundImagesInfo info(fadeAlpha, {}, slidingImages, {});
 
             return info;
         }
@@ -246,7 +264,7 @@ namespace platformer
                       << "\") given unknown name.  No background will be shown on this map."
                       << std::endl;
 
-            return { {}, {}, {} };
+            return { 0, {}, {}, {} };
         }
     }
 
