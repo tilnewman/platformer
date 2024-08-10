@@ -2,6 +2,7 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "level-file-loader.hpp"
 
+#include "background-images.hpp"
 #include "check-macros.hpp"
 #include "context.hpp"
 #include "level.hpp"
@@ -42,6 +43,7 @@ namespace platformer
         }
 
         parseLevelDetails(context, json);
+        parseBackgroundImageName(context, json);
         parseObjectTextureGIDs(context, json);
 
         // everything else in the level file is saved in "layers"
@@ -101,6 +103,35 @@ namespace platformer
                           << "\n";
             }
         }
+    }
+
+    void LevelFileLoader::parseBackgroundImageName(Context & context, Json & json)
+    {
+        std::string backgroundImageName;
+        for (Json & propJson : json["properties"])
+        {
+            const std::string propName = propJson["name"];
+            if ("background" == propName)
+            {
+                backgroundImageName = propJson["value"];
+                break;
+            }
+            else
+            {
+                std::cout << "Warning: While parsing \"" << m_pathStr
+                          << "\": Ignored custom property named \"" << propName << "\"\n";
+            }
+        }
+
+        if (backgroundImageName.empty())
+        {
+            std::cout << "Error: While parsing \"" << m_pathStr
+                      << "\": This map file is missing the custom int property named "
+                         "\"background\", there will be no background on this map.\n";
+        }
+
+        context.bg_images.setup(
+            context, context.bg_images.infoFactory(context, backgroundImageName));
     }
 
     void LevelFileLoader::parseLayers(Context & context, Json & jsonWholeFile)

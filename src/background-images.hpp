@@ -72,6 +72,9 @@ namespace platformer
         void draw(sf::RenderTarget & target, sf::RenderStates states) const;
         void move(const float amount);
 
+        static const BackgroundImagesInfo
+            infoFactory(const Context & context, const std::string & name);
+
       private:
         sf::Texture m_backgroundTexture;
         sf::Texture m_overlayTexture;

@@ -93,4 +93,42 @@ namespace platformer
         }
     }
 
+    const BackgroundImagesInfo
+        BackgroundImages::infoFactory(const Context & context, const std::string & name)
+    {
+        if (name == "forest")
+        {
+            std::vector<SlidingImageInfo> forestSlidingImages;
+
+            forestSlidingImages.push_back(
+                { 0.2f,
+                  (context.settings.media_path / "image/background/forest/clouds-back.png") });
+
+            forestSlidingImages.push_back(
+                { 0.4f,
+                  (context.settings.media_path / "image/background/forest/clouds-front.png") });
+
+            forestSlidingImages.push_back(
+                { 0.8f, (context.settings.media_path / "image/background/forest/mountains.png") });
+
+            forestSlidingImages.push_back(
+                { 1.0f, (context.settings.media_path / "image/background/forest/trees.png") });
+
+            BackgroundImagesInfo forestBgInfo(
+                (context.settings.media_path / "image/background/forest/sky.png"),
+                forestSlidingImages,
+                (context.settings.media_path / "image/background/forest/mist.png"));
+
+            return forestBgInfo;
+        }
+        else
+        {
+            std::cout << "Error: BackgroundImages::infoFactory(\"" << name
+                      << "\") given unknown name.  No background will be shown on this map."
+                      << std::endl;
+
+            return { {}, {}, {} };
+        }
+    }
+
 } // namespace platformer

@@ -72,29 +72,6 @@ namespace platformer
 
         //
 
-        std::vector<SlidingImageInfo> forestSlidingImages;
-
-        forestSlidingImages.push_back(
-            { 0.2f, (m_settings.media_path / "image/background/forest/clouds-back.png") });
-
-        forestSlidingImages.push_back(
-            { 0.4f, (m_settings.media_path / "image/background/forest/clouds-front.png") });
-
-        forestSlidingImages.push_back(
-            { 0.8f, (m_settings.media_path / "image/background/forest/mountains.png") });
-
-        forestSlidingImages.push_back(
-            { 1.0f, (m_settings.media_path / "image/background/forest/trees.png") });
-
-        BackgroundImagesInfo forestBgInfo(
-            (m_settings.media_path / "image/background/forest/sky.png"),
-            forestSlidingImages,
-            (m_settings.media_path / "image/background/forest/mist.png"));
-
-        m_backgroundImages.setup(m_context, forestBgInfo);
-
-        //
-
         m_level.load(m_context);
     }
 
