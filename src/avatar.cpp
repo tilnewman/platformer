@@ -138,6 +138,8 @@ namespace platformer
         }
 
         m_anim = static_cast<AvatarAnim>(animIndex);
+
+        m_elapsedTimeSec = 0.0f;
     }
 
 } // namespace platformer
