@@ -5,6 +5,7 @@
 //
 #include "background-images.hpp"
 
+#include "check-macros.hpp"
 #include "context.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
@@ -14,62 +15,82 @@ namespace platformer
 {
 
     BackgroundImages::BackgroundImages()
-        : m_skyTexture()
-        , m_cloudsBackTexture()
-        , m_cloudsFrontTexture()
-        , m_mountainsTexture()
-        , m_treesTexture()
-        , m_mistsTexture()
-        , m_skySprite()
-        , m_cloudsBackSprite()
-        , m_cloudsFrontSprite()
-        , m_mountainsSprite()
-        , m_treesSprite()
-        , m_mistsSprite()
+        : m_backgroundTexture()
+        , m_overlayTexture()
+        , m_backgroundSprite()
+        , m_overlaySprite()
+        , m_slidingImages()
     {}
 
-    void BackgroundImages::setup(const Context & context)
+    void BackgroundImages::setup(const Context & context, const BackgroundImagesInfo & infoPack)
     {
-        const std::string imagePath =
-            (context.settings.media_path / "image/background/forest").string();
+        // there won't always be a static background image
+        if (!infoPack.background_path.empty())
+        {
+            m_backgroundTexture.loadFromFile(infoPack.background_path.string());
+            m_backgroundTexture.setSmooth(true);
+            m_backgroundSprite.setTexture(m_backgroundTexture);
+            util::scaleAndCenterInside(m_backgroundSprite, context.layout.wholeRect());
+        }
 
-        m_skyTexture.loadFromFile(imagePath + "/sky.png");
-        m_cloudsBackTexture.loadFromFile(imagePath + "/clouds-back.png");
-        m_cloudsFrontTexture.loadFromFile(imagePath + "/clouds-front.png");
-        m_mountainsTexture.loadFromFile(imagePath + "/mountains.png");
-        m_treesTexture.loadFromFile(imagePath + "/trees.png");
-        m_mistsTexture.loadFromFile(imagePath + "/mist.png");
+        // there won't always be a static overlay image
+        if (!infoPack.overlay_path.empty())
+        {
+            m_overlayTexture.loadFromFile(infoPack.overlay_path.string());
+            m_overlayTexture.setSmooth(true);
+            m_overlaySprite.setTexture(m_overlayTexture);
+            util::scaleAndCenterInside(m_overlaySprite, context.layout.wholeRect());
+        }
 
-        m_skyTexture.setSmooth(true);
-        m_cloudsBackTexture.setSmooth(true);
-        m_cloudsFrontTexture.setSmooth(true);
-        m_mountainsTexture.setSmooth(true);
-        m_treesTexture.setSmooth(true);
-        m_mistsTexture.setSmooth(true);
+        // doubt there will ever be more than eight of these
+        m_slidingImages.reserve(16);
 
-        m_skySprite.setTexture(m_skyTexture);
-        m_cloudsBackSprite.setTexture(m_cloudsBackTexture);
-        m_cloudsFrontSprite.setTexture(m_cloudsFrontTexture);
-        m_mountainsSprite.setTexture(m_mountainsTexture);
-        m_treesSprite.setTexture(m_treesTexture);
-        m_mistsSprite.setTexture(m_mistsTexture);
+        for (const SlidingImageInfo & info : infoPack.sliding_images)
+        {
+            M_CHECK(
+                std::filesystem::exists(info.path),
+                "Error:  BackgroundImages::setup() given a path that doesn't exist: " << info.path);
 
-        util::scaleAndCenterInside(m_skySprite, context.layout.wholeRect());
-        util::scaleAndCenterInside(m_cloudsBackSprite, context.layout.wholeRect());
-        util::scaleAndCenterInside(m_cloudsFrontSprite, context.layout.wholeRect());
-        util::scaleAndCenterInside(m_mountainsSprite, context.layout.wholeRect());
-        util::scaleAndCenterInside(m_treesSprite, context.layout.wholeRect());
-        util::scaleAndCenterInside(m_mistsSprite, context.layout.wholeRect());
+            SlidingImage & slidingImage{ m_slidingImages.emplace_back() };
+            slidingImage.info = info;
+            slidingImage.texture.loadFromFile(info.path.string());
+            slidingImage.texture.setSmooth(true);
+            slidingImage.sprite_left.setTexture(slidingImage.texture);
+            slidingImage.sprite_right.setTexture(slidingImage.texture);
+            util::scaleAndCenterInside(slidingImage.sprite_left, context.layout.wholeRect());
+            util::scaleAndCenterInside(slidingImage.sprite_right, context.layout.wholeRect());
+            slidingImage.sprite_right.move(slidingImage.sprite_left.getGlobalBounds().width, 0.0f);
+        }
     }
 
     void BackgroundImages::draw(sf::RenderTarget & target, sf::RenderStates states) const
     {
-        target.draw(m_skySprite, states);
-        target.draw(m_cloudsBackSprite, states);
-        target.draw(m_cloudsFrontSprite, states);
-        target.draw(m_mountainsSprite, states);
-        target.draw(m_treesSprite, states);
-        target.draw(m_mistsSprite, states);
+        target.draw(m_backgroundSprite, states);
+
+        for (const SlidingImage & image : m_slidingImages)
+        {
+            target.draw(image.sprite_left, states);
+            target.draw(image.sprite_right, states);
+        }
+
+        target.draw(m_overlaySprite, states);
+    }
+
+    void BackgroundImages::move(const float amount)
+    {
+        for (SlidingImage & image : m_slidingImages)
+        {
+            image.sprite_left.move((amount * image.info.move_ratio), 0.0f);
+            image.sprite_right.move((amount * image.info.move_ratio), 0.0f);
+
+            if (image.sprite_right.getPosition().x < 0.0f)
+            {
+                image.sprite_left.setPosition(0.0f, image.sprite_left.getPosition().y);
+
+                image.sprite_right.setPosition(
+                    image.sprite_left.getGlobalBounds().width, image.sprite_right.getPosition().y);
+            }
+        }
     }
 
 } // namespace platformer

@@ -3,6 +3,9 @@
 //
 // background-images.hpp
 //
+#include <filesystem>
+#include <vector>
+
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -14,28 +17,69 @@ namespace platformer
 
     //
 
+    struct SlidingImageInfo
+    {
+        SlidingImageInfo()
+            : move_ratio(0.0f)
+            , path()
+        {}
+
+        SlidingImageInfo(const float moveRatio, const std::filesystem::path & filePath)
+            : move_ratio(moveRatio)
+            , path(filePath)
+        {}
+
+        float move_ratio;
+        std::filesystem::path path;
+    };
+
+    //
+
+    struct BackgroundImagesInfo
+    {
+        BackgroundImagesInfo(
+            const std::filesystem::path & backgroundPath,
+            const std::vector<SlidingImageInfo> & slidingImages,
+            const std::filesystem::path & overlayPath)
+            : background_path(backgroundPath)
+            , sliding_images(slidingImages)
+            , overlay_path(overlayPath)
+        {}
+
+        std::filesystem::path background_path;
+        std::vector<SlidingImageInfo> sliding_images;
+        std::filesystem::path overlay_path;
+    };
+
+    //
+
+    struct SlidingImage
+    {
+        SlidingImageInfo info{};
+        sf::Texture texture{};
+        sf::Sprite sprite_left{};
+        sf::Sprite sprite_right{};
+    };
+
+    //
+
     class BackgroundImages
     {
       public:
         BackgroundImages();
 
-        void setup(const Context & context);
+        void setup(const Context & context, const BackgroundImagesInfo & info);
         void draw(sf::RenderTarget & target, sf::RenderStates states) const;
+        void move(const float amount);
 
       private:
-        sf::Texture m_skyTexture;
-        sf::Texture m_cloudsBackTexture;
-        sf::Texture m_cloudsFrontTexture;
-        sf::Texture m_mountainsTexture;
-        sf::Texture m_treesTexture;
-        sf::Texture m_mistsTexture;
+        sf::Texture m_backgroundTexture;
+        sf::Texture m_overlayTexture;
 
-        sf::Sprite m_skySprite;
-        sf::Sprite m_cloudsBackSprite;
-        sf::Sprite m_cloudsFrontSprite;
-        sf::Sprite m_mountainsSprite;
-        sf::Sprite m_treesSprite;
-        sf::Sprite m_mistsSprite;
+        sf::Sprite m_backgroundSprite;
+        sf::Sprite m_overlaySprite;
+
+        std::vector<SlidingImage> m_slidingImages;
     };
 
 } // namespace platformer

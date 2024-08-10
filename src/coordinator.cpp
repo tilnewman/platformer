@@ -50,7 +50,6 @@ namespace platformer
         m_layout.setup(m_window.getSize());
         m_avatarTextures.setup(m_settings);
         m_mapTextures.setup(m_settings);
-        m_backgroundImages.setup(m_context);
 
         m_avatars.resize(static_cast<std::size_t>(AvatarType::Count));
         float posLeft{ 0.0f };
@@ -63,8 +62,6 @@ namespace platformer
             posLeft += 128.0f;
         }
 
-        m_level.load(m_context);
-
         m_font.loadFromFile((m_settings.media_path / "font/mops-antiqua.ttf").string());
         m_text.setFont(m_font);
         m_text.setCharacterSize(60);
@@ -72,6 +69,33 @@ namespace platformer
         m_text.setString("idle");
         util::setOriginToPosition(m_text);
         m_text.setPosition(0.0f, 200.0f);
+
+        //
+
+        std::vector<SlidingImageInfo> forestSlidingImages;
+
+        forestSlidingImages.push_back(
+            { 0.2f, (m_settings.media_path / "image/background/forest/clouds-back.png") });
+
+        forestSlidingImages.push_back(
+            { 0.4f, (m_settings.media_path / "image/background/forest/clouds-front.png") });
+
+        forestSlidingImages.push_back(
+            { 0.8f, (m_settings.media_path / "image/background/forest/mountains.png") });
+
+        forestSlidingImages.push_back(
+            { 1.0f, (m_settings.media_path / "image/background/forest/trees.png") });
+
+        BackgroundImagesInfo forestBgInfo(
+            (m_settings.media_path / "image/background/forest/sky.png"),
+            forestSlidingImages,
+            (m_settings.media_path / "image/background/forest/mist.png"));
+
+        m_backgroundImages.setup(m_context, forestBgInfo);
+
+        //
+
+        m_level.load(m_context);
     }
 
     void Coordinator::teardown() { m_window.close(); }
@@ -118,7 +142,7 @@ namespace platformer
             // TEMP TODO REMOVE
             m_window.close();
         }
-        else if (event.type == sf::Event::KeyReleased)
+        else if ((event.type == sf::Event::KeyReleased) && (event.key.code == sf::Keyboard::Space))
         {
             for (Avatar & avatar : m_avatars)
             {
@@ -127,6 +151,11 @@ namespace platformer
 
             m_text.setString(std::string(toString(m_avatars.front().getAnim())));
             util::setOriginToPosition(m_text);
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        {
+            m_backgroundImages.move(-4.0f);
         }
     }
 
