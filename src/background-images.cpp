@@ -22,8 +22,10 @@ namespace platformer
         , m_slidingImages()
     {}
 
-    void BackgroundImages::setup(const Context & context, const BackgroundImagesInfo & infoPack)
+    void BackgroundImages::setup(const Context & context, const std::string & name)
     {
+        const BackgroundImagesInfo infoPack{ infoFactory(context, name) };
+
         // there won't always be a static background image
         if (!infoPack.background_path.empty())
         {
@@ -98,28 +100,59 @@ namespace platformer
     {
         if (name == "forest")
         {
-            std::vector<SlidingImageInfo> forestSlidingImages;
+            std::vector<SlidingImageInfo> slidingImages;
 
-            forestSlidingImages.push_back(
+            slidingImages.push_back(
                 { 0.2f,
                   (context.settings.media_path / "image/background/forest/clouds-back.png") });
 
-            forestSlidingImages.push_back(
+            slidingImages.push_back(
                 { 0.4f,
                   (context.settings.media_path / "image/background/forest/clouds-front.png") });
 
-            forestSlidingImages.push_back(
+            slidingImages.push_back(
                 { 0.8f, (context.settings.media_path / "image/background/forest/mountains.png") });
 
-            forestSlidingImages.push_back(
+            slidingImages.push_back(
                 { 1.0f, (context.settings.media_path / "image/background/forest/trees.png") });
 
-            BackgroundImagesInfo forestBgInfo(
+            BackgroundImagesInfo info(
                 (context.settings.media_path / "image/background/forest/sky.png"),
-                forestSlidingImages,
+                slidingImages,
                 (context.settings.media_path / "image/background/forest/mist.png"));
 
-            return forestBgInfo;
+            return info;
+        }
+        else if (name == "underground-swamp")
+        {
+            std::vector<SlidingImageInfo> slidingImages;
+
+            slidingImages.push_back({ 0.2f,
+                                      (context.settings.media_path /
+                                       "image/background/underground-swamp/ruins-back.png") });
+
+            slidingImages.push_back({ 0.4f,
+                                      (context.settings.media_path /
+                                       "image/background/underground-swamp/ruins-front.png") });
+
+            slidingImages.push_back({ 0.7f,
+                                      (context.settings.media_path /
+                                       "image/background/underground-swamp/floor-back.png") });
+
+            slidingImages.push_back({ 1.0f,
+                                      (context.settings.media_path /
+                                       "image/background/underground-swamp/floor-front.png") });
+
+            slidingImages.push_back({ 1.0f,
+                                      (context.settings.media_path /
+                                       "image/background/underground-swamp/chains.png") });
+
+            BackgroundImagesInfo info(
+                (context.settings.media_path / "image/background/underground-swamp/background.png"),
+                slidingImages,
+                {});
+
+            return info;
         }
         else
         {

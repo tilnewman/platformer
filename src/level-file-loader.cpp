@@ -130,8 +130,7 @@ namespace platformer
                          "\"background\", there will be no background on this map.\n";
         }
 
-        context.bg_images.setup(
-            context, context.bg_images.infoFactory(context, backgroundImageName));
+        context.bg_images.setup(context, backgroundImageName);
     }
 
     void LevelFileLoader::parseLayers(Context & context, Json & jsonWholeFile)

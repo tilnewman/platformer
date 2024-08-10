@@ -4,6 +4,7 @@
 // background-images.hpp
 //
 #include <filesystem>
+#include <string>
 #include <vector>
 
 #include <SFML/Graphics/RenderStates.hpp>
@@ -68,12 +69,12 @@ namespace platformer
       public:
         BackgroundImages();
 
-        void setup(const Context & context, const BackgroundImagesInfo & info);
+        void setup(const Context & context, const std::string & name);
         void draw(sf::RenderTarget & target, sf::RenderStates states) const;
         void move(const float amount);
 
-        static const BackgroundImagesInfo
-            infoFactory(const Context & context, const std::string & name);
+      private:
+        const BackgroundImagesInfo infoFactory(const Context & context, const std::string & name);
 
       private:
         sf::Texture m_backgroundTexture;
