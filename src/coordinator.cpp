@@ -20,10 +20,11 @@ namespace platformer
         , m_settings(settings)
         , m_random()
         , m_avatarTextures()
+        , m_layout()
         , m_avatars()
         , m_font()
         , m_text()
-        , m_context(m_settings, m_window, m_random, m_avatarTextures)
+        , m_context(m_settings, m_window, m_random, m_avatarTextures, m_layout)
     {}
 
     void Coordinator::setup()
@@ -31,6 +32,7 @@ namespace platformer
         setupRenderWindow(m_settings.video_mode);
         std::cout << "video mode: " << m_settings.video_mode << std::endl;
 
+        m_layout.setup(m_window.getSize());
         m_avatarTextures.setup(m_settings);
 
         m_avatars.resize(static_cast<std::size_t>(AvatarType::Count));

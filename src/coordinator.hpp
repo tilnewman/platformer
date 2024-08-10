@@ -6,6 +6,7 @@
 #include "avatar.hpp"
 #include "context.hpp"
 #include "random.hpp"
+#include "screen-layout.hpp"
 #include "settings.hpp"
 
 #include <vector>
@@ -42,6 +43,7 @@ namespace platformer
         Settings m_settings;
         util::Random m_random;
         AvatarTextureManager m_avatarTextures;
+        ScreenLayout m_layout;
         std::vector<Avatar> m_avatars;
         sf::Font m_font;
         sf::Text m_text;
