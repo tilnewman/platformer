@@ -26,6 +26,7 @@ namespace platformer
         , m_levelLoader()
         , m_level()
         , m_mapTextures()
+        , m_backgroundImages()
         , m_avatars()
         , m_font()
         , m_text()
@@ -37,7 +38,8 @@ namespace platformer
               m_layout,
               m_levelLoader,
               m_level,
-              m_mapTextures)
+              m_mapTextures,
+              m_backgroundImages)
     {}
 
     void Coordinator::setup()
@@ -48,6 +50,7 @@ namespace platformer
         m_layout.setup(m_window.getSize());
         m_avatarTextures.setup(m_settings);
         m_mapTextures.setup(m_settings);
+        m_backgroundImages.setup(m_context);
 
         m_avatars.resize(static_cast<std::size_t>(AvatarType::Count));
         float posLeft{ 0.0f };
@@ -132,6 +135,8 @@ namespace platformer
         sf::RenderStates states;
 
         m_window.clear(sf::Color::Black);
+
+        m_backgroundImages.draw(m_window, states);
 
         for (Avatar & avatar : m_avatars)
         {

@@ -4,6 +4,7 @@
 // coordinator.hpp
 //
 #include "avatar.hpp"
+#include "background-images.hpp"
 #include "context.hpp"
 #include "level-file-loader.hpp"
 #include "level.hpp"
@@ -50,6 +51,7 @@ namespace platformer
         LevelFileLoader m_levelLoader;
         Level m_level;
         MapTextures m_mapTextures;
+        BackgroundImages m_backgroundImages;
 
         std::vector<Avatar> m_avatars;
         sf::Font m_font;
