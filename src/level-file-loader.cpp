@@ -28,7 +28,7 @@ namespace platformer
     bool LevelFileLoader::load(Context & context)
     {
         // TODO fix to be more general
-        const std::filesystem::path path = (context.settings.media_path / "map/forest-1.json");
+        const std::filesystem::path path = (context.settings.media_path / "map/dungeon1-1.json");
         if (!std::filesystem::exists(path))
         {
             return false;
@@ -90,13 +90,41 @@ namespace platformer
 
             const int gid{ json["firstgid"] };
 
-            if (filename == toFilename(TileImage::ForestGround))
+            if (filename == toFilename(TileImage::CastleGround))
+            {
+                context.map_textures.get(TileImage::CastleGround).gid = gid;
+            }
+            else if (filename == toFilename(TileImage::CastleObject))
+            {
+                context.map_textures.get(TileImage::CastleObject).gid = gid;
+            }
+            else if (filename == toFilename(TileImage::Dungeon1Ground))
+            {
+                context.map_textures.get(TileImage::Dungeon1Ground).gid = gid;
+            }
+            else if (filename == toFilename(TileImage::Dungeon2Ground))
+            {
+                context.map_textures.get(TileImage::Dungeon2Ground).gid = gid;
+            }
+            else if (filename == toFilename(TileImage::Dungeon2Object))
+            {
+                context.map_textures.get(TileImage::Dungeon2Object).gid = gid;
+            }
+            else if (filename == toFilename(TileImage::ForestGround))
             {
                 context.map_textures.get(TileImage::ForestGround).gid = gid;
             }
             else if (filename == toFilename(TileImage::ForestTrees))
             {
                 context.map_textures.get(TileImage::ForestTrees).gid = gid;
+            }
+            else if (filename == toFilename(TileImage::MountainsGround))
+            {
+                context.map_textures.get(TileImage::MountainsGround).gid = gid;
+            }
+            else if (filename == toFilename(TileImage::MountainsObject))
+            {
+                context.map_textures.get(TileImage::MountainsObject).gid = gid;
             }
             else
             {
@@ -143,13 +171,41 @@ namespace platformer
         {
             const std::string layerName = jsonLayer["name"];
 
-            if (layerName == toString(TileImage::ForestGround))
+            if (layerName == toString(TileImage::CastleGround))
+            {
+                parseTileLayer(context, TileImage::CastleGround, jsonLayer);
+            }
+            else if (layerName == toString(TileImage::CastleObject))
+            {
+                parseTileLayer(context, TileImage::CastleObject, jsonLayer);
+            }
+            else if (layerName == toString(TileImage::Dungeon1Ground))
+            {
+                parseTileLayer(context, TileImage::Dungeon1Ground, jsonLayer);
+            }
+            else if (layerName == toString(TileImage::Dungeon2Ground))
+            {
+                parseTileLayer(context, TileImage::Dungeon2Ground, jsonLayer);
+            }
+            else if (layerName == toString(TileImage::Dungeon2Object))
+            {
+                parseTileLayer(context, TileImage::Dungeon2Object, jsonLayer);
+            }
+            else if (layerName == toString(TileImage::ForestGround))
             {
                 parseTileLayer(context, TileImage::ForestGround, jsonLayer);
             }
             else if (layerName == toString(TileImage::ForestTrees))
             {
                 parseTileLayer(context, TileImage::ForestTrees, jsonLayer);
+            }
+            else if (layerName == toString(TileImage::MountainsGround))
+            {
+                parseTileLayer(context, TileImage::MountainsGround, jsonLayer);
+            }
+            else if (layerName == toString(TileImage::MountainsObject))
+            {
+                parseTileLayer(context, TileImage::MountainsObject, jsonLayer);
             }
             else if (layerName == "collision")
             {
