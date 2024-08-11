@@ -36,11 +36,11 @@ namespace platformer
 
             const std::filesystem::path defaultFilePath{ typePath / "default.png" };
             avatarTextures.default_texture.loadFromFile(defaultFilePath.string());
-            avatarTextures.default_texture.setSmooth(true);
+            avatarTextures.default_texture.setSmooth(false);
 
             const std::filesystem::path iconFilePath{ typePath / "icon.png" };
             avatarTextures.icon_texture.loadFromFile(iconFilePath.string());
-            avatarTextures.icon_texture.setSmooth(true);
+            avatarTextures.icon_texture.setSmooth(false);
 
             for (std::size_t animIndex(0);
                  animIndex <= static_cast<std::size_t>(AvatarAnim::WalkAttack);
@@ -74,7 +74,7 @@ namespace platformer
 
                     sf::Texture & texture{ textureSet.textures.emplace_back() };
                     texture.loadFromFile(filePath.string());
-                    texture.setSmooth(true);
+                    texture.setSmooth(false);
 
                     ++fileIndex;
                 }
@@ -96,8 +96,8 @@ namespace platformer
     {
         m_type = type;
         m_anim = AvatarAnim::Idle;
-
         m_sprite.setTexture(context.avatar_textures.get(m_type, m_anim).textures.at(0), true);
+        m_sprite.setScale(context.settings.avatar_scale, context.settings.avatar_scale);
     }
 
     void Avatar::update(Context & context, const float frameTimeSec)
