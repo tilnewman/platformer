@@ -13,25 +13,74 @@ namespace platformer
 {
 
     MapTextures::MapTextures()
-        : forest_ground()
-        , forest_tree()
+        : m_castleGround()
+        , m_castleObject()
+        , m_dungeon1Ground()
+        , m_dungeon2Ground()
+        , m_dungeon2Object()
+        , m_forestGround()
+        , m_forestTrees()
+        , m_mountainsGround()
+        , m_mountainsObject()
     {}
 
     void MapTextures::setup(const Settings & settings)
     {
         const std::string imagePath = (settings.media_path / "image/map/").string();
 
-        forest_ground.which = TileImage::ForestGround;
-        forest_ground.texture.loadFromFile(imagePath + "forest-ground.png");
-        forest_ground.texture.setSmooth(false);
-        forest_ground.size = sf::Vector2i(forest_ground.texture.getSize());
-        forest_ground.gid  = 0;
+        m_castleGround.which = TileImage::CastleGround;
+        m_castleGround.texture.loadFromFile(imagePath + "castle-ground.png");
+        m_castleGround.texture.setSmooth(false);
+        m_castleGround.size = sf::Vector2i(m_castleGround.texture.getSize());
+        m_castleGround.gid  = 0;
 
-        forest_tree.texture.loadFromFile(imagePath + "forest-trees.png");
-        forest_tree.which = TileImage::ForestTrees;
-        forest_tree.texture.setSmooth(true);
-        forest_tree.size = sf::Vector2i(forest_tree.texture.getSize());
-        forest_tree.gid  = 0;
+        m_castleObject.which = TileImage::CastleObject;
+        m_castleObject.texture.loadFromFile(imagePath + "castle-object.png");
+        m_castleObject.texture.setSmooth(true);
+        m_castleObject.size = sf::Vector2i(m_castleObject.texture.getSize());
+        m_castleObject.gid  = 0;
+
+        m_dungeon1Ground.which = TileImage::Dungeon1Ground;
+        m_dungeon1Ground.texture.loadFromFile(imagePath + "dungeon1-ground.png");
+        m_dungeon1Ground.texture.setSmooth(false);
+        m_dungeon1Ground.size = sf::Vector2i(m_dungeon1Ground.texture.getSize());
+        m_dungeon1Ground.gid  = 0;
+
+        m_dungeon2Ground.which = TileImage::Dungeon2Ground;
+        m_dungeon2Ground.texture.loadFromFile(imagePath + "dungeon2-ground.png");
+        m_dungeon2Ground.texture.setSmooth(false);
+        m_dungeon2Ground.size = sf::Vector2i(m_dungeon2Ground.texture.getSize());
+        m_dungeon2Ground.gid  = 0;
+
+        m_dungeon2Object.which = TileImage::Dungeon2Object;
+        m_dungeon2Object.texture.loadFromFile(imagePath + "dungeon2-object.png");
+        m_dungeon2Object.texture.setSmooth(true);
+        m_dungeon2Object.size = sf::Vector2i(m_dungeon2Object.texture.getSize());
+        m_dungeon2Object.gid  = 0;
+
+        m_forestGround.which = TileImage::ForestGround;
+        m_forestGround.texture.loadFromFile(imagePath + "forest-ground.png");
+        m_forestGround.texture.setSmooth(false);
+        m_forestGround.size = sf::Vector2i(m_forestGround.texture.getSize());
+        m_forestGround.gid  = 0;
+
+        m_forestTrees.which = TileImage::ForestTrees;
+        m_forestTrees.texture.loadFromFile(imagePath + "forest-trees.png");
+        m_forestTrees.texture.setSmooth(true);
+        m_forestTrees.size = sf::Vector2i(m_forestTrees.texture.getSize());
+        m_forestTrees.gid  = 0;
+
+        m_mountainsGround.which = TileImage::MountainsGround;
+        m_mountainsGround.texture.loadFromFile(imagePath + "mountains-ground.png");
+        m_mountainsGround.texture.setSmooth(false);
+        m_mountainsGround.size = sf::Vector2i(m_mountainsGround.texture.getSize());
+        m_mountainsGround.gid  = 0;
+
+        m_mountainsObject.which = TileImage::MountainsObject;
+        m_mountainsObject.texture.loadFromFile(imagePath + "mountains-object.png");
+        m_mountainsObject.texture.setSmooth(false);
+        m_mountainsObject.size = sf::Vector2i(m_mountainsObject.texture.getSize());
+        m_mountainsObject.gid  = 0;
     }
 
     TileTexture & MapTextures::get(const TileImage image)
@@ -39,11 +88,18 @@ namespace platformer
         // clang-format off
         switch (image)
         {
-            case TileImage::ForestGround:   { return forest_ground; }
-            case TileImage::ForestTrees:    { return forest_tree;   }
+            case TileImage::CastleGround:       { return m_castleGround;    }
+            case TileImage::CastleObject:       { return m_castleObject;    }
+            case TileImage::Dungeon1Ground:     { return m_dungeon1Ground;  }
+            case TileImage::Dungeon2Ground:     { return m_dungeon2Ground;  }
+            case TileImage::Dungeon2Object:     { return m_dungeon2Object;  }
+            case TileImage::ForestGround:       { return m_forestGround;    }
+            case TileImage::ForestTrees:        { return m_forestTrees;     }
+            case TileImage::MountainsGround:    { return m_mountainsGround; } 
+            case TileImage::MountainsObject:    { return m_mountainsObject; }
             default:
             {
-                throw std::runtime_error("MapTextures::tileTexture() given an invalid TileImage enum.");
+                throw std::runtime_error("MapTextures::get() given an invalid TileImage enum.");
             }
         }
         // clang-format on

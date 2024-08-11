@@ -14,6 +14,7 @@
 
 namespace platformer
 {
+
     struct Settings;
 
     //
@@ -44,8 +45,15 @@ namespace platformer
         TileTexture & get(const TileImage image);
 
       private:
-        TileTexture forest_ground;
-        TileTexture forest_tree;
+        TileTexture m_castleGround;
+        TileTexture m_castleObject;
+        TileTexture m_dungeon1Ground;
+        TileTexture m_dungeon2Ground;
+        TileTexture m_dungeon2Object;
+        TileTexture m_forestGround;
+        TileTexture m_forestTrees;
+        TileTexture m_mountainsGround;
+        TileTexture m_mountainsObject;
     };
 
 } // namespace platformer
