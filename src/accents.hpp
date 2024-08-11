@@ -67,10 +67,10 @@ namespace platformer
         // clang-format on
     }
 
-    inline constexpr bool isVine(const Accent pickup)
+    inline constexpr bool isVine(const Accent accent)
     {
         // clang-format off
-        switch (pickup)
+        switch (accent)
         {
             case Accent::LampGobletLarge:
             case Accent::LampGobletMedium:

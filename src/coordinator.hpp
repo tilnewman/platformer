@@ -14,6 +14,7 @@
 #include "random.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
+#include "spells.hpp"
 
 #include <vector>
 
@@ -56,6 +57,7 @@ namespace platformer
         BackgroundImages m_backgroundImages;
         PickupAnimations m_pickups;
         AccentAnimations m_accents;
+        SpellAnimations m_spells;
 
         std::vector<Avatar> m_avatars;
         sf::Font m_font;

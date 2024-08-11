@@ -29,6 +29,7 @@ namespace platformer
         , m_backgroundImages()
         , m_pickups()
         , m_accents()
+        , m_spells()
         , m_avatars()
         , m_font()
         , m_text()
@@ -43,7 +44,8 @@ namespace platformer
               m_mapTextures,
               m_backgroundImages,
               m_pickups,
-              m_accents)
+              m_accents,
+              m_spells)
     {}
 
     void Coordinator::setup()
@@ -56,6 +58,7 @@ namespace platformer
         m_mapTextures.setup(m_settings);
         m_pickups.setup(m_settings);
         m_accents.setup(m_settings);
+        m_spells.setup(m_settings);
 
         m_avatars.resize(static_cast<std::size_t>(AvatarType::Count));
         float posLeft{ 0.0f };
@@ -164,6 +167,7 @@ namespace platformer
 
         m_pickups.draw(m_context, m_window, states);
         m_accents.draw(m_context, m_window, states);
+        m_spells.draw(m_context, m_window, states);
 
         m_window.draw(m_text, states);
 
@@ -179,6 +183,7 @@ namespace platformer
 
         m_pickups.update(m_context, frameTimeSec);
         m_accents.update(m_context, frameTimeSec);
+        m_spells.update(m_context, frameTimeSec);
     }
 
     void Coordinator::handleSleepUntilEndOfFrame(const float elapsedTimeSec)

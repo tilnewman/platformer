@@ -23,6 +23,7 @@ namespace platformer
     struct Settings;
     class MapTextures;
     class ScreenLayout;
+    class SpellAnimations;
     class LevelFileLoader;
     class BackgroundImages;
     class PickupAnimations;
@@ -44,7 +45,8 @@ namespace platformer
             MapTextures & mtx,
             BackgroundImages & bim,
             PickupAnimations & pan,
-            AccentAnimations & aan)
+            AccentAnimations & aan,
+            SpellAnimations & san)
             : settings(set)
             , window(win)
             , random(ran)
@@ -56,6 +58,7 @@ namespace platformer
             , bg_images(bim)
             , pickups(pan)
             , accents(aan)
+            , spells(san)
         {}
 
         const Settings & settings;
@@ -69,6 +72,7 @@ namespace platformer
         BackgroundImages & bg_images;
         PickupAnimations & pickups;
         AccentAnimations & accents;
+        SpellAnimations & spells;
     };
 
 } // namespace platformer
