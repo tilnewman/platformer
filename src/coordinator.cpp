@@ -76,19 +76,6 @@ namespace platformer
         //
 
         m_level.load(m_context);
-
-        // TODO remove after testing
-        m_pickups.add(m_context, { 20.0f, 20.0f, 2.0f, 2.0f }, "arrow");
-        m_pickups.add(m_context, { 50.0f, 50.0f, 2.0f, 2.0f }, "bottle");
-        m_pickups.add(m_context, { 100.0f, 100.0f, 2.0f, 2.0f }, "coin1");
-        m_pickups.add(m_context, { 150.0f, 150.0f, 2.0f, 2.0f }, "coin2");
-        m_pickups.add(m_context, { 200.0f, 200.0f, 2.0f, 2.0f }, "crystal1");
-        m_pickups.add(m_context, { 250.0f, 250.0f, 2.0f, 2.0f }, "crystal2");
-        m_pickups.add(m_context, { 300.0f, 300.0f, 2.0f, 2.0f }, "crystal3");
-        m_pickups.add(m_context, { 350.0f, 350.0f, 2.0f, 2.0f }, "crystal4");
-        m_pickups.add(m_context, { 400.0f, 400.0f, 2.0f, 2.0f }, "heart");
-        m_pickups.add(m_context, { 450.0f, 450.0f, 2.0f, 2.0f }, "plus");
-        m_pickups.add(m_context, { 500.0f, 500.0f, 2.0f, 2.0f }, "star");
     }
 
     void Coordinator::teardown() { m_window.close(); }

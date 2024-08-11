@@ -7,6 +7,7 @@
 #include "context.hpp"
 #include "level.hpp"
 #include "map-textures.hpp"
+#include "pickups.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
@@ -157,6 +158,10 @@ namespace platformer
             {
                 parseSpawnLayer(context, jsonLayer);
             }
+            else if (layerName == "pickup-anim")
+            {
+                parsePickupAnimLayer(context, jsonLayer);
+            }
             else
             {
                 std::cout << "WARNING:  While parsing level file \"" << m_pathStr
@@ -251,6 +256,16 @@ namespace platformer
         M_CHECK(
             (context.level.exit_rect.width > 0.0f),
             "Error Parsing Level File " << m_pathStr << ":  Failed to find exit location.");
+    }
+
+    void LevelFileLoader::parsePickupAnimLayer(Context & context, Json & json)
+    {
+        for (Json & pickupJson : json["objects"])
+        {
+            const std::string name   = pickupJson["name"];
+            const sf::FloatRect rect = parseAndConvertRect(context, pickupJson);
+            context.pickups.add(context, rect, name);
+        }
     }
 
 } // namespace platformer

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="400" height="88" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="14">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="400" height="88" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="18">
  <editorsettings>
   <export target="../map/forest-1.json" format="json"/>
  </editorsettings>
@@ -295,5 +295,10 @@
  <objectgroup id="4" name="spawn">
   <object id="12" name="enter" x="80" y="1040" width="16" height="16"/>
   <object id="13" name="exit" x="608" y="960" width="32" height="80"/>
+ </objectgroup>
+ <objectgroup id="6" name="pickup-anim">
+  <object id="14" name="coin1" x="128" y="1024" width="16" height="16"/>
+  <object id="15" name="heart" x="288" y="1072" width="16" height="16"/>
+  <object id="17" name="bottle" x="512" y="1008"/>
  </objectgroup>
 </map>

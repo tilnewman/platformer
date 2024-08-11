@@ -408,9 +408,53 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":6,
+         "name":"pickup-anim",
+         "objects":[
+                {
+                 "height":16,
+                 "id":14,
+                 "name":"coin1",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":128,
+                 "y":1024
+                }, 
+                {
+                 "height":16,
+                 "id":15,
+                 "name":"heart",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":288,
+                 "y":1072
+                }, 
+                {
+                 "height":0,
+                 "id":17,
+                 "name":"bottle",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":512,
+                 "y":1008
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":6,
- "nextobjectid":14,
+ "nextlayerid":7,
+ "nextobjectid":18,
  "orientation":"orthogonal",
  "properties":[
         {
