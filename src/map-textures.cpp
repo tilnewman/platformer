@@ -22,12 +22,12 @@ namespace platformer
         const std::string imagePath = (settings.media_path / "image/map/").string();
 
         forest_ground.which = TileImage::ForestGround;
-        forest_ground.texture.loadFromFile(imagePath + "forest-tiles.png");
+        forest_ground.texture.loadFromFile(imagePath + "forest-ground.png");
         forest_ground.texture.setSmooth(false);
         forest_ground.size = sf::Vector2i(forest_ground.texture.getSize());
         forest_ground.gid  = 0;
 
-        forest_tree.texture.loadFromFile(imagePath + "forest-tree-tiles.png");
+        forest_tree.texture.loadFromFile(imagePath + "forest-trees.png");
         forest_tree.which = TileImage::ForestTrees;
         forest_tree.texture.setSmooth(true);
         forest_tree.size = sf::Vector2i(forest_tree.texture.getSize());
