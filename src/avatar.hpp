@@ -80,8 +80,8 @@ namespace platformer
         AttackExtra,
         Climb,
         Death,
-        Fire,      // optional
-        FireExtra, // optional
+        Fire,      // spell casters only
+        FireExtra, // spell casters only
         Hurt,
         Idle,
         Jump,
@@ -158,6 +158,7 @@ namespace platformer
 
     struct AvatarTextures
     {
+        sf::Texture icon_texture{};
         sf::Texture default_texture{};
         std::vector<AnimTextures> anim_textures{};
     };
@@ -180,6 +181,11 @@ namespace platformer
         inline const sf::Texture & getDefault(const AvatarType & type) const
         {
             return m_textures.at(static_cast<std::size_t>(type)).default_texture;
+        }
+
+        inline const sf::Texture iconTexture(const AvatarType type) const
+        {
+            return m_textures.at(static_cast<std::size_t>(type)).icon_texture;
         }
 
       private:

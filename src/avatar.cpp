@@ -38,6 +38,10 @@ namespace platformer
             avatarTextures.default_texture.loadFromFile(defaultFilePath.string());
             avatarTextures.default_texture.setSmooth(true);
 
+            const std::filesystem::path iconFilePath{ typePath / "icon.png" };
+            avatarTextures.icon_texture.loadFromFile(iconFilePath.string());
+            avatarTextures.icon_texture.setSmooth(true);
+
             for (std::size_t animIndex(0);
                  animIndex <= static_cast<std::size_t>(AvatarAnim::WalkAttack);
                  ++animIndex)
