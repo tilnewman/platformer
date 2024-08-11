@@ -4,6 +4,7 @@
 // coordinator.hpp
 //
 #include "accents.hpp"
+#include "avatar-textures.hpp"
 #include "avatar.hpp"
 #include "background-images.hpp"
 #include "context.hpp"
