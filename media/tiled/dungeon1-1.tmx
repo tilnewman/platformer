@@ -4,7 +4,7 @@
   <export target="../map/dungeon1-1.json" format="json"/>
  </editorsettings>
  <properties>
-  <property name="background" value="dungeon1"/>
+  <property name="background" value="underground-swamp"/>
  </properties>
  <tileset firstgid="1" source="dungeon1-ground.tsx"/>
  <layer id="1" name="dunegon1-ground" width="400" height="88">

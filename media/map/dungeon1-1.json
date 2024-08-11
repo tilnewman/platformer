@@ -449,7 +449,7 @@
         {
          "name":"background",
          "type":"string",
-         "value":"dungeon1"
+         "value":"underground-swamp"
         }],
  "renderorder":"right-down",
  "tiledversion":"1.11.0",
