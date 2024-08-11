@@ -59,10 +59,6 @@ namespace platformer
         AccentAnimations m_accents;
         SpellAnimations m_spells;
 
-        std::vector<Avatar> m_avatars;
-        sf::Font m_font;
-        sf::Text m_text;
-
         Context m_context;
     };
 

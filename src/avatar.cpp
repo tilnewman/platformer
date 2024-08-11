@@ -131,19 +131,4 @@ namespace platformer
         target.draw(m_sprite, states);
     }
 
-    void Avatar::advanceAnim()
-    {
-        std::size_t animIndex{ static_cast<std::size_t>(m_anim) };
-
-        ++animIndex;
-        if (animIndex >= static_cast<std::size_t>(AvatarAnim::Count))
-        {
-            animIndex = 0;
-        }
-
-        m_anim = static_cast<AvatarAnim>(animIndex);
-
-        m_elapsedTimeSec = 0.0f;
-    }
-
 } // namespace platformer

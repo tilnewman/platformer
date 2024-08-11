@@ -204,7 +204,6 @@ namespace platformer
         void draw(sf::RenderTarget & target, sf::RenderStates states);
         inline void setPosition(const sf::Vector2f & pos) { m_sprite.setPosition(pos); }
         inline AvatarAnim getAnim() const { return m_anim; }
-        void advanceAnim();
 
       private:
         sf::Sprite m_sprite;

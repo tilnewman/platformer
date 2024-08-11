@@ -30,9 +30,6 @@ namespace platformer
         , m_pickups()
         , m_accents()
         , m_spells()
-        , m_avatars()
-        , m_font()
-        , m_text()
         , m_context(
               m_settings,
               m_window,
@@ -59,27 +56,6 @@ namespace platformer
         m_pickups.setup(m_settings);
         m_accents.setup(m_settings);
         m_spells.setup(m_settings);
-
-        m_avatars.resize(static_cast<std::size_t>(AvatarType::Count));
-        float posLeft{ 0.0f };
-        for (std::size_t typeIndex(0); typeIndex < static_cast<std::size_t>(AvatarType::Count);
-             ++typeIndex)
-        {
-            const AvatarType type{ static_cast<AvatarType>(typeIndex) };
-            m_avatars.at(typeIndex).setup(m_context, type);
-            m_avatars.at(typeIndex).setPosition({ posLeft, 0.0f });
-            posLeft += 128.0f;
-        }
-
-        m_font.loadFromFile((m_settings.media_path / "font/mops-antiqua.ttf").string());
-        m_text.setFont(m_font);
-        m_text.setCharacterSize(60);
-        m_text.setFillColor(sf::Color(100, 100, 255));
-        m_text.setString("idle");
-        util::setOriginToPosition(m_text);
-        m_text.setPosition(0.0f, 200.0f);
-
-        //
 
         m_level.load(m_context);
     }
@@ -128,16 +104,6 @@ namespace platformer
             // TEMP TODO REMOVE
             m_window.close();
         }
-        else if ((event.type == sf::Event::KeyReleased) && (event.key.code == sf::Keyboard::Space))
-        {
-            for (Avatar & avatar : m_avatars)
-            {
-                avatar.advanceAnim();
-            }
-
-            m_text.setString(std::string(toString(m_avatars.front().getAnim())));
-            util::setOriginToPosition(m_text);
-        }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
@@ -153,11 +119,6 @@ namespace platformer
 
         m_backgroundImages.draw(m_window, states);
 
-        for (Avatar & avatar : m_avatars)
-        {
-            avatar.draw(m_window, states);
-        }
-
         for (TileLayer & layer : m_level.tiles.layers)
         {
             states.texture = &m_context.map_textures.get(layer.image).texture;
@@ -169,18 +130,11 @@ namespace platformer
         m_accents.draw(m_context, m_window, states);
         m_spells.draw(m_context, m_window, states);
 
-        m_window.draw(m_text, states);
-
         m_window.display();
     }
 
     void Coordinator::update(const float frameTimeSec)
     {
-        for (Avatar & avatar : m_avatars)
-        {
-            avatar.update(m_context, frameTimeSec);
-        }
-
         m_pickups.update(m_context, frameTimeSec);
         m_accents.update(m_context, frameTimeSec);
         m_spells.update(m_context, frameTimeSec);
