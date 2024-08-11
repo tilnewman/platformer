@@ -36,6 +36,7 @@ namespace platformer
         const sf::FloatRect parseAndConvertRect(const Context & context, Json & json);
         void parseSpawnLayer(Context & context, Json & json);
         void parsePickupAnimLayer(Context & context, Json & json);
+        void parseAccentAnimLayer(Context & context, Json & json);
 
       private:
         std::string m_pathStr;

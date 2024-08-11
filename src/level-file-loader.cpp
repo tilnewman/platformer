@@ -2,6 +2,7 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "level-file-loader.hpp"
 
+#include "accents.hpp"
 #include "background-images.hpp"
 #include "check-macros.hpp"
 #include "context.hpp"
@@ -162,6 +163,10 @@ namespace platformer
             {
                 parsePickupAnimLayer(context, jsonLayer);
             }
+            else if (layerName == "accent-anim")
+            {
+                parseAccentAnimLayer(context, jsonLayer);
+            }
             else
             {
                 std::cout << "WARNING:  While parsing level file \"" << m_pathStr
@@ -265,6 +270,16 @@ namespace platformer
             const std::string name   = pickupJson["name"];
             const sf::FloatRect rect = parseAndConvertRect(context, pickupJson);
             context.pickups.add(context, rect, name);
+        }
+    }
+
+    void LevelFileLoader::parseAccentAnimLayer(Context & context, Json & json)
+    {
+        for (Json & accentJson : json["objects"])
+        {
+            const std::string name   = accentJson["name"];
+            const sf::FloatRect rect = parseAndConvertRect(context, accentJson);
+            context.accents.add(context, rect, name);
         }
     }
 

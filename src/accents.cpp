@@ -67,8 +67,19 @@ namespace platformer
         anim.sprite.setTexture(m_textures.at(static_cast<std::size_t>(accent)), true);
         anim.sprite.setTextureRect(textureRect(accent, 0));
         anim.sprite.setScale(m_scale);
-        util::setOriginToCenter(anim.sprite);
-        anim.sprite.setPosition(util::center(rect));
+
+        if (isVine(accent))
+        {
+            anim.sprite.setPosition(
+                (util::center(rect).x - (anim.sprite.getGlobalBounds().width * 0.5f)),
+                util::center(rect).y);
+        }
+        else
+        {
+            anim.sprite.setPosition(
+                (util::center(rect).x - (anim.sprite.getGlobalBounds().width * 0.5f)),
+                (util::bottom(rect) - anim.sprite.getGlobalBounds().height));
+        }
     }
 
     std::size_t AccentAnimations::frameCount(const Accent which) const
