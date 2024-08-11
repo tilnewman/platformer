@@ -7,6 +7,7 @@
 
 #include "check-macros.hpp"
 #include "context.hpp"
+#include "random.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
@@ -49,8 +50,8 @@ namespace platformer
         }
     }
 
-    void
-        AccentAnimations::add(const Context &, const sf::FloatRect & rect, const std::string & name)
+    void AccentAnimations::add(
+        const Context & context, const sf::FloatRect & rect, const std::string & name)
     {
         const Accent accent{ stringToAccent(name) };
         if (Accent::Count == accent)
@@ -63,7 +64,7 @@ namespace platformer
 
         AccentAnim & anim{ m_anims.emplace_back() };
         anim.which      = accent;
-        anim.anim_index = 0;
+        anim.anim_index = context.random.zeroToOneLessThan(frameCount(anim.which));
         anim.sprite.setTexture(m_textures.at(static_cast<std::size_t>(accent)), true);
         anim.sprite.setTextureRect(textureRect(accent, 0));
         anim.sprite.setScale(m_scale);

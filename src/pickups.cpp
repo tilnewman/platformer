@@ -7,6 +7,7 @@
 
 #include "check-macros.hpp"
 #include "context.hpp"
+#include "random.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
@@ -46,8 +47,8 @@ namespace platformer
         }
     }
 
-    void
-        PickupAnimations::add(const Context &, const sf::FloatRect & rect, const std::string & name)
+    void PickupAnimations::add(
+        const Context & context, const sf::FloatRect & rect, const std::string & name)
     {
         const Pickup pickup{ stringToPickup(name) };
         if (Pickup::Count == pickup)
@@ -60,7 +61,7 @@ namespace platformer
 
         PickupAnim & anim{ m_anims.emplace_back() };
         anim.which      = pickup;
-        anim.anim_index = 0;
+        anim.anim_index = context.random.zeroToOneLessThan(frameCount(anim.which));
         anim.sprite.setTexture(m_textures.at(static_cast<std::size_t>(pickup)), true);
         anim.sprite.setTextureRect(textureRect(pickup, 0));
         anim.sprite.setScale(m_scale);
