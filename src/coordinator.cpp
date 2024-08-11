@@ -48,7 +48,6 @@ namespace platformer
     void Coordinator::setup()
     {
         setupRenderWindow(m_settings.video_mode);
-        std::cout << "video mode: " << m_settings.video_mode << std::endl;
 
         m_layout.setup(m_window.getSize());
         m_avatarTextures.setup(m_settings);
@@ -156,18 +155,6 @@ namespace platformer
     void Coordinator::setupRenderWindow(sf::VideoMode & videoMode)
     {
         std::cout << "Attempting video mode " << videoMode << "...";
-
-        if (!videoMode.isValid())
-        {
-            std::cout << "but that is an invalid mode.  Valid video modes at "
-                      << sf::VideoMode::getDesktopMode().bitsPerPixel << "bpp:" << std::endl
-                      << util::makeSupportedVideoModesString(true) << std::endl;
-
-            videoMode = util::findVideoModeClosestTo(videoMode);
-            setupRenderWindow(videoMode);
-            return;
-        }
-
         m_window.create(videoMode, "Platformer", sf::Style::Fullscreen);
 
         // sometimes the resolution of the window created does not match what was specified
@@ -185,7 +172,7 @@ namespace platformer
             videoMode.width  = actualWidth;
             videoMode.height = actualHeight;
 
-            std::cout << "Using " << videoMode << " instead." << std::endl;
+            std::cout << "SFML switched to " << videoMode << " instead." << std::endl;
         }
     }
 
