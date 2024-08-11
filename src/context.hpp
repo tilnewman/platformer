@@ -25,6 +25,7 @@ namespace platformer
     class ScreenLayout;
     class LevelFileLoader;
     class BackgroundImages;
+    class PickupAnimations;
     class AvatarTextureManager;
 
     //
@@ -40,7 +41,8 @@ namespace platformer
             LevelFileLoader & lfl,
             Level & lvl,
             MapTextures & mtx,
-            BackgroundImages & bim)
+            BackgroundImages & bim,
+            PickupAnimations & pan)
             : settings(set)
             , window(win)
             , random(ran)
@@ -50,6 +52,7 @@ namespace platformer
             , level(lvl)
             , map_textures(mtx)
             , bg_images(bim)
+            , pickups(pan)
         {}
 
         const Settings & settings;
@@ -61,6 +64,7 @@ namespace platformer
         Level & level;
         MapTextures & map_textures;
         BackgroundImages & bg_images;
+        PickupAnimations & pickups;
     };
 
 } // namespace platformer

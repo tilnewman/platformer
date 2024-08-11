@@ -9,6 +9,7 @@
 #include "level-file-loader.hpp"
 #include "level.hpp"
 #include "map-textures.hpp"
+#include "pickups.hpp"
 #include "random.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
@@ -52,6 +53,7 @@ namespace platformer
         Level m_level;
         MapTextures m_mapTextures;
         BackgroundImages m_backgroundImages;
+        PickupAnimations m_pickups;
 
         std::vector<Avatar> m_avatars;
         sf::Font m_font;

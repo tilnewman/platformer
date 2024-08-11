@@ -22,7 +22,8 @@ namespace platformer
         bool will_display_fps       = false;
         bool will_display_fps_graph = false;
 
-        float tile_scale = 1.75f;
+        float tile_scale             = 1.75f;
+        float pickups_time_per_frame = 0.1f;
     };
 
 } // namespace platformer
