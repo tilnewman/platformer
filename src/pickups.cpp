@@ -21,7 +21,7 @@ namespace platformer
         , m_timePerFrameSec(0.0f)
         , m_scale(0.0f, 0.0f)
     {
-        m_anims.reserve(64);
+        m_anims.reserve(256);
     }
 
     void PickupAnimations::setup(const Settings & settings)
@@ -49,7 +49,7 @@ namespace platformer
     void
         PickupAnimations::add(const Context &, const sf::FloatRect & rect, const std::string & name)
     {
-        const Pickup pickup{ stringTo(name) };
+        const Pickup pickup{ stringToPickup(name) };
         if (Pickup::Count == pickup)
         {
             std::cout << "Error: PickupAnimations::add(\"" << name << "\") given an unknown name."
@@ -109,11 +109,14 @@ namespace platformer
     }
 
     void PickupAnimations::draw(
-        const Context &, sf::RenderTarget & target, sf::RenderStates states) const
+        const Context & context, sf::RenderTarget & target, sf::RenderStates states) const
     {
         for (const PickupAnim & anim : m_anims)
         {
-            target.draw(anim.sprite, states);
+            if (context.layout.wholeRect().intersects(anim.sprite.getGlobalBounds()))
+            {
+                target.draw(anim.sprite, states);
+            }
         }
     }
 

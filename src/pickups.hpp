@@ -57,7 +57,7 @@ namespace platformer
         // clang-format on
     }
 
-    inline Pickup stringTo(const std::string & name)
+    inline Pickup stringToPickup(const std::string & name)
     {
         // clang-format off
         if (name == "arrow")         return Pickup::Arrow;

@@ -3,6 +3,7 @@
 //
 // coordinator.hpp
 //
+#include "accents.hpp"
 #include "avatar.hpp"
 #include "background-images.hpp"
 #include "context.hpp"
@@ -54,6 +55,7 @@ namespace platformer
         MapTextures m_mapTextures;
         BackgroundImages m_backgroundImages;
         PickupAnimations m_pickups;
+        AccentAnimations m_accents;
 
         std::vector<Avatar> m_avatars;
         sf::Font m_font;
