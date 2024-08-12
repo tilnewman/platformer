@@ -98,4 +98,12 @@ namespace platformer
         }
     }
 
+    void TileSet::update(Context & context, const float frameTimeSec)
+    {
+        for (auto & layerUPtr : m_layers)
+        {
+            layerUPtr->update(context, frameTimeSec);
+        }
+    }
+
 } // namespace platformer

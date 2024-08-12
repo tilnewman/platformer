@@ -3,6 +3,7 @@
 #include "level-file-loader.hpp"
 
 #include "accents.hpp"
+#include "acid-anim-layer.hpp"
 #include "background-images.hpp"
 #include "check-macros.hpp"
 #include "context.hpp"
@@ -220,6 +221,10 @@ namespace platformer
             {
                 parseAccentAnimLayer(context, jsonLayer);
             }
+            else if (layerName == "acid-anim")
+            {
+                parseAcidAnimLayer(context, jsonLayer);
+            }
             else
             {
                 std::cout << "WARNING:  While parsing level file \"" << m_pathStr
@@ -324,6 +329,19 @@ namespace platformer
             const sf::FloatRect rect = parseAndConvertRect(context, accentJson);
             context.accents.add(context, rect, name);
         }
+    }
+
+    void LevelFileLoader::parseAcidAnimLayer(Context & context, Json & json)
+    {
+        std::vector<sf::FloatRect> rects;
+        rects.reserve(256);
+
+        for (Json & accentJson : json["objects"])
+        {
+            rects.push_back(parseAndConvertRect(context, accentJson));
+        }
+
+        context.level.tiles.appendTileLayer(std::make_unique<AcidAnimationLayer>(context, rects));
     }
 
 } // namespace platformer

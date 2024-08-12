@@ -40,6 +40,7 @@ namespace platformer
         void move(const Context & context, const float move);
         float findFarthestHorizMapPixel();
         void dumpInfo() const;
+        void update(Context & context, const float frameTimeSec);
 
         void appendVertLayers(
             const Context & context,

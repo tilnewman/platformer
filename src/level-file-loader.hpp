@@ -37,6 +37,7 @@ namespace platformer
         void parseSpawnLayer(Context & context, Json & json);
         void parsePickupAnimLayer(Context & context, Json & json);
         void parseAccentAnimLayer(Context & context, Json & json);
+        void parseAcidAnimLayer(Context & context, Json & json);
 
       private:
         std::string m_pathStr;

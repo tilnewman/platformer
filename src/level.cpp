@@ -49,7 +49,7 @@ namespace platformer
             findFarthestHorizMapPixel();
             farthest_horiz_traveled = 0.0f;
 
-            dumpInfo();
+            // dumpInfo();
             return true;
         }
         else

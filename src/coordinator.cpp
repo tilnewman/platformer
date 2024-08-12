@@ -145,6 +145,7 @@ namespace platformer
 
     void Coordinator::update(const float frameTimeSec)
     {
+        m_level.tiles.update(m_context, frameTimeSec);
         m_pickups.update(m_context, frameTimeSec);
         m_accents.update(m_context, frameTimeSec);
         m_spells.update(m_context, frameTimeSec);

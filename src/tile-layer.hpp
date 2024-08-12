@@ -33,6 +33,7 @@ namespace platformer
         virtual void moveVerts(const Context & context, const float move)                    = 0;
         virtual float findFarthestHorizVert() const                                          = 0;
         virtual void dumpInfo() const                                                        = 0;
+        virtual void update(Context & context, const float frameTimeSec)                     = 0;
 
         virtual void appendVertLayer(
             const Context & context,
@@ -54,6 +55,7 @@ namespace platformer
         void moveVerts(const Context & context, const float move) override;
         float findFarthestHorizVert() const override;
         void dumpInfo() const override;
+        void update(Context &, const float) override {}
 
         void appendVertLayer(
             const Context & context,
