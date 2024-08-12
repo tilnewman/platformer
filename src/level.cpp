@@ -51,7 +51,7 @@ namespace platformer
             findFarthestHorizMapPixel();
             farthest_horiz_traveled = 0.0f;
 
-            // dumpInfo();
+            dumpInfo();
             return true;
         }
         else
@@ -105,64 +105,10 @@ namespace platformer
     {
         for (auto & layerUPtr : tiles.layers)
         {
-            appendVertLayer(
-                tiles.count,
-                tiles.size,
-                tile_size_screen,
-                context.map_textures.get(layerUPtr->image()),
-                *layerUPtr);
-        }
+            layerUPtr->appendVertLayer(
+                context, map_position_offset, tiles.count, tiles.size, tile_size_screen);
 
-        populateVisibleVerts(context.layout);
-    }
-
-    void Level::appendVertLayer(
-        const sf::Vector2i & count,
-        const sf::Vector2i & size,
-        const sf::Vector2f & sizeOnScreen,
-        const TileTexture & texture,
-        ITileLayer & layer) const
-    {
-        const sf::Vector2i textureTileCount{ texture.size / size };
-
-        const std::size_t totalCount =
-            (static_cast<std::size_t>(count.x) * static_cast<std::size_t>(count.y));
-
-        M_CHECK(
-            (totalCount == layer.indexes().size()),
-            "index_count=" << layer.indexes().size()
-                           << " does not equal tile_count=" << totalCount);
-
-        const sf::Vector2i sizeOnScreenI(sizeOnScreen);
-
-        std::size_t textureIndex = 0;
-        for (int y(0); y < count.y; ++y)
-        {
-            const float posY = static_cast<float>(y * sizeOnScreenI.y);
-
-            for (int x(0); x < count.x; ++x)
-            {
-                const float posX = static_cast<float>(x * sizeOnScreenI.x);
-
-                const int textureIndexOrig(layer.indexes()[textureIndex++]);
-                if (textureIndexOrig == 0)
-                {
-                    continue; // zero means no image at this location
-                }
-
-                const int index(textureIndexOrig - texture.gid);
-
-                const int texturePosX((index % textureTileCount.x) * size.x);
-                const int texturePosY((index / textureTileCount.x) * size.y);
-
-                const sf::Vector2i texturePos{ texturePosX, texturePosY };
-                const sf::IntRect textureRect{ texturePos, size };
-
-                const sf::Vector2f screenPos(sf::Vector2f(posX, posY) + map_position_offset);
-                const sf::FloatRect screenRect{ screenPos, sizeOnScreen };
-
-                util::appendQuadVerts(screenRect, textureRect, layer.verts());
-            }
+            layerUPtr->populateVisibleVerts(context.layout.wholeRect());
         }
     }
 
