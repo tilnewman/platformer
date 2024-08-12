@@ -30,6 +30,11 @@ namespace platformer
         float accent_fire_time_per_frame = 0.15f;
         float accent_vine_time_per_frame = 0.75f;
         float spell_time_per_frame       = 0.1f;
+
+        sf::Vector2f gravity_acc = { 0.0f, 25.0f };
+        float walk_speed_limit   = 5.0f;
+        float jump_acc           = 900.0f;
+        float walk_acc           = 15.0f;
     };
 
 } // namespace platformer

@@ -116,14 +116,6 @@ namespace platformer
             // TEMP TODO REMOVE
             m_window.close();
         }
-        else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Right))
-        {
-            m_avatar.cycleType();
-        }
-        else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Up))
-        {
-            m_avatar.cycleAnim();
-        }
     }
 
     void Coordinator::draw()
