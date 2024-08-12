@@ -36,9 +36,9 @@ namespace platformer
         m_tileSize  = tileSize;
     }
 
-    void TileSet::appendTileLayer(const TileImage image, const std::vector<int> & indexes)
+    void TileSet::appendTileLayer(std::unique_ptr<ITileLayer> uptr)
     {
-        m_layers.push_back(std::make_unique<TileLayer>(image, indexes));
+        m_layers.push_back(std::move(uptr));
     }
 
     void TileSet::move(const Context & context, const float move)

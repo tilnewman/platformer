@@ -237,7 +237,7 @@ namespace platformer
             "Error Parsing Level File " << m_pathStr << ":  tile layer for image " << image
                                         << " was empty.");
 
-        context.level.tiles.appendTileLayer(image, indexes);
+        context.level.tiles.appendTileLayer(std::make_unique<TileLayer>(image, indexes));
     }
 
     void LevelFileLoader::parseRectLayer(

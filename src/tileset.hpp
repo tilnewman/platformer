@@ -36,7 +36,7 @@ namespace platformer
         inline const sf::Vector2i tileSize() const { return m_tileSize; }
 
         void setTileCountAndSize(const sf::Vector2i tileCount, const sf::Vector2i tileSize);
-        void appendTileLayer(const TileImage image, const std::vector<int> & indexes);
+        void appendTileLayer(std::unique_ptr<ITileLayer> uptr);
         void move(const Context & context, const float move);
         float findFarthestHorizMapPixel();
         void dumpInfo() const;
