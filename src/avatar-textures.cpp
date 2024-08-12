@@ -8,6 +8,7 @@
 #include "context.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
+#include "texture-stats.hpp"
 
 #include <filesystem>
 
@@ -38,10 +39,12 @@ namespace platformer
             const std::filesystem::path defaultFilePath{ typePath / "default.png" };
             avatarTextures.default_texture.loadFromFile(defaultFilePath.string());
             avatarTextures.default_texture.setSmooth(false);
+            TextureStats::instance().process(avatarTextures.default_texture);
 
             const std::filesystem::path iconFilePath{ typePath / "icon.png" };
             avatarTextures.icon_texture.loadFromFile(iconFilePath.string());
             avatarTextures.icon_texture.setSmooth(false);
+            TextureStats::instance().process(avatarTextures.icon_texture);
 
             for (std::size_t animIndex(0);
                  animIndex <= static_cast<std::size_t>(AvatarAnim::WalkAttack);
@@ -76,6 +79,7 @@ namespace platformer
                     sf::Texture & texture{ textureSet.textures.emplace_back() };
                     texture.loadFromFile(filePath.string());
                     texture.setSmooth(false);
+                    TextureStats::instance().process(texture);
 
                     ++fileIndex;
                 }

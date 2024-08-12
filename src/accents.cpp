@@ -11,6 +11,7 @@
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
+#include "texture-stats.hpp"
 
 namespace platformer
 {
@@ -47,6 +48,8 @@ namespace platformer
                 (settings.media_path / "image/accent-anim" / toFilename(accent)).string());
 
             texture.setSmooth(true);
+
+            TextureStats::instance().process(texture);
         }
     }
 

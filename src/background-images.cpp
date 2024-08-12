@@ -10,6 +10,7 @@
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
+#include "texture-stats.hpp"
 
 namespace platformer
 {
@@ -32,6 +33,7 @@ namespace platformer
         {
             m_backgroundTexture.loadFromFile(infoPack.background_path.string());
             m_backgroundTexture.setSmooth(false);
+            TextureStats::instance().process(m_backgroundTexture);
             m_backgroundSprite.setTexture(m_backgroundTexture);
             util::scaleAndCenterInside(m_backgroundSprite, context.layout.wholeRect());
         }
@@ -41,6 +43,7 @@ namespace platformer
         {
             m_overlayTexture.loadFromFile(infoPack.overlay_path.string());
             m_overlayTexture.setSmooth(false);
+            TextureStats::instance().process(m_overlayTexture);
             m_overlaySprite.setTexture(m_overlayTexture);
             util::scaleAndCenterInside(m_overlaySprite, context.layout.wholeRect());
         }
@@ -58,6 +61,7 @@ namespace platformer
             slidingImage.info = info;
             slidingImage.texture.loadFromFile(info.path.string());
             slidingImage.texture.setSmooth(false);
+            TextureStats::instance().process(slidingImage.texture);
             slidingImage.sprite_left.setTexture(slidingImage.texture);
             slidingImage.sprite_right.setTexture(slidingImage.texture);
             util::scaleAndCenterInside(slidingImage.sprite_left, context.layout.wholeRect());

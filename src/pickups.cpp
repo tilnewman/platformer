@@ -11,6 +11,7 @@
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
+#include "texture-stats.hpp"
 
 namespace platformer
 {
@@ -42,6 +43,8 @@ namespace platformer
 
             texture.loadFromFile(
                 (settings.media_path / "image/pickup-anim" / toFilename(pickup)).string());
+
+            TextureStats::instance().process(texture);
 
             texture.setSmooth(true);
         }

@@ -11,6 +11,7 @@
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
+#include "texture-stats.hpp"
 
 namespace platformer
 {
@@ -46,6 +47,8 @@ namespace platformer
                                   std::string(toName(spell)).append(".png"))
                                      .string());
 
+            TextureStats::instance().process(texture);
+
             texture.setSmooth(true);
 
             sf::Texture & iconTexture{ m_iconTextures.emplace_back() };
@@ -53,6 +56,8 @@ namespace platformer
             iconTexture.loadFromFile((settings.media_path / "image/spell-anim" /
                                       std::string(toName(spell)).append("-icon.png"))
                                          .string());
+
+            TextureStats::instance().process(iconTexture);
 
             iconTexture.setSmooth(true);
         }

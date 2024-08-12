@@ -6,6 +6,7 @@
 #include "coordinator.hpp"
 
 #include "sfml-util.hpp"
+#include "texture-stats.hpp"
 
 #include <iostream>
 
@@ -66,7 +67,11 @@ namespace platformer
         m_level.load(m_context);
     }
 
-    void Coordinator::teardown() { m_window.close(); }
+    void Coordinator::teardown()
+    {
+        m_window.close();
+        TextureStats::instance().dumpInfo();
+    }
 
     void Coordinator::play()
     {

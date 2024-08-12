@@ -9,6 +9,7 @@
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
+#include "texture-stats.hpp"
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -26,6 +27,8 @@ namespace platformer
     {
         m_texture.loadFromFile(
             (context.settings.media_path / "image/map-anim/acid-surface.png").string());
+
+        TextureStats::instance().process(m_texture);
 
         m_sprites.reserve(rects.size());
 
