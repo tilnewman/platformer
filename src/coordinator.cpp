@@ -43,7 +43,13 @@ namespace platformer
               m_pickups,
               m_accents,
               m_spells)
-    {}
+        , m_fpsValues()
+        , m_oneSecondClock()
+        , m_elapsedTimeSec(0.0f)
+        , m_statsDisplayUPtr()
+    {
+        m_fpsValues.reserve(128);
+    }
 
     void Coordinator::setup()
     {
@@ -80,6 +86,7 @@ namespace platformer
             draw();
 
             handleSleepUntilEndOfFrame(frameClock.getElapsedTime().asSeconds());
+            handleOncePerSecondTasks();
         }
     }
 
@@ -129,6 +136,11 @@ namespace platformer
         m_accents.draw(m_context, m_window, states);
         m_spells.draw(m_context, m_window, states);
 
+        if (m_statsDisplayUPtr)
+        {
+            m_statsDisplayUPtr->draw(m_window, states);
+        }
+
         m_window.display();
     }
 
@@ -141,6 +153,8 @@ namespace platformer
 
     void Coordinator::handleSleepUntilEndOfFrame(const float elapsedTimeSec)
     {
+        m_fpsValues.push_back(static_cast<std::size_t>(1.0f / elapsedTimeSec));
+
         float timeRemainingSec = ((1.0f / m_settings.frame_rate) - elapsedTimeSec);
 
         sf::Clock delayClock;
@@ -149,6 +163,25 @@ namespace platformer
             delayClock.restart();
             sf::sleep(sf::microseconds(100));
             timeRemainingSec -= delayClock.getElapsedTime().asSeconds();
+        }
+    }
+
+    void Coordinator::handleOncePerSecondTasks()
+    {
+        m_elapsedTimeSec += m_oneSecondClock.restart().asSeconds();
+        if (m_elapsedTimeSec > 1.0f)
+        {
+            m_elapsedTimeSec -= 1.0f;
+
+            const auto stats = util::makeStats(m_fpsValues);
+            std::cout << "FPS " << stats << '\n';
+
+            std::sort(std::begin(m_fpsValues), std::end(m_fpsValues));
+
+            m_statsDisplayUPtr = std::make_unique<util::GraphDisplay<std::size_t>>(
+                m_fpsValues, sf::Vector2u{ 500, 200 });
+
+            m_fpsValues.clear();
         }
     }
 

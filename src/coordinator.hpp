@@ -16,7 +16,9 @@
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "spells.hpp"
+#include "stats-display.hpp"
 
+#include <memory>
 #include <vector>
 
 #include <SFML/Graphics/Font.hpp>
@@ -44,6 +46,7 @@ namespace platformer
         void update(const float frameTimeSec);
         void draw();
         void handleSleepUntilEndOfFrame(const float actualFrameTimeSec);
+        void handleOncePerSecondTasks();
         void setupRenderWindow(sf::VideoMode & videoMode);
 
       private:
@@ -61,6 +64,11 @@ namespace platformer
         SpellAnimations m_spells;
 
         Context m_context;
+
+        std::vector<std::size_t> m_fpsValues;
+        sf::Clock m_oneSecondClock;
+        float m_elapsedTimeSec;
+        std::unique_ptr<util::GraphDisplay<std::size_t>> m_statsDisplayUPtr;
     };
 
 } // namespace platformer
