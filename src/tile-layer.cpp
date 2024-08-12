@@ -8,6 +8,7 @@
 #include "check-macros.hpp"
 #include "context.hpp"
 #include "map-textures.hpp"
+#include "screen-layout.hpp"
 #include "sfml-util.hpp"
 
 #include <iostream>
@@ -35,12 +36,14 @@ namespace platformer
         target.draw(&m_visibleVerts[0], m_visibleVerts.size(), sf::Quads, states);
     }
 
-    void TileLayer::moveVerts(const float move)
+    void TileLayer::moveVerts(const Context & context, const float move)
     {
         for (sf::Vertex & vertex : m_verts)
         {
             vertex.position.x += move;
         }
+
+        populateVisibleVerts(context.layout.wholeRect());
     }
 
     float TileLayer::findFarthestHorizVert() const
@@ -138,6 +141,8 @@ namespace platformer
                 util::appendQuadVerts(screenRect, textureRect, m_verts);
             }
         }
+
+        populateVisibleVerts(context.layout.wholeRect());
     }
 
 } // namespace platformer

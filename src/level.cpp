@@ -14,8 +14,6 @@
 #include "settings.hpp"
 #include "sfml-util.hpp"
 
-#include <iostream>
-
 namespace platformer
 {
 
@@ -61,10 +59,10 @@ namespace platformer
         }
     }
 
-    bool Level::move(const ScreenLayout & layout, const float move)
+    bool Level::move(const Context & context, const float move)
     {
         farthest_horiz_traveled += std::abs(move);
-        if (farthest_horiz_traveled > (farthest_horiz_map_pixel - layout.wholeSize().x))
+        if (farthest_horiz_traveled > (farthest_horiz_map_pixel - context.layout.wholeSize().x))
         {
             return false;
         }
@@ -77,59 +75,20 @@ namespace platformer
             rect.left += move;
         }
 
-        for (auto & layerUPtr : tiles.layers)
-        {
-            layerUPtr->moveVerts(move);
-        }
-
-        populateVisibleVerts(layout);
-
+        tiles.move(context, move);
         return true;
     }
 
     void Level::findFarthestHorizMapPixel()
     {
-        farthest_horiz_map_pixel = 0.0f;
-
-        for (const auto & layerUPtr : tiles.layers)
-        {
-            const float farthestHorizPos{ layerUPtr->findFarthestHorizVert() };
-            if (farthestHorizPos > farthest_horiz_map_pixel)
-            {
-                farthest_horiz_map_pixel = farthestHorizPos;
-            }
-        }
+        farthest_horiz_map_pixel = tiles.findFarthestHorizMapPixel();
     }
 
-    void Level::appendVertLayers(Context & context)
+    void Level::appendVertLayers(const Context & context)
     {
-        for (auto & layerUPtr : tiles.layers)
-        {
-            layerUPtr->appendVertLayer(
-                context, map_position_offset, tiles.count, tiles.size, tile_size_screen);
-
-            layerUPtr->populateVisibleVerts(context.layout.wholeRect());
-        }
+        tiles.appendVertLayers(context, map_position_offset, tile_size_screen);
     }
 
-    void Level::populateVisibleVerts(const ScreenLayout & layout)
-    {
-        for (auto & layerUPtr : tiles.layers)
-        {
-            layerUPtr->populateVisibleVerts(layout.wholeRect());
-        }
-    }
-
-    void Level::dumpInfo() const
-    {
-        std::cout << "Level Graphics Info\n";
-
-        for (const auto & layerUPtr : tiles.layers)
-        {
-            layerUPtr->dumpInfo();
-        }
-
-        std::cout << std::endl;
-    }
+    void Level::dumpInfo() const { tiles.dumpInfo(); }
 
 } // namespace platformer

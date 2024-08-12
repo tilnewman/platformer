@@ -114,6 +114,7 @@ namespace platformer
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
             m_backgroundImages.move(-4.0f);
+            m_level.tiles.move(m_context, -4.0f);
         }
     }
 
@@ -125,10 +126,7 @@ namespace platformer
 
         m_backgroundImages.draw(m_window, states);
 
-        for (auto & layerUPtr : m_level.tiles.layers)
-        {
-            layerUPtr->draw(m_context, m_window, states);
-        }
+        m_level.tiles.draw(m_context, m_window, states);
 
         m_pickups.draw(m_context, m_window, states);
         m_accents.draw(m_context, m_window, states);

@@ -58,19 +58,18 @@ namespace platformer
     void LevelFileLoader::parseLevelDetails(Context & context, Json & json)
     {
         // parse level tile size and counts
-        context.level.tiles.count = { json["width"], json["height"] };
-        context.level.tiles.size  = { json["tilewidth"], json["tileheight"] };
+        const sf::Vector2i tileCount{ json["width"], json["height"] };
+        const sf::Vector2i tileSize{ json["tilewidth"], json["tileheight"] };
 
-        context.level.tile_size_texture = sf::Vector2f{ context.level.tiles.size };
+        context.level.tiles.setTileCountAndSize(tileCount, tileSize);
 
-        context.level.tile_size_screen =
-            (sf::Vector2f{ context.level.tiles.size } * context.settings.tile_scale);
-
+        context.level.tile_size_texture  = sf::Vector2f{ tileSize };
+        context.level.tile_size_screen   = (sf::Vector2f{ tileSize } * context.settings.tile_scale);
         context.level.tile_size_screen.x = floorf(context.level.tile_size_screen.x);
         context.level.tile_size_screen.y = floorf(context.level.tile_size_screen.y);
 
         // calc map position offset
-        const sf::Vector2f tileCountF{ context.level.tiles.count };
+        const sf::Vector2f tileCountF{ tileCount };
         const sf::Vector2f mapSizeOrig{ context.level.tile_size_screen * tileCountF };
 
         const float heightOffset{
@@ -165,8 +164,6 @@ namespace platformer
 
     void LevelFileLoader::parseLayers(Context & context, Json & jsonWholeFile)
     {
-        context.level.tiles.layers.clear();
-
         for (Json & jsonLayer : jsonWholeFile["layers"])
         {
             const std::string layerName = jsonLayer["name"];
@@ -229,10 +226,6 @@ namespace platformer
                           << "\".  Ignored unknown layer named \"" << layerName << "\".\n";
             }
         }
-
-        M_CHECK(
-            !context.level.tiles.layers.empty(),
-            "Error Parsing Level File " << m_pathStr << ":  Failed to read any tile image layers.");
     }
 
     void LevelFileLoader::parseTileLayer(Context & context, const TileImage image, Json & json)
@@ -244,7 +237,7 @@ namespace platformer
             "Error Parsing Level File " << m_pathStr << ":  tile layer for image " << image
                                         << " was empty.");
 
-        context.level.tiles.layers.push_back(std::make_unique<TileLayer>(image, indexes));
+        context.level.tiles.appendTileLayer(image, indexes);
     }
 
     void LevelFileLoader::parseRectLayer(

@@ -22,7 +22,7 @@ namespace platformer
 
         bool load(Context & context);
         void reset();
-        bool move(const ScreenLayout & layout, const float move);
+        bool move(const Context & context, const float move);
 
         TileSet tiles;
         sf::Vector2f map_position_offset;
@@ -37,18 +37,7 @@ namespace platformer
 
       private:
         void findFarthestHorizMapPixel();
-
-        void appendVertLayers(Context & context);
-
-        void appendVertLayer(
-            const sf::Vector2i & count,
-            const sf::Vector2i & size,
-            const sf::Vector2f & sizeOnScreen,
-            const TileTexture & texture,
-            ITileLayer & layer) const;
-
-        void populateVisibleVerts(const ScreenLayout & layout);
-
+        void appendVertLayers(const Context & context);
         void dumpInfo() const;
     };
 

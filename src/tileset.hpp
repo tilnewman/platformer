@@ -10,7 +10,6 @@
 #include <vector>
 
 #include <SFML/Graphics/Rect.hpp>
-#include <SFML/Graphics/Vertex.hpp>
 #include <SFML/System/Vector2.hpp>
 
 namespace sf
@@ -26,15 +25,33 @@ namespace platformer
 
     //
 
-    struct TileSet
+    class TileSet
     {
+      public:
         TileSet();
 
         void reset();
 
-        sf::Vector2i count;
-        sf::Vector2i size;
-        std::vector<std::unique_ptr<ITileLayer>> layers;
+        inline const sf::Vector2i tileCount() const { return m_tileCount; }
+        inline const sf::Vector2i tileSize() const { return m_tileSize; }
+
+        void setTileCountAndSize(const sf::Vector2i tileCount, const sf::Vector2i tileSize);
+        void appendTileLayer(const TileImage image, const std::vector<int> & indexes);
+        void move(const Context & context, const float move);
+        float findFarthestHorizMapPixel();
+        void dumpInfo() const;
+
+        void appendVertLayers(
+            const Context & context,
+            const sf::Vector2f & mapPosOffset,
+            const sf::Vector2f & tileScreenSize);
+
+        void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const;
+
+      private:
+        sf::Vector2i m_tileCount;
+        sf::Vector2i m_tileSize;
+        std::vector<std::unique_ptr<ITileLayer>> m_layers;
     };
 
 } // namespace platformer
