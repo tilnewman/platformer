@@ -3,7 +3,7 @@
 //
 // map-textures.hpp
 //
-#include "tileset.hpp"
+#include "tile-image.hpp"
 
 #include <string>
 

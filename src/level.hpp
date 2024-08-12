@@ -3,7 +3,7 @@
 //
 // level.hpp
 //
-#include "tileset.hpp"
+#include "tile-layer.hpp"
 
 #include <vector>
 
@@ -23,8 +23,9 @@ namespace platformer
         bool load(Context & context);
         void reset();
         bool move(const Context & context, const float move);
+        void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const;
+        void update(Context & context, const float frameTimeSec);
 
-        TileSet tiles;
         sf::Vector2f map_position_offset;
         sf::Vector2f tile_size_screen;
         sf::Vector2f tile_size_texture;
@@ -34,6 +35,9 @@ namespace platformer
         float farthest_horiz_map_pixel;
         float farthest_horiz_traveled;
         std::string name;
+        sf::Vector2i tile_count;
+        sf::Vector2i tile_size;
+        std::vector<std::unique_ptr<ITileLayer>> tile_layers;
 
       private:
         void findFarthestHorizMapPixel();

@@ -31,7 +31,7 @@ namespace platformer
         virtual ~AcidAnimationLayer() override = default;
 
         void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const override;
-        void moveVerts(const Context & context, const float amount) override;
+        void move(const Context & context, const float amount) override;
         float findFarthestHorizVert() const override { return 0.0f; }
         void dumpInfo() const override {}
 

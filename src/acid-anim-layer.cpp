@@ -50,7 +50,7 @@ namespace platformer
         }
     }
 
-    void AcidAnimationLayer::moveVerts(const Context &, const float amount)
+    void AcidAnimationLayer::move(const Context &, const float amount)
     {
         for (sf::Sprite & sprite : m_sprites)
         {

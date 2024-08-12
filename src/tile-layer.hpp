@@ -30,7 +30,7 @@ namespace platformer
         virtual ~ITileLayer() = default;
 
         virtual void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const = 0;
-        virtual void moveVerts(const Context & context, const float move)                    = 0;
+        virtual void move(const Context & context, const float move)                         = 0;
         virtual float findFarthestHorizVert() const                                          = 0;
         virtual void dumpInfo() const                                                        = 0;
         virtual void update(Context & context, const float frameTimeSec)                     = 0;
@@ -52,7 +52,7 @@ namespace platformer
         virtual ~TileLayer() override = default;
 
         void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const override;
-        void moveVerts(const Context & context, const float move) override;
+        void move(const Context & context, const float move) override;
         float findFarthestHorizVert() const override;
         void dumpInfo() const override;
         void update(Context &, const float) override {}

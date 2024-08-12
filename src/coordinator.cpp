@@ -7,7 +7,6 @@
 
 #include "map-textures.hpp"
 #include "sfml-util.hpp"
-#include "tileset.hpp"
 
 #include <iostream>
 
@@ -115,7 +114,7 @@ namespace platformer
         {
             const float moveAmount{ -4.0f };
             m_backgroundImages.move(moveAmount);
-            m_level.tiles.move(m_context, moveAmount);
+            m_level.move(m_context, moveAmount);
             m_accents.move(moveAmount);
             m_pickups.move(moveAmount);
         }
@@ -129,7 +128,7 @@ namespace platformer
 
         m_backgroundImages.draw(m_window, states);
 
-        m_level.tiles.draw(m_context, m_window, states);
+        m_level.draw(m_context, m_window, states);
 
         m_pickups.draw(m_context, m_window, states);
         m_accents.draw(m_context, m_window, states);
@@ -145,7 +144,7 @@ namespace platformer
 
     void Coordinator::update(const float frameTimeSec)
     {
-        m_level.tiles.update(m_context, frameTimeSec);
+        m_level.update(m_context, frameTimeSec);
         m_pickups.update(m_context, frameTimeSec);
         m_accents.update(m_context, frameTimeSec);
         m_spells.update(m_context, frameTimeSec);

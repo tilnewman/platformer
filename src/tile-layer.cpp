@@ -36,7 +36,7 @@ namespace platformer
         target.draw(&m_visibleVerts[0], m_visibleVerts.size(), sf::Quads, states);
     }
 
-    void TileLayer::moveVerts(const Context & context, const float move)
+    void TileLayer::move(const Context & context, const float move)
     {
         for (sf::Vertex & vertex : m_verts)
         {

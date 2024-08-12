@@ -4,7 +4,7 @@
 // level-file-loader.hpp
 //
 #include "json.hpp"
-#include "tileset.hpp"
+#include "tile-image.hpp"
 
 #include <string>
 #include <vector>

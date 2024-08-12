@@ -59,18 +59,19 @@ namespace platformer
     void LevelFileLoader::parseLevelDetails(Context & context, Json & json)
     {
         // parse level tile size and counts
-        const sf::Vector2i tileCount{ json["width"], json["height"] };
-        const sf::Vector2i tileSize{ json["tilewidth"], json["tileheight"] };
+        context.level.tile_count = { json["width"], json["height"] };
+        context.level.tile_size  = { json["tilewidth"], json["tileheight"] };
 
-        context.level.tiles.setTileCountAndSize(tileCount, tileSize);
+        context.level.tile_size_texture = sf::Vector2f{ context.level.tile_size };
 
-        context.level.tile_size_texture  = sf::Vector2f{ tileSize };
-        context.level.tile_size_screen   = (sf::Vector2f{ tileSize } * context.settings.tile_scale);
+        context.level.tile_size_screen =
+            (sf::Vector2f{ context.level.tile_size } * context.settings.tile_scale);
+
         context.level.tile_size_screen.x = floorf(context.level.tile_size_screen.x);
         context.level.tile_size_screen.y = floorf(context.level.tile_size_screen.y);
 
         // calc map position offset
-        const sf::Vector2f tileCountF{ tileCount };
+        const sf::Vector2f tileCountF{ context.level.tile_count };
         const sf::Vector2f mapSizeOrig{ context.level.tile_size_screen * tileCountF };
 
         const float heightOffset{
@@ -242,7 +243,7 @@ namespace platformer
             "Error Parsing Level File " << m_pathStr << ":  tile layer for image " << image
                                         << " was empty.");
 
-        context.level.tiles.appendTileLayer(std::make_unique<TileLayer>(image, indexes));
+        context.level.tile_layers.push_back(std::make_unique<TileLayer>(image, indexes));
     }
 
     void LevelFileLoader::parseRectLayer(
@@ -341,7 +342,7 @@ namespace platformer
             rects.push_back(parseAndConvertRect(context, accentJson));
         }
 
-        context.level.tiles.appendTileLayer(std::make_unique<AcidAnimationLayer>(context, rects));
+        context.level.tile_layers.push_back(std::make_unique<AcidAnimationLayer>(context, rects));
     }
 
 } // namespace platformer
