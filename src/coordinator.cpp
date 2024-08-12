@@ -113,8 +113,11 @@ namespace platformer
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
-            m_backgroundImages.move(-4.0f);
-            m_level.tiles.move(m_context, -4.0f);
+            const float moveAmount{ -4.0f };
+            m_backgroundImages.move(moveAmount);
+            m_level.tiles.move(m_context, moveAmount);
+            m_accents.move(moveAmount);
+            m_pickups.move(moveAmount);
         }
     }
 

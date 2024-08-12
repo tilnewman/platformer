@@ -137,6 +137,7 @@ namespace platformer
         void add(const Context & context, const sf::FloatRect & rect, const std::string & name);
         void update(Context & context, const float frameTimeSec);
         void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const;
+        void move(const float amount);
 
       private:
         std::size_t frameCount(const Accent which) const;

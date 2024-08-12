@@ -162,4 +162,12 @@ namespace platformer
         }
     }
 
+    void AccentAnimations::move(const float amount)
+    {
+        for (AccentAnim & anim : m_anims)
+        {
+            anim.sprite.move(amount, 0.0f);
+        }
+    }
+
 } // namespace platformer

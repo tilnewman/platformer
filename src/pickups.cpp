@@ -121,4 +121,12 @@ namespace platformer
         }
     }
 
+    void PickupAnimations::move(const float amount)
+    {
+        for (PickupAnim & anim : m_anims)
+        {
+            anim.sprite.move(amount, 0.0f);
+        }
+    }
+
 } // namespace platformer
