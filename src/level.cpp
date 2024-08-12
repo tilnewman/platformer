@@ -50,7 +50,7 @@ namespace platformer
         if (context.level_loader.load(context))
         {
             appendVertLayers(context);
-            context.avatar.setPosition(util::center(enter_rect));
+            context.avatar.setPosition(enter_rect);
             findFarthestHorizMapPixel();
             farthest_horiz_traveled = 0.0f;
 

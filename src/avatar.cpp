@@ -21,8 +21,6 @@ namespace platformer
         , m_elapsedTimeSec(0.0f)
         , m_animIndex(0)
         , m_velocity()
-        , m_hasLanded(false)
-        , m_isFacingRight(true)
     {}
 
     void Avatar::setup(const Context & context, const AvatarType & type)
@@ -63,6 +61,12 @@ namespace platformer
     {
         target.draw(m_sprite, states);
         util::drawRectangleShape(target, collisionRect(), false, sf::Color::Red);
+    }
+
+    void Avatar::setPosition(const sf::FloatRect & rect)
+    {
+        m_sprite.setPosition(util::center(rect).x, util::bottom(rect));
+        m_sprite.move(0.0f, (-110.0f * m_sprite.getScale().y));
     }
 
     void Avatar::cycleType()

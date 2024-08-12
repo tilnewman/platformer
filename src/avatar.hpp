@@ -28,7 +28,7 @@ namespace platformer
         void setup(const Context & context, const AvatarType & type);
         void update(Context & context, const float frameTimeSec);
         void draw(sf::RenderTarget & target, sf::RenderStates states);
-        inline void setPosition(const sf::Vector2f & pos) { m_sprite.setPosition(pos); }
+        void setPosition(const sf::FloatRect & rect);
         inline AvatarAnim getAnim() const { return m_anim; }
         void cycleType();
         void cycleAnim();
@@ -43,8 +43,8 @@ namespace platformer
         float m_elapsedTimeSec;
         std::size_t m_animIndex;
         sf::Vector2f m_velocity;
-        bool m_hasLanded;
-        bool m_isFacingRight;
+        // bool m_hasLanded;
+        // bool m_isFacingRight;
     };
 
 } // namespace platformer

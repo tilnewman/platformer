@@ -61,7 +61,7 @@ namespace platformer
         m_pickups.setup(m_settings);
         m_accents.setup(m_settings);
         m_spells.setup(m_settings);
-        m_avatar.setup(m_context, AvatarType::Enchantress);
+        m_avatar.setup(m_context, AvatarType::Assassin);
 
         m_level.load(m_context);
     }
