@@ -5,7 +5,6 @@
 //
 #include "coordinator.hpp"
 
-#include "map-textures.hpp"
 #include "sfml-util.hpp"
 
 #include <iostream>
@@ -20,6 +19,7 @@ namespace platformer
         : m_window()
         , m_settings(settings)
         , m_random()
+        , m_avatar()
         , m_avatarTextures()
         , m_layout()
         , m_levelLoader()
@@ -33,6 +33,7 @@ namespace platformer
               m_settings,
               m_window,
               m_random,
+              m_avatar,
               m_avatarTextures,
               m_layout,
               m_levelLoader,
@@ -60,6 +61,7 @@ namespace platformer
         m_pickups.setup(m_settings);
         m_accents.setup(m_settings);
         m_spells.setup(m_settings);
+        m_avatar.setup(m_context, AvatarType::Enchantress);
 
         m_level.load(m_context);
     }
@@ -109,14 +111,13 @@ namespace platformer
             // TEMP TODO REMOVE
             m_window.close();
         }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Right))
         {
-            const float moveAmount{ -4.0f };
-            m_backgroundImages.move(moveAmount);
-            m_level.move(m_context, moveAmount);
-            m_accents.move(moveAmount);
-            m_pickups.move(moveAmount);
+            m_avatar.cycleType();
+        }
+        else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Up))
+        {
+            m_avatar.cycleAnim();
         }
     }
 
@@ -132,6 +133,7 @@ namespace platformer
 
         m_pickups.draw(m_context, m_window, states);
         m_accents.draw(m_context, m_window, states);
+        m_avatar.draw(m_window, states);
         m_spells.draw(m_context, m_window, states);
 
         if (m_statsDisplayUPtr)
@@ -148,6 +150,7 @@ namespace platformer
         m_pickups.update(m_context, frameTimeSec);
         m_accents.update(m_context, frameTimeSec);
         m_spells.update(m_context, frameTimeSec);
+        m_avatar.update(m_context, frameTimeSec);
     }
 
     void Coordinator::handleSleepUntilEndOfFrame(const float elapsedTimeSec)
@@ -172,8 +175,8 @@ namespace platformer
         {
             m_elapsedTimeSec -= 1.0f;
 
-            const auto stats = util::makeStats(m_fpsValues);
-            std::cout << "FPS " << stats << '\n';
+            // const auto stats = util::makeStats(m_fpsValues);
+            // std::cout << "FPS " << stats << '\n';
 
             std::sort(std::begin(m_fpsValues), std::end(m_fpsValues));
 

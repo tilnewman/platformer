@@ -21,6 +21,8 @@ namespace platformer
 
     struct Level;
     struct Settings;
+
+    class Avatar;
     class MapTextures;
     class ScreenLayout;
     class SpellAnimations;
@@ -38,6 +40,7 @@ namespace platformer
             const Settings & set,
             sf::Window & win,
             util::Random & ran,
+            Avatar & ava,
             AvatarTextureManager & atm,
             ScreenLayout & scl,
             LevelFileLoader & lfl,
@@ -50,6 +53,7 @@ namespace platformer
             : settings(set)
             , window(win)
             , random(ran)
+            , avatar(ava)
             , avatar_textures(atm)
             , layout(scl)
             , level_loader(lfl)
@@ -64,6 +68,7 @@ namespace platformer
         const Settings & settings;
         sf::Window & window;
         util::Random & random;
+        Avatar & avatar;
         AvatarTextureManager & avatar_textures;
         ScreenLayout & layout;
         LevelFileLoader & level_loader;

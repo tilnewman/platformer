@@ -53,6 +53,7 @@ namespace platformer
         sf::RenderWindow m_window;
         Settings m_settings;
         util::Random m_random;
+        Avatar m_avatar;
         AvatarTextureManager m_avatarTextures;
         ScreenLayout m_layout;
         LevelFileLoader m_levelLoader;

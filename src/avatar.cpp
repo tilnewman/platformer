@@ -20,6 +20,9 @@ namespace platformer
         , m_anim(AvatarAnim::Idle)
         , m_elapsedTimeSec(0.0f)
         , m_animIndex(0)
+        , m_velocity()
+        , m_hasLanded(false)
+        , m_isFacingRight(true)
     {}
 
     void Avatar::setup(const Context & context, const AvatarType & type)
@@ -59,6 +62,43 @@ namespace platformer
     void Avatar::draw(sf::RenderTarget & target, sf::RenderStates states)
     {
         target.draw(m_sprite, states);
+        util::drawRectangleShape(target, collisionRect(), false, sf::Color::Red);
+    }
+
+    void Avatar::cycleType()
+    {
+        std::size_t index{ static_cast<std::size_t>(m_type) };
+
+        ++index;
+        if (index >= static_cast<std::size_t>(AvatarType::Count))
+        {
+            index = 0;
+        }
+
+        m_type = static_cast<AvatarType>(index);
+    }
+
+    void Avatar::cycleAnim()
+    {
+        std::size_t index{ static_cast<std::size_t>(m_anim) };
+
+        ++index;
+        if (index >= static_cast<std::size_t>(AvatarAnim::Count))
+        {
+            index = 0;
+        }
+
+        m_anim = static_cast<AvatarAnim>(index);
+    }
+
+    const sf::FloatRect Avatar::collisionRect() const
+    {
+        const sf::FloatRect bounds{ m_sprite.getGlobalBounds() };
+        sf::FloatRect rect{ bounds };
+        util::scaleRectInPlace(rect, { 0.25f, 0.35f });
+        rect.left -= (bounds.width * 0.15f);
+        rect.top += (bounds.width * 0.175f);
+        return rect;
     }
 
 } // namespace platformer
