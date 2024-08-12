@@ -65,6 +65,7 @@ namespace platformer
 
         Context m_context;
 
+        // fps stuff
         std::vector<std::size_t> m_fpsValues;
         sf::Clock m_oneSecondClock;
         float m_elapsedTimeSec;

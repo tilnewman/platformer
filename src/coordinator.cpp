@@ -125,11 +125,9 @@ namespace platformer
 
         m_backgroundImages.draw(m_window, states);
 
-        for (TileLayer & layer : m_level.tiles.layers)
+        for (auto & layerUPtr : m_level.tiles.layers)
         {
-            states.texture = &m_context.map_textures.get(layer.image).texture;
-            m_window.draw(&layer.visibleVerts[0], layer.visibleVerts.size(), sf::Quads, states);
-            states.texture = nullptr;
+            layerUPtr->draw(m_context, m_window, states);
         }
 
         m_pickups.draw(m_context, m_window, states);

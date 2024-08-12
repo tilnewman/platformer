@@ -51,7 +51,7 @@ namespace platformer
             findFarthestHorizMapPixel();
             farthest_horiz_traveled = 0.0f;
 
-            // dumpInfo(levelNumber);
+            // dumpInfo();
             return true;
         }
         else
@@ -77,12 +77,9 @@ namespace platformer
             rect.left += move;
         }
 
-        for (TileLayer & layer : tiles.layers)
+        for (auto & layerUPtr : tiles.layers)
         {
-            for (sf::Vertex & vertex : layer.verts)
-            {
-                vertex.position.x += move;
-            }
+            layerUPtr->moveVerts(move);
         }
 
         populateVisibleVerts(layout);
@@ -94,28 +91,26 @@ namespace platformer
     {
         farthest_horiz_map_pixel = 0.0f;
 
-        for (const TileLayer & layer : tiles.layers)
+        for (const auto & layerUPtr : tiles.layers)
         {
-            for (const sf::Vertex & vertex : layer.verts)
+            const float farthestHorizPos{ layerUPtr->findFarthestHorizVert() };
+            if (farthestHorizPos > farthest_horiz_map_pixel)
             {
-                if (vertex.position.x > farthest_horiz_map_pixel)
-                {
-                    farthest_horiz_map_pixel = vertex.position.x;
-                }
+                farthest_horiz_map_pixel = farthestHorizPos;
             }
         }
     }
 
     void Level::appendVertLayers(Context & context)
     {
-        for (TileLayer & layer : tiles.layers)
+        for (auto & layerUPtr : tiles.layers)
         {
             appendVertLayer(
                 tiles.count,
                 tiles.size,
                 tile_size_screen,
-                context.map_textures.get(layer.image),
-                layer);
+                context.map_textures.get(layerUPtr->image()),
+                *layerUPtr);
         }
 
         populateVisibleVerts(context.layout);
@@ -126,7 +121,7 @@ namespace platformer
         const sf::Vector2i & size,
         const sf::Vector2f & sizeOnScreen,
         const TileTexture & texture,
-        TileLayer & layer) const
+        ITileLayer & layer) const
     {
         const sf::Vector2i textureTileCount{ texture.size / size };
 
@@ -134,8 +129,9 @@ namespace platformer
             (static_cast<std::size_t>(count.x) * static_cast<std::size_t>(count.y));
 
         M_CHECK(
-            (totalCount == layer.indexes.size()),
-            "index_count=" << layer.indexes.size() << " does not equal tile_count=" << totalCount);
+            (totalCount == layer.indexes().size()),
+            "index_count=" << layer.indexes().size()
+                           << " does not equal tile_count=" << totalCount);
 
         const sf::Vector2i sizeOnScreenI(sizeOnScreen);
 
@@ -148,7 +144,7 @@ namespace platformer
             {
                 const float posX = static_cast<float>(x * sizeOnScreenI.x);
 
-                const int textureIndexOrig(layer.indexes[textureIndex++]);
+                const int textureIndexOrig(layer.indexes()[textureIndex++]);
                 if (textureIndexOrig == 0)
                 {
                     continue; // zero means no image at this location
@@ -165,54 +161,26 @@ namespace platformer
                 const sf::Vector2f screenPos(sf::Vector2f(posX, posY) + map_position_offset);
                 const sf::FloatRect screenRect{ screenPos, sizeOnScreen };
 
-                util::appendQuadVerts(screenRect, textureRect, layer.verts);
+                util::appendQuadVerts(screenRect, textureRect, layer.verts());
             }
         }
     }
 
     void Level::populateVisibleVerts(const ScreenLayout & layout)
     {
-        for (TileLayer & layer : tiles.layers)
+        for (auto & layerUPtr : tiles.layers)
         {
-            M_CHECK(
-                ((layer.verts.size() % util::verts_per_quad) == 0),
-                "Error:  TileLayer.verts.size()=" << layer.verts.size()
-                                                  << " which is not a multiple of "
-                                                  << util::verts_per_quad);
-
-            layer.visibleVerts.clear();
-
-            std::size_t vertIndex = 0;
-            while (vertIndex < layer.verts.size())
-            {
-                const sf::Vertex topLeftVert  = layer.verts[vertIndex++];
-                const sf::Vertex topRightVert = layer.verts[vertIndex++];
-                const sf::Vertex botRightVert = layer.verts[vertIndex++];
-                const sf::Vertex botLeftVert  = layer.verts[vertIndex++];
-
-                if (layout.wholeRect().contains(topLeftVert.position) ||
-                    layout.wholeRect().contains(topRightVert.position) ||
-                    layout.wholeRect().contains(botRightVert.position) ||
-                    layout.wholeRect().contains(botLeftVert.position))
-                {
-                    layer.visibleVerts.push_back(topLeftVert);
-                    layer.visibleVerts.push_back(topRightVert);
-                    layer.visibleVerts.push_back(botRightVert);
-                    layer.visibleVerts.push_back(botLeftVert);
-                }
-            }
+            layerUPtr->populateVisibleVerts(layout.wholeRect());
         }
     }
 
-    void Level::dumpInfo(const std::size_t levelNumber) const
+    void Level::dumpInfo() const
     {
-        std::cout << "Level " << levelNumber << " Graphics Info\n";
+        std::cout << "Level Graphics Info\n";
 
-        for (const TileLayer & layer : tiles.layers)
+        for (const auto & layerUPtr : tiles.layers)
         {
-            std::cout << "\tLayer Tiles:  " << layer.image << ", possible=" << layer.indexes.size()
-                      << ", actual=" << (layer.verts.size() / util::verts_per_quad)
-                      << ", visible=" << (layer.visibleVerts.size() / util::verts_per_quad) << "\n";
+            layerUPtr->dumpInfo();
         }
 
         std::cout << std::endl;

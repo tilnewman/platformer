@@ -237,20 +237,14 @@ namespace platformer
 
     void LevelFileLoader::parseTileLayer(Context & context, const TileImage image, Json & json)
     {
-        TileLayer layer;
-
-        layer.image = image;
-
         const std::vector<int> indexes = json["data"];
-        layer.indexes                  = indexes;
 
         M_CHECK(
-            !layer.indexes.empty(),
-            "Error Parsing Level File "
-                << m_pathStr << ":  Failed to read tileset layer indexes for image " << image
-                << ".");
+            !indexes.empty(),
+            "Error Parsing Level File " << m_pathStr << ":  tile layer for image " << image
+                                        << " was empty.");
 
-        context.level.tiles.layers.push_back(layer);
+        context.level.tiles.layers.push_back(std::make_unique<TileLayer>(image, indexes));
     }
 
     void LevelFileLoader::parseRectLayer(

@@ -45,11 +45,11 @@ namespace platformer
             const sf::Vector2i & size,
             const sf::Vector2f & sizeOnScreen,
             const TileTexture & texture,
-            TileLayer & layer) const;
+            ITileLayer & layer) const;
 
         void populateVisibleVerts(const ScreenLayout & layout);
 
-        void dumpInfo(const std::size_t levelNumber) const;
+        void dumpInfo() const;
     };
 
 } // namespace platformer

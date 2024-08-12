@@ -4,17 +4,29 @@
 // tileset.hpp
 //
 #include <cassert>
+#include <memory>
 #include <ostream>
 #include <string>
 #include <string_view>
 #include <vector>
 
+#include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Vertex.hpp>
 #include <SFML/System/Vector2.hpp>
 
+namespace sf
+{
+    class RenderTarget;
+    class RenderStates;
+} // namespace sf
+
 namespace platformer
 {
+
+    struct Context;
+
+    //
 
     enum class TileImage
     {
@@ -63,47 +75,61 @@ namespace platformer
 
     //
 
-    struct TileLayer
+    struct ITileLayer
     {
-        TileLayer()
-            : image(TileImage::ForestGround) // any works here
-            , indexes()
-            , verts()
-            , visibleVerts()
-        {
-            indexes.reserve(10'000);
-            verts.reserve(10'000);
-            visibleVerts.reserve(10'000);
-        }
+        virtual ~ITileLayer() = default;
 
-        TileImage image;
-        std::vector<int> indexes;
-        std::vector<sf::Vertex> verts;
-        std::vector<sf::Vertex> visibleVerts;
+        virtual void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const = 0;
+
+        virtual TileImage image() const                  = 0;
+        virtual std::vector<int> & indexes()             = 0;
+        virtual std::vector<sf::Vertex> & verts()        = 0;
+        virtual std::vector<sf::Vertex> & visibleVerts() = 0;
+
+        virtual void moveVerts(const float move)                             = 0;
+        virtual float findFarthestHorizVert() const                          = 0;
+        virtual void dumpInfo() const                                        = 0;
+        virtual void populateVisibleVerts(const sf::FloatRect & visibleRect) = 0;
+    };
+
+    //
+
+    class TileLayer : public ITileLayer
+    {
+      public:
+        TileLayer(const TileImage image, const std::vector<int> & indexes);
+        virtual ~TileLayer() override = default;
+
+        void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const override;
+
+        TileImage image() const override { return m_image; }
+        std::vector<int> & indexes() override { return m_indexes; }
+        std::vector<sf::Vertex> & verts() override { return m_verts; }
+        std::vector<sf::Vertex> & visibleVerts() override { return m_visibleVerts; }
+
+        void moveVerts(const float move) override;
+        float findFarthestHorizVert() const override;
+        void dumpInfo() const override;
+        void populateVisibleVerts(const sf::FloatRect & visibleRect) override;
+
+      private:
+        TileImage m_image;
+        std::vector<int> m_indexes;
+        std::vector<sf::Vertex> m_verts;
+        std::vector<sf::Vertex> m_visibleVerts;
     };
 
     //
 
     struct TileSet
     {
-        TileSet()
-            : count(0, 0)
-            , size(0, 0)
-            , layers()
-        {
-            layers.reserve(16);
-        }
+        TileSet();
 
-        void reset()
-        {
-            layers.clear();
-            count = { 0, 0 };
-            size  = { 0, 0 };
-        }
+        void reset();
 
         sf::Vector2i count;
         sf::Vector2i size;
-        std::vector<TileLayer> layers;
+        std::vector<std::unique_ptr<ITileLayer>> layers;
     };
 
 } // namespace platformer
