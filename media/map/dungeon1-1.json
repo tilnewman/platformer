@@ -290,28 +290,6 @@
         }, 
         {
          "draworder":"topdown",
-         "id":8,
-         "name":"acid",
-         "objects":[
-                {
-                 "height":48,
-                 "id":10,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":3440,
-                 "x":0,
-                 "y":1360
-                }],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":false,
-         "x":0,
-         "y":0
-        }, 
-        {
-         "draworder":"topdown",
          "id":4,
          "name":"collision",
          "objects":[
