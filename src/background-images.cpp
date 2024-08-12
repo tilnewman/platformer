@@ -122,13 +122,13 @@ namespace platformer
                   (context.settings.media_path / "image/background/forest/clouds-front.png") });
 
             slidingImages.push_back(
-                { 0.7f, (context.settings.media_path / "image/background/forest/mountains.png") });
+                { 0.6f, (context.settings.media_path / "image/background/forest/mountains.png") });
 
             slidingImages.push_back(
-                { 0.8f, (context.settings.media_path / "image/background/forest/mist.png") });
+                { 0.7f, (context.settings.media_path / "image/background/forest/mist.png") });
 
             slidingImages.push_back(
-                { 1.0f, (context.settings.media_path / "image/background/forest/trees.png") });
+                { 0.8f, (context.settings.media_path / "image/background/forest/trees.png") });
 
             BackgroundImagesInfo info(
                 fadeAlpha,
@@ -150,15 +150,15 @@ namespace platformer
                                       (context.settings.media_path /
                                        "image/background/underground-swamp/ruins-front.png") });
 
-            slidingImages.push_back({ 0.7f,
+            slidingImages.push_back({ 0.6f,
                                       (context.settings.media_path /
                                        "image/background/underground-swamp/floor-back.png") });
 
-            slidingImages.push_back({ 1.0f,
+            slidingImages.push_back({ 0.8f,
                                       (context.settings.media_path /
                                        "image/background/underground-swamp/floor-front.png") });
 
-            slidingImages.push_back({ 1.0f,
+            slidingImages.push_back({ 0.8f,
                                       (context.settings.media_path /
                                        "image/background/underground-swamp/chains.png") });
 
@@ -183,14 +183,14 @@ namespace platformer
                                        "image/background/underground-cave/rock-middle.png") });
 
             slidingImages.push_back(
-                { 0.7f,
+                { 0.6f,
                   (context.settings.media_path / "image/background/underground-cave/mist.png") });
 
-            slidingImages.push_back({ 1.0f,
+            slidingImages.push_back({ 0.8f,
                                       (context.settings.media_path /
                                        "image/background/underground-cave/rock-front1.png") });
 
-            slidingImages.push_back({ 1.0f,
+            slidingImages.push_back({ 0.8f,
                                       (context.settings.media_path /
                                        "image/background/underground-cave/rock-front2.png") });
 
@@ -221,10 +221,10 @@ namespace platformer
                   (context.settings.media_path / "image/background/mountains/rocks-middle.png") });
 
             slidingImages.push_back(
-                { 0.8f, (context.settings.media_path / "image/background/mountains/mist.png") });
+                { 0.7f, (context.settings.media_path / "image/background/mountains/mist.png") });
 
             slidingImages.push_back(
-                { 1.0f,
+                { 0.8f,
                   (context.settings.media_path / "image/background/mountains/rocks-front.png") });
 
             BackgroundImagesInfo info(
@@ -240,19 +240,19 @@ namespace platformer
             std::vector<SlidingImageInfo> slidingImages;
 
             slidingImages.push_back(
-                { 0.2f, (context.settings.media_path / "image/background/castle/sky.png") });
+                { 0.1f, (context.settings.media_path / "image/background/castle/sky.png") });
 
             slidingImages.push_back(
-                { 0.4f, (context.settings.media_path / "image/background/castle/trees.png") });
+                { 0.2f, (context.settings.media_path / "image/background/castle/trees.png") });
 
             slidingImages.push_back(
-                { 0.6f, (context.settings.media_path / "image/background/castle/wall.png") });
+                { 0.4f, (context.settings.media_path / "image/background/castle/wall.png") });
 
             slidingImages.push_back(
-                { 0.8f, (context.settings.media_path / "image/background/castle/floor.png") });
+                { 0.6f, (context.settings.media_path / "image/background/castle/floor.png") });
 
             slidingImages.push_back(
-                { 1.0f, (context.settings.media_path / "image/background/castle/pillars.png") });
+                { 0.8f, (context.settings.media_path / "image/background/castle/pillars.png") });
 
             BackgroundImagesInfo info(fadeAlpha, {}, slidingImages, {});
 
