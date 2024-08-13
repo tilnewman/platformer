@@ -63,6 +63,7 @@ namespace platformer
         setupRenderWindow(m_settings.video_mode);
 
         m_sfx.mediaPath(m_settings.media_path / "sounds");
+        m_sfx.willLoop("walk", true);
         m_sfx.loadAll();
 
         m_layout.setup(m_window.getSize());

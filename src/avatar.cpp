@@ -12,6 +12,7 @@
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
+#include "sound-player.hpp"
 #include "spells.hpp"
 
 #include <filesystem>
@@ -221,7 +222,7 @@ namespace platformer
 
                 if (!m_hasLanded)
                 {
-                    // context.audio.play("land"); TODO
+                    context.sfx.play("land");
                     m_anim = AvatarAnim::Idle;
                     restartAnim();
                 }
@@ -302,7 +303,7 @@ namespace platformer
                 }
 
                 m_anim = AvatarAnim::Run;
-                // context.audio.play("walk");
+                context.sfx.play("walk");
 
                 if (!m_isFacingRight)
                 {
@@ -325,7 +326,7 @@ namespace platformer
                 }
 
                 m_anim = AvatarAnim::Run;
-                // context.audio.play("walk");
+                context.sfx.play("walk");
 
                 if (m_isFacingRight)
                 {
@@ -339,7 +340,7 @@ namespace platformer
                 m_velocity.x = 0.0f;
                 m_anim       = AvatarAnim::Idle;
                 restartAnim();
-                // context.audio.stop("walk");TODO
+                context.sfx.stop("walk");
             }
         }
     }
@@ -356,8 +357,8 @@ namespace platformer
         {
             m_hasLanded = false;
             m_velocity.y -= (context.settings.jump_acc * frameTimeSec);
-            // context.audio.play("jump");
-            // context.audio.stop("walk");
+            context.sfx.play("jump");
+            context.sfx.stop("walk");
             m_anim = AvatarAnim::Jump;
             restartAnim();
         }
