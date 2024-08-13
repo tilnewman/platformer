@@ -20,6 +20,7 @@ namespace platformer
         : m_window()
         , m_settings(settings)
         , m_random()
+        , m_sfx(m_random)
         , m_states()
         , m_fonts()
         , m_avatar()
@@ -36,6 +37,7 @@ namespace platformer
               m_settings,
               m_window,
               m_random,
+              m_sfx,
               m_states,
               m_fonts,
               m_avatar,
@@ -59,6 +61,9 @@ namespace platformer
     void Coordinator::setup()
     {
         setupRenderWindow(m_settings.video_mode);
+
+        m_sfx.mediaPath(m_settings.media_path / "sounds");
+        m_sfx.loadAll();
 
         m_layout.setup(m_window.getSize());
         m_fonts.setup(m_settings);

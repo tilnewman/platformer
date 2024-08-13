@@ -13,7 +13,7 @@ namespace util
 {
     class Random;
     // class MusicPlayer;
-    // class SoundPlayer;
+    class SoundPlayer;
 } // namespace util
 
 namespace platformer
@@ -42,6 +42,7 @@ namespace platformer
             const Settings & set,
             sf::Window & win,
             util::Random & ran,
+            util::SoundPlayer & spl,
             StateManager & sma,
             FontManager & fma,
             Avatar & ava,
@@ -57,6 +58,7 @@ namespace platformer
             : settings(set)
             , window(win)
             , random(ran)
+            , sfx(spl)
             , states(sma)
             , fonts(fma)
             , avatar(ava)
@@ -74,6 +76,7 @@ namespace platformer
         const Settings & settings;
         sf::Window & window;
         util::Random & random;
+        util::SoundPlayer & sfx;
         StateManager & states;
         FontManager & fonts;
         Avatar & avatar;

@@ -16,6 +16,7 @@
 #include "random.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
+#include "sound-player.hpp"
 #include "spells.hpp"
 #include "state-manager.hpp"
 #include "stats-display.hpp"
@@ -55,6 +56,7 @@ namespace platformer
         sf::RenderWindow m_window;
         Settings m_settings;
         util::Random m_random;
+        util::SoundPlayer m_sfx;
         StateManager m_states;
         FontManager m_fonts;
         Avatar m_avatar;
