@@ -33,6 +33,7 @@ namespace platformer
         , m_pickups()
         , m_accents()
         , m_spells()
+        , m_itemImages()
         , m_context(
               m_settings,
               m_window,
@@ -49,7 +50,8 @@ namespace platformer
               m_backgroundImages,
               m_pickups,
               m_accents,
-              m_spells)
+              m_spells,
+              m_itemImages)
         , m_fpsValues()
         , m_oneSecondClock()
         , m_elapsedTimeSec(0.0f)
@@ -68,6 +70,7 @@ namespace platformer
 
         m_layout.setup(m_window.getSize());
         m_fonts.setup(m_settings);
+        m_itemImages.setup(m_settings);
         m_avatarTextures.setup(m_settings);
         m_mapTextures.setup(m_settings);
         m_pickups.setup(m_settings);
