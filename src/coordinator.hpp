@@ -79,6 +79,12 @@ namespace platformer
         sf::Clock m_oneSecondClock;
         float m_elapsedTimeSec;
         std::unique_ptr<util::GraphDisplay<std::size_t>> m_statsDisplayUPtr;
+
+        // avartar testing stuff
+        sf::Text m_avatarStateText;
+        sf::Text m_avatarAnimText;
+        sf::Text m_avatarAnimIndexText;
+        sf::Text m_avatarLandedText;
     };
 
 } // namespace platformer

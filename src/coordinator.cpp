@@ -56,6 +56,10 @@ namespace platformer
         , m_oneSecondClock()
         , m_elapsedTimeSec(0.0f)
         , m_statsDisplayUPtr()
+        , m_avatarStateText()
+        , m_avatarAnimText()
+        , m_avatarAnimIndexText()
+        , m_avatarLandedText()
     {
         m_fpsValues.reserve(128);
     }
@@ -79,6 +83,18 @@ namespace platformer
         m_avatar.setup(m_context, AvatarType::Assassin);
 
         m_states.changeTo(m_context, State::Splash);
+
+        // avatar testing stuff
+        const sf::Color color{ 100, 100, 255 };
+        m_avatarStateText     = m_fonts.makeText(Font::Default, FontSize::Large, "BEEFYg", color);
+        m_avatarAnimText      = m_fonts.makeText(Font::Default, FontSize::Large, "BEEFYg", color);
+        m_avatarAnimIndexText = m_fonts.makeText(Font::Default, FontSize::Large, "BEEFYg", color);
+        m_avatarLandedText    = m_fonts.makeText(Font::Default, FontSize::Large, "BEEFYg", color);
+
+        m_avatarStateText.setPosition(0.0f, 300.0f);
+        m_avatarAnimText.setPosition(0.0f, util::bottom(m_avatarStateText));
+        m_avatarAnimIndexText.setPosition(0.0f, util::bottom(m_avatarAnimText));
+        m_avatarLandedText.setPosition(0.0f, util::bottom(m_avatarAnimIndexText));
     }
 
     void Coordinator::teardown()
@@ -144,6 +160,23 @@ namespace platformer
         {
             m_statsDisplayUPtr->draw(m_window, states);
         }
+
+        // TODO remove after testing
+        m_avatarStateText.setString(std::string(toString(m_avatar.state())));
+        m_avatarAnimText.setString(std::string(toString(m_avatar.anim())));
+        m_avatarAnimIndexText.setString(std::to_string(m_avatar.animIndex()));
+        if (m_avatar.hasLanded())
+        {
+            m_avatarLandedText.setString("landed");
+        }
+        else
+        {
+            m_avatarLandedText.setString("falling");
+        }
+        m_window.draw(m_avatarStateText, states);
+        m_window.draw(m_avatarAnimText, states);
+        m_window.draw(m_avatarAnimIndexText, states);
+        m_window.draw(m_avatarLandedText, states);
 
         m_window.display();
     }

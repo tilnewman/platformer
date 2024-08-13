@@ -134,7 +134,7 @@ namespace platformer
             case AvatarAnim::Push:          { return 0.2f;  }
             case AvatarAnim::Run:           { return 0.1f;  }
             case AvatarAnim::RunAttack:     { return 0.1f;  }
-            case AvatarAnim::Walk:          { return 0.12f; }
+            case AvatarAnim::Walk:          { return 0.1f; }
             case AvatarAnim::WalkAttack:    { return 0.12f; }
             case AvatarAnim::Count:         // intentional fallthrough
             default:                        { return 0.0f;  }

@@ -26,7 +26,8 @@ namespace platformer
     Avatar::Avatar()
         : m_sprite()
         , m_type(AvatarType::Assassin) // anything works here
-        , m_anim(AvatarAnim::Idle)
+        , m_anim(AvatarAnim::Walk)
+        , m_state(AvatarState::Still)
         , m_elapsedTimeSec(0.0f)
         , m_animIndex(0)
         , m_velocity()
@@ -36,8 +37,9 @@ namespace platformer
 
     void Avatar::setup(const Context & context, const AvatarType & type)
     {
-        m_type = type;
-        m_anim = AvatarAnim::Idle;
+        m_type  = type;
+        m_anim  = AvatarAnim::Walk;
+        m_state = AvatarState::Still;
         m_sprite.setTexture(context.avatar_texture.get(m_type, m_anim).textures.at(0), true);
         m_sprite.setScale(context.settings.avatar_scale, context.settings.avatar_scale);
     }
@@ -111,6 +113,12 @@ namespace platformer
     void Avatar::animate(Context & context, const float frameTimeSec)
     {
         const AnimTextures & textureSet{ context.avatar_texture.get(m_type, m_anim) };
+
+        if (AvatarState::Still == m_state)
+        {
+            m_sprite.setTexture(textureSet.textures.at(0));
+            return;
+        }
 
         m_elapsedTimeSec += frameTimeSec;
         if (m_elapsedTimeSec > textureSet.time_per_frame_sec)
@@ -205,34 +213,33 @@ namespace platformer
                 continue;
             }
 
-            hasHitSomething               = true;
-            const sf::Vector2f collCenter = util::center(collRect);
-
-            if ((m_velocity.y < 0.0f) && (collCenter.y < avatarCenter.y))
+            if ((m_velocity.y < 0.0f) && (util::center(collRect).y < avatarCenter.y))
             {
                 // rising and hit something above
 
                 m_velocity.y = 0.0f;
                 m_sprite.move(0.0f, intersection.height);
+                hasHitSomething = true;
                 continue;
             }
 
-            const bool doesIntersectFeet = collRect.intersects(footRect);
-
-            if ((m_velocity.y > 0.0f) && (intersection.height < tolerance) && doesIntersectFeet)
+            if ((m_velocity.y > 0.0f) && (intersection.height < tolerance) &&
+                collRect.intersects(footRect))
             {
                 // falling and hit something below
 
                 if (!m_hasLanded)
                 {
                     context.sfx.play("land");
-                    m_anim = AvatarAnim::Idle;
+                    m_state = AvatarState::Still;
+                    m_anim  = AvatarAnim::Walk;
                     restartAnim();
                 }
 
                 m_hasLanded  = true;
                 m_velocity.y = 0.0f;
                 m_sprite.move(0.0f, -intersection.height);
+                hasHitSomething = true;
                 continue;
             }
 
@@ -244,17 +251,17 @@ namespace platformer
                 {
                     m_velocity.x = 0.0f;
                     m_sprite.move(-intersection.width, 0.0f);
+                    hasHitSomething = true;
                     continue;
                 }
                 else if (m_velocity.x < 0.0f)
                 {
                     m_velocity.x = 0.0f;
                     m_sprite.move(intersection.width, 0.0f);
+                    hasHitSomething = true;
                     continue;
                 }
             }
-
-            hasHitSomething = false;
         }
 
         if (!hasHitSomething)
@@ -265,7 +272,7 @@ namespace platformer
 
     void Avatar::sideToSideMotion(Context & context, const float frameTimeSec)
     {
-        if (AvatarAnim::Jump == m_anim)
+        if (AvatarState::Jump == m_state)
         {
             // Allow moving side-to-side at a reduced rate while in the air.
             // It sounds wrong but feels so right.
@@ -300,12 +307,13 @@ namespace platformer
                     m_velocity.x = context.settings.walk_speed_limit;
                 }
 
-                if (AvatarAnim::Run != m_anim)
+                if (AvatarState::Walk != m_state)
                 {
                     restartAnim();
                 }
 
-                m_anim = AvatarAnim::Run;
+                m_state = AvatarState::Walk;
+                m_anim  = AvatarAnim::Walk;
                 context.sfx.play("walk");
 
                 if (!m_isFacingRight)
@@ -323,12 +331,13 @@ namespace platformer
                     m_velocity.x = -context.settings.walk_speed_limit;
                 }
 
-                if (AvatarAnim::Run != m_anim)
+                if (AvatarState::Walk != m_state)
                 {
                     restartAnim();
                 }
 
-                m_anim = AvatarAnim::Run;
+                m_state = AvatarState::Walk;
+                m_anim  = AvatarAnim::Walk;
                 context.sfx.play("walk");
 
                 if (m_isFacingRight)
@@ -341,7 +350,8 @@ namespace platformer
             else
             {
                 m_velocity.x = 0.0f;
-                m_anim       = AvatarAnim::Idle;
+                m_state      = AvatarState::Walk;
+                m_anim       = AvatarAnim::Walk;
                 restartAnim();
                 context.sfx.stop("walk");
             }
@@ -362,7 +372,8 @@ namespace platformer
             m_velocity.y -= (context.settings.jump_acc * frameTimeSec);
             // context.sfx.play("jump");
             context.sfx.stop("walk");
-            m_anim = AvatarAnim::Jump;
+            m_state = AvatarState::Jump;
+            m_anim  = AvatarAnim::Jump;
             restartAnim();
         }
     }

@@ -20,6 +20,50 @@ namespace platformer
 
     //
 
+    enum class AvatarState
+    {
+        Attack,
+        AttackExtra,
+        Climb,
+        Death,
+        Hurt,
+        Idle,
+        Jump,
+        JumpHigh,
+        Push,
+        Run,
+        RunAttack,
+        Walk,
+        WalkAttack,
+        Still
+    };
+
+    inline constexpr std::string_view toString(const AvatarState state)
+    {
+        // clang-format off
+        switch (state)
+        {
+            case AvatarState::Attack:       { return "Attack";      }
+            case AvatarState::AttackExtra:  { return "AttackExtra"; }
+            case AvatarState::Climb:        { return "Climb";       }
+            case AvatarState::Death:        { return "Death";       }
+            case AvatarState::Hurt:         { return "Hurt";        }
+            case AvatarState::Idle:         { return "Idle";        }
+            case AvatarState::Jump:         { return "Jump";        }
+            case AvatarState::JumpHigh:     { return "JumpHigh";    }
+            case AvatarState::Push:         { return "Push";        }
+            case AvatarState::Run:          { return "Run";         }
+            case AvatarState::RunAttack:    { return "RunAttack";   }
+            case AvatarState::Walk:         { return "Walk";        }
+            case AvatarState::WalkAttack:   { return "WalkAttack";  }
+            case AvatarState::Still:        { return "Still";       }
+            default: { return "Error_toString_unknown_AvatarState"; }
+        }
+        // clang-format on
+    }
+
+    //
+
     class Avatar
     {
       public:
@@ -29,7 +73,12 @@ namespace platformer
         void update(Context & context, const float frameTimeSec);
         void draw(sf::RenderTarget & target, sf::RenderStates states);
         void setPosition(const sf::FloatRect & rect);
-        inline AvatarAnim getAnim() const { return m_anim; }
+
+        // TODO remove after testing
+        inline AvatarState state() const { return m_state; }
+        inline AvatarAnim anim() const { return m_anim; }
+        inline std::size_t animIndex() const { return m_animIndex; }
+        inline bool hasLanded() const { return m_hasLanded; }
 
       private:
         const sf::FloatRect collisionRect() const;
@@ -46,6 +95,7 @@ namespace platformer
         sf::Sprite m_sprite;
         AvatarType m_type;
         AvatarAnim m_anim;
+        AvatarState m_state;
         float m_elapsedTimeSec;
         std::size_t m_animIndex;
         sf::Vector2f m_velocity;
