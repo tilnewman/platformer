@@ -8,6 +8,7 @@
 #include "check-macros.hpp"
 #include "context.hpp"
 #include "level.hpp"
+#include "lightning-anim-layer.hpp"
 #include "map-textures.hpp"
 #include "pickups.hpp"
 #include "screen-layout.hpp"
@@ -226,6 +227,10 @@ namespace platformer
             {
                 parseAcidAnimLayer(context, jsonLayer);
             }
+            else if (layerName == "lightning-anim")
+            {
+                parseLightningAnimLayer(context, jsonLayer);
+            }
             else
             {
                 std::cout << "WARNING:  While parsing level file \"" << m_pathStr
@@ -343,6 +348,20 @@ namespace platformer
         }
 
         context.level.tile_layers.push_back(std::make_unique<AcidAnimationLayer>(context, rects));
+    }
+
+    void LevelFileLoader::parseLightningAnimLayer(Context & context, Json & json)
+    {
+        std::vector<sf::FloatRect> rects;
+        rects.reserve(256);
+
+        for (Json & lightningJson : json["objects"])
+        {
+            rects.push_back(parseAndConvertRect(context, lightningJson));
+        }
+
+        context.level.tile_layers.push_back(
+            std::make_unique<LightningAnimationLayer>(context, rects));
     }
 
 } // namespace platformer
