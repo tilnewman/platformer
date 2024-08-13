@@ -154,6 +154,7 @@ namespace platformer
         const sf::Vector2f move{ moveX, 0.0f };
         m_sprite.move(move);
         context.accent.move(moveX);
+        context.pickup.move(moveX);
         context.level.move(context, moveX);
         context.pickup.move(moveX);
         context.bg_image.move(moveX);
