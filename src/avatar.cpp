@@ -310,11 +310,11 @@ namespace platformer
                 if (AvatarState::Walk != m_state)
                 {
                     restartAnim();
+                    context.sfx.play("walk");
                 }
 
                 m_state = AvatarState::Walk;
                 m_anim  = AvatarAnim::Walk;
-                context.sfx.play("walk");
 
                 if (!m_isFacingRight)
                 {
@@ -334,11 +334,11 @@ namespace platformer
                 if (AvatarState::Walk != m_state)
                 {
                     restartAnim();
+                    context.sfx.play("walk");
                 }
 
                 m_state = AvatarState::Walk;
                 m_anim  = AvatarAnim::Walk;
-                context.sfx.play("walk");
 
                 if (m_isFacingRight)
                 {
@@ -350,9 +350,9 @@ namespace platformer
             else
             {
                 m_velocity.x = 0.0f;
-                m_state      = AvatarState::Walk;
-                m_anim       = AvatarAnim::Walk;
-                restartAnim();
+                m_state      = AvatarState::Still;
+                // m_anim       = AvatarAnim::Walk;
+                // restartAnim();
                 context.sfx.stop("walk");
             }
         }
