@@ -20,6 +20,8 @@ namespace platformer
         : m_window()
         , m_settings(settings)
         , m_random()
+        , m_states()
+        , m_fonts()
         , m_avatar()
         , m_avatarTextures()
         , m_layout()
@@ -34,6 +36,8 @@ namespace platformer
               m_settings,
               m_window,
               m_random,
+              m_states,
+              m_fonts,
               m_avatar,
               m_avatarTextures,
               m_layout,
@@ -57,6 +61,7 @@ namespace platformer
         setupRenderWindow(m_settings.video_mode);
 
         m_layout.setup(m_window.getSize());
+        m_fonts.setup(m_settings);
         m_avatarTextures.setup(m_settings);
         m_mapTextures.setup(m_settings);
         m_pickups.setup(m_settings);
@@ -64,7 +69,7 @@ namespace platformer
         m_spells.setup(m_settings);
         m_avatar.setup(m_context, AvatarType::Assassin);
 
-        m_level.load(m_context);
+        m_states.changeTo(m_context, State::Splash);
     }
 
     void Coordinator::teardown()
@@ -83,7 +88,7 @@ namespace platformer
     void Coordinator::gameLoop()
     {
         sf::Clock frameClock;
-        while (m_window.isOpen())
+        while (m_window.isOpen() && m_states.current().which() != State::Shutdown)
         {
             frameClock.restart();
 
@@ -109,13 +114,14 @@ namespace platformer
     {
         if (event.type == sf::Event::Closed)
         {
-            // TODO
+            m_states.changeTo(m_context, State::Shutdown);
         }
         else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))
         {
-            // TEMP TODO REMOVE
-            m_window.close();
+            m_states.changeTo(m_context, State::Shutdown);
         }
+
+        m_states.current().handleEvent(m_context, event);
     }
 
     void Coordinator::draw()
@@ -123,15 +129,7 @@ namespace platformer
         sf::RenderStates states;
 
         m_window.clear(sf::Color::Black);
-
-        m_backgroundImages.draw(m_window, states);
-
-        m_level.draw(m_context, m_window, states);
-
-        m_pickups.draw(m_context, m_window, states);
-        m_accents.draw(m_context, m_window, states);
-        m_avatar.draw(m_window, states);
-        m_spells.draw(m_context, m_window, states);
+        m_states.current().draw(m_context, m_window, states);
 
         if (m_statsDisplayUPtr)
         {
@@ -143,11 +141,7 @@ namespace platformer
 
     void Coordinator::update(const float frameTimeSec)
     {
-        m_level.update(m_context, frameTimeSec);
-        m_pickups.update(m_context, frameTimeSec);
-        m_accents.update(m_context, frameTimeSec);
-        m_spells.update(m_context, frameTimeSec);
-        m_avatar.update(m_context, frameTimeSec);
+        m_states.current().update(m_context, frameTimeSec);
     }
 
     void Coordinator::handleSleepUntilEndOfFrame(const float elapsedTimeSec)

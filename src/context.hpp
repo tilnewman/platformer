@@ -24,7 +24,9 @@ namespace platformer
 
     class Avatar;
     class MapTextures;
+    class FontManager;
     class ScreenLayout;
+    class StateManager;
     class SpellAnimations;
     class LevelFileLoader;
     class BackgroundImages;
@@ -40,6 +42,8 @@ namespace platformer
             const Settings & set,
             sf::Window & win,
             util::Random & ran,
+            StateManager & sma,
+            FontManager & fma,
             Avatar & ava,
             AvatarTextureManager & atm,
             ScreenLayout & scl,
@@ -53,6 +57,8 @@ namespace platformer
             : settings(set)
             , window(win)
             , random(ran)
+            , states(sma)
+            , fonts(fma)
             , avatar(ava)
             , avatar_textures(atm)
             , layout(scl)
@@ -68,6 +74,8 @@ namespace platformer
         const Settings & settings;
         sf::Window & window;
         util::Random & random;
+        StateManager & states;
+        FontManager & fonts;
         Avatar & avatar;
         AvatarTextureManager & avatar_textures;
         ScreenLayout & layout;

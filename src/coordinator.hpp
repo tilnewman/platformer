@@ -8,6 +8,7 @@
 #include "avatar.hpp"
 #include "background-images.hpp"
 #include "context.hpp"
+#include "font.hpp"
 #include "level-file-loader.hpp"
 #include "level.hpp"
 #include "map-textures.hpp"
@@ -16,6 +17,7 @@
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "spells.hpp"
+#include "state-manager.hpp"
 #include "stats-display.hpp"
 
 #include <memory>
@@ -53,6 +55,8 @@ namespace platformer
         sf::RenderWindow m_window;
         Settings m_settings;
         util::Random m_random;
+        StateManager m_states;
+        FontManager m_fonts;
         Avatar m_avatar;
         AvatarTextureManager m_avatarTextures;
         ScreenLayout m_layout;
