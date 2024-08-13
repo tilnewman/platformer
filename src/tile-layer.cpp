@@ -32,7 +32,7 @@ namespace platformer
     void TileLayer::draw(
         const Context & context, sf::RenderTarget & target, sf::RenderStates states) const
     {
-        states.texture = &context.map_textures.get(m_image).texture;
+        states.texture = &context.map_texture.get(m_image).texture;
         target.draw(&m_visibleVerts[0], m_visibleVerts.size(), sf::Quads, states);
     }
 
@@ -99,7 +99,7 @@ namespace platformer
         const sf::Vector2i & size,
         const sf::Vector2f & sizeOnScreen)
     {
-        const TileTexture & texture = context.map_textures.get(m_image);
+        const TileTexture & texture = context.map_texture.get(m_image);
 
         const sf::Vector2i textureTileCount{ texture.size / size };
 

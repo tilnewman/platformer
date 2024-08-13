@@ -93,39 +93,39 @@ namespace platformer
 
             if (filename == toFilename(TileImage::CastleGround))
             {
-                context.map_textures.get(TileImage::CastleGround).gid = gid;
+                context.map_texture.get(TileImage::CastleGround).gid = gid;
             }
             else if (filename == toFilename(TileImage::CastleObject))
             {
-                context.map_textures.get(TileImage::CastleObject).gid = gid;
+                context.map_texture.get(TileImage::CastleObject).gid = gid;
             }
             else if (filename == toFilename(TileImage::Dungeon1Ground))
             {
-                context.map_textures.get(TileImage::Dungeon1Ground).gid = gid;
+                context.map_texture.get(TileImage::Dungeon1Ground).gid = gid;
             }
             else if (filename == toFilename(TileImage::Dungeon2Ground))
             {
-                context.map_textures.get(TileImage::Dungeon2Ground).gid = gid;
+                context.map_texture.get(TileImage::Dungeon2Ground).gid = gid;
             }
             else if (filename == toFilename(TileImage::Dungeon2Object))
             {
-                context.map_textures.get(TileImage::Dungeon2Object).gid = gid;
+                context.map_texture.get(TileImage::Dungeon2Object).gid = gid;
             }
             else if (filename == toFilename(TileImage::ForestGround))
             {
-                context.map_textures.get(TileImage::ForestGround).gid = gid;
+                context.map_texture.get(TileImage::ForestGround).gid = gid;
             }
             else if (filename == toFilename(TileImage::ForestTrees))
             {
-                context.map_textures.get(TileImage::ForestTrees).gid = gid;
+                context.map_texture.get(TileImage::ForestTrees).gid = gid;
             }
             else if (filename == toFilename(TileImage::MountainsGround))
             {
-                context.map_textures.get(TileImage::MountainsGround).gid = gid;
+                context.map_texture.get(TileImage::MountainsGround).gid = gid;
             }
             else if (filename == toFilename(TileImage::MountainsObject))
             {
-                context.map_textures.get(TileImage::MountainsObject).gid = gid;
+                context.map_texture.get(TileImage::MountainsObject).gid = gid;
             }
             else
             {
@@ -161,7 +161,7 @@ namespace platformer
                          "\"background\", there will be no background on this map.\n";
         }
 
-        context.bg_images.setup(context, backgroundImageName);
+        context.bg_image.setup(context, backgroundImageName);
     }
 
     void LevelFileLoader::parseLayers(Context & context, Json & jsonWholeFile)
@@ -318,7 +318,7 @@ namespace platformer
         {
             const std::string name   = pickupJson["name"];
             const sf::FloatRect rect = parseAndConvertRect(context, pickupJson);
-            context.pickups.add(context, rect, name);
+            context.pickup.add(context, rect, name);
         }
     }
 
@@ -328,7 +328,7 @@ namespace platformer
         {
             const std::string name   = accentJson["name"];
             const sf::FloatRect rect = parseAndConvertRect(context, accentJson);
-            context.accents.add(context, rect, name);
+            context.accent.add(context, rect, name);
         }
     }
 

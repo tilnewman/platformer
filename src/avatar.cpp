@@ -38,7 +38,7 @@ namespace platformer
     {
         m_type = type;
         m_anim = AvatarAnim::Idle;
-        m_sprite.setTexture(context.avatar_textures.get(m_type, m_anim).textures.at(0), true);
+        m_sprite.setTexture(context.avatar_texture.get(m_type, m_anim).textures.at(0), true);
         m_sprite.setScale(context.settings.avatar_scale, context.settings.avatar_scale);
     }
 
@@ -110,7 +110,7 @@ namespace platformer
 
     void Avatar::animate(Context & context, const float frameTimeSec)
     {
-        const AnimTextures & textureSet{ context.avatar_textures.get(m_type, m_anim) };
+        const AnimTextures & textureSet{ context.avatar_texture.get(m_type, m_anim) };
 
         m_elapsedTimeSec += frameTimeSec;
         if (m_elapsedTimeSec > textureSet.time_per_frame_sec)
@@ -125,7 +125,7 @@ namespace platformer
 
             if (textureSet.textures.empty())
             {
-                m_sprite.setTexture(context.avatar_textures.getDefault(m_type), true);
+                m_sprite.setTexture(context.avatar_texture.getDefault(m_type), true);
             }
             else
             {
@@ -153,10 +153,10 @@ namespace platformer
 
         const sf::Vector2f move{ moveX, 0.0f };
         m_sprite.move(move);
-        context.accents.move(moveX);
+        context.accent.move(moveX);
         context.level.move(context, moveX);
-        context.pickups.move(moveX);
-        context.bg_images.move(moveX);
+        context.pickup.move(moveX);
+        context.bg_image.move(moveX);
         // context.spells.move(moveX); //TODO
     }
 

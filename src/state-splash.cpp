@@ -24,7 +24,7 @@ namespace platformer
 
     void SplashState::onEnter(Context & context)
     {
-        m_text = context.fonts.makeText(
+        m_text = context.font.makeText(
             Font::Default, FontSize::Huge, "Splash", sf::Color(220, 220, 220));
 
         util::centerInside(m_text, context.layout.wholeRect());
@@ -35,7 +35,7 @@ namespace platformer
         m_elpasedTimeSec += frameTimeSec;
         if (m_elpasedTimeSec > 3.0f)
         {
-            context.states.changeTo(context, State::Play);
+            context.state.changeTo(context, State::Play);
         }
     }
 
@@ -51,7 +51,7 @@ namespace platformer
             return;
         }
 
-        context.states.changeTo(context, State::Play);
+        context.state.changeTo(context, State::Play);
     }
 
 } // namespace platformer

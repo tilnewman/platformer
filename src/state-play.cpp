@@ -25,20 +25,20 @@ namespace platformer
     {
         context.avatar.update(context, frameTimeSec);
         context.level.update(context, frameTimeSec);
-        context.pickups.update(context, frameTimeSec);
-        context.accents.update(context, frameTimeSec);
-        context.spells.update(context, frameTimeSec);
+        context.pickup.update(context, frameTimeSec);
+        context.accent.update(context, frameTimeSec);
+        context.spell.update(context, frameTimeSec);
     }
 
     void
         PlayState::draw(Context & context, sf::RenderTarget & target, sf::RenderStates states) const
     {
-        context.bg_images.draw(target, states);
+        context.bg_image.draw(target, states);
         context.level.draw(context, target, states);
-        context.pickups.draw(context, target, states);
-        context.accents.draw(context, target, states);
+        context.pickup.draw(context, target, states);
+        context.accent.draw(context, target, states);
         context.avatar.draw(target, states);
-        context.spells.draw(context, target, states);
+        context.spell.draw(context, target, states);
     }
 
     void PlayState::handleEvent(Context &, const sf::Event &) {}

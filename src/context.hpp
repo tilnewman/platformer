@@ -61,38 +61,38 @@ namespace platformer
             , window(win)
             , random(ran)
             , sfx(spl)
-            , states(sma)
-            , fonts(fma)
+            , state(sma)
+            , font(fma)
             , avatar(ava)
-            , avatar_textures(atm)
+            , avatar_texture(atm)
             , layout(scl)
             , level_loader(lfl)
             , level(lvl)
-            , map_textures(mtx)
-            , bg_images(bim)
-            , pickups(pan)
-            , accents(aan)
-            , spells(san)
-            , items(ima)
+            , map_texture(mtx)
+            , bg_image(bim)
+            , pickup(pan)
+            , accent(aan)
+            , spell(san)
+            , item(ima)
         {}
 
         const Settings & settings;
         sf::Window & window;
         util::Random & random;
         util::SoundPlayer & sfx;
-        StateManager & states;
-        FontManager & fonts;
+        StateManager & state;
+        FontManager & font;
         Avatar & avatar;
-        AvatarTextureManager & avatar_textures;
+        AvatarTextureManager & avatar_texture;
         ScreenLayout & layout;
         LevelFileLoader & level_loader;
         Level & level;
-        MapTextures & map_textures;
-        BackgroundImages & bg_images;
-        PickupAnimations & pickups;
-        AccentAnimations & accents;
-        SpellAnimations & spells;
-        ItemImages & items;
+        MapTextures & map_texture;
+        BackgroundImages & bg_image;
+        PickupAnimations & pickup;
+        AccentAnimations & accent;
+        SpellAnimations & spell;
+        ItemImages & item;
     };
 
 } // namespace platformer
