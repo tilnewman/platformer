@@ -131,7 +131,7 @@ namespace platformer
         m_window.clear(sf::Color::Black);
         m_states.current().draw(m_context, m_window, states);
 
-        if (m_statsDisplayUPtr)
+        if (m_statsDisplayUPtr && m_settings.will_display_fps_graph)
         {
             m_statsDisplayUPtr->draw(m_window, states);
         }
@@ -166,8 +166,11 @@ namespace platformer
         {
             m_elapsedTimeSec -= 1.0f;
 
-            // const auto stats = util::makeStats(m_fpsValues);
-            // std::cout << "FPS " << stats << '\n';
+            if (m_settings.will_display_fps)
+            {
+                const auto stats = util::makeStats(m_fpsValues);
+                std::cout << "FPS " << stats << '\n';
+            }
 
             std::sort(std::begin(m_fpsValues), std::end(m_fpsValues));
 

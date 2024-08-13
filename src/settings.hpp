@@ -15,9 +15,7 @@ namespace platformer
         // see main.cpp for where this is really set
         std::filesystem::path media_path = { "./media" };
 
-        sf::VideoMode video_mode = { 1920, 1080, 32 };
-
-        // frames per second
+        sf::VideoMode video_mode    = { 1920, 1080, 32 };
         float frame_rate            = 60;
         bool will_display_fps       = false;
         bool will_display_fps_graph = false;
