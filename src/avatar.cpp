@@ -6,6 +6,7 @@
 #include "avatar.hpp"
 
 #include "accents.hpp"
+#include "background-images.hpp"
 #include "context.hpp"
 #include "level.hpp"
 #include "pickups.hpp"
@@ -155,6 +156,7 @@ namespace platformer
         context.accents.move(moveX);
         context.level.move(context, moveX);
         context.pickups.move(moveX);
+        context.bg_images.move(moveX);
         // context.spells.move(moveX); //TODO
     }
 
@@ -357,7 +359,7 @@ namespace platformer
         {
             m_hasLanded = false;
             m_velocity.y -= (context.settings.jump_acc * frameTimeSec);
-            context.sfx.play("jump");
+            // context.sfx.play("jump");
             context.sfx.stop("walk");
             m_anim = AvatarAnim::Jump;
             restartAnim();
