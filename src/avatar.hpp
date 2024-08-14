@@ -101,6 +101,7 @@ namespace platformer
         sf::Vector2f m_velocity;
         bool m_hasLanded;
         bool m_isFacingRight;
+        float m_avatarImageWidthRatio;
     };
 
 } // namespace platformer

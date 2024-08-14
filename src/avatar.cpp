@@ -33,6 +33,7 @@ namespace platformer
         , m_velocity()
         , m_hasLanded(false)
         , m_isFacingRight(true)
+        , m_avatarImageWidthRatio(0.25f)
     {}
 
     void Avatar::setup(const Context & context, const AvatarType & type)
@@ -104,9 +105,18 @@ namespace platformer
     {
         const sf::FloatRect bounds{ m_sprite.getGlobalBounds() };
         sf::FloatRect rect{ bounds };
-        util::scaleRectInPlace(rect, { 0.25f, 0.35f });
-        rect.left -= (bounds.width * 0.15f);
+        util::scaleRectInPlace(rect, { m_avatarImageWidthRatio, 0.35f });
         rect.top += (bounds.width * 0.175f);
+
+        if (m_isFacingRight)
+        {
+            rect.left -= (bounds.width * 0.15f);
+        }
+        else
+        {
+            rect.left += (bounds.width * 0.15f);
+        }
+
         return rect;
     }
 
@@ -320,7 +330,10 @@ namespace platformer
                 {
                     m_isFacingRight = true;
                     m_sprite.scale(-1.0f, 1.0f); // sfml trick to horiz flip image
-                    m_sprite.move(-m_sprite.getGlobalBounds().width, 0.0f);
+
+                    m_sprite.move(
+                        -(m_sprite.getGlobalBounds().width * (1.0f - m_avatarImageWidthRatio)),
+                        0.0f);
                 }
             }
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -344,7 +357,10 @@ namespace platformer
                 {
                     m_isFacingRight = false;
                     m_sprite.scale(-1.0f, 1.0f); // sfml trick to horiz flip image
-                    m_sprite.move(m_sprite.getGlobalBounds().width, 0.0f);
+
+                    m_sprite.move(
+                        (m_sprite.getGlobalBounds().width * (1.0f - m_avatarImageWidthRatio)),
+                        0.0f);
                 }
             }
             else
