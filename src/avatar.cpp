@@ -456,8 +456,6 @@ namespace platformer
 
         if (!m_isFacingRight)
         {
-            // m_isFacingRight = true;
-            // m_sprite.scale(-1.0f, 1.0f);
             turnRight();
         }
 
