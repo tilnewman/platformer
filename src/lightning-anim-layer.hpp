@@ -3,6 +3,7 @@
 //
 // lightning-anim-layer.hpp
 //
+#include "kill-collision-manager.hpp"
 #include "tile-layer.hpp"
 
 #include <vector>
@@ -35,11 +36,13 @@ namespace platformer
 
     //
 
-    class LightningAnimationLayer : public ITileLayer
+    class LightningAnimationLayer
+        : public ITileLayer
+        , public IKillCollisionOwner
     {
       public:
         LightningAnimationLayer(Context & context, const std::vector<sf::FloatRect> & rects);
-        virtual ~LightningAnimationLayer() override = default;
+        virtual ~LightningAnimationLayer() override;
 
         void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const override;
         void move(const Context & context, const float amount) override;
@@ -55,6 +58,9 @@ namespace platformer
             const sf::Vector2i &,
             const sf::Vector2f &) override
         {}
+
+        bool doesAvatarCollideWithAnyAndDie(
+            Context & context, const sf::FloatRect & avatarRect) override;
 
       private:
         const sf::IntRect textureRect(const std::size_t frame) const;

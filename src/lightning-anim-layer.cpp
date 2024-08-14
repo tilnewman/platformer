@@ -10,6 +10,7 @@
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
+#include "sound-player.hpp"
 #include "texture-stats.hpp"
 
 #include <SFML/Graphics/RenderStates.hpp>
@@ -25,6 +26,8 @@ namespace platformer
         , m_timebetweenFrames(0.1f)
         , m_frameCount(8)
     {
+        KillCollisionManager::instance().addOwner(*this);
+
         m_texture.loadFromFile(
             (context.settings.media_path / "image/map-anim/lightning.png").string());
 
@@ -48,6 +51,11 @@ namespace platformer
             anim.elapsed_time_sec      = 0.0f;
             anim.frame_index           = 0;
         }
+    }
+
+    LightningAnimationLayer::~LightningAnimationLayer()
+    {
+        KillCollisionManager::instance().removeOwner(*this);
     }
 
     void LightningAnimationLayer::draw(
@@ -113,6 +121,28 @@ namespace platformer
                 }
             }
         }
+    }
+
+    bool LightningAnimationLayer::doesAvatarCollideWithAnyAndDie(
+        Context & context, const sf::FloatRect & avatarRect)
+    {
+        for (const LightningAnim & anim : m_anims)
+        {
+            if (!anim.is_animating)
+            {
+                continue;
+            }
+
+            if (!anim.sprite.getGlobalBounds().intersects(avatarRect))
+            {
+                continue;
+            }
+
+            context.sfx.play("electricity");
+            return true;
+        }
+
+        return false;
     }
 
 } // namespace platformer

@@ -10,6 +10,7 @@
 #include "context.hpp"
 #include "font.hpp"
 #include "item-images.hpp"
+#include "kill-collision-manager.hpp"
 #include "level-file-loader.hpp"
 #include "level-info.hpp"
 #include "level.hpp"

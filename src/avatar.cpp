@@ -8,6 +8,7 @@
 #include "accents.hpp"
 #include "background-images.hpp"
 #include "context.hpp"
+#include "kill-collision-manager.hpp"
 #include "level-info.hpp"
 #include "level.hpp"
 #include "pickups.hpp"
@@ -79,10 +80,11 @@ namespace platformer
 
         // context.managers.collideAllWithAvatar(context, collisionRect());
 
-        // if (context.managers.doesAvatarCollideWithAnyAndDie(collisionRect()))
-        //{
-        //    triggerDeath(context);
-        //}
+        if (KillCollisionManager::instance().doesAvatarCollideWithAnyAndDie(
+                context, collisionRect()))
+        {
+            triggerDeath(context);
+        }
 
         killIfOutOfBounds(context);
 
@@ -409,7 +411,7 @@ namespace platformer
         m_anim  = AvatarAnim::Death;
         restartAnim();
         context.sfx.stop("walk");
-        // context.sfx.play("scream");
+        context.sfx.play("death");
         m_velocity = { 0.0f, 0.0f };
 
         // context.stats.has_player_died = true;
@@ -430,6 +432,8 @@ namespace platformer
         m_deathDelayElapsedTimeSec += frameTimeSec;
         if (m_deathDelayElapsedTimeSec > context.settings.death_delay_sec)
         {
+            m_deathDelayElapsedTimeSec = 0.0f;
+
             if (context.level_info.playerLives() > 1)
             {
                 context.level_info.playerLivesAdjust(-1);
@@ -451,7 +455,7 @@ namespace platformer
         context.accent.clear();
         context.pickup.clear();
         context.spell.clear();
-        
+
         context.level.load(context);
 
         m_state = AvatarState::Still;
