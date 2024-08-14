@@ -47,6 +47,8 @@ namespace platformer
 
     bool Level::load(Context & context)
     {
+        reset();
+
         if (context.level_loader.load(context))
         {
             appendVertLayers(context);

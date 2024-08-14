@@ -16,7 +16,8 @@ namespace platformer
 {
 
     BackgroundImages::BackgroundImages()
-        : m_backgroundTexture()
+        : m_loadedSetName()
+        , m_backgroundTexture()
         , m_overlayTexture()
         , m_backgroundSprite()
         , m_overlaySprite()
@@ -26,6 +27,13 @@ namespace platformer
 
     void BackgroundImages::setup(const Context & context, const std::string & name)
     {
+        if (name == m_loadedSetName)
+        {
+            return;
+        }
+
+        m_loadedSetName = name;
+
         const BackgroundImagesInfo infoPack{ infoFactory(context, name) };
 
         // there won't always be a static background image
@@ -49,6 +57,7 @@ namespace platformer
         }
 
         // doubt there will ever be more than eight of these
+        m_slidingImages.clear();
         m_slidingImages.reserve(16);
 
         for (const SlidingImageInfo & info : infoPack.sliding_images)
@@ -71,6 +80,7 @@ namespace platformer
 
         if (infoPack.fade_alpha > 0)
         {
+            m_fadeQuads.clear();
             util::appendQuadVerts(
                 context.layout.wholeRect(), m_fadeQuads, sf::Color(0, 0, 0, infoPack.fade_alpha));
         }

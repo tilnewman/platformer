@@ -90,6 +90,7 @@ namespace platformer
         void update(Context & context, const float frameTimeSec);
         void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const;
         const sf::Texture iconTexture(const Spell spell) const;
+        inline void clear() { m_anims.clear(); }
 
       private:
         std::size_t frameCount(const Spell which) const;

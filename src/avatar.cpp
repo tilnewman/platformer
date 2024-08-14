@@ -448,6 +448,10 @@ namespace platformer
 
     void Avatar::respawn(Context & context)
     {
+        context.accent.clear();
+        context.pickup.clear();
+        context.spell.clear();
+        
         context.level.load(context);
 
         m_state = AvatarState::Still;

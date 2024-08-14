@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <string>
 #include <vector>
+#include <string>
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -81,6 +82,7 @@ namespace platformer
         const BackgroundImagesInfo infoFactory(const Context & context, const std::string & name);
 
       private:
+        std::string m_loadedSetName;
         sf::Texture m_backgroundTexture;
         sf::Texture m_overlayTexture;
 
