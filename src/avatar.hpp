@@ -93,6 +93,8 @@ namespace platformer
         void triggerDeath(Context & context);
         bool handleDeath(Context & context, const float frameTimeSec);
         void respawn(Context & context);
+        void turnRight();
+        void turnLeft();
 
       private:
         sf::Sprite m_sprite;

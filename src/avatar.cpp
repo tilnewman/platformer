@@ -333,12 +333,7 @@ namespace platformer
 
                 if (!m_isFacingRight)
                 {
-                    m_isFacingRight = true;
-                    m_sprite.scale(-1.0f, 1.0f); // sfml trick to horiz flip image
-
-                    m_sprite.move(
-                        -(m_sprite.getGlobalBounds().width * (1.0f - m_avatarImageWidthRatio)),
-                        0.0f);
+                    turnRight();
                 }
             }
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -360,12 +355,7 @@ namespace platformer
 
                 if (m_isFacingRight)
                 {
-                    m_isFacingRight = false;
-                    m_sprite.scale(-1.0f, 1.0f); // sfml trick to horiz flip image
-
-                    m_sprite.move(
-                        (m_sprite.getGlobalBounds().width * (1.0f - m_avatarImageWidthRatio)),
-                        0.0f);
+                    turnLeft();
                 }
             }
             else
@@ -466,11 +456,26 @@ namespace platformer
 
         if (!m_isFacingRight)
         {
-            m_isFacingRight = true;
-            m_sprite.scale(-1.0f, 1.0f); // sfml trick to flip image
+            // m_isFacingRight = true;
+            // m_sprite.scale(-1.0f, 1.0f);
+            turnRight();
         }
 
         // context.sfx.play("respawn");
+    }
+
+    void Avatar::turnRight()
+    {
+        m_isFacingRight = true;
+        m_sprite.scale(-1.0f, 1.0f);
+        m_sprite.move(-(m_sprite.getGlobalBounds().width * (1.0f - m_avatarImageWidthRatio)), 0.0f);
+    }
+
+    void Avatar::turnLeft()
+    {
+        m_isFacingRight = false;
+        m_sprite.scale(-1.0f, 1.0f);
+        m_sprite.move((m_sprite.getGlobalBounds().width * (1.0f - m_avatarImageWidthRatio)), 0.0f);
     }
 
 } // namespace platformer
