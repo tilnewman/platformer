@@ -8,6 +8,7 @@
 #include "accents.hpp"
 #include "background-images.hpp"
 #include "context.hpp"
+#include "level-info.hpp"
 #include "level.hpp"
 #include "pickups.hpp"
 #include "screen-layout.hpp"
@@ -15,6 +16,7 @@
 #include "sfml-util.hpp"
 #include "sound-player.hpp"
 #include "spells.hpp"
+#include "state-manager.hpp"
 
 #include <filesystem>
 
@@ -29,6 +31,7 @@ namespace platformer
         , m_anim(AvatarAnim::Walk)
         , m_state(AvatarState::Still)
         , m_elapsedTimeSec(0.0f)
+        , m_deathDelayElapsedTimeSec(0.0f)
         , m_animIndex(0)
         , m_velocity()
         , m_hasLanded(false)
@@ -47,11 +50,11 @@ namespace platformer
 
     void Avatar::update(Context & context, const float frameTimeSec)
     {
-        // if (handleDeath(context, frameTimeSec))
-        //{
-        //    return;
-        //}
-        //
+        if (handleDeath(context, frameTimeSec))
+        {
+            return;
+        }
+
         // const bool isAttacking = handleAttacking(context, frameTimeSec);
         // const bool isThrowing  = handleThrowing(context, frameTimeSec);
         // const bool isGliding   = handleGliding(context, frameTimeSec);
@@ -126,7 +129,7 @@ namespace platformer
 
         if (AvatarState::Still == m_state)
         {
-            m_sprite.setTexture(textureSet.textures.at(0));
+            m_sprite.setTexture(textureSet.textures.at(0), true);
             return;
         }
 
@@ -183,7 +186,7 @@ namespace platformer
     {
         if (!context.layout.wholeRect().intersects(collisionRect()))
         {
-            // triggerDeath(context); //TODO
+            triggerDeath(context); // TODO
         }
     }
 
@@ -392,6 +395,74 @@ namespace platformer
             m_anim  = AvatarAnim::Jump;
             restartAnim();
         }
+    }
+
+    void Avatar::triggerDeath(Context & context)
+    {
+        if (AvatarState::Death == m_state)
+        {
+            return;
+        }
+
+        // m_blood.start(context, m_sprite.getPosition(), m_isFacingRight);
+        m_state = AvatarState::Death;
+        m_anim  = AvatarAnim::Death;
+        restartAnim();
+        context.sfx.stop("walk");
+        // context.sfx.play("scream");
+        m_velocity = { 0.0f, 0.0f };
+
+        // context.stats.has_player_died = true;
+        // context.stats.enemy_killed    = 0;
+        // context.stats.coin_collected  = 0;
+    }
+
+    bool Avatar::handleDeath(Context & context, const float frameTimeSec)
+    {
+        if (AvatarState::Death != m_state)
+        {
+            return false;
+        }
+
+        // Delay a few seconds after death before changing states.
+        // This allows the player to see how they died, and for all
+        // the various sound effects to finish playing.
+        m_deathDelayElapsedTimeSec += frameTimeSec;
+        if (m_deathDelayElapsedTimeSec > context.settings.death_delay_sec)
+        {
+            if (context.level_info.playerLives() > 1)
+            {
+                context.level_info.playerLivesAdjust(-1);
+                respawn(context);
+            }
+            else
+            {
+                context.state.changeTo(context, State::Shutdown);
+            }
+        }
+
+        animate(context, frameTimeSec);
+        // m_blood.update(frameTimeSec);
+        return true;
+    }
+
+    void Avatar::respawn(Context & context)
+    {
+        context.level.load(context);
+
+        m_state = AvatarState::Still;
+        m_anim  = AvatarAnim::Walk;
+        restartAnim();
+        m_hasLanded = false;
+        m_velocity  = { 0.0f, 0.0f };
+
+        if (!m_isFacingRight)
+        {
+            m_isFacingRight = true;
+            m_sprite.scale(-1.0f, 1.0f); // sfml trick to flip image
+        }
+
+        // context.sfx.play("respawn");
     }
 
 } // namespace platformer

@@ -15,6 +15,10 @@ namespace platformer
         // see main.cpp for where this is really set
         std::filesystem::path media_path = { "./media" };
 
+        int player_lives_per_level = 3;
+
+        float death_delay_sec = 4.0f;
+
         sf::VideoMode video_mode    = { 1920, 1080, 32 };
         float frame_rate            = 60;
         bool will_display_fps       = false;

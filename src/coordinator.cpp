@@ -34,6 +34,7 @@ namespace platformer
         , m_accents()
         , m_spells()
         , m_itemImages()
+        , m_levelInfo(settings)
         , m_context(
               m_settings,
               m_window,
@@ -51,7 +52,8 @@ namespace platformer
               m_pickups,
               m_accents,
               m_spells,
-              m_itemImages)
+              m_itemImages,
+              m_levelInfo)
         , m_fpsValues()
         , m_oneSecondClock()
         , m_elapsedTimeSec(0.0f)

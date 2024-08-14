@@ -90,6 +90,9 @@ namespace platformer
         void sideToSideMotion(Context & context, const float frameTimeSec);
         void restartAnim();
         void jumping(Context & context, const float frameTimeSec);
+        void triggerDeath(Context & context);
+        bool handleDeath(Context & context, const float frameTimeSec);
+        void respawn(Context & context);
 
       private:
         sf::Sprite m_sprite;
@@ -97,6 +100,7 @@ namespace platformer
         AvatarAnim m_anim;
         AvatarState m_state;
         float m_elapsedTimeSec;
+        float m_deathDelayElapsedTimeSec;
         std::size_t m_animIndex;
         sf::Vector2f m_velocity;
         bool m_hasLanded;

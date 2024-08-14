@@ -23,6 +23,7 @@ namespace platformer
     struct Settings;
 
     class Avatar;
+    class LevelInfo;
     class ItemImages;
     class MapTextures;
     class FontManager;
@@ -56,7 +57,8 @@ namespace platformer
             PickupAnimations & pan,
             AccentAnimations & aan,
             SpellAnimations & san,
-            ItemImages & ima)
+            ItemImages & ima,
+            LevelInfo & lin)
             : settings(set)
             , window(win)
             , random(ran)
@@ -74,6 +76,7 @@ namespace platformer
             , accent(aan)
             , spell(san)
             , item(ima)
+            , level_info(lin)
         {}
 
         const Settings & settings;
@@ -93,6 +96,7 @@ namespace platformer
         AccentAnimations & accent;
         SpellAnimations & spell;
         ItemImages & item;
+        LevelInfo & level_info;
     };
 
 } // namespace platformer

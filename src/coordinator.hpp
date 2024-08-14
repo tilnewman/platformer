@@ -11,6 +11,7 @@
 #include "font.hpp"
 #include "item-images.hpp"
 #include "level-file-loader.hpp"
+#include "level-info.hpp"
 #include "level.hpp"
 #include "map-textures.hpp"
 #include "pickups.hpp"
@@ -71,6 +72,7 @@ namespace platformer
         AccentAnimations m_accents;
         SpellAnimations m_spells;
         ItemImages m_itemImages;
+        LevelInfo m_levelInfo;
 
         Context m_context;
 
