@@ -129,7 +129,7 @@ namespace platformer
     void Avatar::changeType()
     {
         std::size_t temp{ static_cast<std::size_t>(m_type) };
-        
+
         ++temp;
         if (temp >= static_cast<std::size_t>(AvatarType::Count))
         {
@@ -216,15 +216,25 @@ namespace platformer
             (AvatarState::AttackExtra != m_state) && (AvatarState::Climb != m_state) &&
             (AvatarState::Hurt != m_state) && (AvatarState::Death != m_state))
         {
-            context.sfx.play("swipe");
-            m_state = AvatarState::Attack;
-            m_anim  = AvatarAnim::Attack;
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+            {
+                context.sfx.play("swipe", 0.6f);
+                m_state = AvatarState::AttackExtra;
+                m_anim  = AvatarAnim::AttackExtra;
+            }
+            else
+            {
+                context.sfx.play("swipe");
+                m_state = AvatarState::Attack;
+                m_anim  = AvatarAnim::Attack;
+            }
+
             restartAnim();
             return true;
         }
 
         // all other frames
-        if (AvatarState::Attack == m_state)
+        if ((AvatarState::Attack == m_state) || (AvatarState::AttackExtra == m_state))
         {
             if (m_isAnimating)
             {
