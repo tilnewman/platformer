@@ -143,7 +143,14 @@ namespace platformer
             ++m_animIndex;
             if (m_animIndex >= textureSet.textures.size())
             {
-                m_animIndex = 0;
+                if (doesAnimLoop(m_anim))
+                {
+                    m_animIndex = 0;
+                }
+                else
+                {
+                    m_animIndex = (textureSet.textures.size() - 1);
+                }
             }
 
             if (textureSet.textures.empty())

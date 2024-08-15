@@ -142,6 +142,19 @@ namespace platformer
         // clang-format on
     }
 
+    inline constexpr bool doesAnimLoop(const AvatarAnim anim)
+    {
+        if ((anim == AvatarAnim::Climb) || (anim == AvatarAnim::Idle) ||
+            (anim == AvatarAnim::Push) || (anim == AvatarAnim::Run) || (anim == AvatarAnim::Walk))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     //
 
     struct AnimTextures
