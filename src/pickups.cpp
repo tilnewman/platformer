@@ -19,11 +19,13 @@ namespace platformer
     PickupAnimations::PickupAnimations()
         : m_textures()
         , m_anims()
+        , m_flareAnims()
         , m_elapsedTimeSec(0.0f)
         , m_timePerFrameSec(0.0f)
         , m_scale(0.0f, 0.0f)
     {
         m_anims.reserve(256);
+        m_flareAnims.reserve(8);
     }
 
     void PickupAnimations::setup(const Settings & settings)
@@ -110,12 +112,48 @@ namespace platformer
                 anim.sprite.setTextureRect(textureRect(anim.which, anim.anim_index));
             }
         }
+
+        bool didAnyFlaresFinish{ false };
+        for (PickupFlareAnim & anim : m_flareAnims)
+        {
+            anim.sprite.scale(1.03f, 1.03f);
+
+            sf::Uint8 alpha = anim.sprite.getColor().a;
+            if (alpha >= 5)
+            {
+                alpha -= 5;
+                anim.sprite.setColor(sf::Color(255, 255, 255, alpha));
+            }
+            else
+            {
+                didAnyFlaresFinish = true;
+                anim.is_alive      = false;
+            }
+        }
+
+        if (didAnyFlaresFinish)
+        {
+            m_flareAnims.erase(
+                std::remove_if(
+                    std::begin(m_flareAnims),
+                    std::end(m_flareAnims),
+                    [](const PickupFlareAnim & anim) { return (anim.is_alive == false); }),
+                std::end(m_flareAnims));
+        }
     }
 
     void PickupAnimations::draw(
         const Context & context, sf::RenderTarget & target, sf::RenderStates states) const
     {
         for (const PickupAnim & anim : m_anims)
+        {
+            if (context.layout.wholeRect().intersects(anim.sprite.getGlobalBounds()))
+            {
+                target.draw(anim.sprite, states);
+            }
+        }
+
+        for (const PickupFlareAnim & anim : m_flareAnims)
         {
             if (context.layout.wholeRect().intersects(anim.sprite.getGlobalBounds()))
             {
@@ -129,6 +167,43 @@ namespace platformer
         for (PickupAnim & anim : m_anims)
         {
             anim.sprite.move(amount, 0.0f);
+        }
+
+        for (PickupFlareAnim & anim : m_flareAnims)
+        {
+            anim.sprite.move(amount, 0.0f);
+        }
+    }
+
+    void PickupAnimations::processCollisionWithAvatar(Context &, const sf::FloatRect & avatarRect)
+    {
+        bool wereAnyPickedUp{ false };
+        for (PickupAnim & anim : m_anims)
+        {
+            if (!avatarRect.intersects(anim.sprite.getGlobalBounds()))
+            {
+                continue;
+            }
+
+            // context.sfx.play("pickup");
+
+            wereAnyPickedUp = true;
+            anim.is_alive   = false;
+
+            PickupFlareAnim & flare{ m_flareAnims.emplace_back() };
+            flare.is_alive = true;
+            flare.sprite   = anim.sprite;
+            flare.sprite.setTextureRect(textureRect(anim.which, 0));
+        }
+
+        if (wereAnyPickedUp)
+        {
+            m_anims.erase(
+                std::remove_if(
+                    std::begin(m_anims),
+                    std::end(m_anims),
+                    [](const PickupAnim & anim) { return (anim.is_alive == false); }),
+                std::end(m_anims));
         }
     }
 

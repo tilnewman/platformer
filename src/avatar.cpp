@@ -79,6 +79,7 @@ namespace platformer
         // handleAttackingEnemies(context);
 
         // context.managers.collideAllWithAvatar(context, collisionRect());
+        context.pickup.processCollisionWithAvatar(context, collisionRect());
 
         if (KillCollisionManager::instance().doesAvatarCollideWithAnyAndDie(
                 context, collisionRect()))

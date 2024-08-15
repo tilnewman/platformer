@@ -79,8 +79,17 @@ namespace platformer
 
     struct PickupAnim
     {
+        bool is_alive{ true };
         Pickup which{ Pickup::Arrow }; // any pickup works here
         std::size_t anim_index{ 0 };
+        sf::Sprite sprite{};
+    };
+
+    //
+
+    struct PickupFlareAnim
+    {
+        bool is_alive{ true };
         sf::Sprite sprite{};
     };
 
@@ -97,6 +106,7 @@ namespace platformer
         void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const;
         void move(const float amount);
         inline void clear() { m_anims.clear(); }
+        void processCollisionWithAvatar(Context & context, const sf::FloatRect & avatarRect);
 
       private:
         std::size_t frameCount(const Pickup which) const;
@@ -105,6 +115,7 @@ namespace platformer
       private:
         std::vector<sf::Texture> m_textures;
         std::vector<PickupAnim> m_anims;
+        std::vector<PickupFlareAnim> m_flareAnims;
         float m_elapsedTimeSec;
         float m_timePerFrameSec;
         sf::Vector2f m_scale;
