@@ -313,8 +313,7 @@
   <object id="1" x="64" y="1072" width="224" height="144"/>
   <object id="2" x="0" y="1200" width="80" height="32"/>
   <object id="3" x="336" y="1344" width="96" height="16"/>
-  <object id="4" x="416" y="1280" width="672" height="128"/>
-  <object id="39" x="1088" y="1280" width="272" height="32"/>
+  <object id="4" x="416" y="1280" width="944" height="128"/>
   <object id="40" x="1344" y="1216" width="288" height="96"/>
  </objectgroup>
  <objectgroup id="5" name="spawn">
