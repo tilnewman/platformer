@@ -3,6 +3,7 @@
 //
 // state-play.hpp
 //
+#include "gui-window.hpp"
 #include "states.hpp"
 
 #include <SFML/Graphics/RenderStates.hpp>
