@@ -53,15 +53,9 @@ namespace platformer
                 const AvatarAnim anim{ static_cast<AvatarAnim>(animIndex) };
                 const std::filesystem::path animPath{ typePath / toString(anim) };
 
-                // not all avatars have all anims
-                if (!std::filesystem::exists(animPath))
-                {
-                    continue;
-                }
-
                 AnimTextures & textureSet{ avatarTextures.anim_textures.at(animIndex) };
                 textureSet.time_per_frame_sec = timePerFrameSec(anim);
-                textureSet.textures.reserve(32); // nobody has more than 18 frames
+                textureSet.textures.reserve(32); // no avatar has more than 18 frames
 
                 std::size_t fileIndex(0);
                 while (true)

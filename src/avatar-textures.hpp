@@ -76,8 +76,6 @@ namespace platformer
         AttackExtra,
         Climb,
         Death,
-        Fire,      // spell casters only
-        FireExtra, // spell casters only
         Hurt,
         Idle,
         Jump,
@@ -99,8 +97,6 @@ namespace platformer
             case AvatarAnim::AttackExtra:   { return "attack_extra"; }
             case AvatarAnim::Climb:         { return "climb"; }
             case AvatarAnim::Death:         { return "death"; }
-            case AvatarAnim::Fire:          { return "fire"; }
-            case AvatarAnim::FireExtra:     { return "fire_extra"; }
             case AvatarAnim::Hurt:          { return "hurt"; }
             case AvatarAnim::Idle:          { return "idle"; }
             case AvatarAnim::Jump:          { return "jump"; }
@@ -125,8 +121,6 @@ namespace platformer
             case AvatarAnim::AttackExtra:   { return 0.1f;  }
             case AvatarAnim::Climb:         { return 0.2f;  }
             case AvatarAnim::Death:         { return 0.1f;  }
-            case AvatarAnim::Fire:          { return 0.1f;  }
-            case AvatarAnim::FireExtra:     { return 0.1f;  }
             case AvatarAnim::Hurt:          { return 0.1f;  }
             case AvatarAnim::Idle:          { return 0.1f;  }
             case AvatarAnim::Jump:          { return 0.15f; }
