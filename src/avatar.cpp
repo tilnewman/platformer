@@ -382,7 +382,7 @@ namespace platformer
 
     void Avatar::sideToSideMotion(Context & context, const float frameTimeSec)
     {
-        if (AvatarState::Jump == m_state)
+        if ((AvatarState::Jump == m_state) || (AvatarState::JumpHigh == m_state))
         {
             // Allow moving side-to-side at a reduced rate while in the air.
             // It sounds wrong but feels so right.
@@ -474,14 +474,27 @@ namespace platformer
     void Avatar::jumping(Context & context, const float frameTimeSec)
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && m_hasLanded &&
-            (AvatarState::Attack != m_state) && (AvatarState::AttackExtra != m_state))
+            (AvatarState::Attack != m_state) && (AvatarState::AttackExtra != m_state) &&
+            (AvatarState::Climb != m_state) && (AvatarState::Death != m_state) &&
+            (AvatarState::Hurt != m_state))
         {
             m_hasLanded = false;
-            m_velocity.y -= (context.settings.jump_acc * frameTimeSec);
             // context.sfx.play("jump");
             context.sfx.stop("walk");
-            m_state = AvatarState::Jump;
-            m_anim  = AvatarAnim::Jump;
+
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+            {
+                m_state = AvatarState::JumpHigh;
+                m_anim  = AvatarAnim::JumpHigh;
+                m_velocity.y -= (context.settings.high_jump_acc * frameTimeSec);
+            }
+            else
+            {
+                m_state = AvatarState::Jump;
+                m_anim  = AvatarAnim::Jump;
+                m_velocity.y -= (context.settings.jump_acc * frameTimeSec);
+            }
+
             restartAnim();
         }
     }

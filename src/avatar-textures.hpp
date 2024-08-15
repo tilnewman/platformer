@@ -119,12 +119,12 @@ namespace platformer
             case AvatarAnim::Death:         { return 0.1f;  }
             case AvatarAnim::Hurt:          { return 0.1f;  }
             case AvatarAnim::Idle:          { return 0.1f;  }
-            case AvatarAnim::Jump:          { return 0.15f; }
-            case AvatarAnim::JumpHigh:      { return 0.15f; }
+            case AvatarAnim::Jump:          { return 0.10f; }
+            case AvatarAnim::JumpHigh:      { return 0.10f; }
             case AvatarAnim::Push:          { return 0.2f;  }
             case AvatarAnim::Run:           { return 0.1f;  }
             case AvatarAnim::Walk:          { return 0.1f;  }
-            case AvatarAnim::Count:         // intentional fallthrough
+            case AvatarAnim::Count:// intentional fallthrough
             default:                        { return 0.0f;  }
         }
         // clang-format on
