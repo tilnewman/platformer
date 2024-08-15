@@ -129,11 +129,13 @@ namespace platformer
     void Avatar::changeType()
     {
         std::size_t temp{ static_cast<std::size_t>(m_type) };
+        
         ++temp;
         if (temp >= static_cast<std::size_t>(AvatarType::Count))
         {
             temp = 0;
         }
+
         m_type = static_cast<AvatarType>(temp);
     }
 
