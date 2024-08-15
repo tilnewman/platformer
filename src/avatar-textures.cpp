@@ -46,8 +46,7 @@ namespace platformer
             avatarTextures.icon_texture.setSmooth(false);
             TextureStats::instance().process(avatarTextures.icon_texture);
 
-            for (std::size_t animIndex(0);
-                 animIndex <= static_cast<std::size_t>(AvatarAnim::WalkAttack);
+            for (std::size_t animIndex(0); animIndex < static_cast<std::size_t>(AvatarAnim::Count);
                  ++animIndex)
             {
                 const AvatarAnim anim{ static_cast<AvatarAnim>(animIndex) };

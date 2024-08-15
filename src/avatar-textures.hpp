@@ -82,9 +82,7 @@ namespace platformer
         JumpHigh,
         Push,
         Run,
-        RunAttack,
         Walk,
-        WalkAttack,
         Count
     };
 
@@ -103,9 +101,7 @@ namespace platformer
             case AvatarAnim::JumpHigh:      { return "jump_high"; }
             case AvatarAnim::Push:          { return "push"; }
             case AvatarAnim::Run:           { return "run"; }
-            case AvatarAnim::RunAttack:     { return "run_attack"; }
             case AvatarAnim::Walk:          { return "walk"; }
-            case AvatarAnim::WalkAttack:    { return "walk_attack"; }
             case AvatarAnim::Count:         // intentional fallthrough
             default:                        { return "error_AvatarAnin_not_found"; }
         }
@@ -117,8 +113,8 @@ namespace platformer
         // clang-format off
         switch (anim)
         {
-            case AvatarAnim::Attack:        { return 0.1f;  }
-            case AvatarAnim::AttackExtra:   { return 0.1f;  }
+            case AvatarAnim::Attack:        { return 0.08f; }
+            case AvatarAnim::AttackExtra:   { return 0.08f; }
             case AvatarAnim::Climb:         { return 0.2f;  }
             case AvatarAnim::Death:         { return 0.1f;  }
             case AvatarAnim::Hurt:          { return 0.1f;  }
@@ -127,9 +123,7 @@ namespace platformer
             case AvatarAnim::JumpHigh:      { return 0.15f; }
             case AvatarAnim::Push:          { return 0.2f;  }
             case AvatarAnim::Run:           { return 0.1f;  }
-            case AvatarAnim::RunAttack:     { return 0.1f;  }
-            case AvatarAnim::Walk:          { return 0.1f; }
-            case AvatarAnim::WalkAttack:    { return 0.12f; }
+            case AvatarAnim::Walk:          { return 0.1f;  }
             case AvatarAnim::Count:         // intentional fallthrough
             default:                        { return 0.0f;  }
         }

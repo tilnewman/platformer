@@ -170,35 +170,18 @@ namespace platformer
     {
         // first frame
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F) && (AvatarState::Attack != m_state) &&
-            (AvatarState::AttackExtra != m_state) && (AvatarState::WalkAttack != m_state) &&
-            (AvatarState::RunAttack != m_state) && (AvatarState::Climb != m_state) &&
+            (AvatarState::AttackExtra != m_state) && (AvatarState::Climb != m_state) &&
             (AvatarState::Hurt != m_state) && (AvatarState::Death != m_state))
         {
             context.sfx.play("swipe");
-
-            if (AvatarState::Run == m_state)
-            {
-                m_state = AvatarState::RunAttack;
-                m_anim  = AvatarAnim::RunAttack;
-            }
-            else if (AvatarState::Walk == m_state)
-            {
-                m_state = AvatarState::WalkAttack;
-                m_anim  = AvatarAnim::WalkAttack;
-            }
-            else
-            {
-                m_state = AvatarState::Attack;
-                m_anim  = AvatarAnim::Attack;
-            }
-
+            m_state = AvatarState::Attack;
+            m_anim  = AvatarAnim::Attack;
             restartAnim();
             return true;
         }
 
         // all other frames
-        if ((AvatarState::Attack == m_state) || (AvatarState::WalkAttack == m_state) ||
-            (AvatarState::RunAttack == m_state))
+        if (AvatarState::Attack == m_state)
         {
             if (m_isAnimating)
             {
@@ -431,12 +414,14 @@ namespace platformer
     void Avatar::restartAnim()
     {
         m_animIndex      = 0;
+        m_isAnimating    = true;
         m_elapsedTimeSec = 0.0f;
     }
 
     void Avatar::jumping(Context & context, const float frameTimeSec)
     {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && m_hasLanded)
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && m_hasLanded &&
+            (AvatarState::Attack != m_state) && (AvatarState::AttackExtra != m_state))
         {
             m_hasLanded = false;
             m_velocity.y -= (context.settings.jump_acc * frameTimeSec);

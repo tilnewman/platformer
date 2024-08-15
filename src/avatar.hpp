@@ -32,9 +32,7 @@ namespace platformer
         JumpHigh,
         Push,
         Run,
-        RunAttack,
         Walk,
-        WalkAttack,
         Still
     };
 
@@ -53,9 +51,7 @@ namespace platformer
             case AvatarState::JumpHigh:     { return "JumpHigh";    }
             case AvatarState::Push:         { return "Push";        }
             case AvatarState::Run:          { return "Run";         }
-            case AvatarState::RunAttack:    { return "RunAttack";   }
             case AvatarState::Walk:         { return "Walk";        }
-            case AvatarState::WalkAttack:   { return "WalkAttack";  }
             case AvatarState::Still:        { return "Still";       }
             default: { return "Error_toString_unknown_AvatarState"; }
         }
