@@ -75,9 +75,11 @@ namespace platformer
         inline AvatarAnim anim() const { return m_anim; }
         inline std::size_t animIndex() const { return m_animIndex; }
         inline bool hasLanded() const { return m_hasLanded; }
+        void changeType();
 
       private:
         const sf::FloatRect collisionRect() const;
+        const sf::FloatRect attackRect() const;
         void animate(Context & context, const float frameTimeSec);
         bool handleAttacking(Context & context);
         void moveMap(Context & context);

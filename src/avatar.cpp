@@ -97,7 +97,8 @@ namespace platformer
     void Avatar::draw(sf::RenderTarget & target, sf::RenderStates states)
     {
         target.draw(m_sprite, states);
-        util::drawRectangleShape(target, collisionRect(), false, sf::Color::Red);
+        util::drawRectangleShape(target, collisionRect(), false, sf::Color::Green);
+        util::drawRectangleShape(target, attackRect(), false, sf::Color::Red);
     }
 
     void Avatar::setPosition(const sf::FloatRect & rect)
@@ -120,6 +121,46 @@ namespace platformer
         else
         {
             rect.left += (bounds.width * 0.15f);
+        }
+
+        return rect;
+    }
+
+    void Avatar::changeType()
+    {
+        std::size_t temp{ static_cast<std::size_t>(m_type) };
+        ++temp;
+        if (temp >= static_cast<std::size_t>(AvatarType::Count))
+        {
+            temp = 0;
+        }
+        m_type = static_cast<AvatarType>(temp);
+    }
+
+    const sf::FloatRect Avatar::attackRect() const
+    {
+        if ((AvatarState::Attack != m_state) && (AvatarState::AttackExtra != m_state))
+        {
+            return {};
+        }
+
+        sf::FloatRect rect{ collisionRect() };
+        rect.height += 4.0f;
+        rect.top -= 2.0f;
+
+        if ((AvatarType::BlueKnight == m_type) || (AvatarType::RedKnight == m_type) ||
+            (AvatarType::Viking == m_type))
+        {
+            rect.width *= 1.2f;
+        }
+
+        if (m_isFacingRight)
+        {
+            rect.left += rect.width;
+        }
+        else
+        {
+            rect.left -= rect.width;
         }
 
         return rect;

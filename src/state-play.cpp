@@ -41,7 +41,13 @@ namespace platformer
         context.spell.draw(context, target, states);
     }
 
-    void PlayState::handleEvent(Context &, const sf::Event &) {}
+    void PlayState::handleEvent(Context & context, const sf::Event & event)
+    {
+        if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::T))
+        {
+            context.avatar.changeType();
+        }
+    }
 
     void PlayState::onEnter(Context & context) { context.level.load(context); }
 
