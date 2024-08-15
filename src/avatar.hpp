@@ -83,6 +83,7 @@ namespace platformer
       private:
         const sf::FloatRect collisionRect() const;
         void animate(Context & context, const float frameTimeSec);
+        bool handleAttacking(Context & context);
         void moveMap(Context & context);
         void killIfOutOfBounds(Context & context);
         void preventBacktracking(const Context & context);
@@ -108,6 +109,7 @@ namespace platformer
         bool m_hasLanded;
         bool m_isFacingRight;
         float m_avatarImageWidthRatio;
+        bool m_isAnimating;
     };
 
 } // namespace platformer

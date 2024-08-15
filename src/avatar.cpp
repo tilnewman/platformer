@@ -38,6 +38,7 @@ namespace platformer
         , m_hasLanded(false)
         , m_isFacingRight(true)
         , m_avatarImageWidthRatio(0.25f)
+        , m_isAnimating(false)
     {}
 
     void Avatar::setup(const Context & context, const AvatarType & type)
@@ -56,15 +57,14 @@ namespace platformer
             return;
         }
 
-        // const bool isAttacking = handleAttacking(context, frameTimeSec);
+        const bool isAttacking{ handleAttacking(context) };
         // const bool isThrowing  = handleThrowing(context, frameTimeSec);
-        // const bool isGliding   = handleGliding(context, frameTimeSec);
 
-        // if (!isAttacking && !isThrowing && !isGliding)
-        //{
-        sideToSideMotion(context, frameTimeSec);
-        jumping(context, frameTimeSec);
-        //}
+        if (!isAttacking) //&& !isThrowing)
+        {
+            sideToSideMotion(context, frameTimeSec);
+            jumping(context, frameTimeSec);
+        }
 
         m_velocity += (context.settings.gravity_acc * frameTimeSec);
         m_sprite.move(m_velocity);
@@ -141,6 +141,7 @@ namespace platformer
             m_elapsedTimeSec -= textureSet.time_per_frame_sec;
 
             ++m_animIndex;
+            m_isAnimating = true;
             if (m_animIndex >= textureSet.textures.size())
             {
                 if (doesAnimLoop(m_anim))
@@ -149,7 +150,8 @@ namespace platformer
                 }
                 else
                 {
-                    m_animIndex = (textureSet.textures.size() - 1);
+                    m_isAnimating = false;
+                    m_animIndex   = (textureSet.textures.size() - 1);
                 }
             }
 
@@ -162,6 +164,56 @@ namespace platformer
                 m_sprite.setTexture(textureSet.textures.at(m_animIndex), true);
             }
         }
+    }
+
+    bool Avatar::handleAttacking(Context & context)
+    {
+        // first frame
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::F) && (AvatarState::Attack != m_state) &&
+            (AvatarState::AttackExtra != m_state) && (AvatarState::WalkAttack != m_state) &&
+            (AvatarState::RunAttack != m_state) && (AvatarState::Climb != m_state) &&
+            (AvatarState::Hurt != m_state) && (AvatarState::Death != m_state))
+        {
+            context.sfx.play("swipe");
+
+            if (AvatarState::Run == m_state)
+            {
+                m_state = AvatarState::RunAttack;
+                m_anim  = AvatarAnim::RunAttack;
+            }
+            else if (AvatarState::Walk == m_state)
+            {
+                m_state = AvatarState::WalkAttack;
+                m_anim  = AvatarAnim::WalkAttack;
+            }
+            else
+            {
+                m_state = AvatarState::Attack;
+                m_anim  = AvatarAnim::Attack;
+            }
+
+            restartAnim();
+            return true;
+        }
+
+        // all other frames
+        if ((AvatarState::Attack == m_state) || (AvatarState::WalkAttack == m_state) ||
+            (AvatarState::RunAttack == m_state))
+        {
+            if (m_isAnimating)
+            {
+                return true;
+            }
+            else
+            {
+                m_state = AvatarState::Still;
+                m_anim  = AvatarAnim::Walk;
+                restartAnim();
+                return false;
+            }
+        }
+
+        return false;
     }
 
     void Avatar::moveMap(Context & context)
