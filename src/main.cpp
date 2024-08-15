@@ -30,8 +30,6 @@ int main(const int argc, const char * const argv[])
 
         settings.media_path = std::filesystem::canonical(settings.media_path);
 
-        std::cout << "Using media folder: " << settings.media_path.string() << std::endl;
-
         platformer::Coordinator coordinator(settings);
         coordinator.play();
     }
