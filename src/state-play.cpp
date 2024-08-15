@@ -19,7 +19,9 @@
 namespace platformer
 {
 
-    PlayState::PlayState() {}
+    PlayState::PlayState()
+        : m_window()
+    {}
 
     void PlayState::update(Context & context, const float frameTimeSec)
     {
@@ -39,6 +41,7 @@ namespace platformer
         context.accent.draw(context, target, states);
         context.avatar.draw(target, states);
         context.spell.draw(context, target, states);
+        m_window.draw(target, states);
     }
 
     void PlayState::handleEvent(Context & context, const sf::Event & event)
@@ -49,8 +52,14 @@ namespace platformer
         }
     }
 
-    void PlayState::onEnter(Context & context) { context.level.load(context); }
+    void PlayState::onEnter(Context & context)
+    {
+        context.level.load(context);
+        m_window.setup(context.settings);
+        m_window.create(context, { 200.0f, 100.0f }, "Wolf Nipple Chips");
+    }
 
-    void PlayState::onExit(Context &) {}
+    void PlayState::onExit(Context &) 
+    {}
 
 } // namespace platformer

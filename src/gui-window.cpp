@@ -37,30 +37,16 @@ namespace platformer
         , m_tapeLeftTexture()
         , m_tapeRightTexture()
         , m_tapeMiddleTexture()
-        , m_borderTopLeftSprite()
-        , m_borderTopRightSprite()
-        , m_borderBotLeftSprite()
-        , m_borderBotRightSprite()
-        , m_borderTopSprite()
-        , m_borderBotSprite()
-        , m_borderLeftSprite()
-        , m_borderRightSprite()
-        , m_bgTopLeftSprite()
-        , m_bgTopRightSprite()
-        , m_bgBotLeftSprite()
-        , m_bgBotRightSprite()
-        , m_bgTopSprite()
-        , m_bgBotSprite()
-        , m_bgLeftSprite()
-        , m_bgRightSprite()
         , m_tapeLeftSprite()
         , m_tapeRightSprite()
         , m_tapeMiddleSprite()
         , m_bgColor(74, 76, 41)
         , m_bgCenterRect()
         , m_bgCenterVerts()
+        , m_sprites()
     {
         m_bgCenterVerts.reserve(util::verts_per_quad);
+        m_sprites.reserve(16);
     }
 
     void GuiWindow::setup(const Settings & settings)
@@ -141,107 +127,150 @@ namespace platformer
 
         //
 
-        m_borderTopLeftSprite.setTexture(m_borderTopLeftTexture);
-        m_borderTopRightSprite.setTexture(m_borderTopRightTexture);
-        m_borderBotLeftSprite.setTexture(m_borderBotLeftTexture);
-        m_borderBotRightSprite.setTexture(m_borderBotRightTexture);
-        m_borderTopSprite.setTexture(m_borderTopTexture);
-        m_borderBotSprite.setTexture(m_borderBotTexture);
-        m_borderLeftSprite.setTexture(m_borderLeftTexture);
-        m_borderRightSprite.setTexture(m_borderRightTexture);
-
-        //
-
-        m_bgTopLeftSprite.setTexture(m_bgTopLeftTexture);
-        m_bgTopRightSprite.setTexture(m_bgTopRightTexture);
-        m_bgBotLeftSprite.setTexture(m_bgBotLeftTexture);
-        m_bgBotRightSprite.setTexture(m_bgBotRightTexture);
-        m_bgTopSprite.setTexture(m_bgTopTexture);
-        m_bgBotSprite.setTexture(m_bgBotTexture);
-        m_bgLeftSprite.setTexture(m_bgLeftTexture);
-        m_bgRightSprite.setTexture(m_bgRightTexture);
-
-        //
-
         m_tapeLeftSprite.setTexture(m_tapeLeftTexture);
         m_tapeRightSprite.setTexture(m_tapeRightTexture);
         m_tapeMiddleSprite.setTexture(m_tapeMiddleTexture);
     }
 
-    void GuiWindow::create(const sf::Vector2f &, const std::string &)
+    void GuiWindow::create(
+        const Context & context, const sf::Vector2f & innerSizeOrig, const std::string &)
     {
-        m_borderTopLeftSprite.setPosition(100.0f, 100.0f);
+        sf::Vector2f betweenCornerSize;
 
-        m_borderTopSprite.setPosition(
-            util::right(m_borderTopLeftSprite), (m_borderTopLeftSprite.getPosition().y + 4.0f));
+        betweenCornerSize.x = (innerSizeOrig.x - 2.0f);
+        if (betweenCornerSize.x < 0.0f)
+        {
+            betweenCornerSize.x = 0.0f;
+        }
 
-        m_borderTopRightSprite.setPosition(
-            util::right(m_borderTopSprite), m_borderTopLeftSprite.getPosition().y);
+        betweenCornerSize.y = (innerSizeOrig.y - 2.0f);
+        if (betweenCornerSize.y < 0.0f)
+        {
+            betweenCornerSize.y = 0.0f;
+        }
 
-        m_borderLeftSprite.setPosition(
-            (m_borderTopLeftSprite.getPosition().x + 3.0f), util::bottom(m_borderTopLeftSprite));
+        sf::Sprite & bgTopLeftSprite{ m_sprites.emplace_back(m_bgTopLeftTexture) };
 
-        m_borderRightSprite.setPosition(
-            (util::right(m_borderTopRightSprite) - 14.0f), util::bottom(m_borderTopRightSprite));
+        const sf::Vector2f totalSize{
+            (betweenCornerSize.x + (bgTopLeftSprite.getGlobalBounds().width * 2.0f)),
+            (betweenCornerSize.y + (bgTopLeftSprite.getGlobalBounds().height * 2.0f))
+        };
 
-        m_borderBotLeftSprite.setPosition(
-            m_borderTopLeftSprite.getPosition().x, util::bottom(m_borderLeftSprite));
+        bgTopLeftSprite.setPosition((context.layout.wholeSize() * 0.5f) - (totalSize * 0.5f));
 
-        m_borderBotSprite.setPosition(
-            m_borderTopSprite.getPosition().x, (util::bottom(m_borderBotLeftSprite) - 15.0f));
+        if (betweenCornerSize.x > 0.0f)
+        {
+            sf::FloatRect bgTopRect;
+            bgTopRect.left   = util::right(bgTopLeftSprite);
+            bgTopRect.top    = bgTopLeftSprite.getPosition().y;
+            bgTopRect.width  = betweenCornerSize.x;
+            bgTopRect.height = bgTopLeftSprite.getGlobalBounds().height;
 
-        m_borderBotRightSprite.setPosition(
-            m_borderTopRightSprite.getPosition().x, m_borderBotLeftSprite.getPosition().y);
+            sf::Sprite & bgTopSprite{ m_sprites.emplace_back(m_bgTopTexture) };
+            util::scaleAndCenterInside(bgTopSprite, bgTopRect);
+
+            sf::FloatRect bgBotRect;
+            bgBotRect.left   = bgTopRect.left;
+            bgBotRect.top    = (util::bottom(bgTopLeftSprite) + betweenCornerSize.y);
+            bgBotRect.width  = bgTopRect.width;
+            bgBotRect.height = bgTopRect.height;
+
+            sf::Sprite & bgBotSprite{ m_sprites.emplace_back(m_bgBotTexture) };
+            util::scaleAndCenterInside(bgBotSprite, bgBotRect);
+        }
+
+        sf::Sprite & bgTopRightSprite{ m_sprites.emplace_back(m_bgTopRightTexture) };
+
+        bgTopRightSprite.setPosition(
+            (util::right(bgTopLeftSprite) + betweenCornerSize.x), bgTopLeftSprite.getPosition().y);
+
+        if (betweenCornerSize.y > 0.0f)
+        {
+            sf::FloatRect bgLeftRect;
+            bgLeftRect.left   = bgTopLeftSprite.getPosition().x;
+            bgLeftRect.top    = util::bottom(bgTopLeftSprite);
+            bgLeftRect.width  = bgTopLeftSprite.getGlobalBounds().width;
+            bgLeftRect.height = betweenCornerSize.y;
+
+            sf::Sprite & bgLeftSprite{ m_sprites.emplace_back(m_bgLeftTexture) };
+            util::scaleAndCenterInside(bgLeftSprite, bgLeftRect);
+
+            sf::FloatRect bgRightRect;
+            bgRightRect.left   = bgTopRightSprite.getPosition().x;
+            bgRightRect.top    = bgLeftRect.top;
+            bgRightRect.width  = bgLeftRect.width;
+            bgRightRect.height = bgLeftRect.height;
+
+            sf::Sprite & bgRightSprite{ m_sprites.emplace_back(m_bgRightTexture) };
+            util::scaleAndCenterInside(bgRightSprite, bgRightRect);
+        }
+
+        sf::Sprite & bgBotLeftSprite{ m_sprites.emplace_back(m_bgBotLeftTexture) };
+
+        bgBotLeftSprite.setPosition(
+            bgTopLeftSprite.getPosition().x, (util::bottom(bgTopLeftSprite) + betweenCornerSize.y));
+
+        sf::Sprite & bgBotRightSprite{ m_sprites.emplace_back(m_bgBotRightTexture) };
+
+        bgBotRightSprite.setPosition(
+            bgTopRightSprite.getPosition().x, bgBotLeftSprite.getPosition().y);
 
         //
 
-        m_bgTopLeftSprite.setPosition(100.0f, 100.0f);
-
-        m_bgTopSprite.setPosition(
-            util::right(m_bgTopLeftSprite), m_bgTopLeftSprite.getPosition().y);
-
-        m_bgTopRightSprite.setPosition(
-            util::right(m_bgTopSprite), m_bgTopLeftSprite.getPosition().y);
-
-        m_bgLeftSprite.setPosition(
-            m_bgTopLeftSprite.getPosition().x, util::bottom(m_bgTopLeftSprite));
-
-        m_bgRightSprite.setPosition(
-            m_bgTopRightSprite.getPosition().x, util::bottom(m_bgTopRightSprite));
-
-        m_bgBotLeftSprite.setPosition(
-            m_bgTopLeftSprite.getPosition().x, util::bottom(m_bgLeftSprite));
-
-        m_bgBotSprite.setPosition(
-            util::right(m_bgBotLeftSprite), m_bgBotLeftSprite.getPosition().y);
-
-        m_bgBotRightSprite.setPosition(
-            m_bgTopRightSprite.getPosition().x, util::bottom(m_bgRightSprite));
+        // m_borderTopLeftSprite.setPosition(100.0f, 100.0f);
+        //
+        // m_borderTopSprite.setPosition(
+        //     util::right(m_borderTopLeftSprite), (m_borderTopLeftSprite.getPosition().y + 4.0f));
+        //
+        // m_borderTopRightSprite.setPosition(
+        //     util::right(m_borderTopSprite), m_borderTopLeftSprite.getPosition().y);
+        //
+        // m_borderLeftSprite.setPosition(
+        //     (m_borderTopLeftSprite.getPosition().x + 3.0f), util::bottom(m_borderTopLeftSprite));
+        //
+        // m_borderRightSprite.setPosition(
+        //     (util::right(m_borderTopRightSprite) - 14.0f), util::bottom(m_borderTopRightSprite));
+        //
+        // m_borderBotLeftSprite.setPosition(
+        //     m_borderTopLeftSprite.getPosition().x, util::bottom(m_borderLeftSprite));
+        //
+        // m_borderBotSprite.setPosition(
+        //     m_borderTopSprite.getPosition().x, (util::bottom(m_borderBotLeftSprite) - 15.0f));
+        //
+        // m_borderBotRightSprite.setPosition(
+        //     m_borderTopRightSprite.getPosition().x, m_borderBotLeftSprite.getPosition().y);
 
         //
 
-        m_bgCenterRect.left = util::right(m_bgLeftSprite);
-        m_bgCenterRect.top  = util::bottom(m_bgTopSprite);
-
-        m_bgCenterRect.width =
-            (m_bgTopRightSprite.getPosition().x - util::right(m_bgTopLeftSprite));
-
-        m_bgCenterRect.height =
-            (m_bgBotLeftSprite.getPosition().y - util::bottom(m_bgTopLeftSprite));
+        m_bgCenterRect.left   = util::right(bgTopLeftSprite);
+        m_bgCenterRect.top    = util::bottom(bgTopLeftSprite);
+        m_bgCenterRect.width  = (bgTopRightSprite.getPosition().x - util::right(bgTopLeftSprite));
+        m_bgCenterRect.height = (bgBotLeftSprite.getPosition().y - util::bottom(bgTopLeftSprite));
 
         util::appendQuadVerts(m_bgCenterRect, m_bgCenterVerts, m_bgColor);
+
+        //
+
+        m_innerRect.left   = (m_bgCenterRect.left - 1.0f);
+        m_innerRect.top    = (m_bgCenterRect.top - 1.0f);
+        m_innerRect.width  = (m_bgCenterRect.width + 2.0f);
+        m_innerRect.height = (m_bgCenterRect.height + 2.0f);
+
+        //
+
+        m_outerRect.left   = bgTopLeftSprite.getPosition().x;
+        m_outerRect.top    = bgTopLeftSprite.getPosition().y;
+        m_outerRect.width  = (util::right(bgTopRightSprite) - m_outerRect.left);
+        m_outerRect.height = (util::bottom(bgBotRightSprite) - m_outerRect.top);
     }
 
     void GuiWindow::draw(sf::RenderTarget & target, sf::RenderStates states) const
     {
-        target.draw(m_bgTopLeftSprite, states);
-        target.draw(m_bgTopSprite, states);
-        target.draw(m_bgTopRightSprite, states);
-        target.draw(m_bgLeftSprite, states);
-        target.draw(m_bgRightSprite, states);
-        target.draw(m_bgBotLeftSprite, states);
-        target.draw(m_bgBotSprite, states);
-        target.draw(m_bgBotRightSprite, states);
+        for (const sf::Sprite & sprite : m_sprites)
+        {
+            target.draw(sprite, states);
+        }
+
         target.draw(&m_bgCenterVerts[0], m_bgCenterVerts.size(), sf::Quads, states);
     }
 

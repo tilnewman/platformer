@@ -10,8 +10,8 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
-#include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Vertex.hpp>
+#include <SFML/System/Vector2.hpp>
 
 namespace platformer
 {
@@ -26,8 +26,10 @@ namespace platformer
         GuiWindow();
 
         void setup(const Settings & settings);
-        void create(const sf::Vector2f & innerSize, const std::string & title);
+        void create(const Context & c, const sf::Vector2f & innerSize, const std::string & title);
         void draw(sf::RenderTarget & target, sf::RenderStates states) const;
+        inline const sf::FloatRect innerRect() const { return m_innerRect; }
+        inline const sf::FloatRect outerRect() const { return m_outerRect; }
 
       private:
         sf::FloatRect m_innerRect;
@@ -55,24 +57,6 @@ namespace platformer
         sf::Texture m_tapeRightTexture;
         sf::Texture m_tapeMiddleTexture;
 
-        sf::Sprite m_borderTopLeftSprite;
-        sf::Sprite m_borderTopRightSprite;
-        sf::Sprite m_borderBotLeftSprite;
-        sf::Sprite m_borderBotRightSprite;
-        sf::Sprite m_borderTopSprite;
-        sf::Sprite m_borderBotSprite;
-        sf::Sprite m_borderLeftSprite;
-        sf::Sprite m_borderRightSprite;
-        //
-        sf::Sprite m_bgTopLeftSprite;
-        sf::Sprite m_bgTopRightSprite;
-        sf::Sprite m_bgBotLeftSprite;
-        sf::Sprite m_bgBotRightSprite;
-        sf::Sprite m_bgTopSprite;
-        sf::Sprite m_bgBotSprite;
-        sf::Sprite m_bgLeftSprite;
-        sf::Sprite m_bgRightSprite;
-        //
         sf::Sprite m_tapeLeftSprite;
         sf::Sprite m_tapeRightSprite;
         sf::Sprite m_tapeMiddleSprite;
@@ -80,6 +64,8 @@ namespace platformer
         sf::Color m_bgColor;
         sf::FloatRect m_bgCenterRect;
         std::vector<sf::Vertex> m_bgCenterVerts;
+
+        std::vector<sf::Sprite> m_sprites;
     };
 
 } // namespace platformer
