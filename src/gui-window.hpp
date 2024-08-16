@@ -97,13 +97,9 @@ namespace platformer
         sf::Color m_bgColor;
         sf::FloatRect m_bgCenterRect;
         std::vector<sf::Vertex> m_bgCenterVerts;
-
         std::vector<sf::Sprite> m_sprites;
-
         sf::Text m_titleText;
-
         std::vector<sf::Text> m_contentTexts;
-
         std::vector<sf::Vertex> m_bgFadeVerts;
     };
 
