@@ -534,6 +534,12 @@ namespace platformer
 
                 util::scaleAndCenterInside(tapeMiddleSprite, tapeMiddleRect);
             }
+
+            m_outerRect.width += ((m_outerRect.left - tapeLeftSprite.getPosition().x) * 2.0f);
+            m_outerRect.left = tapeLeftSprite.getPosition().x;
+
+            m_outerRect.height += (m_outerRect.top - tapeLeftSprite.getPosition().y);
+            m_outerRect.top = tapeLeftSprite.getPosition().y;
         }
     }
 
