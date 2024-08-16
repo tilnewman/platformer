@@ -35,9 +35,11 @@ namespace platformer
 
         sf::Vector2f gravity_acc = { 0.0f, 25.0f };
         float walk_speed_limit   = 3.0f;
+        float run_speed_limit    = 5.0f;
+        float walk_acceleration  = 15.0f;
+        float run_acceleration   = 25.0f;
         float jump_acc           = 650.0f;
         float high_jump_acc      = 850.0f;
-        float walk_acc           = 15.0f;
     };
 
 } // namespace platformer

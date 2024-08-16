@@ -392,7 +392,9 @@ namespace platformer
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
             {
-                m_velocity.x += ((context.settings.walk_acc / jumpMoveDivisor) * frameTimeSec);
+                m_velocity.x +=
+                    ((context.settings.walk_acceleration / jumpMoveDivisor) * frameTimeSec);
+
                 if (m_velocity.x > context.settings.walk_speed_limit)
                 {
                     m_velocity.x = context.settings.walk_speed_limit;
@@ -401,18 +403,40 @@ namespace platformer
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             {
-                m_velocity.x -= ((context.settings.walk_acc / jumpMoveDivisor) * frameTimeSec);
+                m_velocity.x -=
+                    ((context.settings.walk_acceleration / jumpMoveDivisor) * frameTimeSec);
+
                 if (m_velocity.x < -context.settings.walk_speed_limit)
                 {
                     m_velocity.x = -context.settings.walk_speed_limit;
                 }
             }
+
+            return;
         }
-        else
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
             {
-                m_velocity.x += (context.settings.walk_acc * frameTimeSec);
+                m_velocity.x += (context.settings.run_acceleration * frameTimeSec);
+                if (m_velocity.x > context.settings.run_speed_limit)
+                {
+                    m_velocity.x = context.settings.run_speed_limit;
+                }
+
+                if (AvatarState::Run != m_state)
+                {
+                    restartAnim();
+                    context.sfx.play("walk");
+                }
+
+                m_state = AvatarState::Run;
+                m_anim  = AvatarAnim::Run;
+            }
+            else
+            {
+                m_velocity.x += (context.settings.walk_acceleration * frameTimeSec);
                 if (m_velocity.x > context.settings.walk_speed_limit)
                 {
                     m_velocity.x = context.settings.walk_speed_limit;
@@ -426,15 +450,35 @@ namespace platformer
 
                 m_state = AvatarState::Walk;
                 m_anim  = AvatarAnim::Walk;
-
-                if (!m_isFacingRight)
-                {
-                    turnRight();
-                }
             }
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+
+            if (!m_isFacingRight)
             {
-                m_velocity.x -= (context.settings.walk_acc * frameTimeSec);
+                turnRight();
+            }
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+            {
+                m_velocity.x -= (context.settings.run_acceleration * frameTimeSec);
+                if (m_velocity.x < -context.settings.run_speed_limit)
+                {
+                    m_velocity.x = -context.settings.run_speed_limit;
+                }
+
+                if (AvatarState::Run != m_state)
+                {
+                    restartAnim();
+                    context.sfx.play("walk");
+                }
+
+                m_state = AvatarState::Run;
+                m_anim  = AvatarAnim::Run;
+            }
+            else
+            {
+                m_velocity.x -= (context.settings.walk_acceleration * frameTimeSec);
                 if (m_velocity.x < -context.settings.walk_speed_limit)
                 {
                     m_velocity.x = -context.settings.walk_speed_limit;
@@ -448,20 +492,20 @@ namespace platformer
 
                 m_state = AvatarState::Walk;
                 m_anim  = AvatarAnim::Walk;
+            }
 
-                if (m_isFacingRight)
-                {
-                    turnLeft();
-                }
-            }
-            else
+            if (m_isFacingRight)
             {
-                m_velocity.x = 0.0f;
-                m_state      = AvatarState::Still;
-                // m_anim       = AvatarAnim::Walk;
-                // restartAnim();
-                context.sfx.stop("walk");
+                turnLeft();
             }
+        }
+        else
+        {
+            m_velocity.x = 0.0f;
+            m_state      = AvatarState::Still;
+            m_anim       = AvatarAnim::Walk;
+            restartAnim();
+            context.sfx.stop("walk");
         }
     }
 
