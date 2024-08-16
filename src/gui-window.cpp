@@ -11,6 +11,7 @@
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
+#include "text-layout.hpp"
 #include "texture-stats.hpp"
 
 namespace platformer
@@ -55,6 +56,7 @@ namespace platformer
         , m_bgCenterVerts()
         , m_sprites()
         , m_titleText()
+        , m_contentTexts()
     {
         m_bgCenterVerts.reserve(util::verts_per_quad);
         m_sprites.reserve(16);
@@ -178,7 +180,7 @@ namespace platformer
         m_tapeMiddleSprite.setTexture(m_tapeMiddleTexture);
     }
 
-    void GuiWindow::create(const Context & context, const GuiWIndowInfo & info)
+    void GuiWindow::create(Context & context, const GuiWindowInfo & info)
     {
         m_sprites.clear();
 
@@ -186,13 +188,13 @@ namespace platformer
 
         sf::Vector2f betweenCornerSize;
 
-        betweenCornerSize.x = (m_info.innerSize.x - 2.0f);
+        betweenCornerSize.x = (m_info.inner_size.x - 2.0f);
         if (betweenCornerSize.x < 0.0f)
         {
             betweenCornerSize.x = 0.0f;
         }
 
-        betweenCornerSize.y = (m_info.innerSize.y - 2.0f);
+        betweenCornerSize.y = (m_info.inner_size.y - 2.0f);
         if (betweenCornerSize.y < 0.0f)
         {
             betweenCornerSize.y = 0.0f;
@@ -541,6 +543,8 @@ namespace platformer
             m_outerRect.height += (m_outerRect.top - tapeLeftSprite.getPosition().y);
             m_outerRect.top = tapeLeftSprite.getPosition().y;
         }
+
+        m_contentTexts = TextLayout::layout(context, m_info.content, m_innerRect, m_info.details);
     }
 
     void GuiWindow::draw(sf::RenderTarget & target, sf::RenderStates states) const
@@ -552,6 +556,11 @@ namespace platformer
 
         target.draw(&m_bgCenterVerts[0], m_bgCenterVerts.size(), sf::Quads, states);
         target.draw(m_titleText, states);
+
+        for (const sf::Text & text : m_contentTexts)
+        {
+            target.draw(text, states);
+        }
     }
 
 } // namespace platformer

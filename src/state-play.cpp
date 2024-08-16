@@ -58,8 +58,19 @@ namespace platformer
 
         m_window.setup(context.settings);
 
-        m_window.create(
-            context, { "Wolf Nipple Chips", { 200.0f, 200.0f }, GuiWindowBorder::Fancy });
+        GuiWindowInfo info;
+        info.title = "Wolf Nipple Chips";
+
+        info.content =
+            "These are the most tender best tasting wolf nipples you'll ever find. Salt is "
+            "free, red pepper costs extra. Cut you a deal on a dozen?";
+
+        info.details.color = sf::Color(246, 199, 68);
+        info.details.size  = FontSize::Small;
+        info.inner_size    = { 200.0f, 200.0f };
+        info.border        = GuiWindowBorder::Fancy;
+
+        m_window.create(context, info);
     }
 
     void PlayState::onExit(Context &) {}

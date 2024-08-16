@@ -3,14 +3,16 @@
 //
 // gui-window.hpp
 //
+#include "font.hpp"
+
 #include <vector>
 
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Vertex.hpp>
 #include <SFML/System/Vector2.hpp>
 
@@ -19,23 +21,24 @@ namespace platformer
     struct Context;
     struct Settings;
 
-
     //
-    
+
     enum class GuiWindowBorder
     {
         None,
         Small,
         Fancy
     };
-    
+
     //
 
-    struct GuiWIndowInfo
+    struct GuiWindowInfo
     {
         std::string title{};
-        sf::Vector2f innerSize{};
-        GuiWindowBorder border{GuiWindowBorder::None};
+        std::string content{};
+        TextDetails details{};
+        sf::Vector2f inner_size{};
+        GuiWindowBorder border{ GuiWindowBorder::None };
     };
 
     //
@@ -46,13 +49,13 @@ namespace platformer
         GuiWindow();
 
         void setup(const Settings & settings);
-        void create(const Context & context, const GuiWIndowInfo & info);
+        void create(Context & context, const GuiWindowInfo & info);
         void draw(sf::RenderTarget & target, sf::RenderStates states) const;
         inline const sf::FloatRect innerRect() const { return m_innerRect; }
         inline const sf::FloatRect outerRect() const { return m_outerRect; }
 
       private:
-        GuiWIndowInfo m_info;
+        GuiWindowInfo m_info;
         sf::FloatRect m_innerRect;
         sf::FloatRect m_outerRect;
         //
@@ -98,6 +101,8 @@ namespace platformer
         std::vector<sf::Sprite> m_sprites;
 
         sf::Text m_titleText;
+
+        std::vector<sf::Text> m_contentTexts;
     };
 
 } // namespace platformer

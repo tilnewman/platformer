@@ -34,12 +34,20 @@ namespace platformer
         const Font font,
         const FontSize size,
         const std::string & string,
-        const sf::Color & color) const
+        const sf::Color & color,
+        const sf::Text::Style style) const
     {
         sf::Text text(string, get(font), extent(size).char_size);
         text.setFillColor(color);
+        text.setStyle(style);
         util::setOriginToPosition(text);
         return text;
+    }
+
+    const sf::Text
+        FontManager::makeText(const std::string & text, const TextDetails & details) const
+    {
+        return makeText(details.font, details.size, text, details.color, details.style);
     }
 
     const FontExtent FontManager::extent(const FontSize size) const
