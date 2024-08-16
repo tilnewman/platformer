@@ -18,6 +18,25 @@ namespace platformer
     struct Context;
     struct Settings;
 
+
+    //
+    
+    enum class GuiWindowBorder
+    {
+        None,
+        Small,
+        Fancy
+    };
+    
+    //
+
+    struct GuiWIndowInfo
+    {
+        std::string title{};
+        sf::Vector2f innerSize{};
+        GuiWindowBorder border{GuiWindowBorder::None};
+    };
+
     //
 
     class GuiWindow
@@ -26,12 +45,13 @@ namespace platformer
         GuiWindow();
 
         void setup(const Settings & settings);
-        void create(const Context & c, const sf::Vector2f & innerSize, const std::string & title);
+        void create(const Context & context, const GuiWIndowInfo & info);
         void draw(sf::RenderTarget & target, sf::RenderStates states) const;
         inline const sf::FloatRect innerRect() const { return m_innerRect; }
         inline const sf::FloatRect outerRect() const { return m_outerRect; }
 
       private:
+        GuiWIndowInfo m_info;
         sf::FloatRect m_innerRect;
         sf::FloatRect m_outerRect;
         //
@@ -43,6 +63,15 @@ namespace platformer
         sf::Texture m_borderBotTexture;
         sf::Texture m_borderLeftTexture;
         sf::Texture m_borderRightTexture;
+        //
+        sf::Texture m_smallBorderTopLeftTexture;
+        sf::Texture m_smallBorderTopRightTexture;
+        sf::Texture m_smallBorderBotLeftTexture;
+        sf::Texture m_smallBorderBotRightTexture;
+        sf::Texture m_smallBorderTopTexture;
+        sf::Texture m_smallBorderBotTexture;
+        sf::Texture m_smallBorderLeftTexture;
+        sf::Texture m_smallBorderRightTexture;
         //
         sf::Texture m_bgTopLeftTexture;
         sf::Texture m_bgTopRightTexture;

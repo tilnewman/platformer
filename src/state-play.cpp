@@ -55,11 +55,13 @@ namespace platformer
     void PlayState::onEnter(Context & context)
     {
         context.level.load(context);
+
         m_window.setup(context.settings);
-        m_window.create(context, { 200.0f, 200.0f }, "Wolf Nipple Chips");
+
+        m_window.create(
+            context, { "Wolf Nipple Chips", { 200.0f, 200.0f }, GuiWindowBorder::Fancy });
     }
 
-    void PlayState::onExit(Context &) 
-    {}
+    void PlayState::onExit(Context &) {}
 
 } // namespace platformer
