@@ -3,7 +3,6 @@
 //
 // state-play.hpp
 //
-#include "gui-window-paper.hpp"
 #include "states.hpp"
 
 #include <SFML/Graphics/RenderStates.hpp>
@@ -34,9 +33,6 @@ namespace platformer
         void handleEvent(Context & context, const sf::Event & event) final;
         void onEnter(Context & context) final;
         void onExit(Context & context) final;
-
-      private:
-        GuiWindowPaper m_window;
     };
 
 } // namespace platformer

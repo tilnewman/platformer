@@ -19,9 +19,7 @@
 namespace platformer
 {
 
-    PlayState::PlayState()
-        : m_window()
-    {}
+    PlayState::PlayState() {}
 
     void PlayState::update(Context & context, const float frameTimeSec)
     {
@@ -41,7 +39,6 @@ namespace platformer
         context.accent.draw(context, target, states);
         context.avatar.draw(target, states);
         context.spell.draw(context, target, states);
-        m_window.draw(target, states);
     }
 
     void PlayState::handleEvent(Context & context, const sf::Event & event)
@@ -52,24 +49,7 @@ namespace platformer
         }
     }
 
-    void PlayState::onEnter(Context & context)
-    {
-        context.level.load(context);
-
-        m_window.setup(context.settings);
-
-        GuiWindowInfo info;
-        info.title = "Wolf Nipple Chips";
-
-        info.content =
-            "These are the most tender best tasting wolf nipples you'll ever find. Salt is "
-            "free, red pepper costs extra. Cut you a deal on a dozen?";
-
-        info.details.color = sf::Color(32,32,32);
-        info.details.size  = FontSize::Medium;
-        
-        m_window.create(context, false, info);
-    }
+    void PlayState::onEnter(Context & context) { context.level.load(context); }
 
     void PlayState::onExit(Context &) {}
 
