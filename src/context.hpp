@@ -35,6 +35,7 @@ namespace platformer
     class PickupAnimations;
     class AccentAnimations;
     class AvatarTextureManager;
+    class GoblinTextureManager;
 
     //
 
@@ -49,6 +50,7 @@ namespace platformer
             FontManager & fma,
             Avatar & ava,
             AvatarTextureManager & atm,
+            GoblinTextureManager & gtm,
             ScreenLayout & scl,
             LevelFileLoader & lfl,
             Level & lvl,
@@ -67,6 +69,7 @@ namespace platformer
             , font(fma)
             , avatar(ava)
             , avatar_texture(atm)
+            , goblin_texture(gtm)
             , layout(scl)
             , level_loader(lfl)
             , level(lvl)
@@ -87,6 +90,7 @@ namespace platformer
         FontManager & font;
         Avatar & avatar;
         AvatarTextureManager & avatar_texture;
+        GoblinTextureManager & goblin_texture;
         ScreenLayout & layout;
         LevelFileLoader & level_loader;
         Level & level;
