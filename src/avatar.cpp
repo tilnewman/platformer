@@ -98,8 +98,6 @@ namespace platformer
     void Avatar::draw(sf::RenderTarget & target, sf::RenderStates states)
     {
         target.draw(m_sprite, states);
-        util::drawRectangleShape(target, collisionRect(), false, sf::Color::Green);
-        util::drawRectangleShape(target, attackRect(), false, sf::Color::Red);
     }
 
     void Avatar::setPosition(const sf::FloatRect & rect)
