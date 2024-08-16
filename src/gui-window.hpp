@@ -103,6 +103,8 @@ namespace platformer
         sf::Text m_titleText;
 
         std::vector<sf::Text> m_contentTexts;
+
+        std::vector<sf::Vertex> m_bgFadeVerts;
     };
 
 } // namespace platformer

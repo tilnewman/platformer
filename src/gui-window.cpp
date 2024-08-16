@@ -57,8 +57,10 @@ namespace platformer
         , m_sprites()
         , m_titleText()
         , m_contentTexts()
+        , m_bgFadeVerts()
     {
         m_bgCenterVerts.reserve(util::verts_per_quad);
+        m_bgFadeVerts.reserve(util::verts_per_quad);
         m_sprites.reserve(16);
     }
 
@@ -183,6 +185,9 @@ namespace platformer
     void GuiWindow::create(Context & context, const GuiWindowInfo & info)
     {
         m_sprites.clear();
+
+        m_bgFadeVerts.clear();
+        util::appendQuadVerts(context.layout.wholeRect(), m_bgFadeVerts, sf::Color(0, 0, 0, 127));
 
         m_info = info;
 
@@ -549,6 +554,8 @@ namespace platformer
 
     void GuiWindow::draw(sf::RenderTarget & target, sf::RenderStates states) const
     {
+        target.draw(&m_bgFadeVerts[0], m_bgFadeVerts.size(), sf::Quads, states);
+
         for (const sf::Sprite & sprite : m_sprites)
         {
             target.draw(sprite, states);
