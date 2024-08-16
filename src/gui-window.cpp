@@ -498,13 +498,13 @@ namespace platformer
 
             tapeLeftSprite.setPosition(
                 ((context.layout.wholeSize().x * 0.5f) - tapeLeftSprite.getGlobalBounds().width),
-                (m_outerRect.top - (tapeLeftSprite.getGlobalBounds().height * 0.5f)));
+                (m_outerRect.top - (tapeLeftSprite.getGlobalBounds().height * 0.65f)));
 
             sf::Sprite & tapeRightSprite{ m_sprites.emplace_back(m_tapeRightTexture) };
 
             tapeRightSprite.setPosition(
                 (context.layout.wholeSize().x * 0.5f),
-                (m_outerRect.top - (tapeRightSprite.getGlobalBounds().height * 0.5f)));
+                (m_outerRect.top - (tapeRightSprite.getGlobalBounds().height * 0.65f)));
 
             sf::FloatRect titleRect;
             titleRect.left   = ((context.layout.wholeSize().x * 0.5f) - 100.0f);
