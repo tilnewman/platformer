@@ -10,6 +10,7 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Vertex.hpp>
 #include <SFML/System/Vector2.hpp>
 
@@ -95,6 +96,8 @@ namespace platformer
         std::vector<sf::Vertex> m_bgCenterVerts;
 
         std::vector<sf::Sprite> m_sprites;
+
+        sf::Text m_titleText;
     };
 
 } // namespace platformer

@@ -7,6 +7,7 @@
 
 #include "check-macros.hpp"
 #include "context.hpp"
+#include "font.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
@@ -53,6 +54,7 @@ namespace platformer
         , m_bgCenterRect()
         , m_bgCenterVerts()
         , m_sprites()
+        , m_titleText()
     {
         m_bgCenterVerts.reserve(util::verts_per_quad);
         m_sprites.reserve(16);
@@ -482,6 +484,57 @@ namespace platformer
             m_outerRect.width  = (util::right(bgTopRightSprite) - m_outerRect.left);
             m_outerRect.height = (util::bottom(bgBotRightSprite) - m_outerRect.top);
         }
+
+        if (!m_info.title.empty())
+        {
+            sf::Sprite & tapeLeftSprite{ m_sprites.emplace_back(m_tapeLeftTexture) };
+
+            tapeLeftSprite.setPosition(
+                ((context.layout.wholeSize().x * 0.5f) - tapeLeftSprite.getGlobalBounds().width),
+                (m_outerRect.top - (tapeLeftSprite.getGlobalBounds().height * 0.5f)));
+
+            sf::Sprite & tapeRightSprite{ m_sprites.emplace_back(m_tapeRightTexture) };
+
+            tapeRightSprite.setPosition(
+                (context.layout.wholeSize().x * 0.5f),
+                (m_outerRect.top - (tapeRightSprite.getGlobalBounds().height * 0.5f)));
+
+            sf::FloatRect titleRect;
+            titleRect.left   = ((context.layout.wholeSize().x * 0.5f) - 100.0f);
+            titleRect.top    = (tapeLeftSprite.getPosition().y + 14.0f);
+            titleRect.width  = 200.0f;
+            titleRect.height = 37.0f;
+
+            m_titleText = context.font.makeText(
+                Font::Default, FontSize::Medium, m_info.title, sf::Color(32, 32, 32));
+
+            util::fitAndCenterInside(m_titleText, titleRect);
+
+            const float betweenTapeSize{ m_titleText.getGlobalBounds().width - titleRect.width };
+
+            if (betweenTapeSize > 0.0f)
+            {
+                tapeLeftSprite.move(-(betweenTapeSize * 0.5f), 0.0f);
+                tapeRightSprite.move((betweenTapeSize * 0.5f), 0.0f);
+
+                titleRect.left -= (betweenTapeSize * 0.5f);
+                titleRect.width += betweenTapeSize;
+
+                util::fitAndCenterInside(m_titleText, titleRect);
+
+                sf::Sprite & tapeMiddleSprite{ m_sprites.emplace_back(m_tapeMiddleTexture) };
+                sf::FloatRect tapeMiddleRect;
+
+                tapeMiddleRect.left =
+                    ((context.layout.wholeSize().x * 0.5f) - (betweenTapeSize * 0.5f));
+
+                tapeMiddleRect.top    = (tapeLeftSprite.getPosition().y + 8.0f);
+                tapeMiddleRect.width  = betweenTapeSize;
+                tapeMiddleRect.height = tapeMiddleSprite.getGlobalBounds().height;
+
+                util::scaleAndCenterInside(tapeMiddleSprite, tapeMiddleRect);
+            }
+        }
     }
 
     void GuiWindow::draw(sf::RenderTarget & target, sf::RenderStates states) const
@@ -492,6 +545,7 @@ namespace platformer
         }
 
         target.draw(&m_bgCenterVerts[0], m_bgCenterVerts.size(), sf::Quads, states);
+        target.draw(m_titleText, states);
     }
 
 } // namespace platformer
