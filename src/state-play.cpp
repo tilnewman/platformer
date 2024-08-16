@@ -65,12 +65,10 @@ namespace platformer
             "These are the most tender best tasting wolf nipples you'll ever find. Salt is "
             "free, red pepper costs extra. Cut you a deal on a dozen?";
 
-        info.details.color = sf::Color(246, 199, 68);
-        info.details.size  = FontSize::Small;
-        info.inner_size    = { 200.0f, 200.0f };
-        info.border        = GuiWindowBorder::Fancy;
-
-        m_window.create(context, info);
+        info.details.color = sf::Color(32,32,32);
+        info.details.size  = FontSize::Medium;
+        
+        m_window.create(context, false, info);
     }
 
     void PlayState::onExit(Context &) {}

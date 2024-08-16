@@ -90,10 +90,6 @@ namespace platformer
         sf::Texture m_tapeRightTexture;
         sf::Texture m_tapeMiddleTexture;
 
-        sf::Sprite m_tapeLeftSprite;
-        sf::Sprite m_tapeRightSprite;
-        sf::Sprite m_tapeMiddleSprite;
-
         sf::Color m_bgColor;
         sf::FloatRect m_bgCenterRect;
         std::vector<sf::Vertex> m_bgCenterVerts;

@@ -3,7 +3,7 @@
 //
 // state-play.hpp
 //
-#include "gui-window.hpp"
+#include "gui-window-paper.hpp"
 #include "states.hpp"
 
 #include <SFML/Graphics/RenderStates.hpp>
@@ -36,7 +36,7 @@ namespace platformer
         void onExit(Context & context) final;
 
       private:
-        GuiWindow m_window;
+        GuiWindowPaper m_window;
     };
 
 } // namespace platformer

@@ -48,9 +48,6 @@ namespace platformer
         , m_tapeLeftTexture()
         , m_tapeRightTexture()
         , m_tapeMiddleTexture()
-        , m_tapeLeftSprite()
-        , m_tapeRightSprite()
-        , m_tapeMiddleSprite()
         , m_bgColor(74, 76, 41)
         , m_bgCenterRect()
         , m_bgCenterVerts()
@@ -174,12 +171,6 @@ namespace platformer
         TextureStats::instance().process(m_tapeLeftTexture);
         TextureStats::instance().process(m_tapeRightTexture);
         TextureStats::instance().process(m_tapeMiddleTexture);
-
-        //
-
-        m_tapeLeftSprite.setTexture(m_tapeLeftTexture);
-        m_tapeRightSprite.setTexture(m_tapeRightTexture);
-        m_tapeMiddleSprite.setTexture(m_tapeMiddleTexture);
     }
 
     void GuiWindow::create(Context & context, const GuiWindowInfo & info)
