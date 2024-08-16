@@ -56,7 +56,7 @@ namespace platformer
     {
         context.level.load(context);
         m_window.setup(context.settings);
-        m_window.create(context, { 200.0f, 100.0f }, "Wolf Nipple Chips");
+        m_window.create(context, { 200.0f, 200.0f }, "Wolf Nipple Chips");
     }
 
     void PlayState::onExit(Context &) 

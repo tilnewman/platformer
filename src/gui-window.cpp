@@ -217,31 +217,6 @@ namespace platformer
 
         //
 
-        // m_borderTopLeftSprite.setPosition(100.0f, 100.0f);
-        //
-        // m_borderTopSprite.setPosition(
-        //     util::right(m_borderTopLeftSprite), (m_borderTopLeftSprite.getPosition().y + 4.0f));
-        //
-        // m_borderTopRightSprite.setPosition(
-        //     util::right(m_borderTopSprite), m_borderTopLeftSprite.getPosition().y);
-        //
-        // m_borderLeftSprite.setPosition(
-        //     (m_borderTopLeftSprite.getPosition().x + 3.0f), util::bottom(m_borderTopLeftSprite));
-        //
-        // m_borderRightSprite.setPosition(
-        //     (util::right(m_borderTopRightSprite) - 14.0f), util::bottom(m_borderTopRightSprite));
-        //
-        // m_borderBotLeftSprite.setPosition(
-        //     m_borderTopLeftSprite.getPosition().x, util::bottom(m_borderLeftSprite));
-        //
-        // m_borderBotSprite.setPosition(
-        //     m_borderTopSprite.getPosition().x, (util::bottom(m_borderBotLeftSprite) - 15.0f));
-        //
-        // m_borderBotRightSprite.setPosition(
-        //     m_borderTopRightSprite.getPosition().x, m_borderBotLeftSprite.getPosition().y);
-
-        //
-
         m_bgCenterRect.left   = util::right(bgTopLeftSprite);
         m_bgCenterRect.top    = util::bottom(bgTopLeftSprite);
         m_bgCenterRect.width  = (bgTopRightSprite.getPosition().x - util::right(bgTopLeftSprite));
@@ -255,6 +230,91 @@ namespace platformer
         m_innerRect.top    = (m_bgCenterRect.top - 1.0f);
         m_innerRect.width  = (m_bgCenterRect.width + 2.0f);
         m_innerRect.height = (m_bgCenterRect.height + 2.0f);
+
+        //
+
+        sf::Sprite & borderTopLeftSprite{ m_sprites.emplace_back(m_borderTopLeftTexture) };
+
+        borderTopLeftSprite.setPosition(
+            (bgTopLeftSprite.getPosition().x - 14.0f), (bgTopLeftSprite.getPosition().y - 16.0f));
+
+        sf::Sprite & borderTopRightSprite{ m_sprites.emplace_back(m_borderTopRightTexture) };
+
+        borderTopRightSprite.setPosition(
+            (bgTopRightSprite.getPosition().x - 26.0f), (bgTopRightSprite.getPosition().y - 16.0f));
+
+        const float betweenSizeHoriz{ borderTopRightSprite.getPosition().x -
+                                      util::right(borderTopLeftSprite) };
+
+        sf::Sprite & borderBotLeftSprite{ m_sprites.emplace_back(m_borderBotLeftTexture) };
+
+        borderBotLeftSprite.setPosition(
+            (bgBotLeftSprite.getPosition().x - 14.0f), (bgBotLeftSprite.getPosition().y - 28.0f));
+
+        sf::Sprite & borderBotRightSprite{ m_sprites.emplace_back(m_borderBotRightTexture) };
+
+        borderBotRightSprite.setPosition(
+            (bgBotRightSprite.getPosition().x - 26.0f), (bgBotRightSprite.getPosition().y - 28.0f));
+
+        const float betweenSizeVert{ borderBotLeftSprite.getPosition().y -
+                                     util::bottom(borderTopLeftSprite) };
+
+        if (betweenSizeHoriz > 0.0f)
+        {
+            sf::Sprite & borderTopSprite{ m_sprites.emplace_back(m_borderTopTexture) };
+
+            sf::FloatRect borderTopRect;
+            borderTopRect.left   = util::right(borderTopLeftSprite);
+            borderTopRect.top    = (borderTopLeftSprite.getPosition().y + 5.0f);
+            borderTopRect.width  = betweenSizeHoriz;
+            borderTopRect.height = borderTopSprite.getGlobalBounds().height;
+
+            util::scaleAndCenterInside(borderTopSprite, borderTopRect);
+
+            //
+
+            sf::Sprite & borderBotSprite{ m_sprites.emplace_back(m_borderBotTexture) };
+
+            sf::FloatRect borderBotRect;
+            borderBotRect.left = borderTopRect.left;
+
+            borderBotRect.top =
+                ((util::bottom(borderBotLeftSprite) - borderBotSprite.getGlobalBounds().height) -
+                 3.0f);
+
+            borderBotRect.width  = borderTopRect.width;
+            borderBotRect.height = borderTopRect.height;
+
+            util::scaleAndCenterInside(borderBotSprite, borderBotRect);
+        }
+
+        if (betweenSizeVert > 0.0f)
+        {
+            sf::Sprite & borderLeftpSprite{ m_sprites.emplace_back(m_borderLeftTexture) };
+
+            sf::FloatRect borderLeftRect;
+            borderLeftRect.left   = (borderTopLeftSprite.getPosition().x + 3.0f);
+            borderLeftRect.top    = util::bottom(borderTopLeftSprite);
+            borderLeftRect.width  = borderLeftpSprite.getGlobalBounds().width;
+            borderLeftRect.height = betweenSizeVert;
+
+            util::scaleAndCenterInside(borderLeftpSprite, borderLeftRect);
+
+            //
+
+            sf::Sprite & borderRightpSprite{ m_sprites.emplace_back(m_borderRightTexture) };
+
+            sf::FloatRect borderRightRect;
+            borderRightRect.left =
+                ((util::right(borderTopRightSprite) - borderRightpSprite.getGlobalBounds().width) -
+                 3.0f);
+
+            borderRightRect.top    = borderLeftRect.top;
+            borderRightRect.width  = borderRightpSprite.getGlobalBounds().width;
+            borderRightRect.height = betweenSizeVert;
+
+            util::scaleAndCenterInside(borderRightpSprite, borderRightRect);
+        }
 
         //
 
