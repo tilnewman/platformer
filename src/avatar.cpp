@@ -262,14 +262,11 @@ namespace platformer
         }
 
         const float moveX = (screenMiddle - posXAfter);
-
-        if (!context.level.move(context, moveX))
-        {
-            return;
-        }
-
         const sf::Vector2f move{ moveX, 0.0f };
+
         m_sprite.move(move);
+
+        context.level.move(context, moveX);
         context.accent.move(moveX);
         context.pickup.move(moveX);
         context.level.move(context, moveX);
@@ -282,7 +279,7 @@ namespace platformer
     {
         if (!context.layout.wholeRect().intersects(collisionRect()))
         {
-            triggerDeath(context); // TODO
+            triggerDeath(context);
         }
     }
 

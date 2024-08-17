@@ -24,7 +24,7 @@ namespace platformer
 
         bool load(Context & context);
         void reset();
-        bool move(const Context & context, const float move);
+        void move(const Context & context, const float move);
         void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const;
         void update(Context & context, const float frameTimeSec);
 
@@ -34,8 +34,6 @@ namespace platformer
         std::vector<sf::FloatRect> collisions;
         sf::FloatRect enter_rect;
         sf::FloatRect exit_rect;
-        float farthest_horiz_map_pixel;
-        float farthest_horiz_traveled;
         std::string name;
         sf::Vector2i tile_count;
         sf::Vector2i tile_size;
@@ -43,7 +41,6 @@ namespace platformer
         MonsterManager monsters;
 
       private:
-        void findFarthestHorizMapPixel();
         void appendVertLayers(const Context & context);
         void dumpInfo() const;
     };
