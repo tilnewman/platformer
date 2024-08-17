@@ -20,7 +20,9 @@
 namespace platformer
 {
 
-    PlayState::PlayState() {}
+    PlayState::PlayState()
+        : m_playerInfoDisplay()
+    {}
 
     void PlayState::update(Context & context, const float frameTimeSec)
     {
@@ -40,6 +42,7 @@ namespace platformer
         context.accent.draw(context, target, states);
         context.avatar.draw(target, states);
         context.spell.draw(context, target, states);
+        m_playerInfoDisplay.draw(target, states);
     }
 
     void PlayState::handleEvent(Context & context, const sf::Event & event)
@@ -50,7 +53,11 @@ namespace platformer
         }
     }
 
-    void PlayState::onEnter(Context & context) { context.level.load(context); }
+    void PlayState::onEnter(Context & context)
+    {
+        context.level.load(context);
+        m_playerInfoDisplay.setup(context);
+    }
 
     void PlayState::onExit(Context &) {}
 

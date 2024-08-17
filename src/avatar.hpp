@@ -69,12 +69,9 @@ namespace platformer
         void update(Context & context, const float frameTimeSec);
         void draw(sf::RenderTarget & target, sf::RenderStates states);
         void setPosition(const sf::FloatRect & rect);
+        AvatarType type() const { return m_type; }
 
         // TODO remove after testing
-        inline AvatarState state() const { return m_state; }
-        inline AvatarAnim anim() const { return m_anim; }
-        inline std::size_t animIndex() const { return m_animIndex; }
-        inline bool hasLanded() const { return m_hasLanded; }
         void changeType();
 
       private:

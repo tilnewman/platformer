@@ -3,6 +3,7 @@
 //
 // state-play.hpp
 //
+#include "player-info.hpp"
 #include "states.hpp"
 
 #include <SFML/Graphics/RenderStates.hpp>
@@ -33,6 +34,9 @@ namespace platformer
         void handleEvent(Context & context, const sf::Event & event) final;
         void onEnter(Context & context) final;
         void onExit(Context & context) final;
+
+      private:
+        PlayerInfoDisplay m_playerInfoDisplay;
     };
 
 } // namespace platformer

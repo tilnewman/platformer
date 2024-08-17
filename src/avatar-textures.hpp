@@ -180,7 +180,7 @@ namespace platformer
             return m_textures.at(static_cast<std::size_t>(type)).default_texture;
         }
 
-        inline const sf::Texture iconTexture(const AvatarType type) const
+        inline const sf::Texture & iconTexture(const AvatarType type) const
         {
             return m_textures.at(static_cast<std::size_t>(type)).icon_texture;
         }
