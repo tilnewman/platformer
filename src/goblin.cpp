@@ -160,7 +160,11 @@ namespace platformer
         }
     }
 
-    void Goblin::move(const float amount) { m_sprite.move(amount, 0.0f); }
+    void Goblin::move(const float amount) 
+    { 
+        m_sprite.move(amount, 0.0f);
+        m_region.left += amount;
+    }
 
     const sf::FloatRect Goblin::collision() const
     {
