@@ -28,6 +28,7 @@ namespace platformer
         , m_animFrame(0)
         , m_sprite()
         , m_elapsedTimeSec(0.0f)
+        , m_isFacingRight(context.random.boolean())
     {
         loadTextures(context.settings);
 
@@ -40,10 +41,29 @@ namespace platformer
             (util::bottom(region) - m_sprite.getGlobalBounds().height));
 
         m_sprite.move(0.0f, (0.8f * m_sprite.getGlobalBounds().height));
+
+        if (!m_isFacingRight)
+        {
+            m_sprite.scale(-1.0f, 1.0f);
+        }
     }
 
     void Goblin::update(Context &, const float frameTimeSec)
     {
+        if (animate(frameTimeSec))
+        {
+            if (!doesAnimLoop(m_anim))
+            {
+                m_elapsedTimeSec = 0.0f;
+                m_anim           = GoblinAnim::Idle;
+            }
+        }
+    }
+
+    bool Goblin::animate(const float frameTimeSec)
+    {
+        bool isAnimationFinished{ false };
+
         const float timePerSec{ timePerFrameSec(m_anim) };
 
         m_elapsedTimeSec += frameTimeSec;
@@ -54,17 +74,14 @@ namespace platformer
             ++m_animFrame;
             if (m_animFrame >= frameCount(m_anim))
             {
-                m_animFrame = 0;
-
-                if (!doesAnimLoop(m_anim))
-                {
-                    m_elapsedTimeSec = 0.0f;
-                    m_anim           = GoblinAnim::Idle;
-                }
+                m_animFrame         = 0;
+                isAnimationFinished = true;
             }
 
             setTexture(m_sprite, m_anim, m_animFrame);
         }
+
+        return isAnimationFinished;
     }
 
     void Goblin::draw(

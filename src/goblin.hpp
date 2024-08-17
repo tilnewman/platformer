@@ -85,6 +85,7 @@ namespace platformer
         void move(const float amount) override;
 
       private:
+        bool animate(const float frameTimeSec); //returns true if animation is finished
         const sf::FloatRect collision() const;
 
         void loadTextures(const Settings & settings);
@@ -98,6 +99,8 @@ namespace platformer
         std::size_t m_animFrame;
         sf::Sprite m_sprite;
         float m_elapsedTimeSec;
+        bool m_isFacingRight;
+
         static std::vector<sf::Texture> m_textures;
     };
 
