@@ -42,15 +42,25 @@ namespace platformer
         std::vector<sf::Vertex> m_bgFadeVerts;
 
         sf::Texture m_barFrameTexture;
-        sf::Sprite m_barFrameSprite;
-
-        sf::FloatRect m_barFillRect;
+        sf::Sprite m_healthBarFrameSprite;
+        sf::Sprite m_manaBarFrameSprite;
+        
         sf::Texture m_barFillLeftTexture;
-        sf::Sprite m_barFillLeftSprite;
         sf::Texture m_barFillMiddleTexture;
-        sf::Sprite m_barFillMiddleSprite;
         sf::Texture m_barFillRightTexture;
-        sf::Sprite m_barFillRightSprite;
+
+        sf::FloatRect m_healthBarRect;
+        sf::Sprite m_healthBarLeftSprite;
+        sf::Sprite m_healthBarMiddleSprite;
+        sf::Sprite m_healthBarRightSprite;
+
+        sf::FloatRect m_manaBarRect;
+        sf::Sprite m_manaBarLeftSprite;
+        sf::Sprite m_manaBarMiddleSprite;
+        sf::Sprite m_manaBarRightSprite;
+
+        sf::Color m_healthColor;
+        sf::Color m_manaColor;
     };
 
 } // namespace platformer
