@@ -5,7 +5,9 @@
 //
 #include "states.hpp"
 
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Texture.hpp>
 
 namespace platformer
 {
@@ -28,6 +30,8 @@ namespace platformer
         void onExit(Context &) final {}
 
       private:
+        sf::Texture m_texture;
+        sf::Sprite m_sprite;
         sf::Text m_text;
         float m_elpasedTimeSec;
     };

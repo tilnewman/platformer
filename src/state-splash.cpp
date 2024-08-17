@@ -8,6 +8,7 @@
 #include "context.hpp"
 #include "font.hpp"
 #include "screen-layout.hpp"
+#include "settings.hpp"
 #include "sfml-util.hpp"
 #include "state-manager.hpp"
 
@@ -18,14 +19,26 @@ namespace platformer
 {
 
     SplashState::SplashState()
-        : m_text()
+        : m_texture()
+        , m_sprite()
+        , m_text()
         , m_elpasedTimeSec(0.0f)
     {}
 
     void SplashState::onEnter(Context & context)
     {
+        m_texture.loadFromFile(
+            (context.settings.media_path / "image/splash/characters.png").string());
+
+        m_sprite.setTexture(m_texture);
+
+        sf::FloatRect rect{ context.layout.wholeRect() };
+        util::scaleRectInPlace(rect, 0.5f);
+        util::fitAndCenterInside(m_sprite, rect);
+        m_sprite.setPosition(m_sprite.getPosition().x, 0.0f);
+
         m_text = context.font.makeText(
-            Font::Default, FontSize::Huge, "Splash", sf::Color(220, 220, 220));
+            Font::Default, FontSize::Huge, "Some Damn Game", sf::Color(220, 220, 220));
 
         util::centerInside(m_text, context.layout.wholeRect());
     }
@@ -41,6 +54,7 @@ namespace platformer
 
     void SplashState::draw(Context &, sf::RenderTarget & target, sf::RenderStates states) const
     {
+        target.draw(m_sprite, states);
         target.draw(m_text, states);
     }
 
