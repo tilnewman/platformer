@@ -785,6 +785,39 @@
         }, 
         {
          "draworder":"topdown",
+         "id":12,
+         "name":"monster",
+         "objects":[
+                {
+                 "height":32,
+                 "id":59,
+                 "name":"goblin",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":288,
+                 "x":432,
+                 "y":1248
+                }, 
+                {
+                 "height":32,
+                 "id":60,
+                 "name":"goblin",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":192,
+                 "x":880,
+                 "y":1248
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":5,
          "name":"spawn",
          "objects":[
@@ -893,8 +926,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":12,
- "nextobjectid":59,
+ "nextlayerid":13,
+ "nextobjectid":61,
  "orientation":"orthogonal",
  "properties":[
         {

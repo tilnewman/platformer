@@ -7,6 +7,7 @@
 #include "background-images.hpp"
 #include "check-macros.hpp"
 #include "context.hpp"
+#include "goblin.hpp"
 #include "level.hpp"
 #include "lightning-anim-layer.hpp"
 #include "map-textures.hpp"
@@ -231,6 +232,10 @@ namespace platformer
             {
                 parseLightningAnimLayer(context, jsonLayer);
             }
+            else if (layerName == "monster")
+            {
+                parseMonsterLayer(context, jsonLayer);
+            }
             else
             {
                 std::cout << "WARNING:  While parsing level file \"" << m_pathStr
@@ -362,6 +367,26 @@ namespace platformer
 
         context.level.tile_layers.push_back(
             std::make_unique<LightningAnimationLayer>(context, rects));
+    }
+
+    void LevelFileLoader::parseMonsterLayer(Context & context, Json & json)
+    {
+        for (Json & monsterJson : json["objects"])
+        {
+            const std::string name   = monsterJson["name"];
+            const sf::FloatRect rect = parseAndConvertRect(context, monsterJson);
+
+            if (name == "goblin")
+            {
+                context.level.monsters.add(std::make_unique<Goblin>(context, rect));
+            }
+            else
+            {
+                std::cout << "WARNING:  While parsing level file \"" << m_pathStr
+                          << "\".  Ignored unknown monster layer object named \"" << name
+                          << "\".\n";
+            }
+        }
     }
 
 } // namespace platformer

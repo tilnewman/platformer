@@ -1,18 +1,26 @@
-#ifndef GOBLIN_TEXTURES_HPP_INCLUDED
-#define GOBLIN_TEXTURES_HPP_INCLUDED
+#ifndef GOBLIN_HPP_INCLUDED
+#define GOBLIN_HPP_INCLUDED
 //
-// goblin-textures.hpp
+// goblin.hpp
 //
-#include <cstddef>
-#include <string_view>
+#include "monsters.hpp"
+
 #include <vector>
 
+#include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
+
+namespace sf
+{
+    class RenderTarget;
+    class RenderStates;
+} // namespace sf
 
 namespace platformer
 {
 
+    struct Context;
     struct Settings;
 
     //
@@ -66,20 +74,33 @@ namespace platformer
 
     //
 
-    class GoblinTextureManager
+    class Goblin : public IMonster
     {
       public:
-        GoblinTextureManager();
+        Goblin(Context & context, const sf::FloatRect & region);
+        virtual ~Goblin() override = default;
 
-        void setup(const Settings & settings);
-        std::size_t frameCount(const GoblinAnim anim) const;
-        const sf::IntRect rect(const GoblinAnim anim, const std::size_t frame) const;
-        void set(sf::Sprite & sprite, const GoblinAnim anim, const std::size_t frame) const;
+        void update(Context & context, const float frameTimeSec) override;
+        void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const override;
+        void move(const float amount) override;
 
       private:
-        std::vector<sf::Texture> m_textures;
+        const sf::FloatRect collision() const;
+
+        void loadTextures(const Settings & settings);
+        std::size_t frameCount(const GoblinAnim anim) const;
+        const sf::IntRect textureRect(const GoblinAnim anim, const std::size_t frame) const;
+        void setTexture(sf::Sprite & sprite, const GoblinAnim anim, const std::size_t frame) const;
+
+      private:
+        sf::FloatRect m_region;
+        GoblinAnim m_anim;
+        std::size_t m_animFrame;
+        sf::Sprite m_sprite;
+        float m_elapsedTimeSec;
+        static std::vector<sf::Texture> m_textures;
     };
 
 } // namespace platformer
 
-#endif // GOBLIN_TEXTURES_HPP_INCLUDED
+#endif // GOBLIN_HPP_INCLUDED

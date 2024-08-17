@@ -25,7 +25,6 @@ namespace platformer
         , m_fonts()
         , m_avatar()
         , m_avatarTextures()
-        , m_goblinTextures()
         , m_layout()
         , m_levelLoader()
         , m_level()
@@ -45,7 +44,6 @@ namespace platformer
               m_fonts,
               m_avatar,
               m_avatarTextures,
-              m_goblinTextures,
               m_layout,
               m_levelLoader,
               m_level,
@@ -77,7 +75,6 @@ namespace platformer
         m_fonts.setup(m_settings);
         m_itemImages.setup(m_settings);
         m_avatarTextures.setup(m_settings);
-        m_goblinTextures.setup(m_settings);
         m_mapTextures.setup(m_settings);
         m_pickups.setup(m_settings);
         m_accents.setup(m_settings);

@@ -9,7 +9,6 @@
 #include "background-images.hpp"
 #include "context.hpp"
 #include "font.hpp"
-#include "goblin-textures.hpp"
 #include "item-images.hpp"
 #include "kill-collision-manager.hpp"
 #include "level-file-loader.hpp"
@@ -65,7 +64,6 @@ namespace platformer
         FontManager m_fonts;
         Avatar m_avatar;
         AvatarTextureManager m_avatarTextures;
-        GoblinTextureManager m_goblinTextures;
         ScreenLayout m_layout;
         LevelFileLoader m_levelLoader;
         Level m_level;

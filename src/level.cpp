@@ -10,6 +10,7 @@
 #include "context.hpp"
 #include "level-file-loader.hpp"
 #include "map-textures.hpp"
+#include "monsters.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
@@ -43,6 +44,7 @@ namespace platformer
         collisions.clear();
         farthest_horiz_map_pixel = 0.0f;
         farthest_horiz_traveled  = 0.0f;
+        monsters.clear();
     }
 
     bool Level::load(Context & context)
@@ -66,7 +68,7 @@ namespace platformer
         }
     }
 
-    bool Level::move(const Context & context, const float move)
+    bool Level::move(const Context & context, const float amount)
     {
         // farthest_horiz_traveled += std::abs(move);
         // if (farthest_horiz_traveled > (farthest_horiz_map_pixel - context.layout.wholeSize().x))
@@ -74,19 +76,20 @@ namespace platformer
         //    return false;
         //}
 
-        enter_rect.left += move;
-        exit_rect.left += move;
+        enter_rect.left += amount;
+        exit_rect.left += amount;
 
         for (sf::FloatRect & rect : collisions)
         {
-            rect.left += move;
+            rect.left += amount;
         }
 
         for (auto & layerUPtr : tile_layers)
         {
-            layerUPtr->move(context, move);
+            layerUPtr->move(context, amount);
         }
 
+        monsters.move(amount);
         return true;
     }
 
@@ -132,6 +135,8 @@ namespace platformer
         {
             layerUPtr->draw(context, target, states);
         }
+
+        monsters.draw(context, target, states);
     }
 
     void Level::update(Context & context, const float frameTimeSec)
@@ -140,6 +145,8 @@ namespace platformer
         {
             layerUPtr->update(context, frameTimeSec);
         }
+
+        monsters.update(context, frameTimeSec);
     }
 
 } // namespace platformer

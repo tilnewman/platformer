@@ -3,6 +3,7 @@
 //
 // level.hpp
 //
+#include "monsters.hpp"
 #include "tile-layer.hpp"
 
 #include <vector>
@@ -16,6 +17,7 @@ namespace platformer
     class ScreenLayout;
 
     //
+
     struct Level
     {
         Level();
@@ -38,6 +40,7 @@ namespace platformer
         sf::Vector2i tile_count;
         sf::Vector2i tile_size;
         std::vector<std::unique_ptr<ITileLayer>> tile_layers;
+        MonsterManager monsters;
 
       private:
         void findFarthestHorizMapPixel();
