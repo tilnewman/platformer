@@ -29,6 +29,8 @@ namespace platformer
         , m_sprite()
         , m_elapsedTimeSec(0.0f)
         , m_isFacingRight(context.random.boolean())
+        , m_stateElapsedTimeSec(0.0f)
+        , m_stateTimeUntilChangeSec(0.0f)
     {
         loadTextures(context.settings);
 
@@ -46,9 +48,11 @@ namespace platformer
         {
             m_sprite.scale(-1.0f, 1.0f);
         }
+
+        m_stateTimeUntilChangeSec = context.random.fromTo(1.0f, 6.0f);
     }
 
-    void Goblin::update(Context &, const float frameTimeSec)
+    void Goblin::update(Context & context, const float frameTimeSec)
     {
         if (animate(frameTimeSec))
         {
@@ -57,6 +61,69 @@ namespace platformer
                 m_elapsedTimeSec = 0.0f;
                 m_anim           = GoblinAnim::Idle;
             }
+        }
+
+        m_stateElapsedTimeSec += frameTimeSec;
+        if (m_stateElapsedTimeSec > m_stateTimeUntilChangeSec)
+        {
+            m_stateElapsedTimeSec = 0.0f;
+            changeState(context);
+        }
+
+        if (GoblinAnim::Walk == m_anim)
+        {
+            const float goblinWalkSpeed{ 40.0f };
+
+            if (m_isFacingRight)
+            {
+                m_sprite.move((goblinWalkSpeed * frameTimeSec), 0.0f);
+            }
+            else
+            {
+                m_sprite.move(-(goblinWalkSpeed * frameTimeSec), 0.0f);
+            }
+
+            // if walked out of bounds simple turn around and keep walking
+            const sf::FloatRect collRect{ collision() };
+            if (util::right(collRect) > util::right(m_region))
+            {
+                m_sprite.scale(-1.0f, 1.0f);
+                m_isFacingRight = !m_isFacingRight;
+                m_sprite.move((util::right(m_region) - util::right(collRect)), 0.0f);
+            }
+            else if (collRect.left < m_region.left)
+            {
+                m_sprite.scale(-1.0f, 1.0f);
+                m_isFacingRight = !m_isFacingRight;
+                m_sprite.move((m_region.left - collRect.left), 0.0f);
+            }
+        }
+    }
+
+    void Goblin::changeState(Context & context)
+    {
+        m_elapsedTimeSec          = 0.0f;
+        m_stateTimeUntilChangeSec = context.random.fromTo(1.0f, 6.0f);
+
+        const int isNextActionWalking{ context.random.boolean() };
+
+        if (isNextActionWalking)
+        {
+            m_anim = GoblinAnim::Walk;
+
+            const bool willChangeDirection{ context.random.boolean() };
+            if (willChangeDirection)
+            {
+                m_sprite.scale(-1.0f, 1.0f);
+                m_isFacingRight = !m_isFacingRight;
+            }
+        }
+        else
+        {
+            // in all other cases just turn around
+            m_anim = GoblinAnim::Idle;
+            m_sprite.scale(-1.0f, 1.0f);
+            m_isFacingRight = !m_isFacingRight;
         }
     }
 
@@ -98,7 +165,7 @@ namespace platformer
     const sf::FloatRect Goblin::collision() const
     {
         sf::FloatRect rect{ m_sprite.getGlobalBounds() };
-        util::scaleRectInPlace(rect, 0.5f);
+        util::scaleRectInPlace(rect, 0.35f);
         return rect;
     }
 
