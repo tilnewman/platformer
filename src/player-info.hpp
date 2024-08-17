@@ -29,6 +29,8 @@ namespace platformer
 
         void setup(const Context & context);
         void draw(sf::RenderTarget & target, sf::RenderStates states) const;
+        void setHealthBar(const float ratio);
+        void setManaBar(const float ratio);
 
       private:
         sf::Texture m_halfFrameTexture;
@@ -61,6 +63,13 @@ namespace platformer
 
         sf::Color m_healthColor;
         sf::Color m_manaColor;
+
+        float m_barFillMax;
+
+        bool m_willDrawHealthBarRight;
+        bool m_willDrawHealthBarLeft;
+        bool m_willDrawManaBarRight;
+        bool m_willDrawManaBarLeft;
     };
 
 } // namespace platformer

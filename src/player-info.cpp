@@ -44,6 +44,11 @@ namespace platformer
         , m_manaBarRightSprite()
         , m_healthColor(255, 100, 100)
         , m_manaColor(100, 100, 255)
+        , m_barFillMax(226.0f)
+        , m_willDrawHealthBarRight(true)
+        , m_willDrawHealthBarLeft(true)
+        , m_willDrawManaBarRight(true)
+        , m_willDrawManaBarLeft(true)
     {}
 
     void PlayerInfoDisplay::setup(const Context & context)
@@ -132,7 +137,7 @@ namespace platformer
 
         m_healthBarRect.left   = util::right(m_healthBarLeftSprite);
         m_healthBarRect.top    = m_healthBarLeftSprite.getPosition().y;
-        m_healthBarRect.width  = 226.0f;
+        m_healthBarRect.width  = m_barFillMax;
         m_healthBarRect.height = m_healthBarMiddleSprite.getGlobalBounds().height;
 
         util::scaleAndCenterInside(m_healthBarMiddleSprite, m_healthBarRect);
@@ -168,7 +173,7 @@ namespace platformer
 
         m_manaBarRect.left   = util::right(m_manaBarLeftSprite);
         m_manaBarRect.top    = m_manaBarLeftSprite.getPosition().y;
-        m_manaBarRect.width  = 226.0f;
+        m_manaBarRect.width  = m_barFillMax;
         m_manaBarRect.height = m_manaBarMiddleSprite.getGlobalBounds().height;
 
         util::scaleAndCenterInside(m_manaBarMiddleSprite, m_manaBarRect);
@@ -191,14 +196,46 @@ namespace platformer
         target.draw(m_fullFrameSprite, states);
 
         target.draw(m_healthBarFrameSprite, states);
-        target.draw(m_healthBarLeftSprite, states);
         target.draw(m_healthBarMiddleSprite, states);
-        target.draw(m_healthBarRightSprite, states);
+
+        if (m_willDrawHealthBarLeft)
+        {
+            target.draw(m_healthBarLeftSprite, states);
+        }
+
+        if (m_willDrawHealthBarRight)
+        {
+            target.draw(m_healthBarRightSprite, states);
+        }
 
         target.draw(m_manaBarFrameSprite, states);
-        target.draw(m_manaBarLeftSprite, states);
         target.draw(m_manaBarMiddleSprite, states);
-        target.draw(m_manaBarRightSprite, states);
+
+        if (m_willDrawManaBarLeft)
+        {
+            target.draw(m_manaBarLeftSprite, states);
+        }
+
+        if (m_willDrawManaBarRight)
+        {
+            target.draw(m_manaBarRightSprite, states);
+        }
+    }
+
+    void PlayerInfoDisplay::setHealthBar(const float ratio)
+    {
+        m_willDrawHealthBarRight = (ratio >= 1.0f);
+        m_willDrawHealthBarLeft  = (ratio > 0.0f);
+        m_healthBarRect.width    = (m_barFillMax * ratio);
+        util::scaleAndCenterInside(m_healthBarMiddleSprite, m_healthBarRect);
+    }
+
+    void PlayerInfoDisplay::setManaBar(const float ratio)
+    {
+        m_willDrawManaBarRight = (ratio >= 1.0f);
+        m_willDrawManaBarLeft  = (ratio > 0.0f);
+        m_manaBarRect.width    = (m_barFillMax * ratio);
+        util::scaleAndCenterInside(m_manaBarMiddleSprite, m_manaBarRect);
     }
 
 } // namespace platformer
