@@ -11,6 +11,7 @@
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
+#include "sound-player.hpp"
 #include "texture-stats.hpp"
 
 #include <filesystem>
@@ -143,6 +144,12 @@ namespace platformer
             // in all other cases just attack
             m_anim                    = GoblinAnim::Attack;
             m_stateTimeUntilChangeSec = 1.0f;
+
+            // don't play the swipe sfx if the goblin is off screen
+            if (context.layout.wholeRect().intersects(collisionRect()))
+            {
+                context.sfx.play("swipe");
+            }
         }
     }
 
