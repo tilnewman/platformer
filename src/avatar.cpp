@@ -547,7 +547,6 @@ namespace platformer
             return;
         }
 
-        // m_blood.start(context, m_sprite.getPosition(), m_isFacingRight);
         m_state = AvatarState::Death;
         m_anim  = AvatarAnim::Death;
         restartAnim();

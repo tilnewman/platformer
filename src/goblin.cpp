@@ -92,10 +92,11 @@ namespace platformer
 
         if (!m_hasSpottedPlayer && (m_region.intersects(context.avatar.collisionRect())))
         {
-            m_hasSpottedPlayer    = true;
-            m_elapsedTimeSec      = 0.0f;
-            m_stateElapsedTimeSec = 0.0f;
-            m_anim                = GoblinAnim::Idle;
+            m_hasSpottedPlayer        = true;
+            m_elapsedTimeSec          = 0.0f;
+            m_stateElapsedTimeSec     = 0.0f;
+            m_stateTimeUntilChangeSec = 0.0f;
+            m_anim                    = GoblinAnim::Idle;
             turnToFacePlayer(context);
         }
     }
