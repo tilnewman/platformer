@@ -81,11 +81,7 @@ namespace platformer
         // context.managers.collideAllWithAvatar(context, collisionRect());
         context.pickup.processCollisionWithAvatar(context, collisionRect());
 
-        if (KillCollisionManager::instance().doesAvatarCollideWithAnyAndDie(
-                context, collisionRect()))
-        {
-            triggerDeath(context);
-        }
+        hurtCollisions(context);
 
         killIfOutOfBounds(context);
 
@@ -378,6 +374,11 @@ namespace platformer
 
     void Avatar::sideToSideMotion(Context & context, const float frameTimeSec)
     {
+        if (AvatarState::Hurt == m_state)
+        {
+            return;
+        }
+
         if ((AvatarState::Jump == m_state) || (AvatarState::JumpHigh == m_state))
         {
             // Allow moving side-to-side at a reduced rate while in the air.
@@ -632,6 +633,43 @@ namespace platformer
         {
             context.sfx.stopAllLooped();
             context.state.changeTo(context, State::LevelComplete);
+        }
+    }
+
+    void Avatar::hurtCollisions(Context & context)
+    {
+        if (AvatarState::Hurt == m_state)
+        {
+            return;
+        }
+
+        if (KillCollisionManager::instance().doesAvatarCollideWithAny(context, collisionRect()))
+        {
+            m_state = AvatarState::Hurt;
+            m_anim  = AvatarAnim::Hurt;
+            restartAnim();
+
+            const float recoilSpeed{ 3.5f };
+            m_velocity.y = -recoilSpeed;
+
+            if (m_velocity.x < 0.0f)
+            {
+                m_velocity.x = recoilSpeed;
+            }
+            else if (m_velocity.x > 0.0f)
+            {
+                m_velocity.x = -recoilSpeed;
+            }
+            else if (m_isFacingRight)
+            {
+                m_velocity.x = -recoilSpeed;
+            }
+            else
+            {
+                m_velocity.x = recoilSpeed;
+            }
+
+            // triggerDeath(context);
         }
     }
 

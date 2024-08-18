@@ -123,7 +123,7 @@ namespace platformer
         }
     }
 
-    bool LightningAnimationLayer::doesAvatarCollideWithAnyAndDie(
+    bool LightningAnimationLayer::doesAvatarCollideWithAny(
         Context & context, const sf::FloatRect & avatarRect)
     {
         for (const LightningAnim & anim : m_anims)

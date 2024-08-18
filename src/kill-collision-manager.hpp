@@ -18,8 +18,7 @@ namespace platformer
     {
         virtual ~IKillCollisionOwner() = default;
 
-        virtual bool
-            doesAvatarCollideWithAnyAndDie(Context & context, const sf::FloatRect & avatarRect) = 0;
+        virtual bool doesAvatarCollideWithAny(Context & c, const sf::FloatRect & avatarRect) = 0;
     };
 
     //
@@ -31,7 +30,7 @@ namespace platformer
 
         void addOwner(IKillCollisionOwner & owner);
         void removeOwner(IKillCollisionOwner & owner);
-        bool doesAvatarCollideWithAnyAndDie(Context & context, const sf::FloatRect & avatarRect);
+        bool doesAvatarCollideWithAny(Context & context, const sf::FloatRect & avatarRect);
 
       private:
         KillCollisionManager();

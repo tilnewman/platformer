@@ -75,6 +75,8 @@ namespace platformer
 
         // TODO remove after testing
         void changeType();
+        AvatarAnim anim() const { return m_anim; }
+        std::size_t animIndex() const { return m_animIndex; }
 
       private:
         void animate(Context & context, const float frameTimeSec);
@@ -92,6 +94,7 @@ namespace platformer
         void turnRight();
         void turnLeft();
         void exitCollisions(Context & context) const;
+        void hurtCollisions(Context & context);
 
       private:
         sf::Sprite m_sprite;

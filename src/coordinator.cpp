@@ -58,6 +58,9 @@ namespace platformer
         , m_oneSecondClock()
         , m_elapsedTimeSec(0.0f)
         , m_statsDisplayUPtr()
+        , m_avatarTypeText()
+        , m_avatarAnimText()
+        , m_avatarAnimIndexText()
     {
         m_fpsValues.reserve(128);
     }
@@ -82,6 +85,16 @@ namespace platformer
         m_avatar.setup(m_context, AvatarType::Assassin);
 
         m_states.changeTo(m_context, State::Splash);
+
+        // TODO remove after testing
+        const sf::Color testColor{ 100, 100, 255 };
+        m_avatarTypeText      = m_fonts.makeText(Font::Default, FontSize::Large, "", testColor);
+        m_avatarAnimText      = m_fonts.makeText(Font::Default, FontSize::Large, "", testColor);
+        m_avatarAnimIndexText = m_fonts.makeText(Font::Default, FontSize::Large, "", testColor);
+        //
+        m_avatarTypeText.setPosition(0.0f, 500.0f);
+        m_avatarAnimText.setPosition(0.0f, 550.0f);
+        m_avatarAnimIndexText.setPosition(0.0f, 600.0f);
     }
 
     void Coordinator::teardown()
@@ -147,6 +160,14 @@ namespace platformer
         {
             m_statsDisplayUPtr->draw(m_window, states);
         }
+
+        // TODO remove after testing
+        m_avatarTypeText.setString(std::string(toString(m_avatar.type())));
+        m_avatarAnimText.setString(std::string(toString(m_avatar.anim())));
+        m_avatarAnimIndexText.setString(std::to_string(m_avatar.animIndex()));
+        m_window.draw(m_avatarTypeText, states);
+        m_window.draw(m_avatarAnimText, states);
+        m_window.draw(m_avatarAnimIndexText, states);
 
         m_window.display();
     }
