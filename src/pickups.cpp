@@ -11,6 +11,7 @@
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
+#include "sound-player.hpp"
 #include "texture-stats.hpp"
 
 namespace platformer
@@ -175,7 +176,8 @@ namespace platformer
         }
     }
 
-    void PickupAnimations::processCollisionWithAvatar(Context &, const sf::FloatRect & avatarRect)
+    void PickupAnimations::processCollisionWithAvatar(
+        Context & context, const sf::FloatRect & avatarRect)
     {
         bool wereAnyPickedUp{ false };
         for (PickupAnim & anim : m_anims)
@@ -185,7 +187,7 @@ namespace platformer
                 continue;
             }
 
-            // context.sfx.play("pickup");
+            context.sfx.play("pickup");
 
             wereAnyPickedUp = true;
             anim.is_alive   = false;
