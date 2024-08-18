@@ -60,12 +60,14 @@ namespace platformer
         {
             if (!doesAnimLoop(m_anim))
             {
-                m_elapsedTimeSec = 0.0f;
-                m_anim           = GoblinAnim::Idle;
-
                 if (m_hasSpottedPlayer)
                 {
-                    turnToFacePlayer(context);
+                    changeStateAfterSeeingPlayer(context);
+                }
+                else
+                {
+                    m_elapsedTimeSec = 0.0f;
+                    m_anim           = GoblinAnim::Idle;
                 }
             }
         }
