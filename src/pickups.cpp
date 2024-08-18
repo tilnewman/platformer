@@ -116,12 +116,12 @@ namespace platformer
         bool didAnyFlaresFinish{ false };
         for (PickupFlareAnim & anim : m_flareAnims)
         {
-            anim.sprite.scale(1.03f, 1.03f);
+            anim.sprite.scale(1.08f, 1.08f);
 
             sf::Uint8 alpha = anim.sprite.getColor().a;
-            if (alpha >= 5)
+            if (alpha >= 10)
             {
-                alpha -= 5;
+                alpha -= 10;
                 anim.sprite.setColor(sf::Color(255, 255, 255, alpha));
             }
             else
