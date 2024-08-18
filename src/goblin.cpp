@@ -200,6 +200,26 @@ namespace platformer
         return rect;
     }
 
+    const sf::FloatRect Goblin::attackCollisionRect() const
+    {
+        sf::FloatRect rect{ collisionRect() };
+
+        const float shiftHoriz{ rect.width * 0.8f };
+
+        if (m_isFacingRight)
+        {
+            rect.left += shiftHoriz;
+        }
+        else
+        {
+            rect.left -= shiftHoriz;
+        }
+
+        util::scaleRectInPlace(rect, 1.1f);
+
+        return rect;
+    }
+
     void Goblin::loadTextures(const Settings & settings)
     {
         if (!m_textures.empty())
@@ -304,6 +324,20 @@ namespace platformer
             m_isFacingRight = !m_isFacingRight;
             m_sprite.move((m_region.left - collRect.left), 0.0f);
         }
+    }
+
+    const Harm Goblin::avatarCollide(const sf::FloatRect & avatarRect)
+    {
+        Harm harm;
+
+        if ((GoblinAnim::Attack == m_anim) && avatarRect.intersects(attackCollisionRect()))
+        {
+            harm.damage = 10;
+            harm.rect   = collisionRect();
+            harm.sfx    = "wood-hit";
+        }
+
+        return harm;
     }
 
 } // namespace platformer

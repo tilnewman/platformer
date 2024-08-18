@@ -7,8 +7,8 @@
 
 #include "context.hpp"
 
-#include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 
 namespace platformer
 {
@@ -34,12 +34,26 @@ namespace platformer
         }
     }
 
-    void MonsterManager::move(const float amount) 
+    void MonsterManager::move(const float amount)
     {
         for (auto & monsterUPtr : m_monsters)
         {
             monsterUPtr->move(amount);
         }
+    }
+
+    const Harm MonsterManager::avatarCollide(const sf::FloatRect & avatarRect)
+    {
+        for (auto & monsterUPtr : m_monsters)
+        {
+            const Harm harm{ monsterUPtr->avatarCollide(avatarRect) };
+            if (harm.isAnyHarmDone())
+            {
+                return harm;
+            }
+        }
+
+        return {};
     }
 
 } // namespace platformer

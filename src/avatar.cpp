@@ -11,6 +11,7 @@
 #include "kill-collision-manager.hpp"
 #include "level-info.hpp"
 #include "level.hpp"
+#include "monsters.hpp"
 #include "pickups.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
@@ -642,7 +643,9 @@ namespace platformer
             return;
         }
 
-        if (KillCollisionManager::instance().doesAvatarCollideWithAny(context, collisionRect()))
+        const sf::FloatRect avatarRect{ collisionRect()  };
+
+        if (KillCollisionManager::instance().doesAvatarCollideWithAny(context, avatarRect))
         {
             m_state = AvatarState::Hurt;
             m_anim  = AvatarAnim::Hurt;
@@ -671,6 +674,35 @@ namespace platformer
             context.sfx.play("hurt");
 
             // triggerDeath(context);
+        }
+
+        const Harm harm{ context.level.monsters.avatarCollide(avatarRect) };
+        if (harm.isAnyHarmDone())
+        {
+            m_state = AvatarState::Hurt;
+            m_anim  = AvatarAnim::Hurt;
+            restartAnim();
+
+            const float recoilSpeed{ 3.5f };
+            m_velocity.y = -recoilSpeed;
+
+            const float collisionRectCenterHoriz{ util::center(harm.rect).x };
+            if (collisionRectCenterHoriz < util::center(avatarRect).x)
+            {
+                m_velocity.x = recoilSpeed;
+            }
+            else
+            {
+                m_velocity.x = -recoilSpeed;
+            }
+
+            if (!harm.sfx.empty())
+            {
+                context.sfx.play(harm.sfx);
+            }
+
+            //TODO subtract harm.damage from player health and check for death
+            context.sfx.play("hurt");
         }
     }
 
