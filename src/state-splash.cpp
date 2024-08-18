@@ -35,7 +35,7 @@ namespace platformer
         sf::FloatRect rect{ context.layout.wholeRect() };
         util::scaleRectInPlace(rect, 0.5f);
         util::fitAndCenterInside(m_sprite, rect);
-        m_sprite.setPosition(m_sprite.getPosition().x, 0.0f);
+        m_sprite.setPosition(m_sprite.getPosition().x, (context.layout.wholeRect().height * 0.1f));
 
         m_text = context.font.makeText(
             Font::Default, FontSize::Huge, "Some Damn Game", sf::Color(220, 220, 220));
