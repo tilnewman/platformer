@@ -133,7 +133,10 @@ namespace platformer
                 continue;
             }
 
-            if (!anim.sprite.getGlobalBounds().intersects(avatarRect))
+            const sf::FloatRect reducedBounds{ util::scaleRectInPlaceCopy(
+                anim.sprite.getGlobalBounds(), 0.75f) };
+
+            if (!reducedBounds.intersects(avatarRect))
             {
                 continue;
             }
