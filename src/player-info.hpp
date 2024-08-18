@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Vertex.hpp>
 
@@ -31,6 +32,8 @@ namespace platformer
         void draw(sf::RenderTarget & target, sf::RenderStates states) const;
         void setHealthBar(const float ratio);
         void setManaBar(const float ratio);
+        void setStarCount(const int count);
+        void setCoinCount(const int count);
 
       private:
         sf::Texture m_halfFrameTexture;
@@ -46,7 +49,7 @@ namespace platformer
         sf::Texture m_barFrameTexture;
         sf::Sprite m_healthBarFrameSprite;
         sf::Sprite m_manaBarFrameSprite;
-        
+
         sf::Texture m_barFillLeftTexture;
         sf::Texture m_barFillMiddleTexture;
         sf::Texture m_barFillRightTexture;
@@ -70,6 +73,14 @@ namespace platformer
         bool m_willDrawHealthBarLeft;
         bool m_willDrawManaBarRight;
         bool m_willDrawManaBarLeft;
+
+        sf::Texture m_coinTexture;
+        sf::Sprite m_coinSprite;
+        sf::Text m_coinText;
+
+        sf::Texture m_starTexture;
+        sf::Sprite m_starSprite;
+        sf::Text m_starText;
     };
 
 } // namespace platformer

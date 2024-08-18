@@ -8,12 +8,14 @@
 #include "avatar-textures.hpp"
 #include "avatar.hpp"
 #include "context.hpp"
+#include "font.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
 #include "texture-stats.hpp"
 
 #include <filesystem>
+#include <string>
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -49,6 +51,12 @@ namespace platformer
         , m_willDrawHealthBarLeft(true)
         , m_willDrawManaBarRight(true)
         , m_willDrawManaBarLeft(true)
+        , m_coinTexture()
+        , m_coinSprite()
+        , m_coinText()
+        , m_starTexture()
+        , m_starSprite()
+        , m_starText()
     {}
 
     void PlayerInfoDisplay::setup(const Context & context)
@@ -60,7 +68,7 @@ namespace platformer
         m_halfFrameSprite.setTexture(m_halfFrameTexture);
         m_halfFrameSprite.scale(2.0f, 2.0f);
 
-        const float posDimm{ context.layout.wholeSize().y * 0.125f };
+        const float posDimm{ context.layout.wholeSize().y * 0.1f };
         m_halfFrameSprite.setPosition(posDimm, posDimm);
 
         //
@@ -186,6 +194,62 @@ namespace platformer
 
         m_manaBarRightSprite.setPosition(
             util::right(m_manaBarMiddleSprite), m_manaBarMiddleSprite.getPosition().y);
+
+        //
+
+        m_starTexture.loadFromFile((context.settings.media_path / "image/ui/star.png").string());
+        TextureStats::instance().process(m_starTexture);
+        m_starTexture.setSmooth(true);
+        m_starSprite.setTexture(m_starTexture);
+        m_starSprite.scale(1.1f, 1.1f);
+
+        const float coinAndStarRectHeight{ m_healthBarFrameSprite.getPosition().y -
+                                           m_fullFrameSprite.getPosition().y };
+
+        const float coinAndStarRectHeightMiddle{ m_healthBarFrameSprite.getPosition().y -
+                                                 (coinAndStarRectHeight * 0.5f) };
+
+        m_starSprite.setPosition(
+            util::right(m_fullFrameSprite),
+            (coinAndStarRectHeightMiddle - (m_starSprite.getGlobalBounds().height * 0.5f)));
+
+        //
+
+        m_starText =
+            context.font.makeText(Font::Default, FontSize::Large, "0", sf::Color(244, 187, 64));
+
+        const sf::Vector2f textScale{ 1.4f, 1.4f };
+        m_starText.scale(textScale);
+
+        const float horizPad{ 8.0f };
+
+        m_starText.setPosition(
+            (util::right(m_starSprite) + horizPad),
+            (coinAndStarRectHeightMiddle - (m_starText.getGlobalBounds().height * 0.5f)));
+
+        //
+
+        m_coinTexture.loadFromFile((context.settings.media_path / "image/ui/coin.png").string());
+        TextureStats::instance().process(m_coinTexture);
+        m_coinTexture.setSmooth(true);
+        m_coinSprite.setTexture(m_coinTexture);
+        m_coinSprite.scale(1.7f, 1.7f);
+
+        m_coinSprite.setPosition(
+            (util::right(m_fullFrameSprite) +
+             (m_healthBarFrameSprite.getGlobalBounds().width * 0.5f)),
+            (coinAndStarRectHeightMiddle - (m_coinSprite.getGlobalBounds().height * 0.5f)));
+
+        //
+
+        m_coinText =
+            context.font.makeText(Font::Default, FontSize::Large, "0", sf::Color(236, 218, 95));
+
+        m_coinText.scale(textScale);
+
+        m_coinText.setPosition(
+            (util::right(m_coinSprite) + horizPad),
+            (coinAndStarRectHeightMiddle - (m_coinText.getGlobalBounds().height * 0.5f)));
     }
 
     void PlayerInfoDisplay::draw(sf::RenderTarget & target, sf::RenderStates states) const
@@ -220,6 +284,11 @@ namespace platformer
         {
             target.draw(m_manaBarRightSprite, states);
         }
+
+        target.draw(m_starSprite, states);
+        target.draw(m_starText, states);
+        target.draw(m_coinSprite, states);
+        target.draw(m_coinText);
     }
 
     void PlayerInfoDisplay::setHealthBar(const float ratio)
@@ -236,6 +305,18 @@ namespace platformer
         m_willDrawManaBarLeft  = (ratio > 0.0f);
         m_manaBarRect.width    = (m_barFillMax * ratio);
         util::scaleAndCenterInside(m_manaBarMiddleSprite, m_manaBarRect);
+    }
+
+    void PlayerInfoDisplay::setStarCount(const int count)
+    {
+        m_starText.setString(std::to_string(count));
+        util::setOriginToPosition(m_starText);
+    }
+
+    void PlayerInfoDisplay::setCoinCount(const int count)
+    {
+        m_coinText.setString(std::to_string(count));
+        util::setOriginToPosition(m_coinText);
     }
 
 } // namespace platformer
