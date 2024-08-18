@@ -3,6 +3,7 @@
 //
 // acid-anim-layer.hpp
 //
+#include "kill-collision-manager.hpp"
 #include "tile-layer.hpp"
 
 #include <vector>
@@ -24,11 +25,13 @@ namespace platformer
 
     //
 
-    class AcidAnimationLayer : public ITileLayer
+    class AcidAnimationLayer
+        : public ITileLayer
+        , public IKillCollisionOwner
     {
       public:
         AcidAnimationLayer(Context & context, const std::vector<sf::FloatRect> & rects);
-        virtual ~AcidAnimationLayer() override = default;
+        virtual ~AcidAnimationLayer() override;
 
         void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const override;
         void move(const Context & context, const float amount) override;
@@ -44,6 +47,8 @@ namespace platformer
             const sf::Vector2i &,
             const sf::Vector2f &) override
         {}
+
+        bool doesAvatarCollideWithAny(Context & c, const sf::FloatRect & avatarRect) override;
 
       private:
         std::size_t frameCount() const;

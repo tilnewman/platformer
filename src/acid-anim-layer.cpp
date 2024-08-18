@@ -5,10 +5,13 @@
 //
 #include "acid-anim-layer.hpp"
 
+#include "avatar.hpp"
 #include "context.hpp"
+#include "level.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
+#include "sound-player.hpp"
 #include "texture-stats.hpp"
 
 #include <SFML/Graphics/RenderStates.hpp>
@@ -25,6 +28,8 @@ namespace platformer
         , m_timePerFrameSec(0.2f)
         , m_frameIndex(0)
     {
+        KillCollisionManager::instance().addOwner(*this);
+
         m_texture.loadFromFile(
             (context.settings.media_path / "image/map-anim/acid-surface.png").string());
 
@@ -39,6 +44,11 @@ namespace platformer
             sprite.setTextureRect(textureRect(0));
             util::fitAndCenterInside(sprite, rect);
         }
+    }
+
+    AcidAnimationLayer::~AcidAnimationLayer()
+    {
+        KillCollisionManager::instance().removeOwner(*this);
     }
 
     void AcidAnimationLayer::draw(
@@ -95,6 +105,22 @@ namespace platformer
                 sprite.setTextureRect(textureRect(m_frameIndex));
             }
         }
+    }
+
+    bool AcidAnimationLayer::doesAvatarCollideWithAny(
+        Context & context, const sf::FloatRect & avatarRect)
+    {
+        for (const sf::Sprite & sprite : m_sprites)
+        {
+            if (avatarRect.intersects(sprite.getGlobalBounds()))
+            {
+                context.avatar.triggerDeath(context);
+                context.sfx.play("acid");
+                return true;
+            }
+        }
+
+        return false;
     }
 
 } // namespace platformer

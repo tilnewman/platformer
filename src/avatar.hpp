@@ -72,6 +72,7 @@ namespace platformer
         AvatarType type() const { return m_type; }
         const sf::FloatRect collisionRect() const;
         const sf::FloatRect attackRect() const;
+        void triggerDeath(Context & context);
 
         // TODO remove after testing
         void changeType();
@@ -88,7 +89,6 @@ namespace platformer
         void sideToSideMotion(Context & context, const float frameTimeSec);
         void restartAnim();
         void jumping(Context & context, const float frameTimeSec);
-        void triggerDeath(Context & context);
         bool handleDeath(Context & context, const float frameTimeSec);
         void respawn(Context & context);
         void turnRight();
