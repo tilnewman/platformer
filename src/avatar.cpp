@@ -643,67 +643,42 @@ namespace platformer
             return;
         }
 
-        const sf::FloatRect avatarRect{ collisionRect()  };
+        const sf::FloatRect avatarRect{ collisionRect() };
+        harm(context, KillCollisionManager::instance().avatarCollide(context, avatarRect));
+        harm(context, context.level.monsters.avatarCollide(avatarRect));
+    }
 
-        if (KillCollisionManager::instance().doesAvatarCollideWithAny(context, avatarRect))
+    void Avatar::harm(Context & context, const Harm & harm)
+    {
+        if (!harm.isAnyHarmDone())
         {
-            m_state = AvatarState::Hurt;
-            m_anim  = AvatarAnim::Hurt;
-            restartAnim();
-
-            const float recoilSpeed{ 3.5f };
-            m_velocity.y = -recoilSpeed;
-
-            if (m_velocity.x < 0.0f)
-            {
-                m_velocity.x = recoilSpeed;
-            }
-            else if (m_velocity.x > 0.0f)
-            {
-                m_velocity.x = -recoilSpeed;
-            }
-            else if (m_isFacingRight)
-            {
-                m_velocity.x = -recoilSpeed;
-            }
-            else
-            {
-                m_velocity.x = recoilSpeed;
-            }
-
-            context.sfx.play("hurt");
-
-            // triggerDeath(context);
+            return;
         }
 
-        const Harm harm{ context.level.monsters.avatarCollide(avatarRect) };
-        if (harm.isAnyHarmDone())
+        m_state = AvatarState::Hurt;
+        m_anim  = AvatarAnim::Hurt;
+        restartAnim();
+
+        const float recoilSpeed{ 3.5f };
+        m_velocity.y = -recoilSpeed;
+
+        const float collisionRectCenterHoriz{ util::center(harm.rect).x };
+        if (collisionRectCenterHoriz < util::center(collisionRect()).x)
         {
-            m_state = AvatarState::Hurt;
-            m_anim  = AvatarAnim::Hurt;
-            restartAnim();
-
-            const float recoilSpeed{ 3.5f };
-            m_velocity.y = -recoilSpeed;
-
-            const float collisionRectCenterHoriz{ util::center(harm.rect).x };
-            if (collisionRectCenterHoriz < util::center(avatarRect).x)
-            {
-                m_velocity.x = recoilSpeed;
-            }
-            else
-            {
-                m_velocity.x = -recoilSpeed;
-            }
-
-            if (!harm.sfx.empty())
-            {
-                context.sfx.play(harm.sfx);
-            }
-
-            //TODO subtract harm.damage from player health and check for death
-            context.sfx.play("hurt");
+            m_velocity.x = recoilSpeed;
         }
+        else
+        {
+            m_velocity.x = -recoilSpeed;
+        }
+
+        if (!harm.sfx.empty())
+        {
+            context.sfx.play(harm.sfx);
+        }
+
+        // TODO subtract harm.damage from player health and check for death
+        context.sfx.play("hurt");
     }
 
 } // namespace platformer

@@ -3,6 +3,7 @@
 //
 // avatar.hpp
 //
+#include "harm.hpp"
 #include "avatar-textures.hpp"
 
 #include <string_view>
@@ -95,6 +96,7 @@ namespace platformer
         void turnLeft();
         void exitCollisions(Context & context) const;
         void hurtCollisions(Context & context);
+        void harm(Context & context, const Harm & harm);
 
       private:
         sf::Sprite m_sprite;

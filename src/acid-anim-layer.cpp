@@ -107,20 +107,23 @@ namespace platformer
         }
     }
 
-    bool AcidAnimationLayer::doesAvatarCollideWithAny(
-        Context & context, const sf::FloatRect & avatarRect)
+    const Harm AcidAnimationLayer::avatarCollide(Context &, const sf::FloatRect & avatarRect)
     {
+        Harm harm;
+
         for (const sf::Sprite & sprite : m_sprites)
         {
-            if (avatarRect.intersects(sprite.getGlobalBounds()))
+            const sf::FloatRect acidRect{ sprite.getGlobalBounds() };
+            if (avatarRect.intersects(acidRect))
             {
-                context.avatar.triggerDeath(context);
-                context.sfx.play("acid");
-                return true;
+                harm.rect   = acidRect;
+                harm.damage = 99999; // TOOD lookup real max health somewhere
+                harm.sfx    = "acid";
+                break;
             }
         }
 
-        return false;
+        return harm;
     }
 
 } // namespace platformer

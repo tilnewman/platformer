@@ -3,6 +3,8 @@
 //
 // kill-collision-manager.hpp
 //
+#include "harm.hpp"
+
 #include <vector>
 
 #include <SFML/Graphics/Rect.hpp>
@@ -17,8 +19,7 @@ namespace platformer
     struct IKillCollisionOwner
     {
         virtual ~IKillCollisionOwner() = default;
-
-        virtual bool doesAvatarCollideWithAny(Context & c, const sf::FloatRect & avatarRect) = 0;
+        virtual const Harm avatarCollide(Context & context, const sf::FloatRect & avatarRect) = 0;
     };
 
     //
@@ -30,7 +31,7 @@ namespace platformer
 
         void addOwner(IKillCollisionOwner & owner);
         void removeOwner(IKillCollisionOwner & owner);
-        bool doesAvatarCollideWithAny(Context & context, const sf::FloatRect & avatarRect);
+        const Harm avatarCollide(Context & context, const sf::FloatRect & avatarRect);
 
       private:
         KillCollisionManager();

@@ -59,7 +59,7 @@ namespace platformer
             const sf::Vector2f &) override
         {}
 
-        bool doesAvatarCollideWithAny(Context & context, const sf::FloatRect & avatarRect) override;
+        const Harm avatarCollide(Context & context, const sf::FloatRect & avatarRect) override;
 
       private:
         const sf::IntRect textureRect(const std::size_t frame) const;

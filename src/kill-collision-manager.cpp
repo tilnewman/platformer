@@ -37,18 +37,19 @@ namespace platformer
             std::end(m_owners));
     }
 
-    bool KillCollisionManager::doesAvatarCollideWithAny(
-        Context & context, const sf::FloatRect & avatarRect)
+    const Harm
+        KillCollisionManager::avatarCollide(Context & context, const sf::FloatRect & avatarRect)
     {
         for (auto & ownerRefWrapper : m_owners)
         {
-            if (ownerRefWrapper.get().doesAvatarCollideWithAny(context, avatarRect))
+            const Harm harm{ ownerRefWrapper.get().avatarCollide(context, avatarRect) };
+            if (harm.isAnyHarmDone())
             {
-                return true;
+                return harm;
             }
         }
 
-        return false;
+        return {};
     }
 
 } // namespace platformer

@@ -123,9 +123,10 @@ namespace platformer
         }
     }
 
-    bool LightningAnimationLayer::doesAvatarCollideWithAny(
-        Context & context, const sf::FloatRect & avatarRect)
+    const Harm LightningAnimationLayer::avatarCollide(Context &, const sf::FloatRect & avatarRect)
     {
+        Harm harm;
+
         for (const LightningAnim & anim : m_anims)
         {
             if (!anim.is_animating)
@@ -141,11 +142,13 @@ namespace platformer
                 continue;
             }
 
-            context.sfx.play("electricity");
-            return true;
+            harm.rect   = reducedBounds;
+            harm.damage = 50;
+            harm.sfx    = "electricity";
+            break;
         }
 
-        return false;
+        return harm;
     }
 
 } // namespace platformer
