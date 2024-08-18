@@ -26,6 +26,7 @@ namespace platformer
         Splash,
         Play,
         LevelComplete,
+        LevelDeath,
         Shutdown
     };
 
@@ -38,6 +39,7 @@ namespace platformer
             case State::Splash:         { return "Splash";                         }
             case State::Play:           { return "Play";                           }
             case State::LevelComplete:  { return "LevelComplete";                  }
+            case State::LevelDeath:     { return "LevelDeath";                     }
             case State::Shutdown:       { return "Shutdown";                       }
             default:                    { return "Error_toString()_unknown_State"; }
         }

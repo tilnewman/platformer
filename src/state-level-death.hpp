@@ -1,7 +1,7 @@
-#ifndef STATE_LEVEL_COMPLETE_HPP_INCLUDED
-#define STATE_LEVEL_COMPLETE_HPP_INCLUDED
+#ifndef STATE_LEVEL_DEATH_HPP_INCLUDED
+#define STATE_LEVEL_DEATH_HPP_INCLUDED
 //
-// state-level-complete.hpp
+// state-level-death.hpp
 //
 #include "states.hpp"
 
@@ -16,11 +16,11 @@ namespace platformer
 
     //
 
-    class LevelCompleteState : public IState
+    class LevelDeathState : public IState
     {
       public:
-        LevelCompleteState();
-        virtual ~LevelCompleteState() override = default;
+        LevelDeathState();
+        virtual ~LevelDeathState() override = default;
 
         State which() const final { return State::LevelComplete; }
         void update(Context & context, const float) final;
@@ -38,4 +38,4 @@ namespace platformer
 
 } // namespace platformer
 
-#endif // STATE_LEVEL_COMPLETE_HPP_INCLUDED
+#endif // STATE_LEVEL_DEATH_HPP_INCLUDED

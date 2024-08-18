@@ -75,7 +75,7 @@ namespace platformer
         // killCollisions(context);
         // acidCollisions(context);
         // waterCollisions(context);
-        // exitCollisions(context);
+        exitCollisions(context);
         // handleAttackingEnemies(context);
 
         // context.managers.collideAllWithAvatar(context, collisionRect());
@@ -581,7 +581,7 @@ namespace platformer
             }
             else
             {
-                context.state.changeTo(context, State::Shutdown);
+                context.state.changeTo(context, State::LevelDeath);
             }
         }
 
@@ -624,6 +624,15 @@ namespace platformer
         m_isFacingRight = false;
         m_sprite.scale(-1.0f, 1.0f);
         m_sprite.move((m_sprite.getGlobalBounds().width * (1.0f - m_avatarImageWidthRatio)), 0.0f);
+    }
+
+    void Avatar::exitCollisions(Context & context) const
+    {
+        if (collisionRect().intersects(context.level.exit_rect))
+        {
+            context.sfx.stopAllLooped();
+            context.state.changeTo(context, State::LevelComplete);
+        }
     }
 
 } // namespace platformer

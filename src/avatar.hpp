@@ -91,6 +91,7 @@ namespace platformer
         void respawn(Context & context);
         void turnRight();
         void turnLeft();
+        void exitCollisions(Context & context) const;
 
       private:
         sf::Sprite m_sprite;

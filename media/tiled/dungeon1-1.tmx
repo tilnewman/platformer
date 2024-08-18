@@ -335,7 +335,7 @@
  </objectgroup>
  <objectgroup id="5" name="spawn">
   <object id="6" name="enter" x="160" y="1024" width="32" height="32"/>
-  <object id="7" name="exit" x="6374.13" y="866.896" width="16" height="384"/>
+  <object id="7" name="exit" x="2096" y="784" width="16" height="384"/>
  </objectgroup>
  <objectgroup id="6" name="pickup-anim">
   <object id="8" name="heart" x="800" y="1248" width="16" height="16"/>

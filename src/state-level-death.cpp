@@ -1,9 +1,9 @@
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 //
-// state-level-complete.hpp
+// state-level-death.hpp
 //
-#include "state-level-complete.hpp"
+#include "state-level-death.hpp"
 
 #include "context.hpp"
 #include "font.hpp"
@@ -18,38 +18,39 @@
 namespace platformer
 {
 
-    LevelCompleteState::LevelCompleteState()
+    LevelDeathState::LevelDeathState()
         : m_texture()
         , m_sprite()
         , m_text()
         , m_elapsedTimeSec(0.0f)
     {}
 
-    void LevelCompleteState::onEnter(Context & context)
+    void LevelDeathState::onEnter(Context & context)
     {
         const sf::FloatRect wholeRect{ context.layout.wholeRect() };
 
         m_texture.loadFromFile(
-            (context.settings.media_path / "image/splash/knight-win.png").string());
+            (context.settings.media_path / "image/splash/knight-loose.png").string());
 
         TextureStats::instance().process(m_texture);
         m_texture.setSmooth(true);
 
         m_sprite.setTexture(m_texture);
 
-        util::fitAndCenterInside(m_sprite, util::scaleRectInPlaceCopy(wholeRect, 0.3f));
+        util::fitAndCenterInside(m_sprite, util::scaleRectInPlaceCopy(wholeRect, 0.2f));
 
         //
 
         m_text = context.font.makeText(
-            Font::Default, FontSize::Huge, "You Survived!", sf::Color(220, 220, 220));
+            Font::Default, FontSize::Huge, "You Died", sf::Color(220, 220, 220));
 
         m_text.setPosition(
             ((wholeRect.width * 0.5f) - (m_text.getGlobalBounds().width * 0.5f)),
-            (util::bottom(m_sprite) - (wholeRect.height * 0.05f)));
+            (m_sprite.getPosition().y + m_text.getGlobalBounds().height +
+             (wholeRect.height * 0.1f)));
     }
 
-    void LevelCompleteState::update(Context & context, const float frameTimeSec)
+    void LevelDeathState::update(Context & context, const float frameTimeSec)
     {
         m_elapsedTimeSec += frameTimeSec;
         if (m_elapsedTimeSec > 4.0f)
@@ -58,8 +59,7 @@ namespace platformer
         }
     }
 
-    void LevelCompleteState::draw(
-        Context &, sf::RenderTarget & target, sf::RenderStates states) const
+    void LevelDeathState::draw(Context &, sf::RenderTarget & target, sf::RenderStates states) const
     {
         target.draw(m_sprite, states);
         target.draw(m_text, states);

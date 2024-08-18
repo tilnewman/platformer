@@ -6,6 +6,7 @@
 #include "state-manager.hpp"
 
 #include "state-level-complete.hpp"
+#include "state-level-death.hpp"
 #include "state-play.hpp"
 #include "state-splash.hpp"
 
@@ -34,6 +35,7 @@ namespace platformer
             case State::Splash:         { return std::make_unique<SplashState>();        }
             case State::Play:           { return std::make_unique<PlayState>();          }
             case State::LevelComplete:  { return std::make_unique<LevelCompleteState>(); }
+            case State::LevelDeath:     { return std::make_unique<LevelDeathState>();    }
             case State::Shutdown:       { return std::make_unique<ShutdownState>();      }
             default:                    
             { 
