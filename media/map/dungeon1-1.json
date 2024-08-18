@@ -790,24 +790,24 @@
          "objects":[
                 {
                  "height":32,
-                 "id":59,
-                 "name":"goblin",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":288,
-                 "x":432,
-                 "y":1248
-                }, 
-                {
-                 "height":32,
                  "id":60,
                  "name":"goblin",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":192,
-                 "x":880,
+                 "width":240,
+                 "x":848,
+                 "y":1248
+                }, 
+                {
+                 "height":32,
+                 "id":70,
+                 "name":"goblin",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":288,
+                 "x":416,
                  "y":1248
                 }],
          "opacity":1,
@@ -862,8 +862,63 @@
                  "type":"",
                  "visible":true,
                  "width":16,
+                 "x":800,
+                 "y":1248
+                }, 
+                {
+                 "height":16,
+                 "id":61,
+                 "name":"coin1",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
                  "x":336,
-                 "y":1296
+                 "y":1312
+                }, 
+                {
+                 "height":16,
+                 "id":65,
+                 "name":"bottle",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":704,
+                 "y":1248
+                }, 
+                {
+                 "height":16,
+                 "id":66,
+                 "name":"arrow",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":736,
+                 "y":1248
+                }, 
+                {
+                 "height":16,
+                 "id":67,
+                 "name":"plus",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":768,
+                 "y":1248
+                }, 
+                {
+                 "height":16,
+                 "id":69,
+                 "name":"star",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":832,
+                 "y":1248
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -889,36 +944,14 @@
          "objects":[
                 {
                  "height":16,
-                 "id":41,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":32,
-                 "x":736,
-                 "y":1264
-                }, 
-                {
-                 "height":16,
-                 "id":42,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":32,
-                 "x":784,
-                 "y":1264
-                }, 
-                {
-                 "height":16,
                  "id":43,
                  "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":832,
-                 "y":1264
+                 "x":1856,
+                 "y":976
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -927,7 +960,7 @@
          "y":0
         }],
  "nextlayerid":13,
- "nextobjectid":61,
+ "nextobjectid":71,
  "orientation":"orthogonal",
  "properties":[
         {
