@@ -1,9 +1,9 @@
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 //
-// kill-collision-manager.cpp
+// harm-collision-manager.cpp
 //
-#include "kill-collision-manager.hpp"
+#include "harm-collision-manager.hpp"
 
 #include "check-macros.hpp"
 #include "context.hpp"
@@ -13,32 +13,32 @@
 namespace platformer
 {
 
-    KillCollisionManager & KillCollisionManager::instance()
+    HarmCollisionManager & HarmCollisionManager::instance()
     {
-        static KillCollisionManager instance;
+        static HarmCollisionManager instance;
         return instance;
     }
 
-    KillCollisionManager::KillCollisionManager()
+    HarmCollisionManager::HarmCollisionManager()
         : m_owners()
     {}
 
-    void KillCollisionManager::addOwner(IKillCollisionOwner & owner) { m_owners.push_back(owner); }
+    void HarmCollisionManager::addOwner(IHarmCollisionOwner & owner) { m_owners.push_back(owner); }
 
-    void KillCollisionManager::removeOwner(IKillCollisionOwner & owner)
+    void HarmCollisionManager::removeOwner(IHarmCollisionOwner & owner)
     {
         m_owners.erase(
             std::remove_if(
                 std::begin(m_owners),
                 std::end(m_owners),
-                [&](const std::reference_wrapper<IKillCollisionOwner> & refWrapper) {
+                [&](const std::reference_wrapper<IHarmCollisionOwner> & refWrapper) {
                     return (&owner == &refWrapper.get());
                 }),
             std::end(m_owners));
     }
 
     const Harm
-        KillCollisionManager::avatarCollide(Context & context, const sf::FloatRect & avatarRect)
+        HarmCollisionManager::avatarCollide(Context & context, const sf::FloatRect & avatarRect)
     {
         for (auto & ownerRefWrapper : m_owners)
         {

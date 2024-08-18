@@ -3,7 +3,7 @@
 //
 // acid-anim-layer.hpp
 //
-#include "kill-collision-manager.hpp"
+#include "harm-collision-manager.hpp"
 #include "tile-layer.hpp"
 
 #include <vector>
@@ -27,7 +27,7 @@ namespace platformer
 
     class AcidAnimationLayer
         : public ITileLayer
-        , public IKillCollisionOwner
+        , public IHarmCollisionOwner
     {
       public:
         AcidAnimationLayer(Context & context, const std::vector<sf::FloatRect> & rects);

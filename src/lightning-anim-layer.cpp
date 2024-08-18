@@ -26,7 +26,7 @@ namespace platformer
         , m_timebetweenFrames(0.1f)
         , m_frameCount(8)
     {
-        KillCollisionManager::instance().addOwner(*this);
+        HarmCollisionManager::instance().addOwner(*this);
 
         m_texture.loadFromFile(
             (context.settings.media_path / "image/map-anim/lightning.png").string());
@@ -55,7 +55,7 @@ namespace platformer
 
     LightningAnimationLayer::~LightningAnimationLayer()
     {
-        KillCollisionManager::instance().removeOwner(*this);
+        HarmCollisionManager::instance().removeOwner(*this);
     }
 
     void LightningAnimationLayer::draw(

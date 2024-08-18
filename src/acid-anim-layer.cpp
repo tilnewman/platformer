@@ -28,7 +28,7 @@ namespace platformer
         , m_timePerFrameSec(0.2f)
         , m_frameIndex(0)
     {
-        KillCollisionManager::instance().addOwner(*this);
+        HarmCollisionManager::instance().addOwner(*this);
 
         m_texture.loadFromFile(
             (context.settings.media_path / "image/map-anim/acid-surface.png").string());
@@ -48,7 +48,7 @@ namespace platformer
 
     AcidAnimationLayer::~AcidAnimationLayer()
     {
-        KillCollisionManager::instance().removeOwner(*this);
+        HarmCollisionManager::instance().removeOwner(*this);
     }
 
     void AcidAnimationLayer::draw(

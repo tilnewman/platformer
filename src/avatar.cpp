@@ -8,7 +8,7 @@
 #include "accents.hpp"
 #include "background-images.hpp"
 #include "context.hpp"
-#include "kill-collision-manager.hpp"
+#include "harm-collision-manager.hpp"
 #include "level-info.hpp"
 #include "level.hpp"
 #include "monsters.hpp"
@@ -644,7 +644,7 @@ namespace platformer
         }
 
         const sf::FloatRect avatarRect{ collisionRect() };
-        harm(context, KillCollisionManager::instance().avatarCollide(context, avatarRect));
+        harm(context, HarmCollisionManager::instance().avatarCollide(context, avatarRect));
         harm(context, context.level.monsters.avatarCollide(avatarRect));
     }
 

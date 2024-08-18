@@ -3,7 +3,7 @@
 //
 // lightning-anim-layer.hpp
 //
-#include "kill-collision-manager.hpp"
+#include "harm-collision-manager.hpp"
 #include "tile-layer.hpp"
 
 #include <vector>
@@ -38,7 +38,7 @@ namespace platformer
 
     class LightningAnimationLayer
         : public ITileLayer
-        , public IKillCollisionOwner
+        , public IHarmCollisionOwner
     {
       public:
         LightningAnimationLayer(Context & context, const std::vector<sf::FloatRect> & rects);
