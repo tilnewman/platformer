@@ -669,6 +669,8 @@ namespace platformer
                 m_velocity.x = recoilSpeed;
             }
 
+            context.sfx.play("hurt");
+
             // triggerDeath(context);
         }
     }
