@@ -86,13 +86,16 @@ namespace platformer
 
       private:
         bool animate(const float frameTimeSec); // returns true if animation is finished
-        void changeState(Context & context);
-        const sf::FloatRect collision() const;
-
+        void changeStateBeforeSeeingPlayer(Context & context);
+        void changeStateAfterSeeingPlayer(Context & context);
+        const sf::FloatRect collisionRect() const;
+        
         void loadTextures(const Settings & settings);
         std::size_t frameCount(const GoblinAnim anim) const;
         const sf::IntRect textureRect(const GoblinAnim anim, const std::size_t frame) const;
         void setTexture(sf::Sprite & sprite, const GoblinAnim anim, const std::size_t frame) const;
+        void turnToFacePlayer(Context & context);
+        void handleWalking(const float frameTimeSec);
 
       private:
         sf::FloatRect m_region;
@@ -103,6 +106,7 @@ namespace platformer
         bool m_isFacingRight;
         float m_stateElapsedTimeSec;
         float m_stateTimeUntilChangeSec;
+        bool m_hasSpottedPlayer;
 
         static std::vector<sf::Texture> m_textures;
     };

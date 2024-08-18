@@ -5,6 +5,7 @@
 //
 #include "goblin.hpp"
 
+#include "avatar.hpp"
 #include "context.hpp"
 #include "random.hpp"
 #include "screen-layout.hpp"
@@ -31,6 +32,7 @@ namespace platformer
         , m_isFacingRight(context.random.boolean())
         , m_stateElapsedTimeSec(0.0f)
         , m_stateTimeUntilChangeSec(0.0f)
+        , m_hasSpottedPlayer(false)
     {
         loadTextures(context.settings);
 
@@ -60,6 +62,11 @@ namespace platformer
             {
                 m_elapsedTimeSec = 0.0f;
                 m_anim           = GoblinAnim::Idle;
+
+                if (m_hasSpottedPlayer)
+                {
+                    turnToFacePlayer(context);
+                }
             }
         }
 
@@ -67,46 +74,35 @@ namespace platformer
         if (m_stateElapsedTimeSec > m_stateTimeUntilChangeSec)
         {
             m_stateElapsedTimeSec = 0.0f;
-            changeState(context);
-        }
 
-        if (GoblinAnim::Walk == m_anim)
-        {
-            const float goblinWalkSpeed{ 40.0f };
-
-            if (m_isFacingRight)
+            if (m_hasSpottedPlayer)
             {
-                m_sprite.move((goblinWalkSpeed * frameTimeSec), 0.0f);
+                changeStateAfterSeeingPlayer(context);
             }
             else
             {
-                m_sprite.move(-(goblinWalkSpeed * frameTimeSec), 0.0f);
+                changeStateBeforeSeeingPlayer(context);
             }
+        }
 
-            // if walked out of bounds simple turn around and keep walking
-            const sf::FloatRect collRect{ collision() };
-            if (util::right(collRect) > util::right(m_region))
-            {
-                m_sprite.scale(-1.0f, 1.0f);
-                m_isFacingRight = !m_isFacingRight;
-                m_sprite.move((util::right(m_region) - util::right(collRect)), 0.0f);
-            }
-            else if (collRect.left < m_region.left)
-            {
-                m_sprite.scale(-1.0f, 1.0f);
-                m_isFacingRight = !m_isFacingRight;
-                m_sprite.move((m_region.left - collRect.left), 0.0f);
-            }
+        handleWalking(frameTimeSec);
+
+        if (!m_hasSpottedPlayer && (m_region.intersects(context.avatar.collisionRect())))
+        {
+            m_hasSpottedPlayer    = true;
+            m_elapsedTimeSec      = 0.0f;
+            m_stateElapsedTimeSec = 0.0f;
+            m_anim                = GoblinAnim::Idle;
+            turnToFacePlayer(context);
         }
     }
 
-    void Goblin::changeState(Context & context)
+    void Goblin::changeStateBeforeSeeingPlayer(Context & context)
     {
         m_elapsedTimeSec          = 0.0f;
         m_stateTimeUntilChangeSec = context.random.fromTo(1.0f, 6.0f);
 
         const int isNextActionWalking{ context.random.boolean() };
-
         if (isNextActionWalking)
         {
             m_anim = GoblinAnim::Walk;
@@ -124,6 +120,27 @@ namespace platformer
             m_anim = GoblinAnim::Idle;
             m_sprite.scale(-1.0f, 1.0f);
             m_isFacingRight = !m_isFacingRight;
+        }
+    }
+
+    void Goblin::changeStateAfterSeeingPlayer(Context & context)
+    {
+        turnToFacePlayer(context);
+
+        m_elapsedTimeSec      = 0.0f;
+        m_stateElapsedTimeSec = 0.0f;
+
+        const int isNextActionWalking{ context.random.boolean() };
+        if (isNextActionWalking)
+        {
+            m_anim                    = GoblinAnim::Walk;
+            m_stateTimeUntilChangeSec = context.random.fromTo(1.0f, 2.0f);
+        }
+        else
+        {
+            // in all other cases just attack
+            m_anim                    = GoblinAnim::Attack;
+            m_stateTimeUntilChangeSec = 1.0f;
         }
     }
 
@@ -160,13 +177,13 @@ namespace platformer
         }
     }
 
-    void Goblin::move(const float amount) 
-    { 
+    void Goblin::move(const float amount)
+    {
         m_sprite.move(amount, 0.0f);
         m_region.left += amount;
     }
 
-    const sf::FloatRect Goblin::collision() const
+    const sf::FloatRect Goblin::collisionRect() const
     {
         sf::FloatRect rect{ m_sprite.getGlobalBounds() };
         util::scaleRectInPlace(rect, 0.35f);
@@ -231,6 +248,52 @@ namespace platformer
         const sf::Texture & texture{ m_textures.at(static_cast<std::size_t>(anim)) };
         sprite.setTexture(texture);
         sprite.setTextureRect(textureRect(anim, frame));
+    }
+
+    void Goblin::turnToFacePlayer(Context & context)
+    {
+        const bool isPlayerToTheRight{ util::center(context.avatar.collisionRect()).x >
+                                       util::center(collisionRect()).x };
+
+        if (isPlayerToTheRight != m_isFacingRight)
+        {
+            m_sprite.scale(-1.0f, 1.0f);
+            m_isFacingRight = !m_isFacingRight;
+        }
+    }
+
+    void Goblin::handleWalking(const float frameTimeSec)
+    {
+        if (GoblinAnim::Walk != m_anim)
+        {
+            return;
+        }
+
+        const float goblinWalkSpeed{ 40.0f };
+
+        if (m_isFacingRight)
+        {
+            m_sprite.move((goblinWalkSpeed * frameTimeSec), 0.0f);
+        }
+        else
+        {
+            m_sprite.move(-(goblinWalkSpeed * frameTimeSec), 0.0f);
+        }
+
+        // if walked out of bounds simple turn around and keep walking
+        const sf::FloatRect collRect{ collisionRect() };
+        if (util::right(collRect) > util::right(m_region))
+        {
+            m_sprite.scale(-1.0f, 1.0f);
+            m_isFacingRight = !m_isFacingRight;
+            m_sprite.move((util::right(m_region) - util::right(collRect)), 0.0f);
+        }
+        else if (collRect.left < m_region.left)
+        {
+            m_sprite.scale(-1.0f, 1.0f);
+            m_isFacingRight = !m_isFacingRight;
+            m_sprite.move((m_region.left - collRect.left), 0.0f);
+        }
     }
 
 } // namespace platformer

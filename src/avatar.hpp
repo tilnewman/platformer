@@ -70,13 +70,13 @@ namespace platformer
         void draw(sf::RenderTarget & target, sf::RenderStates states);
         void setPosition(const sf::FloatRect & rect);
         AvatarType type() const { return m_type; }
+        const sf::FloatRect collisionRect() const;
+        const sf::FloatRect attackRect() const;
 
         // TODO remove after testing
         void changeType();
 
       private:
-        const sf::FloatRect collisionRect() const;
-        const sf::FloatRect attackRect() const;
         void animate(Context & context, const float frameTimeSec);
         bool handleAttacking(Context & context);
         void moveMap(Context & context);
