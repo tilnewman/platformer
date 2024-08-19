@@ -590,7 +590,7 @@ namespace platformer
         m_anim  = AvatarAnim::Death;
         restartAnim();
         context.sfx.stop("walk");
-        context.sfx.play("death");
+        context.sfx.play("death-avatar");
         m_velocity = { 0.0f, 0.0f };
 
         // context.stats.has_player_died = true;
@@ -715,7 +715,7 @@ namespace platformer
         }
 
         // TODO subtract harm.damage from player health and check for death
-        context.sfx.play("hurt");
+        context.sfx.play("hurt-avatar");
     }
 
 } // namespace platformer
