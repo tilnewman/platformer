@@ -26,7 +26,7 @@ namespace platformer
 
     Goblin::Goblin(Context & context, const sf::FloatRect & region)
         : m_region(region)
-        , m_anim(GoblinAnim::Idle)
+        , m_anim(MonsterAnim::Idle)
         , m_animFrame(0)
         , m_sprite()
         , m_elapsedTimeSec(0.0f)
@@ -36,21 +36,7 @@ namespace platformer
         , m_hasSpottedPlayer(false)
     {
         loadTextures(context.settings);
-
-        setTexture(m_sprite, m_anim, m_animFrame);
-        m_sprite.setScale(context.settings.monster_scale, context.settings.monster_scale);
-        util::setOriginToCenter(m_sprite);
-
-        m_sprite.setPosition(
-            context.random.fromTo(region.left, util::right(region)),
-            (util::bottom(region) - m_sprite.getGlobalBounds().height));
-
-        m_sprite.move(0.0f, (0.8f * m_sprite.getGlobalBounds().height));
-
-        if (!m_isFacingRight)
-        {
-            m_sprite.scale(-1.0f, 1.0f);
-        }
+        initialSpriteSetup(context);
     }
 
     void Goblin::update(Context & context, const float frameTimeSec)
@@ -60,7 +46,7 @@ namespace platformer
             if (!doesAnimLoop(m_anim))
             {
                 m_elapsedTimeSec = 0.0f;
-                m_anim           = GoblinAnim::Idle;
+                m_anim           = MonsterAnim::Idle;
             }
         }
 
@@ -87,7 +73,7 @@ namespace platformer
             m_elapsedTimeSec          = 0.0f;
             m_stateElapsedTimeSec     = 0.0f;
             m_stateTimeUntilChangeSec = 0.0f;
-            m_anim                    = GoblinAnim::Idle;
+            m_anim                    = MonsterAnim::Idle;
             turnToFacePlayer(context);
         }
     }
@@ -100,7 +86,7 @@ namespace platformer
         const int isNextActionWalking{ context.random.boolean() };
         if (isNextActionWalking)
         {
-            m_anim = GoblinAnim::Walk;
+            m_anim = MonsterAnim::Walk;
 
             const bool willChangeDirection{ context.random.boolean() };
             if (willChangeDirection)
@@ -112,7 +98,7 @@ namespace platformer
         else
         {
             // in all other cases just turn around
-            m_anim = GoblinAnim::Idle;
+            m_anim = MonsterAnim::Idle;
             m_sprite.scale(-1.0f, 1.0f);
             m_isFacingRight = !m_isFacingRight;
         }
@@ -125,7 +111,7 @@ namespace platformer
             return;
         }
 
-        if (GoblinAnim::Attack == m_anim)
+        if (MonsterAnim::Attack == m_anim)
         {
             return;
         }
@@ -138,13 +124,13 @@ namespace platformer
         const int isNextActionWalking{ context.random.boolean() };
         if (isNextActionWalking)
         {
-            m_anim                    = GoblinAnim::Walk;
+            m_anim                    = MonsterAnim::Walk;
             m_stateTimeUntilChangeSec = context.random.fromTo(1.0f, 2.0f);
         }
         else
         {
             // in all other cases just attack
-            m_anim                    = GoblinAnim::Attack;
+            m_anim                    = MonsterAnim::Attack;
             m_stateTimeUntilChangeSec = 1.0f;
             context.sfx.play("swipe");
         }
@@ -223,12 +209,12 @@ namespace platformer
             return;
         }
 
-        m_textures.reserve(static_cast<std::size_t>(GoblinAnim::Count));
+        m_textures.reserve(static_cast<std::size_t>(MonsterAnim::Count));
 
-        for (std::size_t animIndex(0); animIndex < static_cast<std::size_t>(GoblinAnim::Count);
+        for (std::size_t animIndex(0); animIndex < static_cast<std::size_t>(MonsterAnim::Count);
              ++animIndex)
         {
-            const GoblinAnim anim{ static_cast<GoblinAnim>(animIndex) };
+            const MonsterAnim anim{ static_cast<MonsterAnim>(animIndex) };
 
             const std::filesystem::path path{ settings.media_path / "image/monster/goblin" /
                                               std::string(toString(anim)).append(".png") };
@@ -240,13 +226,31 @@ namespace platformer
         }
     }
 
-    std::size_t Goblin::frameCount(const GoblinAnim anim) const
+    void Goblin::initialSpriteSetup(Context & context)
+    {
+        setTexture(m_sprite, m_anim, m_animFrame);
+        m_sprite.setScale(context.settings.monster_scale, context.settings.monster_scale);
+        util::setOriginToCenter(m_sprite);
+
+        m_sprite.setPosition(
+            context.random.fromTo(m_region.left, util::right(m_region)),
+            (util::bottom(m_region) - m_sprite.getGlobalBounds().height));
+
+        m_sprite.move(0.0f, (0.8f * m_sprite.getGlobalBounds().height));
+
+        if (!m_isFacingRight)
+        {
+            m_sprite.scale(-1.0f, 1.0f);
+        }
+    }
+
+    std::size_t Goblin::frameCount(const MonsterAnim anim) const
     {
         const sf::Texture & texture{ m_textures.at(static_cast<std::size_t>(anim)) };
         return static_cast<std::size_t>(texture.getSize().x / texture.getSize().y);
     }
 
-    const sf::IntRect Goblin::textureRect(const GoblinAnim anim, const std::size_t frame) const
+    const sf::IntRect Goblin::textureRect(const MonsterAnim anim, const std::size_t frame) const
     {
         const sf::Texture & texture{ m_textures.at(static_cast<std::size_t>(anim)) };
 
@@ -269,7 +273,7 @@ namespace platformer
     }
 
     void Goblin::setTexture(
-        sf::Sprite & sprite, const GoblinAnim anim, const std::size_t frame) const
+        sf::Sprite & sprite, const MonsterAnim anim, const std::size_t frame) const
     {
         const sf::Texture & texture{ m_textures.at(static_cast<std::size_t>(anim)) };
         sprite.setTexture(texture);
@@ -290,7 +294,7 @@ namespace platformer
 
     void Goblin::handleWalking(Context & context, const float frameTimeSec)
     {
-        if (GoblinAnim::Walk != m_anim)
+        if (MonsterAnim::Walk != m_anim)
         {
             return;
         }
@@ -342,7 +346,7 @@ namespace platformer
     {
         Harm harm;
 
-        if ((GoblinAnim::Attack == m_anim) && avatarRect.intersects(attackCollisionRect()))
+        if ((MonsterAnim::Attack == m_anim) && avatarRect.intersects(attackCollisionRect()))
         {
             harm.damage = 10;
             harm.rect   = collisionRect();
@@ -350,6 +354,22 @@ namespace platformer
         }
 
         return harm;
+    }
+
+    float Goblin::timePerFrameSec(const MonsterAnim anim) const
+    {
+        // clang-format off
+        switch (anim)
+        {
+            case MonsterAnim::Attack:        { return 0.1f;   }
+            case MonsterAnim::Death:         { return 0.15f;  }
+            case MonsterAnim::Hurt:          { return 0.175f; }
+            case MonsterAnim::Idle:          { return 0.15f;  }
+            case MonsterAnim::Walk:          { return 0.1f;   }
+            case MonsterAnim::Count: // intentional fallthrough
+            default:                        { return 0.0f;   }
+        }
+        // clang-format on
     }
 
 } // namespace platformer

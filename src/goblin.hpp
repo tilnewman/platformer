@@ -3,7 +3,7 @@
 //
 // goblin.hpp
 //
-#include "monsters.hpp"
+#include "monster.hpp"
 
 #include <vector>
 
@@ -25,55 +25,6 @@ namespace platformer
 
     //
 
-    enum class GoblinAnim : std::size_t
-    {
-        Attack = 0,
-        Death,
-        Hurt,
-        Idle,
-        Walk,
-        Count
-    };
-
-    inline constexpr std::string_view toString(const GoblinAnim anim)
-    {
-        // clang-format off
-        switch (anim)
-        {
-            case GoblinAnim::Attack:        { return "attack"; }
-            case GoblinAnim::Death:         { return "death";  }
-            case GoblinAnim::Hurt:          { return "hurt";   }
-            case GoblinAnim::Idle:          { return "idle";   }
-            case GoblinAnim::Walk:          { return "walk";   }
-            case GoblinAnim::Count:   // intentional fallthrough
-            default:    { return "error_GoblinAnin_not_found"; }
-        }
-        // clang-format on
-    }
-
-    inline constexpr float timePerFrameSec(const GoblinAnim anim)
-    {
-        // clang-format off
-        switch (anim)
-        {
-            case GoblinAnim::Attack:        { return 0.1f;   }
-            case GoblinAnim::Death:         { return 0.15f;  }
-            case GoblinAnim::Hurt:          { return 0.175f; }
-            case GoblinAnim::Idle:          { return 0.15f;  }
-            case GoblinAnim::Walk:          { return 0.1f;   }
-            case GoblinAnim::Count: // intentional fallthrough
-            default:                        { return 0.0f;   }
-        }
-        // clang-format on
-    }
-
-    inline constexpr bool doesAnimLoop(const GoblinAnim anim)
-    {
-        return ((anim == GoblinAnim::Walk) || (anim == GoblinAnim::Idle));
-    }
-
-    //
-
     class Goblin : public IMonster
     {
       public:
@@ -87,21 +38,23 @@ namespace platformer
         const sf::FloatRect collisionRect() const override;
         const sf::FloatRect attackCollisionRect() const;
 
-      private:
+      protected:
         bool animate(const float frameTimeSec); // returns true if animation is finished
         void changeStateBeforeSeeingPlayer(Context & context);
         void changeStateAfterSeeingPlayer(Context & context);
 
         void loadTextures(const Settings & settings);
-        std::size_t frameCount(const GoblinAnim anim) const;
-        const sf::IntRect textureRect(const GoblinAnim anim, const std::size_t frame) const;
-        void setTexture(sf::Sprite & sprite, const GoblinAnim anim, const std::size_t frame) const;
+        void initialSpriteSetup(Context & context);
+        std::size_t frameCount(const MonsterAnim anim) const;
+        const sf::IntRect textureRect(const MonsterAnim anim, const std::size_t frame) const;
+        void setTexture(sf::Sprite & sprite, const MonsterAnim anim, const std::size_t frame) const;
         void turnToFacePlayer(Context & context);
         void handleWalking(Context & context, const float frameTimeSec);
+        float timePerFrameSec(const MonsterAnim anim) const;
 
-      private:
+      protected:
         sf::FloatRect m_region;
-        GoblinAnim m_anim;
+        MonsterAnim m_anim;
         std::size_t m_animFrame;
         sf::Sprite m_sprite;
         float m_elapsedTimeSec;

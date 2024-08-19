@@ -10,7 +10,6 @@
 #include "context.hpp"
 #include "level-file-loader.hpp"
 #include "map-textures.hpp"
-#include "monsters.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"

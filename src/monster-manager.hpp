@@ -1,8 +1,9 @@
-#ifndef MONSTERS_HPP_INCLUDED
-#define MONSTERS_HPP_INCLUDED
+#ifndef MONSTER_MANAGER_HPP_INCLUDED
+#define MONSTER_MANAGER_HPP_INCLUDED
 //
-// monsters.hpp
+// monster-manager.hpp
 //
+#include "monster.hpp"
 #include "harm.hpp"
 
 #include <memory>
@@ -20,19 +21,6 @@ namespace platformer
 {
 
     struct Context;
-
-    //
-
-    struct IMonster
-    {
-        virtual ~IMonster() = default;
-
-        virtual void update(Context & context, const float frameTimeSec)                     = 0;
-        virtual void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const = 0;
-        virtual void move(const float amount)                                                = 0;
-        virtual const Harm avatarCollide(const sf::FloatRect & avatarRect)                   = 0;
-        virtual const sf::FloatRect collisionRect() const                                    = 0;
-    };
 
     //
 
@@ -56,4 +44,4 @@ namespace platformer
 
 } // namespace platformer
 
-#endif // MONSTERS_HPP_INCLUDED
+#endif // MONSTER_MANAGER_HPP_INCLUDED

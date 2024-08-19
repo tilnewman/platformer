@@ -10,7 +10,7 @@
 #include "background-images.hpp"
 #include "context.hpp"
 #include "level.hpp"
-#include "monsters.hpp"
+#include "monster-manager.hpp"
 #include "pickups.hpp"
 #include "spells.hpp"
 

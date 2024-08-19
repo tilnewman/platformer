@@ -11,7 +11,7 @@
 #include "harm-collision-manager.hpp"
 #include "level-info.hpp"
 #include "level.hpp"
-#include "monsters.hpp"
+#include "monster-manager.hpp"
 #include "pickups.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
