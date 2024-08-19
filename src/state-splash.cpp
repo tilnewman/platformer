@@ -41,6 +41,8 @@ namespace platformer
             Font::Default, FontSize::Huge, "Some Damn Game", sf::Color(220, 220, 220));
 
         util::centerInside(m_text, context.layout.wholeRect());
+
+        m_text.move(0.0f, m_text.getGlobalBounds().height);
     }
 
     void SplashState::update(Context & context, const float frameTimeSec)

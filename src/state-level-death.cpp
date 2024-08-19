@@ -38,6 +38,7 @@ namespace platformer
         m_sprite.setTexture(m_texture);
 
         util::fitAndCenterInside(m_sprite, util::scaleRectInPlaceCopy(wholeRect, 0.2f));
+        m_sprite.move(0.0f, -(wholeRect.height * 0.1f));
 
         //
 
@@ -46,8 +47,7 @@ namespace platformer
 
         m_text.setPosition(
             ((wholeRect.width * 0.5f) - (m_text.getGlobalBounds().width * 0.5f)),
-            (m_sprite.getPosition().y + m_text.getGlobalBounds().height +
-             (wholeRect.height * 0.1f)));
+            (util::bottom(m_sprite) + (wholeRect.height * 0.015f)));
     }
 
     void LevelDeathState::update(Context & context, const float frameTimeSec)
