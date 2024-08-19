@@ -64,4 +64,12 @@ namespace platformer
         }
     }
 
+    void MonsterManager::avatarAttack(Context & context, const AttackInfo & attackInfo)
+    {
+        for (auto & monsterUPtr : m_monsters)
+        {
+            monsterUPtr->avatarAttack(context, attackInfo);
+        }
+    }
+
 } // namespace platformer

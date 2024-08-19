@@ -25,7 +25,10 @@ namespace platformer
     //
 
     Monster::Monster(
-        Context & context, const sf::FloatRect & region, const std::string & imageDirName)
+        Context & context,
+        const sf::FloatRect & region,
+        const std::string & imageDirName,
+        const Health_t health)
         : m_imageDirName(imageDirName)
         , m_region(region)
         , m_anim(MonsterAnim::Idle)
@@ -36,6 +39,8 @@ namespace platformer
         , m_stateElapsedTimeSec(0.0f)
         , m_stateTimeUntilChangeSec(0.0f)
         , m_hasSpottedPlayer(false)
+        , m_health(health)
+        , m_isAlive(true)
     {
         loadTextures(context.settings);
         initialSpriteSetup(context);
@@ -43,12 +48,25 @@ namespace platformer
 
     void Monster::update(Context & context, const float frameTimeSec)
     {
+        if (!m_isAlive)
+        {
+            return;
+        }
+
         if (animate(frameTimeSec))
         {
             if (!doesAnimLoop(m_anim))
             {
-                m_elapsedTimeSec = 0.0f;
-                m_anim           = MonsterAnim::Idle;
+                if (MonsterAnim::Death == m_anim)
+                {
+                    m_isAlive = false;
+                    setTexture(m_sprite, MonsterAnim::Death, (frameCount(MonsterAnim::Death) - 1));
+                }
+                else
+                {
+                    m_elapsedTimeSec = 0.0f;
+                    m_anim           = MonsterAnim::Idle;
+                }
             }
         }
 
@@ -69,7 +87,8 @@ namespace platformer
 
         handleWalking(context, frameTimeSec);
 
-        if (!m_hasSpottedPlayer && (m_region.intersects(context.avatar.collisionRect())))
+        if (!m_hasSpottedPlayer && (MonsterAnim::Death != m_anim) &&
+            (m_region.intersects(context.avatar.collisionRect())))
         {
             m_hasSpottedPlayer        = true;
             m_elapsedTimeSec          = 0.0f;
@@ -93,6 +112,32 @@ namespace platformer
     {
         m_sprite.move(amount, 0.0f);
         m_region.left += amount;
+    }
+
+    void Monster::avatarAttack(Context & context, const AttackInfo & attackInfo)
+    {
+        if ((MonsterAnim::Death == m_anim) || (MonsterAnim::Hurt == m_anim))
+        {
+            return;
+        }
+
+        if (!attackInfo.rect.intersects(collisionRect()))
+        {
+            return;
+        }
+
+        m_health -= attackInfo.damage;
+
+        if (m_health > 0)
+        {
+            m_anim = MonsterAnim::Hurt;
+            playHurtSfx(context);
+        }
+        else
+        {
+            m_anim = MonsterAnim::Death;
+            playDeathSfx(context);
+        }
     }
 
     bool Monster::animate(const float frameTimeSec)
@@ -125,8 +170,8 @@ namespace platformer
         switch (anim)
         {
             case MonsterAnim::Attack:        { return 0.1f;   }
-            case MonsterAnim::Death:         { return 0.15f;  }
-            case MonsterAnim::Hurt:          { return 0.175f; }
+            case MonsterAnim::Death:         { return 0.175f; }
+            case MonsterAnim::Hurt:          { return 0.75f;  }
             case MonsterAnim::Idle:          { return 0.15f;  }
             case MonsterAnim::Walk:          { return 0.1f;   }
             case MonsterAnim::Count: // intentional fallthrough
@@ -137,6 +182,11 @@ namespace platformer
 
     void Monster::changeStateBeforeSeeingPlayer(Context & context)
     {
+        if ((MonsterAnim::Death == m_anim) || (MonsterAnim::Hurt == m_anim))
+        {
+            return;
+        }
+
         m_elapsedTimeSec          = 0.0f;
         m_stateTimeUntilChangeSec = context.random.fromTo(1.0f, 6.0f);
 
@@ -168,7 +218,8 @@ namespace platformer
             return;
         }
 
-        if (MonsterAnim::Attack == m_anim)
+        if ((MonsterAnim::Attack == m_anim) || (MonsterAnim::Death == m_anim) ||
+            (MonsterAnim::Hurt == m_anim))
         {
             return;
         }

@@ -21,14 +21,21 @@ namespace platformer
 {
 
     Goblin::Goblin(Context & context, const sf::FloatRect & region)
-        : Monster(context, region, "goblin")
+        : Monster(context, region, "goblin", 16)
     {}
 
     const sf::FloatRect Goblin::collisionRect() const
     {
-        sf::FloatRect rect{ m_sprite.getGlobalBounds() };
-        util::scaleRectInPlace(rect, 0.35f);
-        return rect;
+        if (MonsterAnim::Death == m_anim)
+        {
+            return { 0.0f, 0.0f, 0.0f, 0.0f };
+        }
+        else
+        {
+            sf::FloatRect rect{ m_sprite.getGlobalBounds() };
+            util::scaleRectInPlace(rect, 0.35f);
+            return rect;
+        }
     }
 
     const sf::FloatRect Goblin::attackCollisionRect() const
@@ -65,8 +72,10 @@ namespace platformer
         return harm;
     }
 
-    //const std::string Goblin::imageDirName() const { return "goblin"; }
-
     void Goblin::playAttackSfx(Context & context) const { context.sfx.play("swipe"); }
+
+    void Goblin::playHurtSfx(Context & context) const { context.sfx.play("hurt-goblin"); }
+
+    void Goblin::playDeathSfx(Context & context) const { context.sfx.play("death-goblin"); }
 
 } // namespace platformer

@@ -31,8 +31,10 @@ namespace platformer
         const sf::FloatRect attackCollisionRect() const override;
 
       protected:
-        float walkSpeed() const override { return 40.0f; }
+        inline float walkSpeed() const override { return 40.0f; }
         void playAttackSfx(Context & context) const override;
+        void playHurtSfx(Context & context) const override;
+        void playDeathSfx(Context & context) const override;
     };
 
 } // namespace platformer

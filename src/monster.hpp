@@ -3,6 +3,7 @@
 //
 // monster.hpp
 //
+#include "custom-types.hpp"
 #include "harm.hpp"
 
 #include <filesystem>
@@ -60,6 +61,19 @@ namespace platformer
 
     //
 
+    struct AttackInfo
+    {
+        AttackInfo(const Health_t attackDamage = 0, const sf::FloatRect & avatarAttackRect = {})
+            : damage(attackDamage)
+            , rect(avatarAttackRect)
+        {}
+
+        Health_t damage;
+        sf::FloatRect rect;
+    };
+
+    //
+
     struct IMonster
     {
         virtual ~IMonster() = default;
@@ -70,6 +84,7 @@ namespace platformer
         virtual const Harm avatarCollide(const sf::FloatRect & avatarRect)                   = 0;
         virtual const sf::FloatRect collisionRect() const                                    = 0;
         virtual const sf::FloatRect attackCollisionRect() const                              = 0;
+        virtual void avatarAttack(Context & context, const AttackInfo & attackInfo)          = 0;
     };
 
     //
@@ -77,13 +92,19 @@ namespace platformer
     class Monster : public IMonster
     {
       public:
-        Monster(Context & context, const sf::FloatRect & region, const std::string & imageDirName);
+        Monster(
+            Context & context,
+            const sf::FloatRect & region,
+            const std::string & imageDirName,
+            const Health_t health);
+
         virtual ~Monster() override = default;
 
         // IMonster functions
         void update(Context & context, const float frameTimeSec) override;
         void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const override;
         void move(const float amount) override;
+        void avatarAttack(Context & context, const AttackInfo & attackInfo) override;
 
       protected:
         virtual bool animate(const float frameTimeSec); // returns true if animation is finished
@@ -91,9 +112,11 @@ namespace platformer
         virtual void changeStateBeforeSeeingPlayer(Context & context);
         virtual void changeStateAfterSeeingPlayer(Context & context);
         virtual void handleWalking(Context & context, const float frameTimeSec);
-        
+
         virtual float walkSpeed() const                     = 0;
         virtual void playAttackSfx(Context & context) const = 0;
+        virtual void playHurtSfx(Context & context) const   = 0;
+        virtual void playDeathSfx(Context & context) const  = 0;
 
         void loadTextures(const Settings & settings);
         void initialSpriteSetup(Context & context);
@@ -113,6 +136,8 @@ namespace platformer
         float m_stateElapsedTimeSec;
         float m_stateTimeUntilChangeSec;
         bool m_hasSpottedPlayer;
+        Health_t m_health;
+        bool m_isAlive;
 
         static std::vector<sf::Texture> m_textures;
     };

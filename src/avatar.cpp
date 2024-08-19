@@ -53,21 +53,22 @@ namespace platformer
 
     void Avatar::update(Context & context, const float frameTimeSec)
     {
-        // this handleDeath() cal must happen first
+        // this handleDeath() call must happen first
         if (handleDeath(context, frameTimeSec))
         {
             return;
         }
 
-        // handleAttacking() must be called BEFORE sideToSideMotion() and jumping()
-        handleAttacking(context);
+        // handleAttacking() should be called BEFORE these three
+        handleAttackState(context);
+        handleAttackingEnemies(context);
         sideToSideMotion(context, frameTimeSec);
         jumping(context, frameTimeSec);
 
         m_velocity += (context.settings.gravity_acc * frameTimeSec);
         m_sprite.move(m_velocity);
 
-        // moveMap() and collisions must be called AFTER m_sprite.move() above
+        // moveMap() and collisions should be called AFTER m_sprite.move() above
         moveMap(context);
         preventBacktracking(context);
         collisions(context);
@@ -75,8 +76,6 @@ namespace platformer
         hurtCollisions(context);
         // context.managers.collideAllWithAvatar(context, collisionRect());
         context.pickup.processCollisionWithAvatar(context, collisionRect());
-
-        // handleAttackingEnemies(context);
 
         // these two must happen last
         killIfOutOfBounds(context);
@@ -196,7 +195,7 @@ namespace platformer
         }
     }
 
-    void Avatar::handleAttacking(Context & context)
+    void Avatar::handleAttackState(Context & context)
     {
         // first frame
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F) && (AvatarState::Attack != m_state) &&
@@ -230,6 +229,56 @@ namespace platformer
                 restartAnim();
             }
         }
+    }
+
+    void Avatar::handleAttackingEnemies(Context & context)
+    {
+        if ((AvatarState::Attack != m_state) && (AvatarState::AttackExtra != m_state))
+        {
+            return;
+        }
+
+        AttackInfo attackInfo;
+        attackInfo.rect = attackRect();
+
+        if ((AvatarType::Assassin == m_type) || (AvatarType::Ninja == m_type) ||
+            (AvatarType::Assassin == m_type))
+        {
+            if (AvatarState::Attack == m_state)
+            {
+                attackInfo.damage = 8;
+            }
+            else
+            {
+                attackInfo.damage = 12;
+            }
+        }
+        else if (
+            (AvatarType::Druid == m_type) || (AvatarType::Enchantress == m_type) ||
+            (AvatarType::Witch == m_type))
+        {
+            if (AvatarState::Attack == m_state)
+            {
+                attackInfo.damage = 6;
+            }
+            else
+            {
+                attackInfo.damage = 12;
+            }
+        }
+        else // BlueKnight, RedKnight, Viking
+        {
+            if (AvatarState::Attack == m_state)
+            {
+                attackInfo.damage = 10;
+            }
+            else
+            {
+                attackInfo.damage = 16;
+            }
+        }
+
+        context.level.monsters.avatarAttack(context, attackInfo);
     }
 
     void Avatar::moveMap(Context & context)

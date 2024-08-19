@@ -82,7 +82,8 @@ namespace platformer
 
       private:
         void animate(Context & context, const float frameTimeSec);
-        void handleAttacking(Context & context);
+        void handleAttackState(Context & context);
+        void handleAttackingEnemies(Context & context);
         void moveMap(Context & context);
         void killIfOutOfBounds(Context & context);
         void preventBacktracking(const Context & context);
