@@ -51,8 +51,6 @@ namespace platformer
         {
             m_sprite.scale(-1.0f, 1.0f);
         }
-
-        // m_stateTimeUntilChangeSec = context.random.fromTo(1.0f, 6.0f);
     }
 
     void Goblin::update(Context & context, const float frameTimeSec)
@@ -61,15 +59,8 @@ namespace platformer
         {
             if (!doesAnimLoop(m_anim))
             {
-                if (m_hasSpottedPlayer)
-                {
-                    changeStateAfterSeeingPlayer(context);
-                }
-                else
-                {
-                    m_elapsedTimeSec = 0.0f;
-                    m_anim           = GoblinAnim::Idle;
-                }
+                m_elapsedTimeSec = 0.0f;
+                m_anim           = GoblinAnim::Idle;
             }
         }
 
@@ -129,6 +120,16 @@ namespace platformer
 
     void Goblin::changeStateAfterSeeingPlayer(Context & context)
     {
+        if (!context.layout.wholeRect().intersects(collisionRect()))
+        {
+            return;
+        }
+
+        if (GoblinAnim::Attack == m_anim)
+        {
+            return;
+        }
+
         turnToFacePlayer(context);
 
         m_elapsedTimeSec      = 0.0f;
@@ -145,12 +146,7 @@ namespace platformer
             // in all other cases just attack
             m_anim                    = GoblinAnim::Attack;
             m_stateTimeUntilChangeSec = 1.0f;
-
-            // don't play the swipe sfx if the goblin is off screen
-            if (context.layout.wholeRect().intersects(collisionRect()))
-            {
-                context.sfx.play("swipe");
-            }
+            context.sfx.play("swipe");
         }
     }
 
@@ -327,7 +323,7 @@ namespace platformer
             }
         }
 
-        // if walked out of bounds simple turn around and keep walking
+        // if walking out of bounds simply turn around and keep walking
         if (util::right(goblinRect) > util::right(m_region))
         {
             m_sprite.scale(-1.0f, 1.0f);
