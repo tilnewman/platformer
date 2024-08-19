@@ -5,9 +5,13 @@
 //
 #include "harm.hpp"
 
+#include <filesystem>
+#include <string>
 #include <vector>
 
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Texture.hpp>
 
 namespace sf
 {
@@ -19,6 +23,7 @@ namespace platformer
 {
 
     struct Context;
+    struct Settings;
 
     //
 
@@ -64,8 +69,53 @@ namespace platformer
         virtual void move(const float amount)                                                = 0;
         virtual const Harm avatarCollide(const sf::FloatRect & avatarRect)                   = 0;
         virtual const sf::FloatRect collisionRect() const                                    = 0;
+        virtual const sf::FloatRect attackCollisionRect() const                              = 0;
     };
 
+    //
+
+    class Monster : public IMonster
+    {
+      public:
+        Monster(Context & context, const sf::FloatRect & region, const std::string & imageDirName);
+        virtual ~Monster() override = default;
+
+        // IMonster functions
+        void update(Context & context, const float frameTimeSec) override;
+        void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const override;
+        void move(const float amount) override;
+
+      protected:
+        virtual bool animate(const float frameTimeSec); // returns true if animation is finished
+        virtual float timePerFrameSec(const MonsterAnim anim) const;
+        virtual void changeStateBeforeSeeingPlayer(Context & context);
+        virtual void changeStateAfterSeeingPlayer(Context & context);
+        virtual void handleWalking(Context & context, const float frameTimeSec);
+        
+        virtual float walkSpeed() const                     = 0;
+        virtual void playAttackSfx(Context & context) const = 0;
+
+        void loadTextures(const Settings & settings);
+        void initialSpriteSetup(Context & context);
+        void setTexture(sf::Sprite & s, const MonsterAnim a, const std::size_t frame) const;
+        const sf::IntRect textureRect(const MonsterAnim a, const std::size_t frame) const;
+        std::size_t frameCount(const MonsterAnim anim) const;
+        void turnToFacePlayer(Context & context);
+
+      protected:
+        std::string m_imageDirName;
+        sf::FloatRect m_region;
+        MonsterAnim m_anim;
+        std::size_t m_animFrame;
+        sf::Sprite m_sprite;
+        float m_elapsedTimeSec;
+        bool m_isFacingRight;
+        float m_stateElapsedTimeSec;
+        float m_stateTimeUntilChangeSec;
+        bool m_hasSpottedPlayer;
+
+        static std::vector<sf::Texture> m_textures;
+    };
 
 } // namespace platformer
 
