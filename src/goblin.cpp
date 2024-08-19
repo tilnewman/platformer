@@ -88,7 +88,7 @@ namespace platformer
             }
         }
 
-        handleWalking(frameTimeSec);
+        handleWalking(context, frameTimeSec);
 
         if (!m_hasSpottedPlayer && (m_region.intersects(context.avatar.collisionRect())))
         {
@@ -292,7 +292,7 @@ namespace platformer
         }
     }
 
-    void Goblin::handleWalking(const float frameTimeSec)
+    void Goblin::handleWalking(Context & context, const float frameTimeSec)
     {
         if (GoblinAnim::Walk != m_anim)
         {
@@ -310,19 +310,35 @@ namespace platformer
             m_sprite.move(-(goblinWalkSpeed * frameTimeSec), 0.0f);
         }
 
-        // if walked out of bounds simple turn around and keep walking
-        const sf::FloatRect collRect{ collisionRect() };
-        if (util::right(collRect) > util::right(m_region))
+        const sf::FloatRect avatarRect{ context.avatar.collisionRect() };
+        const sf::FloatRect goblinRect{ collisionRect() };
+
+        // backoff if walking into the player
+        sf::FloatRect intersection;
+        if (goblinRect.intersects(avatarRect, intersection))
         {
-            m_sprite.scale(-1.0f, 1.0f);
-            m_isFacingRight = !m_isFacingRight;
-            m_sprite.move((util::right(m_region) - util::right(collRect)), 0.0f);
+            if (m_isFacingRight)
+            {
+                m_sprite.move(-intersection.width, 0.0f);
+            }
+            else
+            {
+                m_sprite.move(intersection.width, 0.0f);
+            }
         }
-        else if (collRect.left < m_region.left)
+
+        // if walked out of bounds simple turn around and keep walking
+        if (util::right(goblinRect) > util::right(m_region))
         {
             m_sprite.scale(-1.0f, 1.0f);
             m_isFacingRight = !m_isFacingRight;
-            m_sprite.move((m_region.left - collRect.left), 0.0f);
+            m_sprite.move((util::right(m_region) - util::right(goblinRect)), 0.0f);
+        }
+        else if (goblinRect.left < m_region.left)
+        {
+            m_sprite.scale(-1.0f, 1.0f);
+            m_isFacingRight = !m_isFacingRight;
+            m_sprite.move((m_region.left - goblinRect.left), 0.0f);
         }
     }
 

@@ -31,6 +31,7 @@ namespace platformer
         virtual void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const = 0;
         virtual void move(const float amount)                                                = 0;
         virtual const Harm avatarCollide(const sf::FloatRect & avatarRect)                   = 0;
+        virtual const sf::FloatRect collisionRect() const                                    = 0;
     };
 
     //
@@ -47,6 +48,7 @@ namespace platformer
         void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const;
         void move(const float amount);
         const Harm avatarCollide(const sf::FloatRect & avatarRect);
+        void appendCollisionRects(std::vector<sf::FloatRect> & rects) const;
 
       private:
         std::vector<std::unique_ptr<IMonster>> m_monsters;

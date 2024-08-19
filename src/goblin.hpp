@@ -84,20 +84,21 @@ namespace platformer
         void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const override;
         void move(const float amount) override;
         const Harm avatarCollide(const sf::FloatRect & avatarRect) override;
+        const sf::FloatRect collisionRect() const override;
+        const sf::FloatRect attackCollisionRect() const;
 
       private:
         bool animate(const float frameTimeSec); // returns true if animation is finished
         void changeStateBeforeSeeingPlayer(Context & context);
         void changeStateAfterSeeingPlayer(Context & context);
-        const sf::FloatRect collisionRect() const;
-        const sf::FloatRect attackCollisionRect() const;
+        
 
         void loadTextures(const Settings & settings);
         std::size_t frameCount(const GoblinAnim anim) const;
         const sf::IntRect textureRect(const GoblinAnim anim, const std::size_t frame) const;
         void setTexture(sf::Sprite & sprite, const GoblinAnim anim, const std::size_t frame) const;
         void turnToFacePlayer(Context & context);
-        void handleWalking(const float frameTimeSec);
+        void handleWalking(Context & context, const float frameTimeSec);
 
       private:
         sf::FloatRect m_region;

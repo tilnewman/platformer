@@ -56,4 +56,12 @@ namespace platformer
         return {};
     }
 
+    void MonsterManager::appendCollisionRects(std::vector<sf::FloatRect> & rects) const
+    {
+        for (auto & monsterUPtr : m_monsters)
+        {
+            rects.push_back(monsterUPtr->collisionRect());
+        }
+    }
+
 } // namespace platformer

@@ -304,8 +304,8 @@ namespace platformer
         footRect.top += footRectHeightAdj;
         footRect.height -= footRectHeightAdj;
 
-        std::vector<sf::FloatRect> rects = context.level.collisions;
-        // context.managers.appendAllCollisions(rects); TODO
+        std::vector<sf::FloatRect> rects{ context.level.collisions };
+        context.level.monsters.appendCollisionRects(rects);
 
         bool hasHitSomething{ false };
         sf::FloatRect intersection;
