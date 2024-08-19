@@ -82,7 +82,7 @@ namespace platformer
 
       private:
         void animate(Context & context, const float frameTimeSec);
-        bool handleAttacking(Context & context);
+        void handleAttacking(Context & context);
         void moveMap(Context & context);
         void killIfOutOfBounds(Context & context);
         void preventBacktracking(const Context & context);

@@ -53,33 +53,32 @@ namespace platformer
 
     void Avatar::update(Context & context, const float frameTimeSec)
     {
+        // this handleDeath() cal must happen first
         if (handleDeath(context, frameTimeSec))
         {
             return;
         }
 
-        const bool isAttacking{ handleAttacking(context) };
-        if (!isAttacking)
-        {
-            sideToSideMotion(context, frameTimeSec);
-            jumping(context, frameTimeSec);
-        }
+        // handleAttacking() must be called BEFORE sideToSideMotion() and jumping()
+        handleAttacking(context);
+        sideToSideMotion(context, frameTimeSec);
+        jumping(context, frameTimeSec);
 
         m_velocity += (context.settings.gravity_acc * frameTimeSec);
         m_sprite.move(m_velocity);
-        moveMap(context);
 
+        // moveMap() and collisions must be called AFTER m_sprite.move() above
+        moveMap(context);
         preventBacktracking(context);
         collisions(context);
         exitCollisions(context);
         hurtCollisions(context);
-
-        // handleAttackingEnemies(context);
-
         // context.managers.collideAllWithAvatar(context, collisionRect());
         context.pickup.processCollisionWithAvatar(context, collisionRect());
 
-        // level these two for last
+        // handleAttackingEnemies(context);
+
+        // these two must happen last
         killIfOutOfBounds(context);
         animate(context, frameTimeSec);
     }
@@ -197,7 +196,7 @@ namespace platformer
         }
     }
 
-    bool Avatar::handleAttacking(Context & context)
+    void Avatar::handleAttacking(Context & context)
     {
         // first frame
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F) && (AvatarState::Attack != m_state) &&
@@ -218,26 +217,19 @@ namespace platformer
             }
 
             restartAnim();
-            return true;
+            return;
         }
 
         // all other frames
         if ((AvatarState::Attack == m_state) || (AvatarState::AttackExtra == m_state))
         {
-            if (m_isAnimating)
-            {
-                return true;
-            }
-            else
+            if (!m_isAnimating)
             {
                 m_state = AvatarState::Still;
                 m_anim  = AvatarAnim::Walk;
                 restartAnim();
-                return false;
             }
         }
-
-        return false;
     }
 
     void Avatar::moveMap(Context & context)
@@ -367,7 +359,8 @@ namespace platformer
 
     void Avatar::sideToSideMotion(Context & context, const float frameTimeSec)
     {
-        if (AvatarState::Hurt == m_state)
+        if ((AvatarState::Hurt == m_state) || (AvatarState::Attack == m_state) ||
+            (AvatarState::AttackExtra == m_state))
         {
             return;
         }
@@ -507,10 +500,14 @@ namespace platformer
 
     void Avatar::jumping(Context & context, const float frameTimeSec)
     {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && m_hasLanded &&
-            (AvatarState::Attack != m_state) && (AvatarState::AttackExtra != m_state) &&
-            (AvatarState::Climb != m_state) && (AvatarState::Death != m_state) &&
-            (AvatarState::Hurt != m_state))
+        if ((AvatarState::Attack == m_state) || (AvatarState::AttackExtra == m_state) ||
+            (AvatarState::Climb == m_state) || (AvatarState::Death == m_state) ||
+            (AvatarState::Hurt == m_state))
+        {
+            return;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && m_hasLanded)
         {
             m_hasLanded = false;
             // context.sfx.play("jump"); //TODO
