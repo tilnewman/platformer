@@ -32,7 +32,6 @@ namespace platformer
         void draw(sf::RenderTarget & target, sf::RenderStates states) const;
         void setHealthBar(const float ratio);
         void setManaBar(const float ratio);
-        void setStarCount(const int count);
         void setCoinCount(const int count);
 
       private:
@@ -77,10 +76,6 @@ namespace platformer
         sf::Texture m_coinTexture;
         sf::Sprite m_coinSprite;
         sf::Text m_coinText;
-
-        sf::Texture m_starTexture;
-        sf::Sprite m_starSprite;
-        sf::Text m_starText;
     };
 
 } // namespace platformer

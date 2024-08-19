@@ -54,9 +54,6 @@ namespace platformer
         , m_coinTexture()
         , m_coinSprite()
         , m_coinText()
-        , m_starTexture()
-        , m_starSprite()
-        , m_starText()
     {}
 
     void PlayerInfoDisplay::setup(const Context & context)
@@ -197,37 +194,13 @@ namespace platformer
 
         //
 
-        m_starTexture.loadFromFile((context.settings.media_path / "image/ui/star.png").string());
-        TextureStats::instance().process(m_starTexture);
-        m_starTexture.setSmooth(true);
-        m_starSprite.setTexture(m_starTexture);
-        m_starSprite.scale(1.1f, 1.1f);
+        const float starRectHeight{ m_healthBarFrameSprite.getPosition().y -
+                                    m_fullFrameSprite.getPosition().y };
 
-        const float coinAndStarRectHeight{ m_healthBarFrameSprite.getPosition().y -
-                                           m_fullFrameSprite.getPosition().y };
-
-        const float coinAndStarRectHeightMiddle{ m_healthBarFrameSprite.getPosition().y -
-                                                 (coinAndStarRectHeight * 0.5f) };
-
-        m_starSprite.setPosition(
-            util::right(m_fullFrameSprite),
-            (coinAndStarRectHeightMiddle - (m_starSprite.getGlobalBounds().height * 0.5f)));
-
-        //
-
-        m_starText =
-            context.font.makeText(Font::Default, FontSize::Large, "0", sf::Color(244, 187, 64));
-
-        const sf::Vector2f textScale{ 1.4f, 1.4f };
-        m_starText.scale(textScale);
+        const float starRectHeightMiddle{ m_healthBarFrameSprite.getPosition().y -
+                                          (starRectHeight * 0.5f) };
 
         const float horizPad{ 8.0f };
-
-        m_starText.setPosition(
-            (util::right(m_starSprite) + horizPad),
-            (coinAndStarRectHeightMiddle - (m_starText.getGlobalBounds().height * 0.5f)));
-
-        //
 
         m_coinTexture.loadFromFile((context.settings.media_path / "image/ui/coin.png").string());
         TextureStats::instance().process(m_coinTexture);
@@ -236,20 +209,19 @@ namespace platformer
         m_coinSprite.scale(1.7f, 1.7f);
 
         m_coinSprite.setPosition(
-            (util::right(m_fullFrameSprite) +
-             (m_healthBarFrameSprite.getGlobalBounds().width * 0.5f)),
-            (coinAndStarRectHeightMiddle - (m_coinSprite.getGlobalBounds().height * 0.5f)));
+            (util::right(m_fullFrameSprite) + horizPad),
+            (starRectHeightMiddle - (m_coinSprite.getGlobalBounds().height * 0.5f)));
 
         //
 
         m_coinText =
             context.font.makeText(Font::Default, FontSize::Large, "0", sf::Color(236, 218, 95));
 
-        m_coinText.scale(textScale);
+        m_coinText.scale(1.4f, 1.4f);
 
         m_coinText.setPosition(
             (util::right(m_coinSprite) + horizPad),
-            (coinAndStarRectHeightMiddle - (m_coinText.getGlobalBounds().height * 0.5f)));
+            (starRectHeightMiddle - (m_coinText.getGlobalBounds().height * 0.5f)));
     }
 
     void PlayerInfoDisplay::draw(sf::RenderTarget & target, sf::RenderStates states) const
@@ -285,8 +257,6 @@ namespace platformer
             target.draw(m_manaBarRightSprite, states);
         }
 
-        target.draw(m_starSprite, states);
-        target.draw(m_starText, states);
         target.draw(m_coinSprite, states);
         target.draw(m_coinText);
     }
@@ -305,12 +275,6 @@ namespace platformer
         m_willDrawManaBarLeft  = (ratio > 0.0f);
         m_manaBarRect.width    = (m_barFillMax * ratio);
         util::scaleAndCenterInside(m_manaBarMiddleSprite, m_manaBarRect);
-    }
-
-    void PlayerInfoDisplay::setStarCount(const int count)
-    {
-        m_starText.setString(std::to_string(count));
-        util::setOriginToPosition(m_starText);
     }
 
     void PlayerInfoDisplay::setCoinCount(const int count)
