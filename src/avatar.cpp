@@ -59,9 +59,7 @@ namespace platformer
         }
 
         const bool isAttacking{ handleAttacking(context) };
-        // const bool isThrowing  = handleThrowing(context, frameTimeSec);
-
-        if (!isAttacking) //&& !isThrowing)
+        if (!isAttacking)
         {
             sideToSideMotion(context, frameTimeSec);
             jumping(context, frameTimeSec);
@@ -73,22 +71,16 @@ namespace platformer
 
         preventBacktracking(context);
         collisions(context);
-        // killCollisions(context);
-        // acidCollisions(context);
-        // waterCollisions(context);
         exitCollisions(context);
+        hurtCollisions(context);
+
         // handleAttackingEnemies(context);
 
         // context.managers.collideAllWithAvatar(context, collisionRect());
         context.pickup.processCollisionWithAvatar(context, collisionRect());
 
-        hurtCollisions(context);
-
+        // level these two for last
         killIfOutOfBounds(context);
-
-        // this one must come last, after all possible sets to m_action
-        // handleIdle(context, frameTimeSec);
-
         animate(context, frameTimeSec);
     }
 
@@ -269,7 +261,7 @@ namespace platformer
         context.level.move(context, moveX);
         context.pickup.move(moveX);
         context.bg_image.move(moveX);
-        // context.spells.move(moveX); //TODO
+        // context.spells.move(moveX);
     }
 
     void Avatar::killIfOutOfBounds(Context & context)
@@ -521,7 +513,7 @@ namespace platformer
             (AvatarState::Hurt != m_state))
         {
             m_hasLanded = false;
-            // context.sfx.play("jump");
+            // context.sfx.play("jump"); //TODO
             context.sfx.stop("walk");
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
@@ -587,7 +579,6 @@ namespace platformer
         }
 
         animate(context, frameTimeSec);
-        // m_blood.update(frameTimeSec);
         return true;
     }
 
@@ -610,7 +601,7 @@ namespace platformer
             turnRight();
         }
 
-        // context.sfx.play("respawn");
+        // context.sfx.play("respawn"); //TODO
     }
 
     void Avatar::turnRight()
