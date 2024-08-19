@@ -54,6 +54,18 @@ namespace platformer
         , m_coinTexture()
         , m_coinSprite()
         , m_coinText()
+        , m_starBrownTexture()
+        , m_starBrown1Sprite()
+        , m_starBrown2Sprite()
+        , m_starBrown3Sprite()
+        , m_starBrown4Sprite()
+        , m_starBrown5Sprite()
+        , m_starYellowTexture()
+        , m_starYellow1Sprite()
+        , m_starYellow2Sprite()
+        , m_starYellow3Sprite()
+        , m_starYellow4Sprite()
+        , m_starYellow5Sprite()
     {}
 
     void PlayerInfoDisplay::setup(const Context & context)
@@ -77,7 +89,7 @@ namespace platformer
         m_fullFrameSprite.setTexture(m_fullFrameTexture);
         m_fullFrameSprite.scale(2.0f, 2.0f);
 
-        m_fullFrameSprite.setPosition(m_halfFrameSprite.getPosition() + sf::Vector2f(5.0f, 5.0f));
+        m_fullFrameSprite.setPosition(m_halfFrameSprite.getPosition() + sf::Vector2f(8.0f, 8.0f));
 
         //
 
@@ -200,8 +212,6 @@ namespace platformer
         const float starRectHeightMiddle{ m_healthBarFrameSprite.getPosition().y -
                                           (starRectHeight * 0.5f) };
 
-        const float horizPad{ 8.0f };
-
         m_coinTexture.loadFromFile((context.settings.media_path / "image/ui/coin.png").string());
         TextureStats::instance().process(m_coinTexture);
         m_coinTexture.setSmooth(true);
@@ -209,7 +219,7 @@ namespace platformer
         m_coinSprite.scale(1.7f, 1.7f);
 
         m_coinSprite.setPosition(
-            (util::right(m_fullFrameSprite) + horizPad),
+            util::right(m_fullFrameSprite),
             (starRectHeightMiddle - (m_coinSprite.getGlobalBounds().height * 0.5f)));
 
         //
@@ -220,8 +230,71 @@ namespace platformer
         m_coinText.scale(1.4f, 1.4f);
 
         m_coinText.setPosition(
-            (util::right(m_coinSprite) + horizPad),
+            (util::right(m_coinSprite) + 8.0f),
             (starRectHeightMiddle - (m_coinText.getGlobalBounds().height * 0.5f)));
+
+        //
+
+        m_starBrownTexture.loadFromFile(
+            (context.settings.media_path / "image/ui/star-brown.png").string());
+
+        TextureStats::instance().process(m_starBrownTexture);
+        m_starBrownTexture.setSmooth(true);
+
+        m_starBrown1Sprite.setTexture(m_starBrownTexture);
+        m_starBrown1Sprite.scale(1.5f, 1.5f);
+
+        m_starBrown1Sprite.setPosition(
+            (m_fullFrameSprite.getPosition().x + 10.0f), util::bottom(m_halfFrameSprite));
+
+        m_starBrown2Sprite.setTexture(m_starBrownTexture);
+        m_starBrown2Sprite.scale(m_starBrown1Sprite.getScale());
+
+        m_starBrown2Sprite.setPosition(
+            util::right(m_starBrown1Sprite), m_starBrown1Sprite.getPosition().y);
+
+        m_starBrown3Sprite.setTexture(m_starBrownTexture);
+        m_starBrown3Sprite.scale(m_starBrown1Sprite.getScale());
+
+        m_starBrown3Sprite.setPosition(
+            util::right(m_starBrown2Sprite), m_starBrown1Sprite.getPosition().y);
+
+        m_starBrown4Sprite.setTexture(m_starBrownTexture);
+        m_starBrown4Sprite.scale(m_starBrown1Sprite.getScale());
+
+        m_starBrown4Sprite.setPosition(
+            util::right(m_starBrown3Sprite), m_starBrown1Sprite.getPosition().y);
+
+        m_starBrown5Sprite.setTexture(m_starBrownTexture);
+        m_starBrown5Sprite.scale(m_starBrown1Sprite.getScale());
+
+        m_starBrown5Sprite.setPosition(
+            util::right(m_starBrown4Sprite), m_starBrown1Sprite.getPosition().y);
+
+        //
+
+        m_starYellowTexture.loadFromFile(
+            (context.settings.media_path / "image/ui/star-yellow.png").string());
+
+        TextureStats::instance().process(m_starYellowTexture);
+        m_starYellowTexture.setSmooth(true);
+
+        m_starYellow1Sprite.setTexture(m_starYellowTexture);
+        m_starYellow1Sprite.scale(m_starBrown1Sprite.getScale());
+        
+        m_starYellow2Sprite.setTexture(m_starYellowTexture);
+        m_starYellow2Sprite.scale(m_starBrown1Sprite.getScale());
+        
+        m_starYellow3Sprite.setTexture(m_starYellowTexture);
+        m_starYellow3Sprite.scale(m_starBrown1Sprite.getScale());
+        
+        m_starYellow4Sprite.setTexture(m_starYellowTexture);
+        m_starYellow4Sprite.scale(m_starBrown1Sprite.getScale());
+        
+        m_starYellow5Sprite.setTexture(m_starYellowTexture);
+        m_starYellow5Sprite.scale(m_starBrown1Sprite.getScale());
+    
+        setStarCount(0);
     }
 
     void PlayerInfoDisplay::draw(sf::RenderTarget & target, sf::RenderStates states) const
@@ -259,6 +332,18 @@ namespace platformer
 
         target.draw(m_coinSprite, states);
         target.draw(m_coinText);
+
+        target.draw(m_starBrown1Sprite, states);
+        target.draw(m_starBrown2Sprite, states);
+        target.draw(m_starBrown3Sprite, states);
+        target.draw(m_starBrown4Sprite, states);
+        target.draw(m_starBrown5Sprite, states);
+
+        target.draw(m_starYellow1Sprite, states);
+        target.draw(m_starYellow2Sprite, states);
+        target.draw(m_starYellow3Sprite, states);
+        target.draw(m_starYellow4Sprite, states);
+        target.draw(m_starYellow5Sprite, states);
     }
 
     void PlayerInfoDisplay::setHealthBar(const float ratio)
@@ -281,6 +366,49 @@ namespace platformer
     {
         m_coinText.setString(std::to_string(count));
         util::setOriginToPosition(m_coinText);
+    }
+
+    void PlayerInfoDisplay::setStarCount(const int count)
+    {
+        m_starYellow1Sprite.setPosition(-100.0f, -100.0f);
+        m_starYellow2Sprite.setPosition(-100.0f, -100.0f);
+        m_starYellow3Sprite.setPosition(-100.0f, -100.0f);
+        m_starYellow4Sprite.setPosition(-100.0f, -100.0f);
+        m_starYellow5Sprite.setPosition(-100.0f, -100.0f);
+
+        if (0 == count)
+        {
+        }
+        else if (1 == count)
+        {
+            m_starYellow1Sprite.setPosition(m_starBrown1Sprite.getPosition());
+        }
+        else if (2 == count)
+        {
+            m_starYellow1Sprite.setPosition(m_starBrown1Sprite.getPosition());
+            m_starYellow2Sprite.setPosition(m_starBrown2Sprite.getPosition());
+        }
+        else if (3 == count)
+        {
+            m_starYellow1Sprite.setPosition(m_starBrown1Sprite.getPosition());
+            m_starYellow2Sprite.setPosition(m_starBrown2Sprite.getPosition());
+            m_starYellow3Sprite.setPosition(m_starBrown3Sprite.getPosition());
+        }
+        else if (4 == count)
+        {
+            m_starYellow1Sprite.setPosition(m_starBrown1Sprite.getPosition());
+            m_starYellow2Sprite.setPosition(m_starBrown2Sprite.getPosition());
+            m_starYellow3Sprite.setPosition(m_starBrown3Sprite.getPosition());
+            m_starYellow4Sprite.setPosition(m_starBrown4Sprite.getPosition());
+        }
+        else
+        {
+            m_starYellow1Sprite.setPosition(m_starBrown1Sprite.getPosition());
+            m_starYellow2Sprite.setPosition(m_starBrown2Sprite.getPosition());
+            m_starYellow3Sprite.setPosition(m_starBrown3Sprite.getPosition());
+            m_starYellow4Sprite.setPosition(m_starBrown4Sprite.getPosition());
+            m_starYellow5Sprite.setPosition(m_starBrown5Sprite.getPosition());
+        }
     }
 
 } // namespace platformer

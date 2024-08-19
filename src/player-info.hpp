@@ -33,6 +33,7 @@ namespace platformer
         void setHealthBar(const float ratio);
         void setManaBar(const float ratio);
         void setCoinCount(const int count);
+        void setStarCount(const int count);
 
       private:
         sf::Texture m_halfFrameTexture;
@@ -76,6 +77,20 @@ namespace platformer
         sf::Texture m_coinTexture;
         sf::Sprite m_coinSprite;
         sf::Text m_coinText;
+
+        sf::Texture m_starBrownTexture;
+        sf::Sprite m_starBrown1Sprite;
+        sf::Sprite m_starBrown2Sprite;
+        sf::Sprite m_starBrown3Sprite;
+        sf::Sprite m_starBrown4Sprite;
+        sf::Sprite m_starBrown5Sprite;
+        
+        sf::Texture m_starYellowTexture;
+        sf::Sprite m_starYellow1Sprite;
+        sf::Sprite m_starYellow2Sprite;
+        sf::Sprite m_starYellow3Sprite;
+        sf::Sprite m_starYellow4Sprite;
+        sf::Sprite m_starYellow5Sprite;
     };
 
 } // namespace platformer
