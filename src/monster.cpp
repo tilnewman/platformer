@@ -131,11 +131,14 @@ namespace platformer
         if (m_health > 0)
         {
             m_anim = MonsterAnim::Hurt;
+            m_elapsedTimeSec = 0.0f;
+            m_stateTimeUntilChangeSec = 3.0f;
             playHurtSfx(context);
         }
         else
         {
             m_anim = MonsterAnim::Death;
+            m_elapsedTimeSec = 0.0f;
             playDeathSfx(context);
         }
     }
@@ -171,7 +174,7 @@ namespace platformer
         {
             case MonsterAnim::Attack:        { return 0.1f;   }
             case MonsterAnim::Death:         { return 0.175f; }
-            case MonsterAnim::Hurt:          { return 0.75f;  }
+            case MonsterAnim::Hurt:          { return 0.5f;   }
             case MonsterAnim::Idle:          { return 0.15f;  }
             case MonsterAnim::Walk:          { return 0.1f;   }
             case MonsterAnim::Count: // intentional fallthrough
@@ -234,12 +237,14 @@ namespace platformer
         {
             m_anim                    = MonsterAnim::Walk;
             m_stateTimeUntilChangeSec = context.random.fromTo(1.0f, 2.0f);
+            m_elapsedTimeSec          = 0.0f;
         }
         else
         {
             // in all other cases just attack
             m_anim                    = MonsterAnim::Attack;
             m_stateTimeUntilChangeSec = 1.0f;
+            m_elapsedTimeSec          = 0.0f;
             playAttackSfx(context);
         }
     }
