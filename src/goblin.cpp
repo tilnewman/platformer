@@ -52,7 +52,7 @@ namespace platformer
             m_sprite.scale(-1.0f, 1.0f);
         }
 
-        m_stateTimeUntilChangeSec = context.random.fromTo(1.0f, 6.0f);
+        // m_stateTimeUntilChangeSec = context.random.fromTo(1.0f, 6.0f);
     }
 
     void Goblin::update(Context & context, const float frameTimeSec)

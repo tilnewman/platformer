@@ -91,7 +91,6 @@ namespace platformer
         bool animate(const float frameTimeSec); // returns true if animation is finished
         void changeStateBeforeSeeingPlayer(Context & context);
         void changeStateAfterSeeingPlayer(Context & context);
-        
 
         void loadTextures(const Settings & settings);
         std::size_t frameCount(const GoblinAnim anim) const;
