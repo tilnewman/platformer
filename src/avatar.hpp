@@ -112,6 +112,7 @@ namespace platformer
         bool m_isFacingRight;
         float m_avatarImageWidthRatio;
         bool m_isAnimating;
+        bool m_hasHitEnemy;
     };
 
 } // namespace platformer

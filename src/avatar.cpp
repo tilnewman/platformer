@@ -40,6 +40,7 @@ namespace platformer
         , m_isFacingRight(true)
         , m_avatarImageWidthRatio(0.25f)
         , m_isAnimating(false)
+        , m_hasHitEnemy(false)
     {}
 
     void Avatar::setup(const Context & context, const AvatarType & type)
@@ -235,6 +236,12 @@ namespace platformer
     {
         if ((AvatarState::Attack != m_state) && (AvatarState::AttackExtra != m_state))
         {
+            m_hasHitEnemy = false;
+            return;
+        }
+
+        if (m_hasHitEnemy)
+        {
             return;
         }
 
@@ -280,6 +287,7 @@ namespace platformer
 
         if (context.level.monsters.avatarAttack(context, attackInfo))
         {
+            m_hasHitEnemy = true;
             if ((AvatarType::Druid == m_type) || (AvatarType::Enchantress == m_type) ||
                 (AvatarType::Witch == m_type))
             {
@@ -289,6 +297,10 @@ namespace platformer
             {
                 context.sfx.play("hit-metal");
             }
+        }
+        else
+        {
+            m_hasHitEnemy = false;
         }
     }
 
