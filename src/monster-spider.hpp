@@ -21,7 +21,7 @@ namespace platformer
     class Spider : public Monster
     {
       public:
-        explicit Spider(Context & context, const sf::FloatRect & region);
+        Spider(Context & context, const sf::FloatRect & region);
         virtual ~Spider() override = default;
 
         // IMonster functions

@@ -74,6 +74,25 @@ namespace platformer
 
     //
 
+    struct MonsterSetupInfo
+    {
+        MonsterSetupInfo(
+            const sf::FloatRect & r, const std::string & id, const Health_t h, const float ihr)
+            : region(r)
+            , image_dir(id)
+            , health(h)
+            , image_height_ratio(ihr)
+
+        {}
+
+        sf::FloatRect region;
+        std::string image_dir;
+        Health_t health;
+        float image_height_ratio;
+    };
+
+    //
+
     struct IMonster
     {
         virtual ~IMonster() = default;
@@ -92,12 +111,7 @@ namespace platformer
     class Monster : public IMonster
     {
       public:
-        explicit Monster(
-            Context & context,
-            const sf::FloatRect & region,
-            const std::string & imageDirName,
-            const Health_t health);
-
+        Monster(Context & context, const MonsterSetupInfo & setupInfo);
         virtual ~Monster() override = default;
 
         // IMonster functions
@@ -139,6 +153,7 @@ namespace platformer
         bool m_hasSpottedPlayer;
         Health_t m_health;
         bool m_isAlive;
+        float m_spriteHeightOffsetRatio;
 
         static std::vector<sf::Texture> m_textures;
     };

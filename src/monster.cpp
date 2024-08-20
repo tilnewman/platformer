@@ -24,13 +24,9 @@ namespace platformer
 
     //
 
-    Monster::Monster(
-        Context & context,
-        const sf::FloatRect & region,
-        const std::string & imageDirName,
-        const Health_t health)
-        : m_imageDirName(imageDirName)
-        , m_region(region)
+    Monster::Monster(Context & context, const MonsterSetupInfo & setupInfo)
+        : m_imageDirName(setupInfo.image_dir)
+        , m_region(setupInfo.region)
         , m_anim(MonsterAnim::Idle)
         , m_animFrame(0)
         , m_sprite()
@@ -39,8 +35,9 @@ namespace platformer
         , m_stateElapsedTimeSec(0.0f)
         , m_stateTimeUntilChangeSec(0.0f)
         , m_hasSpottedPlayer(false)
-        , m_health(health)
+        , m_health(setupInfo.health)
         , m_isAlive(true)
+        , m_spriteHeightOffsetRatio(setupInfo.image_height_ratio)
     {
         loadTextures(context.settings);
         initialSpriteSetup(context);
@@ -112,8 +109,8 @@ namespace platformer
         if (context.layout.wholeRect().intersects(m_sprite.getGlobalBounds()))
         {
             target.draw(m_sprite, states);
-            // util::drawRectangleShape(target, collisionRect(), false, sf::Color::Green);
-            // util::drawRectangleShape(target, attackCollisionRect(), false, sf::Color::Red);
+            util::drawRectangleShape(target, collisionRect(), false, sf::Color::Green);
+            util::drawRectangleShape(target, attackCollisionRect(), false, sf::Color::Red);
         }
     }
 
@@ -347,7 +344,7 @@ namespace platformer
             context.random.fromTo(m_region.left, util::right(m_region)),
             (util::bottom(m_region) - m_sprite.getGlobalBounds().height));
 
-        m_sprite.move(0.0f, (0.8f * m_sprite.getGlobalBounds().height));
+        m_sprite.move(0.0f, (m_spriteHeightOffsetRatio * m_sprite.getGlobalBounds().height));
 
         if (!m_isFacingRight)
         {

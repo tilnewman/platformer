@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Goblin::Goblin(Context & context, const sf::FloatRect & region)
-        : Monster(context, region, "goblin", 16)
+        : Monster(context, { region, "goblin", 16, 0.8f })
     {}
 
     const sf::FloatRect Goblin::collisionRect() const

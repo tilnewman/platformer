@@ -1,9 +1,9 @@
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 //
-// monster-ent.hpp
+// monster-big-knight.hpp
 //
-#include "monster-ent.hpp"
+#include "monster-big-knight.hpp"
 
 #include "avatar.hpp"
 #include "context.hpp"
@@ -20,11 +20,11 @@
 namespace platformer
 {
 
-    Ent::Ent(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "ent", 50, 0.8f })
+    BigKnight::BigKnight(Context & context, const sf::FloatRect & region)
+        : Monster(context, { region, "big-knight", 60 , 0.835f})
     {}
 
-    const sf::FloatRect Ent::collisionRect() const
+    const sf::FloatRect BigKnight::collisionRect() const
     {
         if (MonsterAnim::Death == m_anim)
         {
@@ -33,16 +33,16 @@ namespace platformer
         else
         {
             sf::FloatRect rect{ m_sprite.getGlobalBounds() };
-            util::scaleRectInPlace(rect, { 0.25f, 0.3f });
+            util::scaleRectInPlace(rect, { 0.25f, 0.35f });
             return rect;
         }
     }
 
-    const sf::FloatRect Ent::attackCollisionRect() const
+    const sf::FloatRect BigKnight::attackCollisionRect() const
     {
         sf::FloatRect rect{ collisionRect() };
 
-        const float shiftHoriz{ rect.width * 0.8f };
+        const float shiftHoriz{ rect.width * 0.7f };
 
         if (m_isFacingRight)
         {
@@ -58,13 +58,13 @@ namespace platformer
         return rect;
     }
 
-    const Harm Ent::avatarCollide(const sf::FloatRect & avatarRect)
+    const Harm BigKnight::avatarCollide(const sf::FloatRect & avatarRect)
     {
         Harm harm;
 
         if ((MonsterAnim::Attack == m_anim) && avatarRect.intersects(attackCollisionRect()))
         {
-            harm.damage = 20;
+            harm.damage = 25;
             harm.rect   = collisionRect();
             harm.sfx    = "hit-wood";
         }
@@ -72,10 +72,10 @@ namespace platformer
         return harm;
     }
 
-    void Ent::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
+    void BigKnight::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
 
-    void Ent::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
+    void BigKnight::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
 
-    void Ent::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
+    void BigKnight::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
 
 } // namespace platformer

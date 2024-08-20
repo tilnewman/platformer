@@ -10,6 +10,7 @@
 #include "level.hpp"
 #include "lightning-anim-layer.hpp"
 #include "map-textures.hpp"
+#include "monster-big-knight.hpp"
 #include "monster-dino.hpp"
 #include "monster-ent.hpp"
 #include "monster-goblin.hpp"
@@ -394,6 +395,10 @@ namespace platformer
             else if (name == "ent")
             {
                 context.level.monsters.add(std::make_unique<Ent>(context, rect));
+            }
+            else if (name == "big-knight")
+            {
+                context.level.monsters.add(std::make_unique<BigKnight>(context, rect));
             }
             else
             {

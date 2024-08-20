@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Spider::Spider(Context & context, const sf::FloatRect & region)
-        : Monster(context, region, "spider", 20)
+        : Monster(context, { region, "spider", 20, 0.8f })
     {}
 
     const sf::FloatRect Spider::collisionRect() const
