@@ -40,7 +40,7 @@ namespace platformer
 
     struct BackgroundImagesInfo
     {
-        BackgroundImagesInfo(
+        explicit BackgroundImagesInfo(
             const sf::Uint8 fadeAlpha,
             const std::filesystem::path & backgroundPath,
             const std::vector<SlidingImageInfo> & slidingImages,

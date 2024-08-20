@@ -92,7 +92,7 @@ namespace platformer
     class Monster : public IMonster
     {
       public:
-        Monster(
+        explicit Monster(
             Context & context,
             const sf::FloatRect & region,
             const std::string & imageDirName,

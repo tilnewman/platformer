@@ -12,7 +12,7 @@ namespace platformer
 
     struct Harm
     {
-        Harm(const sf::FloatRect & r = {}, const int d = 0, const std::string & s = "")
+        explicit Harm(const sf::FloatRect & r = {}, const int d = 0, const std::string & s = "")
             : damage(d)
             , sfx(s)
             , rect(r)

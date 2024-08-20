@@ -14,7 +14,7 @@ namespace platformer
     class LevelInfo
     {
       public:
-        LevelInfo(const Settings & settings)
+        explicit LevelInfo(const Settings & settings)
             : m_playerLives(settings.player_lives_per_level)
         {}
 

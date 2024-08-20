@@ -21,7 +21,7 @@ namespace platformer
     class Goblin : public Monster
     {
       public:
-        Goblin(Context & context, const sf::FloatRect & region);
+        explicit Goblin(Context & context, const sf::FloatRect & region);
         virtual ~Goblin() override = default;
 
         // IMonster functions

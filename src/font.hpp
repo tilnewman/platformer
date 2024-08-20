@@ -43,7 +43,7 @@ namespace platformer
             , style(sf::Text::Regular)
         {}
 
-        TextDetails(
+        explicit TextDetails(
             const Font f,
             const FontSize s,
             const sf::Color & c      = sf::Color::White,

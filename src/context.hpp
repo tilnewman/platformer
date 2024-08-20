@@ -42,7 +42,7 @@ namespace platformer
 
     struct Context
     {
-        Context(
+        explicit Context(
             const Settings & set,
             sf::Window & win,
             util::Random & ran,

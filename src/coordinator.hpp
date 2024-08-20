@@ -40,7 +40,7 @@ namespace platformer
     class Coordinator
     {
       public:
-        Coordinator(const Settings & settings);
+        explicit Coordinator(const Settings & settings);
 
         void play();
 

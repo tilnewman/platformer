@@ -41,7 +41,9 @@ namespace platformer
         , public IHarmCollisionOwner
     {
       public:
-        LightningAnimationLayer(Context & context, const std::vector<sf::FloatRect> & rects);
+        explicit LightningAnimationLayer(
+            Context & context, const std::vector<sf::FloatRect> & rects);
+
         virtual ~LightningAnimationLayer() override;
 
         void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const override;

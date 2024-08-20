@@ -21,7 +21,7 @@ namespace platformer
     class Dino : public Monster
     {
       public:
-        Dino(Context & context, const sf::FloatRect & region);
+        explicit Dino(Context & context, const sf::FloatRect & region);
         virtual ~Dino() override = default;
 
         // IMonster functions

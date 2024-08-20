@@ -18,7 +18,8 @@ namespace util
     class GraphDisplay : public sf::Drawable
     {
       public:
-        GraphDisplay(const std::vector<data_t> & data, const sf::Vector2u & size = { 1000, 500 })
+        explicit GraphDisplay(
+            const std::vector<data_t> & data, const sf::Vector2u & size = { 1000, 500 })
             : m_size(size)
             , m_data(data)
             , m_renderTexture()
@@ -253,7 +254,7 @@ namespace util
     class StatsDisplay : public sf::Drawable
     {
       public:
-        StatsDisplay(
+        explicit StatsDisplay(
             const std::string & title,
             const sf::Font & font,
             const std::vector<data_t> & data,
