@@ -72,10 +72,10 @@ namespace platformer
         return harm;
     }
 
-    void Dino::playAttackSfx(Context & context) const { context.sfx.play("swipe"); }
+    void Dino::playAttackSfx(Context & context) const { context.sfx.play("attack-dino"); }
 
-    void Dino::playHurtSfx(Context & context) const { context.sfx.play("hurt-goblin"); }
+    void Dino::playHurtSfx(Context & context) const { context.sfx.play("hurt-dino"); }
 
-    void Dino::playDeathSfx(Context & context) const { context.sfx.play("death-goblin"); }
+    void Dino::playDeathSfx(Context & context) const { context.sfx.play("death-dino"); }
 
 } // namespace platformer
