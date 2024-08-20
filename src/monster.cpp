@@ -136,9 +136,8 @@ namespace platformer
 
         if (m_health > 0)
         {
-            m_anim                    = MonsterAnim::Hurt;
-            m_elapsedTimeSec          = 0.0f;
-            m_stateTimeUntilChangeSec = 3.0f;
+            m_anim           = MonsterAnim::Hurt;
+            m_elapsedTimeSec = 0.0f;
             playHurtSfx(context);
         }
         else
@@ -246,9 +245,8 @@ namespace platformer
         else
         {
             // in all other cases just attack
-            m_anim                    = MonsterAnim::Attack;
-            m_stateTimeUntilChangeSec = 1.0f;
-            m_elapsedTimeSec          = 0.0f;
+            m_anim           = MonsterAnim::Attack;
+            m_elapsedTimeSec = 0.0f;
             playAttackSfx(context);
         }
     }
