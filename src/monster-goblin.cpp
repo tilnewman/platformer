@@ -1,9 +1,9 @@
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 //
-// goblin.hpp
+// monster-goblin.hpp
 //
-#include "goblin.hpp"
+#include "monster-goblin.hpp"
 
 #include "avatar.hpp"
 #include "context.hpp"

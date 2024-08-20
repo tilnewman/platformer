@@ -7,17 +7,17 @@
 #include "background-images.hpp"
 #include "check-macros.hpp"
 #include "context.hpp"
-#include "dino.hpp"
-#include "ent.hpp"
-#include "goblin.hpp"
 #include "level.hpp"
 #include "lightning-anim-layer.hpp"
 #include "map-textures.hpp"
+#include "monster-dino.hpp"
+#include "monster-ent.hpp"
+#include "monster-goblin.hpp"
+#include "monster-spider.hpp"
 #include "pickups.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
-#include "spider.hpp"
 
 #include <exception>
 #include <filesystem>

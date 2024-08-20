@@ -1,7 +1,7 @@
-#ifndef SPIDER_HPP_INCLUDED
-#define SPIDER_HPP_INCLUDED
+#ifndef MONSTER_DINO_HPP_INCLUDED
+#define MONSTER_DINO_HPP_INCLUDED
 //
-// spider.hpp
+// monster-dino.hpp
 //
 #include "harm.hpp"
 #include "monster.hpp"
@@ -18,11 +18,11 @@ namespace platformer
 
     //
 
-    class Spider : public Monster
+    class Dino : public Monster
     {
       public:
-        explicit Spider(Context & context, const sf::FloatRect & region);
-        virtual ~Spider() override = default;
+        explicit Dino(Context & context, const sf::FloatRect & region);
+        virtual ~Dino() override = default;
 
         // IMonster functions
         const Harm avatarCollide(const sf::FloatRect & avatarRect) final;
@@ -30,7 +30,7 @@ namespace platformer
         const sf::FloatRect attackCollisionRect() const final;
 
       protected:
-        inline float walkSpeed() const final { return 50.0f; }
+        inline float walkSpeed() const final { return 30.0f; }
         void playAttackSfx(Context & context) const final;
         void playHurtSfx(Context & context) const final;
         void playDeathSfx(Context & context) const final;
@@ -38,4 +38,4 @@ namespace platformer
 
 } // namespace platformer
 
-#endif // SPIDER_HPP_INCLUDED
+#endif // MONSTER_DINO_HPP_INCLUDED
