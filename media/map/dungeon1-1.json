@@ -789,7 +789,7 @@
          "name":"monster",
          "objects":[
                 {
-                 "height":32,
+                 "height":112,
                  "id":60,
                  "name":"goblin",
                  "rotation":0,
@@ -797,10 +797,10 @@
                  "visible":true,
                  "width":240,
                  "x":848,
-                 "y":1248
+                 "y":1168
                 }, 
                 {
-                 "height":32,
+                 "height":112,
                  "id":70,
                  "name":"goblin",
                  "rotation":0,
@@ -808,7 +808,7 @@
                  "visible":true,
                  "width":288,
                  "x":416,
-                 "y":1248
+                 "y":1168
                 }],
          "opacity":1,
          "type":"objectgroup",
