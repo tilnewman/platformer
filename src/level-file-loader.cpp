@@ -16,6 +16,7 @@
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
+#include "spider.hpp"
 
 #include <exception>
 #include <filesystem>
@@ -384,6 +385,10 @@ namespace platformer
             else if (name == "dino")
             {
                 context.level.monsters.add(std::make_unique<Dino>(context, rect));
+            }
+            else if (name == "spider")
+            {
+                context.level.monsters.add(std::make_unique<Spider>(context, rect));
             }
             else
             {
