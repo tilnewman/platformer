@@ -1,7 +1,7 @@
-#ifndef GOBLIN_HPP_INCLUDED
-#define GOBLIN_HPP_INCLUDED
+#ifndef DINO_HPP_INCLUDED
+#define DINO_HPP_INCLUDED
 //
-// goblin.hpp
+// dino.hpp
 //
 #include "harm.hpp"
 #include "monster.hpp"
@@ -18,11 +18,11 @@ namespace platformer
 
     //
 
-    class Goblin : public Monster
+    class Dino : public Monster
     {
       public:
-        Goblin(Context & context, const sf::FloatRect & region);
-        virtual ~Goblin() override = default;
+        Dino(Context & context, const sf::FloatRect & region);
+        virtual ~Dino() override = default;
 
         // IMonster functions
         const Harm avatarCollide(const sf::FloatRect & avatarRect) override;
@@ -30,7 +30,7 @@ namespace platformer
         const sf::FloatRect attackCollisionRect() const override;
 
       protected:
-        inline float walkSpeed() const override { return 40.0f; }
+        inline float walkSpeed() const override { return 30.0f; }
         void playAttackSfx(Context & context) const override;
         void playHurtSfx(Context & context) const override;
         void playDeathSfx(Context & context) const override;
@@ -38,4 +38,4 @@ namespace platformer
 
 } // namespace platformer
 
-#endif // GOBLIN_HPP_INCLUDED
+#endif // DINO_HPP_INCLUDED

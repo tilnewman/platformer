@@ -1,9 +1,9 @@
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 //
-// goblin.hpp
+// dino.hpp
 //
-#include "goblin.hpp"
+#include "dino.hpp"
 
 #include "avatar.hpp"
 #include "context.hpp"
@@ -20,11 +20,11 @@
 namespace platformer
 {
 
-    Goblin::Goblin(Context & context, const sf::FloatRect & region)
-        : Monster(context, region, "goblin", 16)
+    Dino::Dino(Context & context, const sf::FloatRect & region)
+        : Monster(context, region, "dino", 30)
     {}
 
-    const sf::FloatRect Goblin::collisionRect() const
+    const sf::FloatRect Dino::collisionRect() const
     {
         if (MonsterAnim::Death == m_anim)
         {
@@ -33,16 +33,16 @@ namespace platformer
         else
         {
             sf::FloatRect rect{ m_sprite.getGlobalBounds() };
-            util::scaleRectInPlace(rect, 0.35f);
+            util::scaleRectInPlace(rect, { 0.5f, 0.35f });
             return rect;
         }
     }
 
-    const sf::FloatRect Goblin::attackCollisionRect() const
+    const sf::FloatRect Dino::attackCollisionRect() const
     {
         sf::FloatRect rect{ collisionRect() };
 
-        const float shiftHoriz{ rect.width * 0.8f };
+        const float shiftHoriz{ rect.width * 0.35f };
 
         if (m_isFacingRight)
         {
@@ -58,24 +58,24 @@ namespace platformer
         return rect;
     }
 
-    const Harm Goblin::avatarCollide(const sf::FloatRect & avatarRect)
+    const Harm Dino::avatarCollide(const sf::FloatRect & avatarRect)
     {
         Harm harm;
 
         if ((MonsterAnim::Attack == m_anim) && avatarRect.intersects(attackCollisionRect()))
         {
-            harm.damage = 8;
+            harm.damage = 16;
             harm.rect   = collisionRect();
-            harm.sfx    = "wood-hit";
+            harm.sfx    = "hit-wood";
         }
 
         return harm;
     }
 
-    void Goblin::playAttackSfx(Context & context) const { context.sfx.play("swipe"); }
+    void Dino::playAttackSfx(Context & context) const { context.sfx.play("swipe"); }
 
-    void Goblin::playHurtSfx(Context & context) const { context.sfx.play("hurt-goblin"); }
+    void Dino::playHurtSfx(Context & context) const { context.sfx.play("hurt-goblin"); }
 
-    void Goblin::playDeathSfx(Context & context) const { context.sfx.play("death-goblin"); }
+    void Dino::playDeathSfx(Context & context) const { context.sfx.play("death-goblin"); }
 
 } // namespace platformer

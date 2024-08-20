@@ -7,6 +7,7 @@
 #include "background-images.hpp"
 #include "check-macros.hpp"
 #include "context.hpp"
+#include "dino.hpp"
 #include "goblin.hpp"
 #include "level.hpp"
 #include "lightning-anim-layer.hpp"
@@ -379,6 +380,10 @@ namespace platformer
             if (name == "goblin")
             {
                 context.level.monsters.add(std::make_unique<Goblin>(context, rect));
+            }
+            else if (name == "dino")
+            {
+                context.level.monsters.add(std::make_unique<Dino>(context, rect));
             }
             else
             {
