@@ -330,8 +330,8 @@
   <object id="58" x="1792" y="992" width="160" height="32"/>
  </objectgroup>
  <objectgroup id="12" name="monster">
-  <object id="60" name="dragon" x="848" y="1168" width="240" height="112"/>
-  <object id="70" name="dragon" x="416" y="1168" width="288" height="112"/>
+  <object id="60" name="ghost" x="848" y="1168" width="240" height="112"/>
+  <object id="70" name="ghost" x="416" y="1168" width="288" height="112"/>
  </objectgroup>
  <objectgroup id="5" name="spawn">
   <object id="6" name="enter" x="160" y="1024" width="32" height="32"/>
