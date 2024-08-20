@@ -31,7 +31,7 @@ namespace platformer
         , m_animFrame(0)
         , m_sprite()
         , m_elapsedTimeSec(0.0f)
-        , m_isFacingRight(context.random.boolean())
+        , m_isFacingRight(true)
         , m_stateElapsedTimeSec(0.0f)
         , m_stateTimeUntilChangeSec(0.0f)
         , m_hasSpottedPlayer(false)
@@ -207,8 +207,7 @@ namespace platformer
             const bool willChangeDirection{ context.random.boolean() };
             if (willChangeDirection)
             {
-                m_sprite.scale(-1.0f, 1.0f);
-                m_isFacingRight = !m_isFacingRight;
+                turnAround();
             }
         }
         else
@@ -216,8 +215,7 @@ namespace platformer
             // in all other cases just turn around
             m_anim = MonsterAnim::Idle;
             resetAnimation();
-            m_sprite.scale(-1.0f, 1.0f);
-            m_isFacingRight = !m_isFacingRight;
+            turnAround();
         }
     }
 
@@ -291,14 +289,12 @@ namespace platformer
         // if walking out of bounds simply turn around and keep walking
         if (util::right(monsterRect) > util::right(m_region))
         {
-            m_sprite.scale(-1.0f, 1.0f);
-            m_isFacingRight = !m_isFacingRight;
+            turnAround();
             m_sprite.move((util::right(m_region) - util::right(monsterRect)), 0.0f);
         }
         else if (monsterRect.left < m_region.left)
         {
-            m_sprite.scale(-1.0f, 1.0f);
-            m_isFacingRight = !m_isFacingRight;
+            turnAround();
             m_sprite.move((m_region.left - monsterRect.left), 0.0f);
         }
     }
@@ -345,11 +341,6 @@ namespace platformer
             (util::bottom(m_region) - m_sprite.getGlobalBounds().height));
 
         m_sprite.move(0.0f, (m_spriteHeightOffsetRatio * m_sprite.getGlobalBounds().height));
-
-        if (!m_isFacingRight)
-        {
-            m_sprite.scale(-1.0f, 1.0f);
-        }
     }
 
     void Monster::setTexture(
@@ -395,9 +386,14 @@ namespace platformer
 
         if (isPlayerToTheRight != m_isFacingRight)
         {
-            m_sprite.scale(-1.0f, 1.0f);
-            m_isFacingRight = !m_isFacingRight;
+            turnAround();
         }
+    }
+
+    void Monster::turnAround()
+    {
+        m_sprite.scale(-1.0f, 1.0f);
+        m_isFacingRight = !m_isFacingRight;
     }
 
 } // namespace platformer

@@ -126,6 +126,7 @@ namespace platformer
         virtual void changeStateBeforeSeeingPlayer(Context & context);
         virtual void changeStateAfterSeeingPlayer(Context & context);
         virtual void handleWalking(Context & context, const float frameTimeSec);
+        virtual void turnAround();
 
         virtual float walkSpeed() const                     = 0;
         virtual void playAttackSfx(Context & context) const = 0;

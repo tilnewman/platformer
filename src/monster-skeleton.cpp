@@ -1,0 +1,108 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+//
+// monster-skeleton.hpp
+//
+#include "monster-skeleton.hpp"
+
+#include "avatar.hpp"
+#include "context.hpp"
+#include "screen-layout.hpp"
+#include "settings.hpp"
+#include "sfml-util.hpp"
+#include "sound-player.hpp"
+
+#include <filesystem>
+
+#include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+
+namespace platformer
+{
+
+    Skeleton::Skeleton(Context & context, const sf::FloatRect & region)
+        : Monster(context, { region, "skeleton", 35, 0.75f })
+    {}
+
+    const sf::FloatRect Skeleton::collisionRect() const
+    {
+        if (MonsterAnim::Death == m_anim)
+        {
+            return { 0.0f, 0.0f, 0.0f, 0.0f };
+        }
+        else
+        {
+            sf::FloatRect rect{ m_sprite.getGlobalBounds() };
+            util::scaleRectInPlace(rect, { 0.35f, 0.45f });
+
+            if (m_isFacingRight)
+            {
+                rect.left *= 0.975f;
+            }
+            else
+            {
+                rect.left *= 1.025f;
+            }
+
+            return rect;
+        }
+    }
+
+    const sf::FloatRect Skeleton::attackCollisionRect() const
+    {
+        sf::FloatRect rect{ collisionRect() };
+
+        const float shiftHoriz{ rect.width * 0.7f };
+
+        if (m_isFacingRight)
+        {
+            rect.left += shiftHoriz;
+        }
+        else
+        {
+            rect.left -= shiftHoriz;
+        }
+
+        util::scaleRectInPlace(rect, 1.1f);
+
+        return rect;
+    }
+
+    const Harm Skeleton::avatarCollide(const sf::FloatRect & avatarRect)
+    {
+        Harm harm;
+
+        if ((MonsterAnim::Attack == m_anim) && avatarRect.intersects(attackCollisionRect()))
+        {
+            harm.damage = 25;
+            harm.rect   = collisionRect();
+            harm.sfx    = "hit-wood";
+        }
+
+        return harm;
+    }
+
+    void Skeleton::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
+
+    void Skeleton::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
+
+    void Skeleton::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
+
+    void Skeleton::turnAround()
+    {
+        m_sprite.scale(-1.0f, 1.0f);
+
+        const float imageWidthRatio{ 0.6f };
+        if (m_isFacingRight)
+        {
+            m_sprite.move(-(m_sprite.getGlobalBounds().width * (1.0f - imageWidthRatio)), 0.0f);
+        }
+        else
+        {
+            m_sprite.move((m_sprite.getGlobalBounds().width * (1.0f - imageWidthRatio)), 0.0f);
+        }
+
+        m_isFacingRight = !m_isFacingRight;
+    }
+
+} // namespace platformer
