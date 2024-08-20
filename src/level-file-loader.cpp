@@ -8,6 +8,7 @@
 #include "check-macros.hpp"
 #include "context.hpp"
 #include "dino.hpp"
+#include "ent.hpp"
 #include "goblin.hpp"
 #include "level.hpp"
 #include "lightning-anim-layer.hpp"
@@ -389,6 +390,10 @@ namespace platformer
             else if (name == "spider")
             {
                 context.level.monsters.add(std::make_unique<Spider>(context, rect));
+            }
+            else if (name == "ent")
+            {
+                context.level.monsters.add(std::make_unique<Ent>(context, rect));
             }
             else
             {
