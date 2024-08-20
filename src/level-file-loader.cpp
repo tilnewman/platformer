@@ -19,6 +19,7 @@
 #include "monster-little-knight.hpp"
 #include "monster-skeleton.hpp"
 #include "monster-spider.hpp"
+#include "monster-vampire.hpp"
 #include "pickups.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
@@ -419,6 +420,10 @@ namespace platformer
             else if (name == "skeleton")
             {
                 context.level.monsters.add(std::make_unique<Skeleton>(context, rect));
+            }
+            else if (name == "vampire")
+            {
+                context.level.monsters.add(std::make_unique<Vampire>(context, rect));
             }
             else
             {
