@@ -53,17 +53,18 @@ namespace platformer
             return;
         }
 
+        if (!m_hasSpottedPlayer && m_region.intersects(context.avatar.collisionRect()))
+        {
+            m_hasSpottedPlayer = true;
+            turnToFacePlayer(context);
+        }
+
         m_elapsedTimeSec += frameTimeSec;
         m_stateElapsedTimeSec += frameTimeSec;
 
         handleWalking(context, frameTimeSec);
 
         if (!animate())
-        {
-            return;
-        }
-
-        if (handleSpottingPlayer(context))
         {
             return;
         }
@@ -301,21 +302,6 @@ namespace platformer
             m_isFacingRight = !m_isFacingRight;
             m_sprite.move((m_region.left - monsterRect.left), 0.0f);
         }
-    }
-
-    bool Monster::handleSpottingPlayer(Context & context)
-    {
-        if (!m_hasSpottedPlayer && (MonsterAnim::Death != m_anim) &&
-            (MonsterAnim::Hurt != m_anim) && (m_region.intersects(context.avatar.collisionRect())))
-        {
-            m_hasSpottedPlayer = true;
-            m_anim             = MonsterAnim::Idle;
-            resetAnimation();
-            turnToFacePlayer(context);
-            return true;
-        }
-
-        return false;
     }
 
     void Monster::resetAnimation()
