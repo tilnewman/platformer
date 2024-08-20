@@ -12,6 +12,7 @@
 #include "map-textures.hpp"
 #include "monster-big-knight.hpp"
 #include "monster-dino.hpp"
+#include "monster-dragon.hpp"
 #include "monster-ent.hpp"
 #include "monster-goblin.hpp"
 #include "monster-little-knight.hpp"
@@ -404,6 +405,10 @@ namespace platformer
             else if (name == "little-knight")
             {
                 context.level.monsters.add(std::make_unique<LittleKnight>(context, rect));
+            }
+            else if (name == "dragon")
+            {
+                context.level.monsters.add(std::make_unique<Dragon>(context, rect));
             }
             else
             {
