@@ -49,7 +49,7 @@ namespace platformer
             }
         }
 
-        return {};
+        return Harm{};
     }
 
 } // namespace platformer

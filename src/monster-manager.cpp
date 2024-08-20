@@ -53,7 +53,7 @@ namespace platformer
             }
         }
 
-        return {};
+        return Harm{};
     }
 
     void MonsterManager::appendCollisionRects(std::vector<sf::FloatRect> & rects) const

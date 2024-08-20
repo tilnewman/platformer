@@ -278,7 +278,7 @@ namespace platformer
                       << "\") given unknown name.  No background will be shown on this map."
                       << std::endl;
 
-            return { 0, {}, {}, {} };
+            return BackgroundImagesInfo{ 0, {}, {}, {} };
         }
     }
 
