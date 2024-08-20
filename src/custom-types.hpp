@@ -7,8 +7,9 @@
 namespace platformer
 {
     
-    // keep this type signed
+    // keep these types signed
     using Health_t = int;
+    using Coin_t = int;
 
 } // namespace platformer
 

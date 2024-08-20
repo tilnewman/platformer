@@ -35,6 +35,8 @@ namespace platformer
         , m_spells()
         , m_itemImages()
         , m_levelInfo(settings)
+        , m_playerInfo()
+        , m_playerInfoDisplay()
         , m_context(
               m_settings,
               m_window,
@@ -53,7 +55,9 @@ namespace platformer
               m_accents,
               m_spells,
               m_itemImages,
-              m_levelInfo)
+              m_levelInfo,
+              m_playerInfo,
+              m_playerInfoDisplay)
         , m_fpsValues()
         , m_oneSecondClock()
         , m_elapsedTimeSec(0.0f)
@@ -83,6 +87,7 @@ namespace platformer
         m_accents.setup(m_settings);
         m_spells.setup(m_settings);
         m_avatar.setup(m_context, AvatarType::Assassin);
+        m_playerInfoDisplay.setup(m_context);
 
         m_states.changeTo(m_context, State::Splash);
 

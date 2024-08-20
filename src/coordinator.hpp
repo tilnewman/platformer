@@ -15,6 +15,8 @@
 #include "level.hpp"
 #include "map-textures.hpp"
 #include "pickups.hpp"
+#include "player-info-display.hpp"
+#include "player-info.hpp"
 #include "random.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
@@ -73,6 +75,8 @@ namespace platformer
         SpellAnimations m_spells;
         ItemImages m_itemImages;
         LevelInfo m_levelInfo;
+        PlayerInfo m_playerInfo;
+        PlayerInfoDisplay m_playerInfoDisplay;
 
         Context m_context;
 

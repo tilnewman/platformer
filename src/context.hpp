@@ -24,6 +24,7 @@ namespace platformer
 
     class Avatar;
     class LevelInfo;
+    class PlayerInfo;
     class ItemImages;
     class MapTextures;
     class FontManager;
@@ -34,6 +35,7 @@ namespace platformer
     class BackgroundImages;
     class PickupAnimations;
     class AccentAnimations;
+    class PlayerInfoDisplay;
     class AvatarTextureManager;
 
     //
@@ -58,7 +60,9 @@ namespace platformer
             AccentAnimations & aan,
             SpellAnimations & san,
             ItemImages & ima,
-            LevelInfo & lin)
+            LevelInfo & lin,
+            PlayerInfo & pin,
+            PlayerInfoDisplay & pid)
             : settings(set)
             , window(win)
             , random(ran)
@@ -77,6 +81,8 @@ namespace platformer
             , spell(san)
             , item(ima)
             , level_info(lin)
+            , player(pin)
+            , player_display(pid)
         {}
 
         const Settings & settings;
@@ -97,6 +103,8 @@ namespace platformer
         SpellAnimations & spell;
         ItemImages & item;
         LevelInfo & level_info;
+        PlayerInfo & player;
+        PlayerInfoDisplay & player_display;
     };
 
 } // namespace platformer
