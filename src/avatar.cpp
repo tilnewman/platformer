@@ -278,7 +278,18 @@ namespace platformer
             }
         }
 
-        context.level.monsters.avatarAttack(context, attackInfo);
+        if (context.level.monsters.avatarAttack(context, attackInfo))
+        {
+            if ((AvatarType::Druid == m_type) || (AvatarType::Enchantress == m_type) ||
+                (AvatarType::Witch == m_type))
+            {
+                context.sfx.play("hit-staff");
+            }
+            else
+            {
+                context.sfx.play("hit-metal");
+            }
+        }
     }
 
     void Avatar::moveMap(Context & context)

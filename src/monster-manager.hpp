@@ -37,7 +37,7 @@ namespace platformer
         void move(const float amount);
         const Harm avatarCollide(const sf::FloatRect & avatarRect);
         void appendCollisionRects(std::vector<sf::FloatRect> & rects) const;
-        void avatarAttack(Context & context, const AttackInfo & attackInfo);
+        bool avatarAttack(Context & context, const AttackInfo & attackInfo);
 
       private:
         std::vector<std::unique_ptr<IMonster>> m_monsters;

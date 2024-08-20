@@ -84,7 +84,7 @@ namespace platformer
         virtual const Harm avatarCollide(const sf::FloatRect & avatarRect)                   = 0;
         virtual const sf::FloatRect collisionRect() const                                    = 0;
         virtual const sf::FloatRect attackCollisionRect() const                              = 0;
-        virtual void avatarAttack(Context & context, const AttackInfo & attackInfo)          = 0;
+        virtual bool avatarAttack(Context & context, const AttackInfo & attackInfo)          = 0;
     };
 
     //
@@ -104,7 +104,7 @@ namespace platformer
         void update(Context & context, const float frameTimeSec) override;
         void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const override;
         void move(const float amount) override;
-        void avatarAttack(Context & context, const AttackInfo & attackInfo) override;
+        bool avatarAttack(Context & context, const AttackInfo & attackInfo) override;
 
       protected:
         virtual bool animate(); // returns true if animation is finished
@@ -119,6 +119,7 @@ namespace platformer
         virtual void playHurtSfx(Context & context) const   = 0;
         virtual void playDeathSfx(Context & context) const  = 0;
 
+        void resetAnimation();
         void loadTextures(const Settings & settings);
         void initialSpriteSetup(Context & context);
         void setTexture(sf::Sprite & s, const MonsterAnim a, const std::size_t frame) const;

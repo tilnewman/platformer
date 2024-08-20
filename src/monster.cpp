@@ -120,32 +120,34 @@ namespace platformer
         m_region.left += amount;
     }
 
-    void Monster::avatarAttack(Context & context, const AttackInfo & attackInfo)
+    bool Monster::avatarAttack(Context & context, const AttackInfo & attackInfo)
     {
         if ((MonsterAnim::Death == m_anim) || (MonsterAnim::Hurt == m_anim))
         {
-            return;
+            return false;
         }
 
         if (!attackInfo.rect.intersects(collisionRect()))
         {
-            return;
+            return false;
         }
 
         m_health -= attackInfo.damage;
 
         if (m_health > 0)
         {
-            m_anim           = MonsterAnim::Hurt;
-            m_elapsedTimeSec = 0.0f;
+            m_anim = MonsterAnim::Hurt;
+            resetAnimation();
             playHurtSfx(context);
         }
         else
         {
-            m_anim           = MonsterAnim::Death;
-            m_elapsedTimeSec = 0.0f;
+            m_anim = MonsterAnim::Death;
+            resetAnimation();
             playDeathSfx(context);
         }
+
+        return true;
     }
 
     bool Monster::animate()
@@ -201,7 +203,7 @@ namespace platformer
         if (isNextActionWalking)
         {
             m_anim = MonsterAnim::Walk;
-
+            resetAnimation();
             const bool willChangeDirection{ context.random.boolean() };
             if (willChangeDirection)
             {
@@ -213,6 +215,7 @@ namespace platformer
         {
             // in all other cases just turn around
             m_anim = MonsterAnim::Idle;
+            resetAnimation();
             m_sprite.scale(-1.0f, 1.0f);
             m_isFacingRight = !m_isFacingRight;
         }
@@ -238,15 +241,15 @@ namespace platformer
         const int isNextActionWalking{ context.random.boolean() };
         if (isNextActionWalking)
         {
-            m_anim                    = MonsterAnim::Walk;
+            m_anim = MonsterAnim::Walk;
+            resetAnimation();
             m_stateTimeUntilChangeSec = context.random.fromTo(1.0f, 2.0f);
-            m_elapsedTimeSec          = 0.0f;
         }
         else
         {
             // in all other cases just attack
-            m_anim           = MonsterAnim::Attack;
-            m_elapsedTimeSec = 0.0f;
+            m_anim = MonsterAnim::Attack;
+            resetAnimation();
             playAttackSfx(context);
         }
     }
@@ -305,16 +308,20 @@ namespace platformer
         if (!m_hasSpottedPlayer && (MonsterAnim::Death != m_anim) &&
             (MonsterAnim::Hurt != m_anim) && (m_region.intersects(context.avatar.collisionRect())))
         {
-            m_hasSpottedPlayer        = true;
-            m_elapsedTimeSec          = 0.0f;
-            m_stateElapsedTimeSec     = 0.0f;
-            m_stateTimeUntilChangeSec = 0.0f;
-            m_anim                    = MonsterAnim::Idle;
+            m_hasSpottedPlayer = true;
+            m_anim             = MonsterAnim::Idle;
+            resetAnimation();
             turnToFacePlayer(context);
             return true;
         }
 
         return false;
+    }
+
+    void Monster::resetAnimation()
+    {
+        m_elapsedTimeSec = 0.0f;
+        m_animFrame      = 0;
     }
 
     void Monster::loadTextures(const Settings & settings)

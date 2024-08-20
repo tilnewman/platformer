@@ -64,12 +64,17 @@ namespace platformer
         }
     }
 
-    void MonsterManager::avatarAttack(Context & context, const AttackInfo & attackInfo)
+    bool MonsterManager::avatarAttack(Context & context, const AttackInfo & attackInfo)
     {
         for (auto & monsterUPtr : m_monsters)
         {
-            monsterUPtr->avatarAttack(context, attackInfo);
+            if (monsterUPtr->avatarAttack(context, attackInfo))
+            {
+                return true;
+            }
         }
+
+        return false;
     }
 
 } // namespace platformer
