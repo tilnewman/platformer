@@ -53,49 +53,55 @@ namespace platformer
             return;
         }
 
-        if (animate(frameTimeSec))
-        {
-            if (!doesAnimLoop(m_anim))
-            {
-                if (MonsterAnim::Death == m_anim)
-                {
-                    m_isAlive = false;
-                    setTexture(m_sprite, MonsterAnim::Death, (frameCount(MonsterAnim::Death) - 1));
-                }
-                else
-                {
-                    m_elapsedTimeSec = 0.0f;
-                    m_anim           = MonsterAnim::Idle;
-                }
-            }
-        }
-
+        m_elapsedTimeSec += frameTimeSec;
         m_stateElapsedTimeSec += frameTimeSec;
-        if (m_stateElapsedTimeSec > m_stateTimeUntilChangeSec)
-        {
-            m_stateElapsedTimeSec = 0.0f;
-
-            if (m_hasSpottedPlayer)
-            {
-                changeStateAfterSeeingPlayer(context);
-            }
-            else
-            {
-                changeStateBeforeSeeingPlayer(context);
-            }
-        }
 
         handleWalking(context, frameTimeSec);
 
-        if (!m_hasSpottedPlayer && (MonsterAnim::Death != m_anim) &&
-            (m_region.intersects(context.avatar.collisionRect())))
+        if (!animate())
         {
-            m_hasSpottedPlayer        = true;
-            m_elapsedTimeSec          = 0.0f;
-            m_stateElapsedTimeSec     = 0.0f;
-            m_stateTimeUntilChangeSec = 0.0f;
-            m_anim                    = MonsterAnim::Idle;
-            turnToFacePlayer(context);
+            return;
+        }
+
+        if (handleSpottingPlayer(context))
+        {
+            return;
+        }
+
+        if (doesAnimLoop(m_anim))
+        {
+            if (m_stateElapsedTimeSec > m_stateTimeUntilChangeSec)
+            {
+                m_stateElapsedTimeSec = 0.0f;
+
+                if (m_hasSpottedPlayer)
+                {
+                    changeStateAfterSeeingPlayer(context);
+                }
+                else
+                {
+                    changeStateBeforeSeeingPlayer(context);
+                }
+            }
+        }
+        else
+        {
+            if (MonsterAnim::Death == m_anim)
+            {
+                m_isAlive = false;
+                setTexture(m_sprite, MonsterAnim::Death, (frameCount(MonsterAnim::Death) - 1));
+            }
+            else
+            {
+                if (m_hasSpottedPlayer)
+                {
+                    changeStateAfterSeeingPlayer(context);
+                }
+                else
+                {
+                    changeStateBeforeSeeingPlayer(context);
+                }
+            }
         }
     }
 
@@ -130,29 +136,28 @@ namespace platformer
 
         if (m_health > 0)
         {
-            m_anim = MonsterAnim::Hurt;
-            m_elapsedTimeSec = 0.0f;
+            m_anim                    = MonsterAnim::Hurt;
+            m_elapsedTimeSec          = 0.0f;
             m_stateTimeUntilChangeSec = 3.0f;
             playHurtSfx(context);
         }
         else
         {
-            m_anim = MonsterAnim::Death;
+            m_anim           = MonsterAnim::Death;
             m_elapsedTimeSec = 0.0f;
             playDeathSfx(context);
         }
     }
 
-    bool Monster::animate(const float frameTimeSec)
+    bool Monster::animate()
     {
         bool isAnimationFinished{ false };
 
-        const float timePerSec{ timePerFrameSec(m_anim) };
+        const float timeBetweenFramesSec{ timePerFrameSec(m_anim) };
 
-        m_elapsedTimeSec += frameTimeSec;
-        if (m_elapsedTimeSec > timePerSec)
+        if (m_elapsedTimeSec > timeBetweenFramesSec)
         {
-            m_elapsedTimeSec -= timePerSec;
+            m_elapsedTimeSec -= timeBetweenFramesSec;
 
             ++m_animFrame;
             if (m_animFrame >= frameCount(m_anim))
@@ -221,8 +226,7 @@ namespace platformer
             return;
         }
 
-        if ((MonsterAnim::Attack == m_anim) || (MonsterAnim::Death == m_anim) ||
-            (MonsterAnim::Hurt == m_anim))
+        if (MonsterAnim::Death == m_anim)
         {
             return;
         }
@@ -296,6 +300,23 @@ namespace platformer
             m_isFacingRight = !m_isFacingRight;
             m_sprite.move((m_region.left - monsterRect.left), 0.0f);
         }
+    }
+
+    bool Monster::handleSpottingPlayer(Context & context)
+    {
+        if (!m_hasSpottedPlayer && (MonsterAnim::Death != m_anim) &&
+            (MonsterAnim::Hurt != m_anim) && (m_region.intersects(context.avatar.collisionRect())))
+        {
+            m_hasSpottedPlayer        = true;
+            m_elapsedTimeSec          = 0.0f;
+            m_stateElapsedTimeSec     = 0.0f;
+            m_stateTimeUntilChangeSec = 0.0f;
+            m_anim                    = MonsterAnim::Idle;
+            turnToFacePlayer(context);
+            return true;
+        }
+
+        return false;
     }
 
     void Monster::loadTextures(const Settings & settings)
