@@ -14,6 +14,7 @@
 #include "monster-dino.hpp"
 #include "monster-dragon.hpp"
 #include "monster-ent.hpp"
+#include "monster-fire-knight.hpp"
 #include "monster-ghost.hpp"
 #include "monster-goblin.hpp"
 #include "monster-little-knight.hpp"
@@ -424,6 +425,10 @@ namespace platformer
             else if (name == "vampire")
             {
                 context.level.monsters.add(std::make_unique<Vampire>(context, rect));
+            }
+            else if (name == "fire-knight")
+            {
+                context.level.monsters.add(std::make_unique<FireKnight>(context, rect));
             }
             else
             {
