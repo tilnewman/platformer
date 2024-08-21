@@ -1,9 +1,9 @@
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 //
-// monster-bone-dragon.hpp
+// monster-dragon.hpp
 //
-#include "monster-bone-dragon.hpp"
+#include "monster-dragon.hpp"
 
 #include "avatar.hpp"
 #include "context.hpp"
@@ -20,11 +20,11 @@
 namespace platformer
 {
 
-    BoneDragon::BoneDragon(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "bone-dragon", 70 , 0.87f})
+    Dragon::Dragon(Context & context, const sf::FloatRect & region)
+        : Monster(context, { region, "dragon", 70 , 0.75f})
     {}
 
-    const sf::FloatRect BoneDragon::collisionRect() const
+    const sf::FloatRect Dragon::collisionRect() const
     {
         if (MonsterAnim::Death == m_anim)
         {
@@ -33,12 +33,23 @@ namespace platformer
         else
         {
             sf::FloatRect rect{ m_sprite.getGlobalBounds() };
-            util::scaleRectInPlace(rect, { 0.3f, 0.25f });
+            util::scaleRectInPlace(rect, { 0.4f, 0.25f });
+            rect.top += (rect.height * 0.5f);
+            
+            if (m_isFacingRight)
+            {
+                rect.left += (rect.width * 0.2f);
+            }
+            else
+            {
+                rect.left -= (rect.width * 0.2f);
+            }
+
             return rect;
         }
     }
 
-    const sf::FloatRect BoneDragon::attackCollisionRect() const
+    const sf::FloatRect Dragon::attackCollisionRect() const
     {
         sf::FloatRect rect{ collisionRect() };
 
@@ -58,7 +69,7 @@ namespace platformer
         return rect;
     }
 
-    const Harm BoneDragon::avatarCollide(const sf::FloatRect & avatarRect)
+    const Harm Dragon::avatarCollide(const sf::FloatRect & avatarRect)
     {
         Harm harm;
 
@@ -72,10 +83,10 @@ namespace platformer
         return harm;
     }
 
-    void BoneDragon::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
+    void Dragon::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
 
-    void BoneDragon::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
+    void Dragon::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
 
-    void BoneDragon::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
+    void Dragon::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
 
 } // namespace platformer
