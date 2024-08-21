@@ -30,6 +30,7 @@
 #include "monster-snake.hpp"
 #include "monster-spider.hpp"
 #include "monster-vampire.hpp"
+#include "monster-yeti.hpp"
 #include "pickups.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
@@ -474,6 +475,10 @@ namespace platformer
             else if (name == "snake")
             {
                 context.level.monsters.add(std::make_unique<Snake>(context, rect));
+            }
+            else if (name == "yeti")
+            {
+                context.level.monsters.add(std::make_unique<Yeti>(context, rect));
             }
             else
             {
