@@ -10,6 +10,7 @@
 #include "level.hpp"
 #include "lightning-anim-layer.hpp"
 #include "map-textures.hpp"
+#include "monster-baby-dragon.hpp"
 #include "monster-bear.hpp"
 #include "monster-big-knight.hpp"
 #include "monster-bone-dragon.hpp"
@@ -504,6 +505,10 @@ namespace platformer
             else if (name == "medusa")
             {
                 context.level.monsters.add(std::make_unique<Medusa>(context, rect));
+            }
+            else if (name == "baby-dragon")
+            {
+                context.level.monsters.add(std::make_unique<BabyDragon>(context, rect));
             }
             else
             {
