@@ -23,6 +23,7 @@
 #include "monster-hound.hpp"
 #include "monster-imp.hpp"
 #include "monster-little-knight.hpp"
+#include "monster-orc.hpp"
 #include "monster-salamander.hpp"
 #include "monster-skeleton.hpp"
 #include "monster-skull.hpp"
@@ -464,6 +465,10 @@ namespace platformer
             else if (name == "dwarf")
             {
                 context.level.monsters.add(std::make_unique<Dwarf>(context, rect));
+            }
+            else if (name == "orc")
+            {
+                context.level.monsters.add(std::make_unique<Orc>(context, rect));
             }
             else
             {
