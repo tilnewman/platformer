@@ -275,8 +275,7 @@ namespace platformer
         else
         {
             std::cout << "Error: BackgroundImages::infoFactory(\"" << name
-                      << "\") given unknown name.  No background will be shown on this map."
-                      << std::endl;
+                      << "\") given unknown name.  No background will be shown on this map.\n";
 
             return BackgroundImagesInfo{ 0, {}, {}, {} };
         }

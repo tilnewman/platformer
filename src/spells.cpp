@@ -67,8 +67,7 @@ namespace platformer
     {
         if (Spell::Count == spell)
         {
-            std::cout << "Error: SpellAnimations::add() given an unknown spell." << std::endl;
-
+            std::cout << "Error: SpellAnimations::add() given an unknown spell.\n";
             return;
         }
 

@@ -96,7 +96,7 @@ namespace platformer
             layerUPtr->dumpInfo();
         }
 
-        std::cout << std::endl;
+        std::cout << '\n';
     }
 
     void Level::draw(

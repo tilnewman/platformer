@@ -29,7 +29,7 @@ namespace platformer
         std::ostringstream ss;
         ss.imbue(std::locale("")); // this is only to put commas in the big numbers
         ss << m_count << " textures loaded for a total of " << m_byteCount << "bytes.";
-        std::cout << ss.str() << std::endl;
+        std::cout << ss.str() << '\n';
     }
 
 } // namespace platformer

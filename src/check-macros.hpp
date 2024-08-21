@@ -47,7 +47,7 @@
 #define M_LOG(streamable_message)                                 \
     {                                                             \
         M_MAKE_CODE_POSITION_STR_SS("M_LOG", streamable_message); \
-        std::clog << _m_desc_str << std::endl;                    \
+        std::clog << _m_desc_str << '\n';                         \
     }
 
 //
@@ -82,7 +82,7 @@
         if (!(exp))                                                                 \
         {                                                                           \
             M_MAKE_DESCRIPTION_STR_SS((exp), "M_CHECK_LOG", streamable_extra_info); \
-            std::clog << _m_desc_str << std::endl;                                  \
+            std::clog << _m_desc_str << '\n';                                       \
         }                                                                           \
     }
 
@@ -93,7 +93,7 @@
         if (!(exp))                                                                   \
         {                                                                             \
             M_MAKE_DESCRIPTION_STR_SS((exp), "M_CHECK_THROW", streamable_extra_info); \
-            std::cerr << _m_desc_str << std::endl;                                    \
+            std::cerr << _m_desc_str << '\n';                                         \
             throw std::runtime_error(_m_desc_str);                                    \
         }                                                                             \
     }
@@ -105,7 +105,7 @@
         if (!(exp))                                                                    \
         {                                                                              \
             M_MAKE_DESCRIPTION_STR_SS((exp), "M_CHECK_ASSERT", streamable_extra_info); \
-            std::cerr << _m_desc_str << std::endl;                                     \
+            std::cerr << _m_desc_str << '\n';                                          \
             assert((exp));                                                             \
         }                                                                              \
     }
@@ -117,7 +117,7 @@
         if (!(exp))                                                             \
         {                                                                       \
             M_MAKE_DESCRIPTION_STR_SS((exp), "M_CHECK", streamable_extra_info); \
-            std::cerr << _m_desc_str << std::endl;                              \
+            std::cerr << _m_desc_str << '\n';                                   \
             M_FAIL_HANDLER((exp), _m_desc_str);                                 \
         }                                                                       \
     }

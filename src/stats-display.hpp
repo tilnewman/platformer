@@ -50,8 +50,7 @@ namespace util
             {
                 std::cout << "GraphDisplay's sf::RenderTexture::create failed for size="
                           << dataWidth << "x" << m_size.y
-                          << ". So the graph will show solid magenta.  The color of pure evil."
-                          << std::endl;
+                          << ". So the graph will show solid magenta.  The color of pure evil.\n";
 
                 m_renderTexture.create(32, 32); // this won't fail...probably
                 m_renderTexture.clear(sf::Color::Magenta);
@@ -94,7 +93,7 @@ namespace util
             if (!m_renderTexture.getTexture().copyToImage().saveToFile(filename))
             {
                 std::cout << "Error:  StatDisplay's sf::Image::saveToFile(\"" << filename
-                          << "\") failed." << std::endl;
+                          << "\") failed.\n";
             }
         }
 
@@ -304,8 +303,7 @@ namespace util
             if (!m_renderTexture.create(fullSizeU.x, fullSizeU.y))
             {
                 std::cout << "StatDisplay's sf::RenderTexture::create failed for size=" << fullSizeU
-                          << ". So the graph will show solid magenta.  The color of pure evil."
-                          << std::endl;
+                          << ". So the graph will show solid magenta.  The color of pure evil.\n";
 
                 m_renderTexture.create(32, 32); // this won't fail...probably
                 m_renderTexture.clear(sf::Color::Magenta);
@@ -331,7 +329,7 @@ namespace util
             if (!m_renderTexture.getTexture().copyToImage().saveToFile(filename))
             {
                 std::cout << "Error: StatDisplay's sf::Image::saveToFile(\"" << filename
-                          << "\") failed." << std::endl;
+                          << "\") failed.\n";
             }
         }
 

@@ -35,12 +35,12 @@ int main(const int argc, const char * const argv[])
     }
     catch (const std::exception & ex)
     {
-        std::cerr << "Exception Error: \"" << ex.what() << "\"" << std::endl;
+        std::cerr << "Exception Error: \"" << ex.what() << "\"\n";
         return EXIT_FAILURE;
     }
     catch (...)
     {
-        std::cerr << "Non-Standard Exception Error" << std::endl;
+        std::cerr << "Non-Standard Exception Error\n";
         return EXIT_FAILURE;
     }
 

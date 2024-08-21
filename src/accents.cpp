@@ -59,8 +59,8 @@ namespace platformer
         const Accent accent{ stringToAccent(name) };
         if (Accent::Count == accent)
         {
-            std::cout << "Error: AccentAnimations::add(\"" << name << "\") given an unknown name."
-                      << std::endl;
+            std::cout << "Error: AccentAnimations::add(\"" << name
+                      << "\") given an unknown name.\n";
 
             return;
         }

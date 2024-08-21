@@ -59,8 +59,8 @@ namespace platformer
         const Pickup pickup{ stringToPickup(name) };
         if (Pickup::Count == pickup)
         {
-            std::cout << "Error: PickupAnimations::add(\"" << name << "\") given an unknown name."
-                      << std::endl;
+            std::cout << "Error: PickupAnimations::add(\"" << name
+                      << "\") given an unknown name.\n";
 
             return;
         }

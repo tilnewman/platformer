@@ -232,7 +232,7 @@ namespace platformer
         const unsigned actualHeight{ m_window.getSize().y };
         if ((videoMode.width == actualWidth) && (videoMode.height == actualHeight))
         {
-            std::cout << "Success." << std::endl;
+            std::cout << "Success.\n";
         }
         else
         {
@@ -242,7 +242,7 @@ namespace platformer
             videoMode.width  = actualWidth;
             videoMode.height = actualHeight;
 
-            std::cout << "SFML switched to " << videoMode << " instead." << std::endl;
+            std::cout << "SFML switched to " << videoMode << " instead.\n";
         }
     }
 
