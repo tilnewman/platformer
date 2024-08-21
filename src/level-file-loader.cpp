@@ -27,6 +27,7 @@
 #include "monster-salamander.hpp"
 #include "monster-skeleton.hpp"
 #include "monster-skull.hpp"
+#include "monster-snake.hpp"
 #include "monster-spider.hpp"
 #include "monster-vampire.hpp"
 #include "pickups.hpp"
@@ -469,6 +470,10 @@ namespace platformer
             else if (name == "orc")
             {
                 context.level.monsters.add(std::make_unique<Orc>(context, rect));
+            }
+            else if (name == "snake")
+            {
+                context.level.monsters.add(std::make_unique<Snake>(context, rect));
             }
             else
             {
