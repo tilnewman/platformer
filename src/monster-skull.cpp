@@ -34,7 +34,6 @@ namespace platformer
         {
             sf::FloatRect rect{ m_sprite.getGlobalBounds() };
             util::scaleRectInPlace(rect, { 0.2f, 0.2f });
-            rect.top *= 1.02f;
             return rect;
         }
     }
