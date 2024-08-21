@@ -132,15 +132,9 @@ namespace platformer
 
     inline constexpr bool doesAnimLoop(const AvatarAnim anim)
     {
-        if ((anim == AvatarAnim::Climb) || (anim == AvatarAnim::Idle) ||
-            (anim == AvatarAnim::Push) || (anim == AvatarAnim::Run) || (anim == AvatarAnim::Walk))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (
+            (anim == AvatarAnim::Climb) || (anim == AvatarAnim::Idle) ||
+            (anim == AvatarAnim::Push) || (anim == AvatarAnim::Run) || (anim == AvatarAnim::Walk));
     }
 
     //
@@ -180,7 +174,7 @@ namespace platformer
             return m_textures.at(static_cast<std::size_t>(type)).default_texture;
         }
 
-        inline const sf::Texture & iconTexture(const AvatarType type) const
+        inline const sf::Texture & getIcon(const AvatarType type) const
         {
             return m_textures.at(static_cast<std::size_t>(type)).icon_texture;
         }

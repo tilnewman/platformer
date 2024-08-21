@@ -100,7 +100,7 @@ namespace platformer
 
         //
 
-        m_avatarIconSprite.setTexture(context.avatar_texture.iconTexture(context.avatar.type()));
+        m_avatarIconSprite.setTexture(context.avatar_texture.getIcon(context.avatar.type()));
         util::scaleAndCenterInside(m_avatarIconSprite, m_bgRect);
 
         //
