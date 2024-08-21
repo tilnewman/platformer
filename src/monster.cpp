@@ -33,11 +33,10 @@ namespace platformer
         , m_hasSpottedPlayer(false)
         , m_health(setupInfo.health)
         , m_isAlive(true)
-        , m_spriteHeightOffsetRatio(setupInfo.image_height_ratio)
         , m_textures()
     {
         loadTextures(context.settings);
-        initialSpriteSetup(context);
+        initialSpriteSetup(context, setupInfo.image_height_ratio, setupInfo.image_scale);
     }
 
     void Monster::update(Context & context, const float frameTimeSec)
@@ -322,17 +321,19 @@ namespace platformer
         }
     }
 
-    void Monster::initialSpriteSetup(Context & context)
+    void Monster::initialSpriteSetup(
+        Context & context, const float imageHeightOffsetRatio, const float imageScale)
     {
         setTexture(m_sprite, m_anim, m_animFrame);
         m_sprite.setScale(context.settings.monster_scale, context.settings.monster_scale);
+        m_sprite.scale(imageScale, imageScale);
         util::setOriginToCenter(m_sprite);
 
         m_sprite.setPosition(
             context.random.fromTo(m_region.left, util::right(m_region)),
             (util::bottom(m_region) - m_sprite.getGlobalBounds().height));
 
-        m_sprite.move(0.0f, (m_spriteHeightOffsetRatio * m_sprite.getGlobalBounds().height));
+        m_sprite.move(0.0f, (imageHeightOffsetRatio * m_sprite.getGlobalBounds().height));
     }
 
     void Monster::setTexture(

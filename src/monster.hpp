@@ -77,18 +77,23 @@ namespace platformer
     struct MonsterSetupInfo
     {
         MonsterSetupInfo(
-            const sf::FloatRect & r, const std::string & id, const Health_t h, const float ihr)
-            : region(r)
-            , image_dir(id)
-            , health(h)
-            , image_height_ratio(ihr)
-
+            const sf::FloatRect & roamRegion,
+            const std::string & imageDir,
+            const Health_t startingHealth,
+            const float imageHeightRatio,
+            const float imageScale = 1.0f)
+            : region(roamRegion)
+            , image_dir(imageDir)
+            , health(startingHealth)
+            , image_height_ratio(imageHeightRatio)
+            , image_scale(imageScale)
         {}
 
         sf::FloatRect region;
         std::string image_dir;
         Health_t health;
         float image_height_ratio;
+        float image_scale;
     };
 
     //
@@ -135,7 +140,10 @@ namespace platformer
 
         void resetAnimation();
         void loadTextures(const Settings & settings);
-        void initialSpriteSetup(Context & context);
+
+        void initialSpriteSetup(
+            Context & context, const float imageHeightOffsetRatio, const float imageScale);
+        
         void setTexture(sf::Sprite & s, const MonsterAnim a, const std::size_t frame) const;
         const sf::IntRect textureRect(const MonsterAnim a, const std::size_t frame) const;
         std::size_t frameCount(const MonsterAnim anim) const;
@@ -154,7 +162,6 @@ namespace platformer
         bool m_hasSpottedPlayer;
         Health_t m_health;
         bool m_isAlive;
-        float m_spriteHeightOffsetRatio;
         std::vector<sf::Texture> m_textures;
     };
 
