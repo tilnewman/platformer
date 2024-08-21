@@ -155,8 +155,7 @@ namespace platformer
         Health_t m_health;
         bool m_isAlive;
         float m_spriteHeightOffsetRatio;
-
-        static std::vector<sf::Texture> m_textures;
+        std::vector<sf::Texture> m_textures;
     };
 
 } // namespace platformer

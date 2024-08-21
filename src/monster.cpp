@@ -20,10 +20,6 @@
 namespace platformer
 {
 
-    std::vector<sf::Texture> Monster::m_textures;
-
-    //
-
     Monster::Monster(Context & context, const MonsterSetupInfo & setupInfo)
         : m_imageDirName(setupInfo.image_dir)
         , m_region(setupInfo.region)
@@ -38,6 +34,7 @@ namespace platformer
         , m_health(setupInfo.health)
         , m_isAlive(true)
         , m_spriteHeightOffsetRatio(setupInfo.image_height_ratio)
+        , m_textures()
     {
         loadTextures(context.settings);
         initialSpriteSetup(context);
@@ -307,11 +304,6 @@ namespace platformer
 
     void Monster::loadTextures(const Settings & settings)
     {
-        if (!m_textures.empty())
-        {
-            return;
-        }
-
         m_textures.reserve(static_cast<std::size_t>(MonsterAnim::Count));
 
         for (std::size_t animIndex(0); animIndex < static_cast<std::size_t>(MonsterAnim::Count);
