@@ -1,9 +1,9 @@
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 //
-// monster-dragon.hpp
+// monster-bone-dragon.hpp
 //
-#include "monster-dragon.hpp"
+#include "monster-bone-dragon.hpp"
 
 #include "avatar.hpp"
 #include "context.hpp"
@@ -20,11 +20,11 @@
 namespace platformer
 {
 
-    Dragon::Dragon(Context & context, const sf::FloatRect & region)
+    BoneDragon::BoneDragon(Context & context, const sf::FloatRect & region)
         : Monster(context, { region, "dragon", 70 , 0.87f})
     {}
 
-    const sf::FloatRect Dragon::collisionRect() const
+    const sf::FloatRect BoneDragon::collisionRect() const
     {
         if (MonsterAnim::Death == m_anim)
         {
@@ -38,7 +38,7 @@ namespace platformer
         }
     }
 
-    const sf::FloatRect Dragon::attackCollisionRect() const
+    const sf::FloatRect BoneDragon::attackCollisionRect() const
     {
         sf::FloatRect rect{ collisionRect() };
 
@@ -58,7 +58,7 @@ namespace platformer
         return rect;
     }
 
-    const Harm Dragon::avatarCollide(const sf::FloatRect & avatarRect)
+    const Harm BoneDragon::avatarCollide(const sf::FloatRect & avatarRect)
     {
         Harm harm;
 
@@ -72,10 +72,10 @@ namespace platformer
         return harm;
     }
 
-    void Dragon::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
+    void BoneDragon::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
 
-    void Dragon::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
+    void BoneDragon::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
 
-    void Dragon::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
+    void BoneDragon::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
 
 } // namespace platformer

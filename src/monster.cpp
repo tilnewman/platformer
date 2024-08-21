@@ -176,7 +176,7 @@ namespace platformer
         {
             case MonsterAnim::Attack:        { return 0.1f;   }
             case MonsterAnim::Death:         { return 0.175f; }
-            case MonsterAnim::Hurt:          { return 0.15f;   }
+            case MonsterAnim::Hurt:          { return 0.15f;  }
             case MonsterAnim::Idle:          { return 0.15f;  }
             case MonsterAnim::Walk:          { return 0.1f;   }
             case MonsterAnim::Count: // intentional fallthrough

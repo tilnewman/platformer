@@ -1,7 +1,7 @@
-#ifndef MONSTER_DRAGON_HPP_INCLUDED
-#define MONSTER_DRAGON_HPP_INCLUDED
+#ifndef MONSTER_BONE_DRAGON_HPP_INCLUDED
+#define MONSTER_BONE_DRAGON_HPP_INCLUDED
 //
-// monster-dragon.hpp
+// monster-bone-dragon.hpp
 //
 #include "harm.hpp"
 #include "monster.hpp"
@@ -18,11 +18,11 @@ namespace platformer
 
     //
 
-    class Dragon : public Monster
+    class BoneDragon : public Monster
     {
       public:
-        Dragon(Context & context, const sf::FloatRect & region);
-        virtual ~Dragon() override = default;
+        BoneDragon(Context & context, const sf::FloatRect & region);
+        virtual ~BoneDragon() override = default;
 
         // IMonster functions
         const Harm avatarCollide(const sf::FloatRect & avatarRect) final;

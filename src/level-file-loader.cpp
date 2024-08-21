@@ -12,8 +12,8 @@
 #include "map-textures.hpp"
 #include "monster-bear.hpp"
 #include "monster-big-knight.hpp"
+#include "monster-bone-dragon.hpp"
 #include "monster-dino.hpp"
-#include "monster-dragon.hpp"
 #include "monster-dwarf.hpp"
 #include "monster-ent.hpp"
 #include "monster-fire-imp.hpp"
@@ -420,9 +420,9 @@ namespace platformer
             {
                 context.level.monsters.add(std::make_unique<LittleKnight>(context, rect));
             }
-            else if (name == "dragon")
+            else if (name == "bone-dragon")
             {
-                context.level.monsters.add(std::make_unique<Dragon>(context, rect));
+                context.level.monsters.add(std::make_unique<BoneDragon>(context, rect));
             }
             else if (name == "ghost")
             {
