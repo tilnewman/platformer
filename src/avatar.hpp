@@ -65,6 +65,7 @@ namespace platformer
     {
       public:
         Avatar();
+        ~Avatar();
 
         void setup(const Context & context, const AvatarType & type);
         void update(Context & context, const float frameTimeSec);
@@ -76,7 +77,7 @@ namespace platformer
         void triggerDeath(Context & context);
 
         // TODO remove after testing
-        void changeType();
+        void changeType(Context & context);
         AvatarAnim anim() const { return m_anim; }
         std::size_t animIndex() const { return m_animIndex; }
 

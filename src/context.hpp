@@ -36,7 +36,6 @@ namespace platformer
     class PickupAnimations;
     class AccentAnimations;
     class PlayerInfoDisplay;
-    class AvatarTextureManager;
 
     //
 
@@ -50,7 +49,6 @@ namespace platformer
             StateManager & sma,
             FontManager & fma,
             Avatar & ava,
-            AvatarTextureManager & atm,
             ScreenLayout & scl,
             LevelFileLoader & lfl,
             Level & lvl,
@@ -70,7 +68,6 @@ namespace platformer
             , state(sma)
             , font(fma)
             , avatar(ava)
-            , avatar_texture(atm)
             , layout(scl)
             , level_loader(lfl)
             , level(lvl)
@@ -92,7 +89,6 @@ namespace platformer
         StateManager & state;
         FontManager & font;
         Avatar & avatar;
-        AvatarTextureManager & avatar_texture;
         ScreenLayout & layout;
         LevelFileLoader & level_loader;
         Level & level;

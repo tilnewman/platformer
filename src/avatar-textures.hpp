@@ -3,13 +3,17 @@
 //
 // avatar-textures.hpp
 //
+#include <filesystem>
 #include <string_view>
 #include <vector>
 
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
 namespace platformer
 {
+
+    struct Context;
     struct Settings;
 
     //
@@ -108,7 +112,7 @@ namespace platformer
         // clang-format on
     }
 
-    inline constexpr float timePerFrameSec(const AvatarAnim anim)
+    inline constexpr float avatarTimePerFrameSec(const AvatarAnim anim)
     {
         // clang-format off
         switch (anim)
@@ -141,17 +145,17 @@ namespace platformer
 
     struct AnimTextures
     {
-        float time_per_frame_sec{ 0.0f };
         std::vector<sf::Texture> textures{};
     };
 
     //
 
-    struct AvatarTextures
+    struct AvatarTextureSet
     {
-        sf::Texture icon_texture{};
-        sf::Texture default_texture{};
-        std::vector<AnimTextures> anim_textures{};
+        sf::Texture icon{};
+        sf::Texture defalt{};
+        std::size_t ref_count{ 0 };
+        std::vector<AnimTextures> anims{};
     };
 
     //
@@ -161,26 +165,42 @@ namespace platformer
       public:
         AvatarTextureManager();
 
+        static AvatarTextureManager & instance();
+
         void setup(const Settings & settings);
 
-        inline const AnimTextures & get(const AvatarType & type, const AvatarAnim anim) const
+        void acquire(const Context & context, const AvatarType type);
+        void release(const AvatarType type);
+
+        void
+            set(sf::Sprite & sprite,
+                const AvatarType type,
+                const AvatarAnim anim,
+                const std::size_t frame) const;
+
+        inline std::size_t frameCount(const AvatarType type, const AvatarAnim anim) const
         {
-            return m_textures.at(static_cast<std::size_t>(type))
-                .anim_textures.at(static_cast<std::size_t>(anim));
+            return m_textureSets.at(static_cast<std::size_t>(type))
+                .anims.at(static_cast<std::size_t>(anim))
+                .textures.size();
         }
 
-        inline const sf::Texture & getDefault(const AvatarType & type) const
+        inline const sf::Texture & getDefault(const AvatarType type) const
         {
-            return m_textures.at(static_cast<std::size_t>(type)).default_texture;
+            return m_textureSets.at(static_cast<std::size_t>(type)).defalt;
         }
 
         inline const sf::Texture & getIcon(const AvatarType type) const
         {
-            return m_textures.at(static_cast<std::size_t>(type)).icon_texture;
+            return m_textureSets.at(static_cast<std::size_t>(type)).icon;
         }
 
       private:
-        std::vector<AvatarTextures> m_textures;
+        std::vector<std::filesystem::path>
+            pngFilesInDirectory(const std::filesystem::path & dirPath) const;
+
+      private:
+        std::vector<AvatarTextureSet> m_textureSets;
     };
 
 } // namespace platformer

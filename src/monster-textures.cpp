@@ -39,14 +39,8 @@ namespace platformer
     {
         MonsterTextures & set{ m_textureSets.at(static_cast<std::size_t>(type)) };
 
-        if (set.ref_count >= 1)
+        if (0 == set.ref_count)
         {
-            ++set.ref_count;
-        }
-        else
-        {
-            set.ref_count = 1;
-
             for (std::size_t animIndex{ 0 };
                  animIndex < static_cast<std::size_t>(MonsterAnim::Count);
                  ++animIndex)
@@ -63,6 +57,8 @@ namespace platformer
                 TextureStats::instance().process(texture);
             }
         }
+
+        ++set.ref_count;
     }
 
     void MonsterTextureManager::release(const MonsterType type)

@@ -48,7 +48,7 @@ namespace platformer
     {
         if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::T))
         {
-            context.avatar.changeType();
+            context.avatar.changeType(context);
         }
     }
 

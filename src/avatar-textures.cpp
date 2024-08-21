@@ -10,41 +10,42 @@
 #include "sfml-util.hpp"
 #include "texture-stats.hpp"
 
-#include <filesystem>
+#include <iostream>
 
 namespace platformer
 {
 
     AvatarTextureManager::AvatarTextureManager()
-        : m_textures()
+        : m_textureSets()
+    {}
+
+    AvatarTextureManager & AvatarTextureManager::instance()
     {
-        m_textures.reserve(static_cast<std::size_t>(AvatarType::Witch) + 1);
+        static AvatarTextureManager avatarTextureManager;
+        return avatarTextureManager;
     }
 
     void AvatarTextureManager::setup(const Settings & settings)
     {
-        const std::filesystem::path avatarPath{ settings.media_path / "image/avatar" };
-
-        m_textures.resize(static_cast<std::size_t>(AvatarType::Count));
+        // size all vectors so that no re-allocations ever occur
+        m_textureSets.resize(static_cast<std::size_t>(AvatarType::Count));
 
         for (std::size_t typeIndex(0); typeIndex < static_cast<std::size_t>(AvatarType::Count);
              ++typeIndex)
         {
             const AvatarType type{ static_cast<AvatarType>(typeIndex) };
-            const std::filesystem::path typePath{ avatarPath / toString(type) };
 
-            AvatarTextures & avatarTextures{ m_textures.at(typeIndex) };
-            avatarTextures.anim_textures.resize(static_cast<std::size_t>(AvatarAnim::Count));
+            const std::filesystem::path typePath{ settings.media_path / "image/avatar" /
+                                                  toString(type) };
 
-            const std::filesystem::path defaultFilePath{ typePath / "default.png" };
-            avatarTextures.default_texture.loadFromFile(defaultFilePath.string());
-            avatarTextures.default_texture.setSmooth(false);
-            TextureStats::instance().process(avatarTextures.default_texture);
+            AvatarTextureSet & set{ m_textureSets.at(typeIndex) };
+            set.anims.resize(static_cast<std::size_t>(AvatarAnim::Count));
 
-            const std::filesystem::path iconFilePath{ typePath / "icon.png" };
-            avatarTextures.icon_texture.loadFromFile(iconFilePath.string());
-            avatarTextures.icon_texture.setSmooth(false);
-            TextureStats::instance().process(avatarTextures.icon_texture);
+            set.defalt.loadFromFile((typePath / "default.png").string());
+            TextureStats::instance().process(set.defalt);
+
+            set.icon.loadFromFile((typePath / "icon.png").string());
+            TextureStats::instance().process(set.icon);
 
             for (std::size_t animIndex(0); animIndex < static_cast<std::size_t>(AvatarAnim::Count);
                  ++animIndex)
@@ -52,32 +53,141 @@ namespace platformer
                 const AvatarAnim anim{ static_cast<AvatarAnim>(animIndex) };
                 const std::filesystem::path animPath{ typePath / toString(anim) };
 
-                AnimTextures & textureSet{ avatarTextures.anim_textures.at(animIndex) };
-                textureSet.time_per_frame_sec = timePerFrameSec(anim);
-                textureSet.textures.reserve(32); // no avatar has more than 18 frames
+                AnimTextures & anims{ set.anims.at(animIndex) };
+                const std::vector<std::filesystem::path> files{ pngFilesInDirectory(animPath) };
+                anims.textures.resize(files.size());
+            }
+        }
+    }
 
-                std::size_t fileIndex(0);
-                while (true)
+    void AvatarTextureManager::acquire(const Context & context, const AvatarType type)
+    {
+        AvatarTextureSet & set{ m_textureSets.at(static_cast<std::size_t>(type)) };
+
+        if (0 == set.ref_count)
+        {
+            const std::filesystem::path typePath{ context.settings.media_path / "image/avatar" /
+                                                  toString(type) };
+
+            for (std::size_t animIndex(0); animIndex < static_cast<std::size_t>(AvatarAnim::Count);
+                 ++animIndex)
+            {
+                const AvatarAnim anim{ static_cast<AvatarAnim>(animIndex) };
+                const std::filesystem::path animPath{ typePath / toString(anim) };
+
+                AnimTextures & anims{ set.anims.at(animIndex) };
+
+                const std::vector<std::filesystem::path> files{ pngFilesInDirectory(animPath) };
+
+                if (anims.textures.size() != files.size())
                 {
-                    const std::filesystem::path filePath{ animPath /
-                                                          std::string(toString(anim))
-                                                              .append(std::to_string(fileIndex + 1))
-                                                              .append(".png") };
+                    std::cout << "Error:  Initial parse of " << animPath << " found "
+                              << anims.textures.size() << " PNG files but now there are "
+                              << files.size() << '\n';
 
-                    if (!std::filesystem::exists(filePath))
-                    {
-                        break;
-                    }
+                    continue;
+                }
 
-                    sf::Texture & texture{ textureSet.textures.emplace_back() };
-                    texture.loadFromFile(filePath.string());
-                    texture.setSmooth(false);
+                for (std::size_t frameIndex{ 0 }; frameIndex < files.size(); ++frameIndex)
+                {
+                    const std::filesystem::path path{ files.at(frameIndex) };
+                    sf::Texture & texture{ anims.textures.at(frameIndex) };
+                    texture.loadFromFile(path.string());
                     TextureStats::instance().process(texture);
-
-                    ++fileIndex;
                 }
             }
         }
+
+        ++set.ref_count;
+    }
+
+    void AvatarTextureManager::release(const AvatarType type)
+    {
+        AvatarTextureSet & set{ m_textureSets.at(static_cast<std::size_t>(type)) };
+
+        if (set.ref_count <= 1)
+        {
+            set.ref_count = 0;
+
+            for (AnimTextures & anim : set.anims)
+            {
+                for (sf::Texture & texture : anim.textures)
+                {
+                    texture = sf::Texture();
+                }
+            }
+        }
+        else
+        {
+            --set.ref_count;
+        }
+    }
+
+    void AvatarTextureManager::set(
+        sf::Sprite & sprite,
+        const AvatarType type,
+        const AvatarAnim anim,
+        const std::size_t frame) const
+    {
+        const AvatarTextureSet & set{ m_textureSets.at(static_cast<std::size_t>(type)) };
+        const AnimTextures & anims{ set.anims.at(static_cast<std::size_t>(anim)) };
+
+        if (frame >= anims.textures.size())
+        {
+            std::cout << "Error: AvatarTextureManager::set(" << toString(type) << ", "
+                      << toString(anim) << ", frameIndex=" << frame
+                      << ") but that frameIndex is >= to the max of " << anims.textures.size()
+                      << '\n';
+
+            return;
+        }
+
+        sprite.setTexture(anims.textures.at(frame), true);
+    }
+
+    std::vector<std::filesystem::path>
+        AvatarTextureManager::pngFilesInDirectory(const std::filesystem::path & dirPath) const
+    {
+        std::vector<std::filesystem::path> files;
+        files.reserve(32); // as of 2024-8-24 there were at most 20 in a directory
+
+        if (!std::filesystem::exists(dirPath))
+        {
+            std::cout << "Error:  AvatarTextureManager::countPngFilesInDirectory(" << dirPath
+                      << ") failed because that path does not exist.\n";
+
+            return files;
+        }
+
+        if (!std::filesystem::is_directory(dirPath))
+        {
+            std::cout << "Error:  AvatarTextureManager::countPngFilesInDirectory(" << dirPath
+                      << ") failed because that path is not a directory.\n";
+
+            return files;
+        }
+
+        for (const auto & entry : std::filesystem::directory_iterator{ dirPath })
+        {
+            if (entry.is_regular_file() && (entry.path().extension() == ".png"))
+            {
+                files.push_back(entry.path());
+            }
+        }
+
+        if (files.empty())
+        {
+            std::cout << "Error:  AvatarTextureManager::countPngFilesInDirectory(" << dirPath
+                      << ") failed to find any png files.\n";
+
+            return files;
+        }
+
+        std::sort(std::begin(files), std::end(files), [](const auto & lhs, const auto & rhs) {
+            return (lhs.filename().string() < rhs.filename().string());
+        });
+
+        return files;
     }
 
 } // namespace platformer

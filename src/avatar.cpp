@@ -43,12 +43,17 @@ namespace platformer
         , m_hasHitEnemy(false)
     {}
 
+    Avatar::~Avatar() { AvatarTextureManager::instance().release(m_type); }
+
     void Avatar::setup(const Context & context, const AvatarType & type)
     {
         m_type  = type;
         m_anim  = AvatarAnim::Walk;
         m_state = AvatarState::Still;
-        m_sprite.setTexture(context.avatar_texture.get(m_type, m_anim).textures.at(0), true);
+
+        AvatarTextureManager & textureManager{ AvatarTextureManager::instance() };
+        textureManager.acquire(context, m_type);
+        textureManager.set(m_sprite, m_type, m_anim, 0);
         m_sprite.setScale(context.settings.avatar_scale, context.settings.avatar_scale);
     }
 
@@ -113,7 +118,7 @@ namespace platformer
         return rect;
     }
 
-    void Avatar::changeType()
+    void Avatar::changeType(Context & context)
     {
         std::size_t temp{ static_cast<std::size_t>(m_type) };
 
@@ -123,7 +128,11 @@ namespace platformer
             temp = 0;
         }
 
+        AvatarTextureManager::instance().release(m_type);
+
         m_type = static_cast<AvatarType>(temp);
+
+        AvatarTextureManager::instance().acquire(context, m_type);
     }
 
     const sf::FloatRect Avatar::attackRect() const
@@ -155,24 +164,27 @@ namespace platformer
         return rect;
     }
 
-    void Avatar::animate(Context & context, const float frameTimeSec)
+    void Avatar::animate(Context &, const float frameTimeSec)
     {
-        const AnimTextures & textureSet{ context.avatar_texture.get(m_type, m_anim) };
+        AvatarTextureManager & textureManager{ AvatarTextureManager::instance() };
+        const std::size_t frameCount{ textureManager.frameCount(m_type, m_anim) };
+
+        const float timePerFrameSec{ avatarTimePerFrameSec(m_anim) };
 
         if (AvatarState::Still == m_state)
         {
-            m_sprite.setTexture(textureSet.textures.at(0), true);
+            textureManager.set(m_sprite, m_type, m_anim, 0);
             return;
         }
 
         m_elapsedTimeSec += frameTimeSec;
-        if (m_elapsedTimeSec > textureSet.time_per_frame_sec)
+        if (m_elapsedTimeSec > timePerFrameSec)
         {
-            m_elapsedTimeSec -= textureSet.time_per_frame_sec;
+            m_elapsedTimeSec -= timePerFrameSec;
 
             ++m_animIndex;
             m_isAnimating = true;
-            if (m_animIndex >= textureSet.textures.size())
+            if (m_animIndex >= frameCount)
             {
                 if (doesAnimLoop(m_anim))
                 {
@@ -181,18 +193,11 @@ namespace platformer
                 else
                 {
                     m_isAnimating = false;
-                    m_animIndex   = (textureSet.textures.size() - 1);
+                    m_animIndex   = (frameCount - 1);
                 }
             }
 
-            if (textureSet.textures.empty())
-            {
-                m_sprite.setTexture(context.avatar_texture.getDefault(m_type), true);
-            }
-            else
-            {
-                m_sprite.setTexture(textureSet.textures.at(m_animIndex), true);
-            }
+            textureManager.set(m_sprite, m_type, m_anim, m_animIndex);
         }
     }
 

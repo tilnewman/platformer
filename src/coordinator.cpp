@@ -5,6 +5,7 @@
 //
 #include "coordinator.hpp"
 
+#include "avatar-textures.hpp"
 #include "monster-textures.hpp"
 #include "sfml-util.hpp"
 #include "texture-stats.hpp"
@@ -25,7 +26,6 @@ namespace platformer
         , m_states()
         , m_fonts()
         , m_avatar()
-        , m_avatarTextures()
         , m_layout()
         , m_levelLoader()
         , m_level()
@@ -46,7 +46,6 @@ namespace platformer
               m_states,
               m_fonts,
               m_avatar,
-              m_avatarTextures,
               m_layout,
               m_levelLoader,
               m_level,
@@ -79,6 +78,7 @@ namespace platformer
         m_sfx.loadAll();
         m_sfx.willLoop("walk", true);
 
+        AvatarTextureManager::instance().setup(m_settings);
         MonsterTextureManager::instance().setup(m_settings);
 
         m_layout.setup(m_window.getSize());
