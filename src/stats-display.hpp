@@ -254,7 +254,7 @@ namespace util
     class StatsDisplay : public sf::Drawable
     {
       public:
-        explicit StatsDisplay(
+        StatsDisplay(
             const std::string & title,
             const sf::Font & font,
             const std::vector<data_t> & data,

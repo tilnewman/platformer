@@ -6,7 +6,6 @@
 #include <filesystem>
 #include <string>
 #include <vector>
-#include <string>
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -40,7 +39,7 @@ namespace platformer
 
     struct BackgroundImagesInfo
     {
-        explicit BackgroundImagesInfo(
+        BackgroundImagesInfo(
             const sf::Uint8 fadeAlpha,
             const std::filesystem::path & backgroundPath,
             const std::vector<SlidingImageInfo> & slidingImages,

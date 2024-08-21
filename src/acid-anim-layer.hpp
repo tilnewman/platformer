@@ -30,7 +30,7 @@ namespace platformer
         , public IHarmCollisionOwner
     {
       public:
-        explicit AcidAnimationLayer(Context & context, const std::vector<sf::FloatRect> & rects);
+        AcidAnimationLayer(Context & context, const std::vector<sf::FloatRect> & rects);
         virtual ~AcidAnimationLayer() override;
 
         void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const override;
