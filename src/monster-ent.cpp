@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Ent::Ent(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "ent", 50, 0.8f })
+        : Monster(context, { MonsterType::Ent, region, 0.8f })
     {}
 
     const sf::FloatRect Ent::collisionRect() const

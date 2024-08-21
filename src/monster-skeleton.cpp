@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Skeleton::Skeleton(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "skeleton", 35, 0.75f })
+        : Monster(context, { MonsterType::Skeleton, region, 0.75f })
     {}
 
     const sf::FloatRect Skeleton::collisionRect() const
@@ -37,11 +37,11 @@ namespace platformer
 
             if (m_isFacingRight)
             {
-                rect.left *= 0.975f;
+                rect.left -= (rect.width * 0.2f);
             }
             else
             {
-                rect.left *= 1.025f;
+                rect.left += (rect.width * 0.2f);
             }
 
             return rect;

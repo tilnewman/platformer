@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Medusa::Medusa(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "medusa", 50 , 0.75f})
+        : Monster(context, { MonsterType::Medusa, region, 0.75f, 1.1f})
     {}
 
     const sf::FloatRect Medusa::collisionRect() const

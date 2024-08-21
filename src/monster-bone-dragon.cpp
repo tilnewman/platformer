@@ -21,7 +21,7 @@ namespace platformer
 {
 
     BoneDragon::BoneDragon(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "bone-dragon", 70 , 0.87f})
+        : Monster(context, { MonsterType::BoneDragon, region, 0.87f })
     {}
 
     const sf::FloatRect BoneDragon::collisionRect() const

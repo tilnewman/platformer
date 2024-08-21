@@ -7,12 +7,12 @@
 
 #include "avatar.hpp"
 #include "context.hpp"
+#include "monster-textures.hpp"
 #include "random.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
 #include "sound-player.hpp"
-#include "texture-stats.hpp"
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Monster::Monster(Context & context, const MonsterSetupInfo & setupInfo)
-        : m_imageDirName(setupInfo.image_dir)
+        : m_type(setupInfo.type)
         , m_region(setupInfo.region)
         , m_anim(MonsterAnim::Idle)
         , m_animFrame(0)
@@ -31,13 +31,14 @@ namespace platformer
         , m_stateElapsedTimeSec(0.0f)
         , m_stateTimeUntilChangeSec(0.0f)
         , m_hasSpottedPlayer(false)
-        , m_health(setupInfo.health)
+        , m_health(startingHealth(setupInfo.type))
         , m_isAlive(true)
-        , m_textures()
     {
-        loadTextures(context.settings);
+        MonsterTextureManager::instance().acquire(context, m_type);
         initialSpriteSetup(context, setupInfo.image_height_ratio, setupInfo.image_scale);
     }
+
+    Monster::~Monster() { MonsterTextureManager::instance().release(m_type); }
 
     void Monster::update(Context & context, const float frameTimeSec)
     {
@@ -83,7 +84,14 @@ namespace platformer
             if (MonsterAnim::Death == m_anim)
             {
                 m_isAlive = false;
-                setTexture(m_sprite, MonsterAnim::Death, (frameCount(MonsterAnim::Death) - 1));
+
+                auto & manager{ MonsterTextureManager::instance() };
+
+                manager.setTexture(
+                    m_sprite,
+                    m_type,
+                    MonsterAnim::Death,
+                    (manager.frameCount(m_type, MonsterAnim::Death) - 1));
             }
             else
             {
@@ -105,8 +113,8 @@ namespace platformer
         if (context.layout.wholeRect().intersects(m_sprite.getGlobalBounds()))
         {
             target.draw(m_sprite, states);
-            util::drawRectangleShape(target, collisionRect(), false, sf::Color::Green);
-            util::drawRectangleShape(target, attackCollisionRect(), false, sf::Color::Red);
+            // util::drawRectangleShape(target, collisionRect(), false, sf::Color::Green);
+            // util::drawRectangleShape(target, attackCollisionRect(), false, sf::Color::Red);
         }
     }
 
@@ -154,16 +162,18 @@ namespace platformer
 
         if (m_elapsedTimeSec > timeBetweenFramesSec)
         {
+            auto & manager{ MonsterTextureManager::instance() };
+
             m_elapsedTimeSec -= timeBetweenFramesSec;
 
             ++m_animFrame;
-            if (m_animFrame >= frameCount(m_anim))
+            if (m_animFrame >= manager.frameCount(m_type, m_anim))
             {
                 m_animFrame         = 0;
                 isAnimationFinished = true;
             }
 
-            setTexture(m_sprite, m_anim, m_animFrame);
+            manager.setTexture(m_sprite, m_type, m_anim, m_animFrame);
         }
 
         return isAnimationFinished;
@@ -301,30 +311,10 @@ namespace platformer
         m_animFrame      = 0;
     }
 
-    void Monster::loadTextures(const Settings & settings)
-    {
-        m_textures.reserve(static_cast<std::size_t>(MonsterAnim::Count));
-
-        for (std::size_t animIndex(0); animIndex < static_cast<std::size_t>(MonsterAnim::Count);
-             ++animIndex)
-        {
-            const MonsterAnim anim{ static_cast<MonsterAnim>(animIndex) };
-
-            const std::filesystem::path path{ settings.media_path / "image/monster" /
-                                              m_imageDirName /
-                                              std::string(toString(anim)).append(".png") };
-
-            sf::Texture & texture{ m_textures.emplace_back() };
-            texture.loadFromFile(path.string());
-            texture.setSmooth(true);
-            TextureStats::instance().process(texture);
-        }
-    }
-
     void Monster::initialSpriteSetup(
         Context & context, const float imageHeightOffsetRatio, const float imageScale)
     {
-        setTexture(m_sprite, m_anim, m_animFrame);
+        MonsterTextureManager::instance().setTexture(m_sprite, m_type, m_anim, m_animFrame);
         m_sprite.setScale(context.settings.monster_scale, context.settings.monster_scale);
         m_sprite.scale(imageScale, imageScale);
         util::setOriginToCenter(m_sprite);
@@ -334,42 +324,6 @@ namespace platformer
             (util::bottom(m_region) - m_sprite.getGlobalBounds().height));
 
         m_sprite.move(0.0f, (imageHeightOffsetRatio * m_sprite.getGlobalBounds().height));
-    }
-
-    void Monster::setTexture(
-        sf::Sprite & sprite, const MonsterAnim anim, const std::size_t frame) const
-    {
-        const sf::Texture & texture{ m_textures.at(static_cast<std::size_t>(anim)) };
-        sprite.setTexture(texture);
-        sprite.setTextureRect(textureRect(anim, frame));
-    }
-
-    std::size_t Monster::frameCount(const MonsterAnim anim) const
-    {
-        const sf::Texture & texture{ m_textures.at(static_cast<std::size_t>(anim)) };
-        return static_cast<std::size_t>(texture.getSize().x / texture.getSize().y);
-    }
-
-    const sf::IntRect Monster::textureRect(const MonsterAnim anim, const std::size_t frame) const
-    {
-        const sf::Texture & texture{ m_textures.at(static_cast<std::size_t>(anim)) };
-
-        sf::IntRect rect;
-
-        if (frame >= frameCount(anim))
-        {
-            rect.left = 0;
-        }
-        else
-        {
-            rect.left = static_cast<int>(static_cast<std::size_t>(texture.getSize().y) * frame);
-        }
-
-        rect.top    = 0;
-        rect.width  = static_cast<int>(texture.getSize().y);
-        rect.height = rect.width;
-
-        return rect;
     }
 
     void Monster::turnToFacePlayer(Context & context)

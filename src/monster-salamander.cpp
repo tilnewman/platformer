@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Salamander::Salamander(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "salamander", 34, 0.8f })
+        : Monster(context, { MonsterType::Salamander, region, 0.8f })
     {}
 
     const sf::FloatRect Salamander::collisionRect() const

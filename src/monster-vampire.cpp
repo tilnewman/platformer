@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Vampire::Vampire(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "vampire", 60, 0.7f })
+        : Monster(context, { MonsterType::Vampire, region, 0.7f })
     {}
 
     const sf::FloatRect Vampire::collisionRect() const
@@ -34,14 +34,14 @@ namespace platformer
         {
             sf::FloatRect rect{ m_sprite.getGlobalBounds() };
             util::scaleRectInPlace(rect, { 0.3f, 0.485f });
-            
+
             if (m_isFacingRight)
             {
-                rect.left *= 0.975f;
+                rect.left -= (rect.width * 0.3f);
             }
             else
             {
-                rect.left *= 1.025f;
+                rect.left += (rect.width * 0.3f);
             }
 
             return rect;

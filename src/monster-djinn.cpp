@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Djinn::Djinn(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "djinn", 50 , 0.65f})
+        : Monster(context, { MonsterType::Djinn, region, 0.65f })
     {}
 
     const sf::FloatRect Djinn::collisionRect() const

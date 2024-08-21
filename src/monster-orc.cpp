@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Orc::Orc(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "orc", 70 , 0.75f})
+        : Monster(context, { MonsterType::Orc, region, 0.75f })
     {}
 
     const sf::FloatRect Orc::collisionRect() const

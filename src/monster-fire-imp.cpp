@@ -21,7 +21,7 @@ namespace platformer
 {
 
     FireImp::FireImp(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "fire-imp", 30 , 0.875f})
+        : Monster(context, { MonsterType::FireImp, region, 0.875f })
     {}
 
     const sf::FloatRect FireImp::collisionRect() const

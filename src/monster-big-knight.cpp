@@ -21,7 +21,7 @@ namespace platformer
 {
 
     BigKnight::BigKnight(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "big-knight", 60 , 0.835f})
+        : Monster(context, { MonsterType::BigKnight, region, 0.835f })
     {}
 
     const sf::FloatRect BigKnight::collisionRect() const

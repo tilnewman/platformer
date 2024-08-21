@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Ghost::Ghost(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "ghost", 50 , 0.7f})
+        : Monster(context, { MonsterType::Ghost, region, 0.7f })
     {}
 
     const sf::FloatRect Ghost::collisionRect() const

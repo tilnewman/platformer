@@ -5,6 +5,7 @@
 //
 #include "custom-types.hpp"
 #include "harm.hpp"
+#include "imonster.hpp"
 
 #include <filesystem>
 #include <string>
@@ -12,7 +13,6 @@
 
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/Texture.hpp>
 
 namespace sf
 {
@@ -24,91 +24,26 @@ namespace platformer
 {
 
     struct Context;
-    struct Settings;
-
-    //
-
-    enum class MonsterAnim : std::size_t
-    {
-        Attack = 0,
-        Death,
-        Hurt,
-        Idle,
-        Walk,
-        Count
-    };
-
-    inline constexpr std::string_view toString(const MonsterAnim anim)
-    {
-        // clang-format off
-        switch (anim)
-        {
-            case MonsterAnim::Attack:      { return "attack"; }
-            case MonsterAnim::Death:       { return "death";  }
-            case MonsterAnim::Hurt:        { return "hurt";   }
-            case MonsterAnim::Idle:        { return "idle";   }
-            case MonsterAnim::Walk:        { return "walk";   }
-            case MonsterAnim::Count: // intentional fallthrough
-            default:  { return "error_MonsterAnin_not_found"; }
-        }
-        // clang-format on
-    }
-
-    inline constexpr bool doesAnimLoop(const MonsterAnim anim)
-    {
-        return ((anim == MonsterAnim::Walk) || (anim == MonsterAnim::Idle));
-    }
-
-    //
-
-    struct AttackInfo
-    {
-        AttackInfo(const Health_t attackDamage = 0, const sf::FloatRect & avatarAttackRect = {})
-            : damage(attackDamage)
-            , rect(avatarAttackRect)
-        {}
-
-        Health_t damage;
-        sf::FloatRect rect;
-    };
 
     //
 
     struct MonsterSetupInfo
     {
         MonsterSetupInfo(
+            const MonsterType monsterType,
             const sf::FloatRect & roamRegion,
-            const std::string & imageDir,
-            const Health_t startingHealth,
             const float imageHeightRatio,
             const float imageScale = 1.0f)
-            : region(roamRegion)
-            , image_dir(imageDir)
-            , health(startingHealth)
+            : type(monsterType)
+            , region(roamRegion)
             , image_height_ratio(imageHeightRatio)
             , image_scale(imageScale)
         {}
 
+        MonsterType type;
         sf::FloatRect region;
-        std::string image_dir;
-        Health_t health;
         float image_height_ratio;
         float image_scale;
-    };
-
-    //
-
-    struct IMonster
-    {
-        virtual ~IMonster() = default;
-
-        virtual void update(Context & context, const float frameTimeSec)                     = 0;
-        virtual void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const = 0;
-        virtual void move(const float amount)                                                = 0;
-        virtual const Harm avatarCollide(const sf::FloatRect & avatarRect)                   = 0;
-        virtual const sf::FloatRect collisionRect() const                                    = 0;
-        virtual const sf::FloatRect attackCollisionRect() const                              = 0;
-        virtual bool avatarAttack(Context & context, const AttackInfo & attackInfo)          = 0;
     };
 
     //
@@ -117,7 +52,7 @@ namespace platformer
     {
       public:
         Monster(Context & context, const MonsterSetupInfo & setupInfo);
-        virtual ~Monster() override = default;
+        virtual ~Monster() override;
 
         // IMonster functions
         void update(Context & context, const float frameTimeSec) override;
@@ -139,18 +74,14 @@ namespace platformer
         virtual void playDeathSfx(Context & context) const  = 0;
 
         void resetAnimation();
-        void loadTextures(const Settings & settings);
 
         void initialSpriteSetup(
             Context & context, const float imageHeightOffsetRatio, const float imageScale);
-        
-        void setTexture(sf::Sprite & s, const MonsterAnim a, const std::size_t frame) const;
-        const sf::IntRect textureRect(const MonsterAnim a, const std::size_t frame) const;
-        std::size_t frameCount(const MonsterAnim anim) const;
+
         void turnToFacePlayer(Context & context);
 
       protected:
-        std::string m_imageDirName;
+        MonsterType m_type;
         sf::FloatRect m_region;
         MonsterAnim m_anim;
         std::size_t m_animFrame;
@@ -162,7 +93,6 @@ namespace platformer
         bool m_hasSpottedPlayer;
         Health_t m_health;
         bool m_isAlive;
-        std::vector<sf::Texture> m_textures;
     };
 
 } // namespace platformer

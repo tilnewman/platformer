@@ -21,7 +21,7 @@ namespace platformer
 {
 
     FireKnight::FireKnight(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "fire-knight", 85, 0.8f })
+        : Monster(context, { MonsterType::FireKnight, region, 0.8f })
     {}
 
     const sf::FloatRect FireKnight::collisionRect() const
@@ -37,11 +37,11 @@ namespace platformer
 
             if (m_isFacingRight)
             {
-                rect.left *= 0.96f;
+                rect.left -= (rect.width * 0.4f);
             }
             else
             {
-                rect.left *= 1.04f;
+                rect.left += (rect.width * 0.4f);
             }
 
             return rect;

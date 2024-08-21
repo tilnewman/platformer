@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Skull::Skull(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "skull", 65, 0.85f })
+        : Monster(context, { MonsterType::Skull, region, 0.85f })
     {}
 
     const sf::FloatRect Skull::collisionRect() const

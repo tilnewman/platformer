@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Dino::Dino(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "dino", 30, 0.8f })
+        : Monster(context, { MonsterType::Dino, region, 0.8f })
     {}
 
     const sf::FloatRect Dino::collisionRect() const

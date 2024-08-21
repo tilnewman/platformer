@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Yeti::Yeti(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "yeti", 50 , 0.78f})
+        : Monster(context, { MonsterType::Yeti, region, 0.78f, 1.2f })
     {}
 
     const sf::FloatRect Yeti::collisionRect() const

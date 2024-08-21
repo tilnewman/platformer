@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Bear::Bear(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "bear", 45 , 0.6f})
+        : Monster(context, { MonsterType::Bear, region, 0.6f, 1.2f })
     {}
 
     const sf::FloatRect Bear::collisionRect() const

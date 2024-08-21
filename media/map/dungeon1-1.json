@@ -791,7 +791,7 @@
                 {
                  "height":112,
                  "id":60,
-                 "name":"baby-dragon",
+                 "name":"orc",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -960,7 +960,7 @@
          "y":0
         }],
  "nextlayerid":13,
- "nextobjectid":72,
+ "nextobjectid":98,
  "orientation":"orthogonal",
  "properties":[
         {

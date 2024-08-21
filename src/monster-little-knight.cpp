@@ -21,7 +21,7 @@ namespace platformer
 {
 
     LittleKnight::LittleKnight(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "little-knight", 45 , 0.85f})
+        : Monster(context, { MonsterType::LittleKnight, region, 45, 0.85f })
     {}
 
     const sf::FloatRect LittleKnight::collisionRect() const

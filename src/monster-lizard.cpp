@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Lizard::Lizard(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "lizard", 45 , 0.88f})
+        : Monster(context, { MonsterType::Lizard, region, 0.88f })
     {}
 
     const sf::FloatRect Lizard::collisionRect() const

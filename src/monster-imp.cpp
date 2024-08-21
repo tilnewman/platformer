@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Imp::Imp(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "imp", 20 , 0.875f})
+        : Monster(context, { MonsterType::Imp, region, 0.875f })
     {}
 
     const sf::FloatRect Imp::collisionRect() const

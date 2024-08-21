@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Snake::Snake(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "snake", 30, 0.86f })
+        : Monster(context, { MonsterType::Snake, region, 0.86f, 0.75f })
     {}
 
     const sf::FloatRect Snake::collisionRect() const

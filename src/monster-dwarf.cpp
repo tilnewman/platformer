@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Dwarf::Dwarf(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "dwarf", 35 , 0.8f})
+        : Monster(context, { MonsterType::Dwarf, region, 0.8f })
     {}
 
     const sf::FloatRect Dwarf::collisionRect() const

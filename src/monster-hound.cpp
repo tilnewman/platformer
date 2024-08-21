@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Hound::Hound(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "hound", 45 , 0.755f, 0.75f})
+        : Monster(context, { MonsterType::Hound, region, 0.755f, 0.7f })
     {}
 
     const sf::FloatRect Hound::collisionRect() const

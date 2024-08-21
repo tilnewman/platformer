@@ -21,7 +21,7 @@ namespace platformer
 {
 
     Dragon::Dragon(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "dragon", 70 , 0.75f})
+        : Monster(context, { MonsterType::Dragon, region, 0.75f })
     {}
 
     const sf::FloatRect Dragon::collisionRect() const
@@ -35,7 +35,7 @@ namespace platformer
             sf::FloatRect rect{ m_sprite.getGlobalBounds() };
             util::scaleRectInPlace(rect, { 0.4f, 0.25f });
             rect.top += (rect.height * 0.5f);
-            
+
             if (m_isFacingRight)
             {
                 rect.left += (rect.width * 0.2f);

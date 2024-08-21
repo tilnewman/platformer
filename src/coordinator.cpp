@@ -5,6 +5,7 @@
 //
 #include "coordinator.hpp"
 
+#include "monster-textures.hpp"
 #include "sfml-util.hpp"
 #include "texture-stats.hpp"
 
@@ -77,6 +78,8 @@ namespace platformer
         m_sfx.mediaPath(m_settings.media_path / "sounds");
         m_sfx.loadAll();
         m_sfx.willLoop("walk", true);
+
+        MonsterTextureManager::instance().setup(m_settings);
 
         m_layout.setup(m_window.getSize());
         m_fonts.setup(m_settings);
@@ -186,7 +189,7 @@ namespace platformer
     {
         m_fpsValues.push_back(static_cast<std::size_t>(1.0f / elapsedTimeSec));
 
-        float timeRemainingSec = ((1.0f / m_settings.frame_rate) - elapsedTimeSec);
+        float timeRemainingSec{ (1.0f / m_settings.frame_rate) - elapsedTimeSec };
 
         sf::Clock delayClock;
         while (timeRemainingSec > 0.0f)
@@ -225,8 +228,8 @@ namespace platformer
         m_window.create(videoMode, "Platformer", sf::Style::Fullscreen);
 
         // sometimes the resolution of the window created does not match what was specified
-        const unsigned actualWidth  = m_window.getSize().x;
-        const unsigned actualHeight = m_window.getSize().y;
+        const unsigned actualWidth{ m_window.getSize().x };
+        const unsigned actualHeight{ m_window.getSize().y };
         if ((videoMode.width == actualWidth) && (videoMode.height == actualHeight))
         {
             std::cout << "Success." << std::endl;

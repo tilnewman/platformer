@@ -21,7 +21,7 @@ namespace platformer
 {
 
     BabyDragon::BabyDragon(Context & context, const sf::FloatRect & region)
-        : Monster(context, { region, "baby-dragon", 34, 0.85f })
+        : Monster(context, { MonsterType::BabyDragon, region, 0.85f })
     {}
 
     const sf::FloatRect BabyDragon::collisionRect() const
@@ -34,7 +34,6 @@ namespace platformer
         {
             sf::FloatRect rect{ m_sprite.getGlobalBounds() };
             util::scaleRectInPlace(rect, { 0.4f, 0.25f });
-            //rect.top += (rect.height * 0.4f);
             return rect;
         }
     }
