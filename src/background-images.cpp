@@ -40,7 +40,6 @@ namespace platformer
         if (!infoPack.background_path.empty())
         {
             m_backgroundTexture.loadFromFile(infoPack.background_path.string());
-            m_backgroundTexture.setSmooth(false);
             TextureStats::instance().process(m_backgroundTexture);
             m_backgroundSprite.setTexture(m_backgroundTexture);
             util::scaleAndCenterInside(m_backgroundSprite, context.layout.wholeRect());
@@ -50,7 +49,6 @@ namespace platformer
         if (!infoPack.overlay_path.empty())
         {
             m_overlayTexture.loadFromFile(infoPack.overlay_path.string());
-            m_overlayTexture.setSmooth(false);
             TextureStats::instance().process(m_overlayTexture);
             m_overlaySprite.setTexture(m_overlayTexture);
             util::scaleAndCenterInside(m_overlaySprite, context.layout.wholeRect());
@@ -69,7 +67,6 @@ namespace platformer
             SlidingImage & slidingImage{ m_slidingImages.emplace_back() };
             slidingImage.info = info;
             slidingImage.texture.loadFromFile(info.path.string());
-            slidingImage.texture.setSmooth(false);
             TextureStats::instance().process(slidingImage.texture);
             slidingImage.sprite_left.setTexture(slidingImage.texture);
             slidingImage.sprite_right.setTexture(slidingImage.texture);
