@@ -26,7 +26,6 @@ namespace platformer
     class LevelInfo;
     class PlayerInfo;
     class ItemImages;
-    class MapTextures;
     class FontManager;
     class ScreenLayout;
     class StateManager;
@@ -52,7 +51,6 @@ namespace platformer
             ScreenLayout & scl,
             LevelFileLoader & lfl,
             Level & lvl,
-            MapTextures & mtx,
             BackgroundImages & bim,
             PickupAnimations & pan,
             AccentAnimations & aan,
@@ -71,7 +69,6 @@ namespace platformer
             , layout(scl)
             , level_loader(lfl)
             , level(lvl)
-            , map_texture(mtx)
             , bg_image(bim)
             , pickup(pan)
             , accent(aan)
@@ -92,7 +89,6 @@ namespace platformer
         ScreenLayout & layout;
         LevelFileLoader & level_loader;
         Level & level;
-        MapTextures & map_texture;
         BackgroundImages & bg_image;
         PickupAnimations & pickup;
         AccentAnimations & accent;

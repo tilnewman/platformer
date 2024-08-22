@@ -48,8 +48,8 @@ namespace platformer
     class TileLayer : public ITileLayer
     {
       public:
-        TileLayer(const TileImage image, const std::vector<int> & indexes);
-        virtual ~TileLayer() override = default;
+        TileLayer(const Context & context, const TileImage image, const std::vector<int> & indexes);
+        virtual ~TileLayer() override;
 
         void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const override;
         void move(const Context & context, const float move) override;

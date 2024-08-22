@@ -12,7 +12,6 @@
 #include "level-file-loader.hpp"
 #include "level-info.hpp"
 #include "level.hpp"
-#include "map-textures.hpp"
 #include "pickups.hpp"
 #include "player-info-display.hpp"
 #include "player-info.hpp"
@@ -67,7 +66,6 @@ namespace platformer
         ScreenLayout m_layout;
         LevelFileLoader m_levelLoader;
         Level m_level;
-        MapTextures m_mapTextures;
         BackgroundImages m_backgroundImages;
         PickupAnimations m_pickups;
         AccentAnimations m_accents;

@@ -6,6 +6,7 @@
 #include "coordinator.hpp"
 
 #include "avatar-textures.hpp"
+#include "map-textures.hpp"
 #include "monster-textures.hpp"
 #include "sfml-util.hpp"
 #include "texture-stats.hpp"
@@ -29,7 +30,6 @@ namespace platformer
         , m_layout()
         , m_levelLoader()
         , m_level()
-        , m_mapTextures()
         , m_backgroundImages()
         , m_pickups()
         , m_accents()
@@ -49,7 +49,6 @@ namespace platformer
               m_layout,
               m_levelLoader,
               m_level,
-              m_mapTextures,
               m_backgroundImages,
               m_pickups,
               m_accents,
@@ -80,12 +79,12 @@ namespace platformer
 
         AvatarTextureManager::instance().setup(m_settings);
         MonsterTextureManager::instance().setup(m_settings);
+        MapTextureManager::instance().setup(m_settings);
 
         m_layout.setup(m_window.getSize());
         m_fonts.setup(m_settings);
         m_itemImages.setup(m_settings);
         m_avatarTextures.setup(m_settings);
-        m_mapTextures.setup(m_settings);
         m_pickups.setup(m_settings);
         m_accents.setup(m_settings);
         m_spells.setup(m_settings);

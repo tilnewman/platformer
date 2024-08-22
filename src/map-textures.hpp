@@ -5,55 +5,53 @@
 //
 #include "tile-image.hpp"
 
-#include <string>
+#include <vector>
 
 #include <SFML/Graphics/Font.hpp>
-#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
 namespace platformer
 {
-
+    struct Context;
     struct Settings;
 
     //
 
     struct TileTexture
     {
-        TileTexture()
-            : gid(0)
-            , which(TileImage::ForestGround) // any default works here
-            , size()
-            , texture()
-        {}
-
-        int gid;
-        TileImage which;
-        sf::Vector2i size;
-        sf::Texture texture;
+        std::size_t ref_count{ 0 };
+        int gid{ 0 };
+        sf::Vector2i size{};
+        sf::Texture texture{};
     };
 
     //
 
-    class MapTextures
+    class MapTextureManager
     {
       public:
-        MapTextures();
+        MapTextureManager();
+
+        static MapTextureManager & instance();
+
+        void acquire(const Context & context, const TileImage image);
+        void release(const TileImage image);
 
         void setup(const Settings & settings);
-        TileTexture & get(const TileImage image);
+
+        inline const TileTexture & get(const TileImage image) const
+        {
+            return m_tileTextures.at(static_cast<std::size_t>(image));
+        }
+
+        inline void setGid(const TileImage image, const int gid)
+        {
+            m_tileTextures.at(static_cast<std::size_t>(image)).gid = gid;
+        }
 
       private:
-        TileTexture m_castleGround;
-        TileTexture m_castleObject;
-        TileTexture m_dungeon1Ground;
-        TileTexture m_dungeon2Ground;
-        TileTexture m_dungeon2Object;
-        TileTexture m_forestGround;
-        TileTexture m_forestTrees;
-        TileTexture m_mountainsGround;
-        TileTexture m_mountainsObject;
+        std::vector<TileTexture> m_tileTextures;
     };
 
 } // namespace platformer

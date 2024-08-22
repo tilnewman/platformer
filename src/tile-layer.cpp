@@ -19,20 +19,24 @@
 namespace platformer
 {
 
-    TileLayer::TileLayer(const TileImage image, const std::vector<int> & indexes)
+    TileLayer::TileLayer(
+        const Context & context, const TileImage image, const std::vector<int> & indexes)
         : m_image(image)
         , m_indexes(indexes)
         , m_verts()
         , m_visibleVerts()
     {
+        MapTextureManager::instance().acquire(context, m_image);
         m_verts.reserve(indexes.size() * util::verts_per_quad);
         m_visibleVerts.reserve(indexes.size() * util::verts_per_quad);
     }
 
+    TileLayer::~TileLayer() { MapTextureManager::instance().release(m_image); }
+
     void TileLayer::draw(
-        const Context & context, sf::RenderTarget & target, sf::RenderStates states) const
+        const Context &, sf::RenderTarget & target, sf::RenderStates states) const
     {
-        states.texture = &context.map_texture.get(m_image).texture;
+        states.texture = &MapTextureManager::instance().get(m_image).texture;
         target.draw(&m_visibleVerts[0], m_visibleVerts.size(), sf::Quads, states);
     }
 
@@ -99,9 +103,9 @@ namespace platformer
         const sf::Vector2i & size,
         const sf::Vector2f & sizeOnScreen)
     {
-        const TileTexture & texture = context.map_texture.get(m_image);
+        const TileTexture & tileTexture = MapTextureManager::instance().get(m_image);
 
-        const sf::Vector2i textureTileCount{ texture.size / size };
+        const sf::Vector2i textureTileCount{ tileTexture.size / size };
 
         const std::size_t totalCount =
             (static_cast<std::size_t>(count.x) * static_cast<std::size_t>(count.y));
@@ -127,7 +131,7 @@ namespace platformer
                     continue; // zero means no image at this location
                 }
 
-                const int index(textureIndexOrig - texture.gid);
+                const int index(textureIndexOrig - tileTexture.gid);
 
                 const int texturePosX((index % textureTileCount.x) * size.x);
                 const int texturePosY((index / textureTileCount.x) * size.y);

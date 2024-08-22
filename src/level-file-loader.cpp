@@ -75,7 +75,7 @@ namespace platformer
 
         parseLevelDetails(context, json);
         parseBackgroundImageName(context, json);
-        parseObjectTextureGIDs(context, json);
+        parseObjectTextureGIDs(json);
 
         // everything else in the level file is saved in "layers"
         // which are parsed in order from back to front here, one at a time
@@ -109,7 +109,7 @@ namespace platformer
         context.level.map_position_offset = { 0.0f, heightOffset };
     }
 
-    void LevelFileLoader::parseObjectTextureGIDs(Context & context, Json & wholeJson)
+    void LevelFileLoader::parseObjectTextureGIDs(Json & wholeJson)
     {
         for (Json & json : wholeJson["tilesets"])
         {
@@ -119,41 +119,41 @@ namespace platformer
 
             const int gid{ json["firstgid"] };
 
-            if (filename == toFilename(TileImage::CastleGround))
+            if (filename == toMapFilename(TileImage::CastleGround))
             {
-                context.map_texture.get(TileImage::CastleGround).gid = gid;
+                MapTextureManager::instance().setGid(TileImage::CastleGround, gid);
             }
-            else if (filename == toFilename(TileImage::CastleObject))
+            else if (filename == toMapFilename(TileImage::CastleObject))
             {
-                context.map_texture.get(TileImage::CastleObject).gid = gid;
+                MapTextureManager::instance().setGid(TileImage::CastleObject, gid);
             }
-            else if (filename == toFilename(TileImage::Dungeon1Ground))
+            else if (filename == toMapFilename(TileImage::Dungeon1Ground))
             {
-                context.map_texture.get(TileImage::Dungeon1Ground).gid = gid;
+                MapTextureManager::instance().setGid(TileImage::Dungeon1Ground, gid);
             }
-            else if (filename == toFilename(TileImage::Dungeon2Ground))
+            else if (filename == toMapFilename(TileImage::Dungeon2Ground))
             {
-                context.map_texture.get(TileImage::Dungeon2Ground).gid = gid;
+                MapTextureManager::instance().setGid(TileImage::Dungeon2Ground, gid);
             }
-            else if (filename == toFilename(TileImage::Dungeon2Object))
+            else if (filename == toMapFilename(TileImage::Dungeon2Object))
             {
-                context.map_texture.get(TileImage::Dungeon2Object).gid = gid;
+                MapTextureManager::instance().setGid(TileImage::Dungeon2Object, gid);
             }
-            else if (filename == toFilename(TileImage::ForestGround))
+            else if (filename == toMapFilename(TileImage::ForestGround))
             {
-                context.map_texture.get(TileImage::ForestGround).gid = gid;
+                MapTextureManager::instance().setGid(TileImage::ForestGround, gid);
             }
-            else if (filename == toFilename(TileImage::ForestTrees))
+            else if (filename == toMapFilename(TileImage::ForestTrees))
             {
-                context.map_texture.get(TileImage::ForestTrees).gid = gid;
+                MapTextureManager::instance().setGid(TileImage::ForestTrees, gid);
             }
-            else if (filename == toFilename(TileImage::MountainsGround))
+            else if (filename == toMapFilename(TileImage::MountainsGround))
             {
-                context.map_texture.get(TileImage::MountainsGround).gid = gid;
+                MapTextureManager::instance().setGid(TileImage::MountainsGround, gid);
             }
-            else if (filename == toFilename(TileImage::MountainsObject))
+            else if (filename == toMapFilename(TileImage::MountainsObject))
             {
-                context.map_texture.get(TileImage::MountainsObject).gid = gid;
+                MapTextureManager::instance().setGid(TileImage::MountainsObject, gid);
             }
             else
             {
@@ -279,7 +279,7 @@ namespace platformer
             "Error Parsing Level File " << m_pathStr << ":  tile layer for image " << image
                                         << " was empty.");
 
-        context.level.tile_layers.push_back(std::make_unique<TileLayer>(image, indexes));
+        context.level.tile_layers.push_back(std::make_unique<TileLayer>(context, image, indexes));
     }
 
     void LevelFileLoader::parseRectLayer(
