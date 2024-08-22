@@ -113,8 +113,8 @@ namespace platformer
         if (context.layout.wholeRect().intersects(m_sprite.getGlobalBounds()))
         {
             target.draw(m_sprite, states);
-            util::drawRectangleShape(target, collisionRect(), false, sf::Color::Green);
-            util::drawRectangleShape(target, attackCollisionRect(), false, sf::Color::Red);
+            // util::drawRectangleShape(target, collisionRect(), false, sf::Color::Green);
+            // util::drawRectangleShape(target, attackCollisionRect(), false, sf::Color::Red);
         }
     }
 
