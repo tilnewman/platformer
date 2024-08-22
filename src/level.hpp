@@ -24,7 +24,7 @@ namespace platformer
 
         bool load(Context & context);
         void reset();
-        void move(const Context & context, const float move);
+        bool move(const Context & context, const float move);
         void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const;
         void update(Context & context, const float frameTimeSec);
 
@@ -39,10 +39,13 @@ namespace platformer
         sf::Vector2i tile_size;
         std::vector<std::unique_ptr<ITileLayer>> tile_layers;
         MonsterManager monsters;
+        float farthest_horiz_traveled;
+        float farthest_horiz_map_pixel;
 
       private:
         void appendVertLayers(const Context & context);
         void dumpInfo() const;
+        float findFarthestHorizMapPixel() const;
     };
 
 } // namespace platformer

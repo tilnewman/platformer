@@ -31,6 +31,8 @@ namespace platformer
         , tile_size()
         , tile_layers()
         , monsters()
+        , farthest_horiz_traveled(0.0f)
+        , farthest_horiz_map_pixel(0.0f)
     {
         tile_layers.reserve(32);
         collisions.reserve(1024);
@@ -41,6 +43,8 @@ namespace platformer
         tile_layers.clear();
         collisions.clear();
         monsters.clear();
+        farthest_horiz_traveled  = 0.0f;
+        farthest_horiz_map_pixel = 0.0f;
     }
 
     bool Level::load(Context & context)
@@ -51,6 +55,7 @@ namespace platformer
         {
             appendVertLayers(context);
             context.avatar.setPosition(enter_rect);
+            farthest_horiz_map_pixel = findFarthestHorizMapPixel();
             // dumpInfo();
             return true;
         }
@@ -61,8 +66,14 @@ namespace platformer
         }
     }
 
-    void Level::move(const Context & context, const float amount)
+    bool Level::move(const Context & context, const float amount)
     {
+        farthest_horiz_traveled += util::abs(amount);
+        if (farthest_horiz_traveled > (farthest_horiz_map_pixel - context.layout.wholeSize().x))
+        {
+            return false;
+        }
+
         enter_rect.left += amount;
         exit_rect.left += amount;
 
@@ -77,6 +88,23 @@ namespace platformer
         }
 
         monsters.move(amount);
+        return true;
+    }
+
+    float Level::findFarthestHorizMapPixel() const
+    {
+        float farthestHorizPos{ 0.0f };
+
+        for (const auto & layerUPtr : tile_layers)
+        {
+            const float nextFarthest{ layerUPtr->findFarthestHorizVert() };
+            if (nextFarthest > farthestHorizPos)
+            {
+                farthestHorizPos = nextFarthest;
+            }
+        }
+
+        return farthestHorizPos;
     }
 
     void Level::appendVertLayers(const Context & context)
