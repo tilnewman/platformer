@@ -30,7 +30,7 @@ namespace platformer
         const sf::FloatRect attackCollisionRect() const final;
 
       protected:
-        inline float walkSpeed() const final { return 55.0f; }
+        inline float walkSpeed() const final { return 75.0f; }
         void playAttackSfx(Context & context) const final;
         void playHurtSfx(Context & context) const final;
         void playDeathSfx(Context & context) const final;
