@@ -76,7 +76,7 @@ namespace platformer
         return static_cast<std::size_t>(m_texture.getSize().x / m_texture.getSize().y);
     }
 
-    const sf::IntRect AcidAnimationLayer::textureRect(const std::size_t frame) const
+    sf::IntRect AcidAnimationLayer::textureRect(const std::size_t frame) const
     {
         sf::IntRect rect;
         rect.width  = static_cast<int>(m_texture.getSize().y);
@@ -107,7 +107,7 @@ namespace platformer
         }
     }
 
-    const Harm AcidAnimationLayer::avatarCollide(Context &, const sf::FloatRect & avatarRect)
+    Harm AcidAnimationLayer::avatarCollide(Context &, const sf::FloatRect & avatarRect)
     {
         Harm harm;
 

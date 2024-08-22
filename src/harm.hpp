@@ -18,7 +18,7 @@ namespace platformer
             , rect(r)
         {}
 
-        inline bool isAnyHarmDone() const { return (damage > 0); }
+        inline bool isAnyHarmDone() const { return ((damage > 0) || !sfx.empty()); }
 
         int damage;
         std::string sfx;

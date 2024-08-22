@@ -25,6 +25,16 @@ namespace platformer
 
     //
 
+    struct WaterAnim
+    {
+        sf::Sprite sprite{};
+        float elapsed_time_sec{ 0.0f };
+        float time_per_frame_sec{ 0.0f };
+        std::size_t frame_index{ 0 };
+    };
+
+    //
+
     class WaterAnimationLayer
         : public ITileLayer
         , public IHarmCollisionOwner
@@ -48,18 +58,15 @@ namespace platformer
             const sf::Vector2f &) override
         {}
 
-        const Harm avatarCollide(Context & context, const sf::FloatRect & avatarRect) override;
+        Harm avatarCollide(Context & context, const sf::FloatRect & avatarRect) override;
 
       private:
         std::size_t frameCount() const;
-        const sf::IntRect textureRect(const std::size_t frame) const;
+        sf::IntRect textureRect(const std::size_t frame) const;
 
       private:
         sf::Texture m_texture;
-        std::vector<sf::Sprite> m_sprites;
-        float m_elapsedTimeSec;
-        float m_timePerFrameSec;
-        std::size_t m_frameIndex;
+        std::vector<WaterAnim> m_anims;
     };
 
 } // namespace platformer

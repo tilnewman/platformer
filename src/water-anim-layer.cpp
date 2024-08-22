@@ -8,6 +8,7 @@
 #include "avatar.hpp"
 #include "context.hpp"
 #include "level.hpp"
+#include "random.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
@@ -23,10 +24,7 @@ namespace platformer
     WaterAnimationLayer::WaterAnimationLayer(
         Context & context, const std::vector<sf::FloatRect> & rects)
         : m_texture()
-        , m_sprites()
-        , m_elapsedTimeSec(0.0f)
-        , m_timePerFrameSec(0.3f)
-        , m_frameIndex(0)
+        , m_anims()
     {
         HarmCollisionManager::instance().addOwner(*this);
 
@@ -35,14 +33,15 @@ namespace platformer
 
         TextureStats::instance().process(m_texture);
 
-        m_sprites.reserve(rects.size());
+        m_anims.reserve(rects.size());
 
         for (const sf::FloatRect & rect : rects)
         {
-            sf::Sprite & sprite{ m_sprites.emplace_back() };
-            sprite.setTexture(m_texture);
-            sprite.setTextureRect(textureRect(0));
-            util::fitAndCenterInside(sprite, rect);
+            WaterAnim & anim{ m_anims.emplace_back() };
+            anim.time_per_frame_sec = context.random.fromTo(0.3f, 2.0f);
+            anim.sprite.setTexture(m_texture);
+            anim.sprite.setTextureRect(textureRect(0));
+            util::fitAndCenterInside(anim.sprite, rect);
         }
     }
 
@@ -54,20 +53,20 @@ namespace platformer
     void WaterAnimationLayer::draw(
         const Context & context, sf::RenderTarget & target, sf::RenderStates states) const
     {
-        for (const sf::Sprite & sprite : m_sprites)
+        for (const WaterAnim & anim : m_anims)
         {
-            if (context.layout.wholeRect().intersects(sprite.getGlobalBounds()))
+            if (context.layout.wholeRect().intersects(anim.sprite.getGlobalBounds()))
             {
-                target.draw(sprite, states);
+                target.draw(anim.sprite, states);
             }
         }
     }
 
     void WaterAnimationLayer::move(const Context &, const float amount)
     {
-        for (sf::Sprite & sprite : m_sprites)
+        for (WaterAnim & anim : m_anims)
         {
-            sprite.move(amount, 0.0f);
+            anim.sprite.move(amount, 0.0f);
         }
     }
 
@@ -76,44 +75,43 @@ namespace platformer
         return static_cast<std::size_t>(m_texture.getSize().x / m_texture.getSize().y);
     }
 
-    const sf::IntRect WaterAnimationLayer::textureRect(const std::size_t frame) const
+    sf::IntRect WaterAnimationLayer::textureRect(const std::size_t frame) const
     {
         sf::IntRect rect;
         rect.width  = static_cast<int>(m_texture.getSize().y);
         rect.height = rect.width;
         rect.top    = 0;
         rect.left   = (static_cast<int>(frame) * rect.width);
-
         return rect;
     }
 
     void WaterAnimationLayer::update(Context &, const float frameTimeSec)
     {
-        m_elapsedTimeSec += frameTimeSec;
-        if (m_elapsedTimeSec > m_timePerFrameSec)
+        for (WaterAnim & anim : m_anims)
         {
-            m_elapsedTimeSec -= m_timePerFrameSec;
-
-            ++m_frameIndex;
-            if (m_frameIndex >= frameCount())
+            anim.elapsed_time_sec += frameTimeSec;
+            if (anim.elapsed_time_sec > anim.time_per_frame_sec)
             {
-                m_frameIndex = 0;
-            }
+                anim.elapsed_time_sec -= anim.time_per_frame_sec;
 
-            for (sf::Sprite & sprite : m_sprites)
-            {
-                sprite.setTextureRect(textureRect(m_frameIndex));
+                ++anim.frame_index;
+                if (anim.frame_index >= frameCount())
+                {
+                    anim.frame_index = 0;
+                }
+
+                anim.sprite.setTextureRect(textureRect(anim.frame_index));
             }
         }
     }
 
-    const Harm WaterAnimationLayer::avatarCollide(Context &, const sf::FloatRect & avatarRect)
+    Harm WaterAnimationLayer::avatarCollide(Context &, const sf::FloatRect & avatarRect)
     {
         Harm harm;
 
-        for (const sf::Sprite & sprite : m_sprites)
+        for (const WaterAnim & anim : m_anims)
         {
-            const sf::FloatRect waterRect{ sprite.getGlobalBounds() };
+            const sf::FloatRect waterRect{ anim.sprite.getGlobalBounds() };
             if (avatarRect.intersects(waterRect))
             {
                 harm.rect   = waterRect;

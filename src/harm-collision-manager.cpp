@@ -37,8 +37,7 @@ namespace platformer
             std::end(m_owners));
     }
 
-    const Harm
-        HarmCollisionManager::avatarCollide(Context & context, const sf::FloatRect & avatarRect)
+    Harm HarmCollisionManager::avatarCollide(Context & context, const sf::FloatRect & avatarRect)
     {
         for (auto & ownerRefWrapper : m_owners)
         {

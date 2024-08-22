@@ -61,10 +61,10 @@ namespace platformer
             const sf::Vector2f &) override
         {}
 
-        const Harm avatarCollide(Context & context, const sf::FloatRect & avatarRect) override;
+        Harm avatarCollide(Context & context, const sf::FloatRect & avatarRect) override;
 
       private:
-        const sf::IntRect textureRect(const std::size_t frame) const;
+        sf::IntRect textureRect(const std::size_t frame) const;
 
       private:
         sf::Texture m_texture;

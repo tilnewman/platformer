@@ -78,7 +78,7 @@ namespace platformer
         }
     }
 
-    const sf::IntRect LightningAnimationLayer::textureRect(const std::size_t frame) const
+    sf::IntRect LightningAnimationLayer::textureRect(const std::size_t frame) const
     {
         sf::IntRect rect;
         rect.width  = 64;
@@ -123,7 +123,7 @@ namespace platformer
         }
     }
 
-    const Harm LightningAnimationLayer::avatarCollide(Context &, const sf::FloatRect & avatarRect)
+    Harm LightningAnimationLayer::avatarCollide(Context &, const sf::FloatRect & avatarRect)
     {
         Harm harm;
 
