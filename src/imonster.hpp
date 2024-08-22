@@ -55,6 +55,7 @@ namespace platformer
         Yeti,
         BossTribal,
         BossKnight,
+        BossWizard,
         Count
     };
 
@@ -92,6 +93,7 @@ namespace platformer
             case MonsterType::Yeti:          { return "yeti";           }
             case MonsterType::BossTribal:    { return "boss-tribal";    }
             case MonsterType::BossKnight:    { return "boss-knight";    }
+            case MonsterType::BossWizard:    { return "boss-wizard";    }
             case MonsterType::Count:            //intentional fallthrough      
             default:              { return "Error_unknown_MonsterType"; }
         }
@@ -132,6 +134,7 @@ namespace platformer
             case MonsterType::Yeti:          { return 50;  }
             case MonsterType::BossTribal:    { return 200; }
             case MonsterType::BossKnight:    { return 200; }
+            case MonsterType::BossWizard:    { return 200; }
             case MonsterType::Count://intentional fallthrough      
             default:                         { return 0;   }
         }
