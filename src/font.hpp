@@ -64,8 +64,8 @@ namespace platformer
 
     struct FontExtent
     {
-        unsigned int char_size = 0;
-        sf::Vector2f letter_size;
+        unsigned int char_size{ 0 };
+        sf::Vector2f letter_size{};
     };
 
     class FontManager

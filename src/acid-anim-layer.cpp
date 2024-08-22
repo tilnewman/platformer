@@ -82,7 +82,7 @@ namespace platformer
         rect.width  = static_cast<int>(m_texture.getSize().y);
         rect.height = rect.width;
         rect.top    = 0;
-        rect.left   = (static_cast<int>(frame) * static_cast<int>(rect.width));
+        rect.left   = (static_cast<int>(frame) * rect.width);
 
         return rect;
     }

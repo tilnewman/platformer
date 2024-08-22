@@ -30,6 +30,7 @@ namespace platformer
         , tile_count()
         , tile_size()
         , tile_layers()
+        , monsters()
     {
         tile_layers.reserve(32);
         collisions.reserve(1024);

@@ -62,7 +62,6 @@ namespace platformer
         StateManager m_states;
         FontManager m_fonts;
         Avatar m_avatar;
-        AvatarTextureManager m_avatarTextures;
         ScreenLayout m_layout;
         LevelFileLoader m_levelLoader;
         Level m_level;

@@ -155,7 +155,8 @@ namespace platformer
             case Item::Ring1:           { return "Ring1";           }
             case Item::Ring2:           { return "Ring2";           }
             case Item::Seed:            { return "Seed";            }
-            case Item::Count:           { return "Error_toString()_unknown_Item"; }
+            case Item::Count:           //intentional fallthrough
+            default:      { return "Error_toString()_unknown_Item"; }
         }
         // clang-format on
     }

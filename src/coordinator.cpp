@@ -84,7 +84,6 @@ namespace platformer
         m_layout.setup(m_window.getSize());
         m_fonts.setup(m_settings);
         m_itemImages.setup(m_settings);
-        m_avatarTextures.setup(m_settings);
         m_pickups.setup(m_settings);
         m_accents.setup(m_settings);
         m_spells.setup(m_settings);
