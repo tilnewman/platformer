@@ -720,6 +720,16 @@ namespace platformer
             return;
         }
 
+        if (!harm.sfx.empty())
+        {
+            context.sfx.play(harm.sfx);
+        }
+
+        if (harm.damage <= 0)
+        {
+            return;
+        }
+
         m_state = AvatarState::Hurt;
         m_anim  = AvatarAnim::Hurt;
         restartAnim();
@@ -735,11 +745,6 @@ namespace platformer
         else
         {
             m_velocity.x = -recoilSpeed;
-        }
-
-        if (!harm.sfx.empty())
-        {
-            context.sfx.play(harm.sfx);
         }
 
         // TODO subtract harm.damage from player health and check for death
