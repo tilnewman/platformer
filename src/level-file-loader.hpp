@@ -38,6 +38,7 @@ namespace platformer
         void parsePickupAnimLayer(Context & context, Json & json);
         void parseAccentAnimLayer(Context & context, Json & json);
         void parseAcidAnimLayer(Context & context, Json & json);
+        void parseWaterAnimLayer(Context & context, Json & json);
         void parseLightningAnimLayer(Context & context, Json & json);
         void parseMonsterLayer(Context & context, Json & json);
 

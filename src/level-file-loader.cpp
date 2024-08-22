@@ -44,6 +44,7 @@
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
+#include "water-anim-layer.hpp"
 
 #include <exception>
 #include <filesystem>
@@ -60,7 +61,7 @@ namespace platformer
     bool LevelFileLoader::load(Context & context)
     {
         // TODO fix to be more general
-        const std::filesystem::path path = (context.settings.media_path / "map/dungeon1-1.json");
+        const std::filesystem::path path = (context.settings.media_path / "map/mountains-1.json");
         if (!std::filesystem::exists(path))
         {
             return false;
@@ -257,6 +258,10 @@ namespace platformer
             {
                 parseAcidAnimLayer(context, jsonLayer);
             }
+            else if (layerName == "water-anim")
+            {
+                parseWaterAnimLayer(context, jsonLayer);
+            }
             else if (layerName == "lightning-anim")
             {
                 parseLightningAnimLayer(context, jsonLayer);
@@ -376,12 +381,25 @@ namespace platformer
         std::vector<sf::FloatRect> rects;
         rects.reserve(256);
 
-        for (Json & accentJson : json["objects"])
+        for (Json & acidJson : json["objects"])
         {
-            rects.push_back(parseAndConvertRect(context, accentJson));
+            rects.push_back(parseAndConvertRect(context, acidJson));
         }
 
         context.level.tile_layers.push_back(std::make_unique<AcidAnimationLayer>(context, rects));
+    }
+
+    void LevelFileLoader::parseWaterAnimLayer(Context & context, Json & json)
+    {
+        std::vector<sf::FloatRect> rects;
+        rects.reserve(256);
+
+        for (Json & waterJson : json["objects"])
+        {
+            rects.push_back(parseAndConvertRect(context, waterJson));
+        }
+
+        context.level.tile_layers.push_back(std::make_unique<WaterAnimationLayer>(context, rects));
     }
 
     void LevelFileLoader::parseLightningAnimLayer(Context & context, Json & json)
