@@ -19,7 +19,7 @@ namespace platformer
 
     enum class Font
     {
-        Default
+        Default // mops-antiqua
     };
 
     //
@@ -44,14 +44,14 @@ namespace platformer
         {}
 
         TextDetails(
-            const Font f,
-            const FontSize s,
-            const sf::Color & c      = sf::Color::White,
-            const sf::Text::Style st = sf::Text::Regular)
-            : font(f)
-            , size(s)
-            , color(c)
-            , style(st)
+            const Font fnt,
+            const FontSize sze,
+            const sf::Color & col     = sf::Color::White,
+            const sf::Text::Style sty = sf::Text::Regular)
+            : font(fnt)
+            , size(sze)
+            , color(col)
+            , style(sty)
         {}
 
         Font font;
@@ -68,6 +68,8 @@ namespace platformer
         sf::Vector2f letter_size{};
     };
 
+    //
+
     class FontManager
     {
       public:
@@ -77,23 +79,22 @@ namespace platformer
 
         const sf::Font & get(const Font font = Font::Default) const;
 
-        const sf::Text makeText(
+        sf::Text makeText(
             const Font font,
             const FontSize size,
             const std::string & text,
             const sf::Color & color     = sf::Color::White,
             const sf::Text::Style style = sf::Text::Regular) const;
 
-        const sf::Text makeText(const std::string & text, const TextDetails & details) const;
+        sf::Text makeText(const std::string & text, const TextDetails & details) const;
 
-        const FontExtent extent(const FontSize size) const;
+        FontExtent extent(const FontSize size) const;
 
       private:
         void setupFontExtents(const Settings & settings);
 
       private:
         sf::Font m_defaultFont;
-
         FontExtent m_fontExtentHuge;
         FontExtent m_fontExtentLarge;
         FontExtent m_fontExtentMedium;

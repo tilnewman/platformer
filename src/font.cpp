@@ -8,7 +8,7 @@
 #include "settings.hpp"
 #include "sfml-util.hpp"
 
-#include <exception>
+#include <iostream>
 
 namespace platformer
 {
@@ -24,13 +24,12 @@ namespace platformer
     void FontManager::setup(const Settings & settings)
     {
         m_defaultFont.loadFromFile((settings.media_path / "font/mops-antiqua.ttf").string());
-
         setupFontExtents(settings);
     }
 
     const sf::Font & FontManager::get(const Font) const { return m_defaultFont; }
 
-    const sf::Text FontManager::makeText(
+    sf::Text FontManager::makeText(
         const Font font,
         const FontSize size,
         const std::string & string,
@@ -44,13 +43,12 @@ namespace platformer
         return text;
     }
 
-    const sf::Text
-        FontManager::makeText(const std::string & text, const TextDetails & details) const
+    sf::Text FontManager::makeText(const std::string & text, const TextDetails & details) const
     {
         return makeText(details.font, details.size, text, details.color, details.style);
     }
 
-    const FontExtent FontManager::extent(const FontSize size) const
+    FontExtent FontManager::extent(const FontSize size) const
     {
         if (size == FontSize::Small)
         {
@@ -70,8 +68,8 @@ namespace platformer
         }
         else
         {
-            throw std::runtime_error(
-                "Error:  FontManager::extent() given an unknown FontSize.(  Medium will be used.");
+            std::cout << "Error:  FontManager::extent() given an unknown FontSize. Using Medium.\n";
+            return m_fontExtentMedium;
         }
     }
 
