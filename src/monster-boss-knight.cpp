@@ -1,9 +1,9 @@
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 //
-// monster-boss-tribal.hpp
+// monster-boss-knight.hpp
 //
-#include "monster-boss-tribal.hpp"
+#include "monster-boss-knight.hpp"
 
 #include "avatar.hpp"
 #include "context.hpp"
@@ -20,11 +20,11 @@
 namespace platformer
 {
 
-    BossTribal::BossTribal(Context & context, const sf::FloatRect & region)
-        : Monster(context, { MonsterType::BossTribal, region, 0.7f })
+    BossKnight::BossKnight(Context & context, const sf::FloatRect & region)
+        : Monster(context, { MonsterType::BossKnight, region, 0.7f })
     {}
 
-    const sf::FloatRect BossTribal::collisionRect() const
+    const sf::FloatRect BossKnight::collisionRect() const
     {
         if (MonsterAnim::Death == m_anim)
         {
@@ -50,7 +50,7 @@ namespace platformer
         }
     }
 
-    const sf::FloatRect BossTribal::attackCollisionRect() const
+    const sf::FloatRect BossKnight::attackCollisionRect() const
     {
         sf::FloatRect rect{ collisionRect() };
 
@@ -70,7 +70,7 @@ namespace platformer
         return rect;
     }
 
-    const Harm BossTribal::avatarCollide(const sf::FloatRect & avatarRect)
+    const Harm BossKnight::avatarCollide(const sf::FloatRect & avatarRect)
     {
         Harm harm;
 
@@ -84,13 +84,13 @@ namespace platformer
         return harm;
     }
 
-    void BossTribal::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
+    void BossKnight::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
 
-    void BossTribal::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
+    void BossKnight::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
 
-    void BossTribal::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
+    void BossKnight::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
 
-    void BossTribal::turnAround()
+    void BossKnight::turnAround()
     {
         m_sprite.scale(-1.0f, 1.0f);
 

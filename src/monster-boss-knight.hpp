@@ -1,7 +1,7 @@
-#ifndef MONSTER_BOSS_TRIBAL_HPP_INCLUDED
-#define MONSTER_BOSS_TRIBAL_HPP_INCLUDED
+#ifndef MONSTER_BOSS_KNIGHT_HPP_INCLUDED
+#define MONSTER_BOSS_KNIGHT_HPP_INCLUDED
 //
-// monster-boss-tribal.hpp
+// monster-boss-knight.hpp
 //
 #include "harm.hpp"
 #include "monster.hpp"
@@ -18,11 +18,11 @@ namespace platformer
 
     //
 
-    class BossTribal : public Monster
+    class BossKnight : public Monster
     {
       public:
-        BossTribal(Context & context, const sf::FloatRect & region);
-        virtual ~BossTribal() override = default;
+        BossKnight(Context & context, const sf::FloatRect & region);
+        virtual ~BossKnight() override = default;
 
         // IMonster functions
         const Harm avatarCollide(const sf::FloatRect & avatarRect) final;
@@ -39,4 +39,4 @@ namespace platformer
 
 } // namespace platformer
 
-#endif // MONSTER_BOSS_TRIBAL_HPP_INCLUDED
+#endif // MONSTER_BOSS_KNIGHT_HPP_INCLUDED
