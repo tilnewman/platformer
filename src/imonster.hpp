@@ -53,6 +53,7 @@ namespace platformer
         Spider,
         Vampire,
         Yeti,
+        BossTribal,
         Count
     };
 
@@ -88,6 +89,7 @@ namespace platformer
             case MonsterType::Spider:        { return "spider";         }
             case MonsterType::Vampire:       { return "vampire";        }
             case MonsterType::Yeti:          { return "yeti";           }
+            case MonsterType::BossTribal:    { return "boss-tribal";    }
             case MonsterType::Count:            //intentional fallthrough      
             default:              { return "Error_unknown_MonsterType"; }
         }
@@ -126,6 +128,7 @@ namespace platformer
             case MonsterType::Spider:        { return 26;  }
             case MonsterType::Vampire:       { return 80;  }
             case MonsterType::Yeti:          { return 50;  }
+            case MonsterType::BossTribal:    { return 200; }
             case MonsterType::Count://intentional fallthrough      
             default:                         { return 0;   }
         }
