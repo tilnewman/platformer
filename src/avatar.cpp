@@ -387,7 +387,7 @@ namespace platformer
                 continue;
             }
 
-            if ((m_velocity.y > 0.0f) && (intersection.height < tolerance) &&
+            if ((m_velocity.y >= 0.0f) && (intersection.height < tolerance) &&
                 collRect.intersects(footRect))
             {
                 // falling and hit something below
