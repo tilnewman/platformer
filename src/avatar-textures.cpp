@@ -6,6 +6,7 @@
 #include "avatar-textures.hpp"
 
 #include "context.hpp"
+#include "filesystem-util.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
 #include "texture-stats.hpp"
@@ -54,7 +55,10 @@ namespace platformer
                 const std::filesystem::path animPath{ typePath / toString(anim) };
 
                 AnimTextures & anims{ set.anims.at(animIndex) };
-                const std::vector<std::filesystem::path> files{ pngFilesInDirectory(animPath) };
+
+                const std::vector<std::filesystem::path> files{ util::findFilesInDirectory(
+                    animPath, ".png") };
+
                 anims.textures.resize(files.size());
             }
         }
@@ -77,7 +81,8 @@ namespace platformer
 
                 AnimTextures & anims{ set.anims.at(animIndex) };
 
-                const std::vector<std::filesystem::path> files{ pngFilesInDirectory(animPath) };
+                const std::vector<std::filesystem::path> files{ util::findFilesInDirectory(
+                    animPath, ".png") };
 
                 if (anims.textures.size() != files.size())
                 {
@@ -143,51 +148,6 @@ namespace platformer
         }
 
         sprite.setTexture(anims.textures.at(frame), true);
-    }
-
-    std::vector<std::filesystem::path>
-        AvatarTextureManager::pngFilesInDirectory(const std::filesystem::path & dirPath) const
-    {
-        std::vector<std::filesystem::path> files;
-        files.reserve(32); // as of 2024-8-24 there were at most 20 in a directory
-
-        if (!std::filesystem::exists(dirPath))
-        {
-            std::cout << "Error:  AvatarTextureManager::countPngFilesInDirectory(" << dirPath
-                      << ") failed because that path does not exist.\n";
-
-            return files;
-        }
-
-        if (!std::filesystem::is_directory(dirPath))
-        {
-            std::cout << "Error:  AvatarTextureManager::countPngFilesInDirectory(" << dirPath
-                      << ") failed because that path is not a directory.\n";
-
-            return files;
-        }
-
-        for (const auto & entry : std::filesystem::directory_iterator{ dirPath })
-        {
-            if (entry.is_regular_file() && (entry.path().extension() == ".png"))
-            {
-                files.push_back(entry.path());
-            }
-        }
-
-        if (files.empty())
-        {
-            std::cout << "Error:  AvatarTextureManager::countPngFilesInDirectory(" << dirPath
-                      << ") failed to find any png files.\n";
-
-            return files;
-        }
-
-        std::sort(std::begin(files), std::end(files), [](const auto & lhs, const auto & rhs) {
-            return (lhs.filename().string() < rhs.filename().string());
-        });
-
-        return files;
     }
 
 } // namespace platformer

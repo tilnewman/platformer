@@ -5,6 +5,7 @@
 //
 #include "harm.hpp"
 #include "avatar-textures.hpp"
+#include "avatar-spell-anims.hpp"
 
 #include <string_view>
 #include <vector>
@@ -114,6 +115,7 @@ namespace platformer
         float m_avatarImageWidthRatio;
         bool m_isAnimating;
         bool m_hasHitEnemy;
+        AvatarSpellAnimations m_spellAnim;
     };
 
 } // namespace platformer

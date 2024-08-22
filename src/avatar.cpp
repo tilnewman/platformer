@@ -41,12 +41,15 @@ namespace platformer
         , m_avatarImageWidthRatio(0.25f)
         , m_isAnimating(false)
         , m_hasHitEnemy(false)
+        , m_spellAnim()
     {}
 
     Avatar::~Avatar() { AvatarTextureManager::instance().release(m_type); }
 
     void Avatar::setup(const Context & context, const AvatarType & type)
     {
+        m_spellAnim.setup(context.settings);
+
         m_type  = type;
         m_anim  = AvatarAnim::Walk;
         m_state = AvatarState::Still;
@@ -59,6 +62,8 @@ namespace platformer
 
     void Avatar::update(Context & context, const float frameTimeSec)
     {
+        m_spellAnim.update(frameTimeSec);
+
         // this handleDeath() call must happen first
         if (handleDeath(context, frameTimeSec))
         {
@@ -91,6 +96,7 @@ namespace platformer
     void Avatar::draw(sf::RenderTarget & target, sf::RenderStates states)
     {
         target.draw(m_sprite, states);
+        m_spellAnim.draw(target, states);
     }
 
     void Avatar::setPosition(const sf::FloatRect & rect)
@@ -208,17 +214,36 @@ namespace platformer
             (AvatarState::AttackExtra != m_state) && (AvatarState::Climb != m_state) &&
             (AvatarState::Hurt != m_state) && (AvatarState::Death != m_state))
         {
+
+            const sf::Vector2f spellAnimPos = [&]() {
+                const sf::FloatRect collRect{ collisionRect() };
+                sf::Vector2f pos{ util::center(collRect) };
+
+                if (m_isFacingRight)
+                {
+                    pos.x += (collRect.width * 1.5f);
+                }
+                else
+                {
+                    pos.x -= (collRect.width * 1.5f);
+                }
+
+                return pos;
+            }();
+
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
             {
                 context.sfx.play("swipe", 0.6f);
                 m_state = AvatarState::AttackExtra;
                 m_anim  = AvatarAnim::AttackExtra;
+                m_spellAnim.add(spellAnimPos, m_type, false, m_isFacingRight);
             }
             else
             {
                 context.sfx.play("swipe");
                 m_state = AvatarState::Attack;
                 m_anim  = AvatarAnim::Attack;
+                m_spellAnim.add(spellAnimPos, m_type, true, m_isFacingRight);
             }
 
             restartAnim();

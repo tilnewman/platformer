@@ -196,10 +196,6 @@ namespace platformer
         }
 
       private:
-        std::vector<std::filesystem::path>
-            pngFilesInDirectory(const std::filesystem::path & dirPath) const;
-
-      private:
         std::vector<AvatarTextureSet> m_textureSets;
     };
 
