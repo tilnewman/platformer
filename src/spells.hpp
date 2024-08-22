@@ -94,7 +94,7 @@ namespace platformer
 
       private:
         std::size_t frameCount(const Spell which) const;
-        const sf::IntRect textureRect(const Spell which, const std::size_t frame) const;
+        sf::IntRect textureRect(const Spell which, const std::size_t frame) const;
 
       private:
         std::vector<sf::Texture> m_textures;

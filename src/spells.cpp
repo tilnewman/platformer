@@ -88,7 +88,7 @@ namespace platformer
         return static_cast<std::size_t>(texture.getSize().x / texture.getSize().y);
     }
 
-    const sf::IntRect SpellAnimations::textureRect(const Spell which, const std::size_t frame) const
+    sf::IntRect SpellAnimations::textureRect(const Spell which, const std::size_t frame) const
     {
         const sf::Texture & texture{ m_textures.at(static_cast<std::size_t>(which)) };
 
