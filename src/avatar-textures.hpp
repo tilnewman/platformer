@@ -3,6 +3,8 @@
 //
 // avatar-textures.hpp
 //
+#include "player-info.hpp"
+
 #include <string_view>
 #include <vector>
 
@@ -16,63 +18,7 @@ namespace platformer
     struct Settings;
 
     //
-
-    enum class AvatarType : std::size_t
-    {
-        Assassin = 0,
-        BlueKnight,
-        Druid,
-        Enchantress,
-        Ninja,
-        RedKnight,
-        Rogue,
-        Viking,
-        Witch,
-        Count
-    };
-
-    inline constexpr std::string_view toString(const AvatarType type)
-    {
-        // clang-format off
-        switch (type)
-        {
-            case AvatarType::Assassin:      { return "assassin";    }
-            case AvatarType::BlueKnight:    { return "blue-knight"; }
-            case AvatarType::Druid:         { return "druid";       }
-            case AvatarType::Enchantress:   { return "enchantress"; }
-            case AvatarType::Ninja:         { return "ninja";       }
-            case AvatarType::RedKnight:     { return "red-knight";  }
-            case AvatarType::Rogue:         { return "rogue";       }
-            case AvatarType::Viking:        { return "viking";      }
-            case AvatarType::Witch:         { return "witch";       }
-            case AvatarType::Count:         // intentional fallthrough
-            default:                        { return "error_AvatarType_not_found"; }
-        }
-        // clang-format on
-    }
-
-    //
-
-    inline constexpr bool isMale(const AvatarType type)
-    {
-        // clang-format off
-        switch (type)
-        {
-            case AvatarType::Assassin:      { return true;  }
-            case AvatarType::BlueKnight:    { return true;  }
-            case AvatarType::Druid:         { return false; }
-            case AvatarType::Enchantress:   { return false; }
-            case AvatarType::Ninja:         { return true;  }
-            case AvatarType::RedKnight:     { return true;  }
-            case AvatarType::Rogue:         { return true;  }
-            case AvatarType::Viking:        { return true;  }
-            case AvatarType::Witch:         { return false; }
-            case AvatarType::Count:         // intentional fallthrough
-            default:                        { return true;  }
-        }
-        // clang-format on
-    }
-
+    
     enum class AvatarAnim : std::size_t
     {
         Attack = 0,

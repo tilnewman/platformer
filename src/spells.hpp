@@ -3,7 +3,8 @@
 //
 // spells.hpp
 //
-#include <string_view>
+#include "player-info.hpp"
+
 #include <vector>
 
 #include <SFML/Graphics/Rect.hpp>
@@ -17,73 +18,6 @@ namespace platformer
 {
     struct Context;
     struct Settings;
-
-    //
-
-    enum class Spell : std::size_t
-    {
-        Comet = 0,
-        Explosion,
-        Fire,
-        Freeze,
-        Gypno,
-        KillAll,
-        Light,
-        Lightning1,
-        Lightning2,
-        MidasHand,
-        Spikes1,
-        Spikes2,
-        SunStrike,
-        TeslaBall,
-        Tornado,
-        Water,
-        Count
-    };
-
-    inline constexpr std::string_view toName(const Spell spell)
-    {
-        // clang-format off
-        switch (spell)
-        {
-            case Spell::Comet:      { return "comet";       }
-            case Spell::Explosion:  { return "explosion";   }
-            case Spell::Fire:       { return "fire";        }
-            case Spell::Freeze:     { return "freeze";      }
-            case Spell::Gypno:      { return "gypno";       }
-            case Spell::KillAll:    { return "kill-all";    }
-            case Spell::Light:      { return "light";       }
-            case Spell::Lightning1: { return "lightning1";  }
-            case Spell::Lightning2: { return "lightning2";  }
-            case Spell::MidasHand:  { return "midas-hand";  }
-            case Spell::Spikes1:    { return "spikes1";     }
-            case Spell::Spikes2:    { return "spikes2";     }
-            case Spell::SunStrike:  { return "sun-strike";  }
-            case Spell::TeslaBall:  { return "tesla-ball";  }
-            case Spell::Tornado:    { return "tornado";     }
-            case Spell::Water:      { return "water";       }
-            case Spell::Count:      //intentional fallthrough
-            default:        { return "Error_Spell_unknown"; }
-        }
-        // clang-format on
-    }
-
-    inline constexpr float timePerFrameSec(const Spell spell)
-    {
-        if (Spell::Light == spell)
-        {
-            return 0.25f;
-        }
-        else if (
-            (Spell::KillAll == spell) || (Spell::SunStrike == spell) || (Spell::Water == spell))
-        {
-            return 0.175f;
-        }
-        else
-        {
-            return 0.125f;
-        }
-    }
 
     //
 

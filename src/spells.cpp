@@ -40,15 +40,17 @@ namespace platformer
 
             SpellTextures & set{ m_textureSets.at(spellIndex) };
 
-            const std::filesystem::path iconPath{ settings.media_path / "image/spell-anim" /
-                                                  std::string(toName(spell)).append("-icon.png") };
+            const std::filesystem::path iconPath{
+                settings.media_path / "image/spell-anim" /
+                std::string(toFilesystemName(spell)).append("-icon.png")
+            };
 
             set.icon_texture.loadFromFile(iconPath.string());
             TextureStats::instance().process(set.icon_texture);
             set.icon_texture.setSmooth(true);
 
             const std::filesystem::path path{ settings.media_path / "image/spell-anim" /
-                                              toName(spell) };
+                                              toFilesystemName(spell) };
 
             const std::vector<std::filesystem::path> files{ util::findFilesInDirectory(
                 path, ".png") };

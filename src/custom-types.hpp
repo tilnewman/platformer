@@ -10,6 +10,7 @@ namespace platformer
     // keep these types signed
     using Health_t = int;
     using Coin_t = int;
+    using Mana_t = int;
 
 } // namespace platformer
 
