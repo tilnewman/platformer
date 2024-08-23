@@ -17,37 +17,43 @@
 namespace platformer
 {
 
+    sf::Texture GuiWindow::m_borderTopLeftTexture;
+    sf::Texture GuiWindow::m_borderTopRightTexture;
+    sf::Texture GuiWindow::m_borderBotLeftTexture;
+    sf::Texture GuiWindow::m_borderBotRightTexture;
+    sf::Texture GuiWindow::m_borderTopTexture;
+    sf::Texture GuiWindow::m_borderBotTexture;
+    sf::Texture GuiWindow::m_borderLeftTexture;
+    sf::Texture GuiWindow::m_borderRightTexture;
+    //
+    sf::Texture GuiWindow::m_smallBorderTopLeftTexture;
+    sf::Texture GuiWindow::m_smallBorderTopRightTexture;
+    sf::Texture GuiWindow::m_smallBorderBotLeftTexture;
+    sf::Texture GuiWindow::m_smallBorderBotRightTexture;
+    sf::Texture GuiWindow::m_smallBorderTopTexture;
+    sf::Texture GuiWindow::m_smallBorderBotTexture;
+    sf::Texture GuiWindow::m_smallBorderLeftTexture;
+    sf::Texture GuiWindow::m_smallBorderRightTexture;
+    //
+    sf::Texture GuiWindow::m_bgTopLeftTexture;
+    sf::Texture GuiWindow::m_bgTopRightTexture;
+    sf::Texture GuiWindow::m_bgBotLeftTexture;
+    sf::Texture GuiWindow::m_bgBotRightTexture;
+    sf::Texture GuiWindow::m_bgTopTexture;
+    sf::Texture GuiWindow::m_bgBotTexture;
+    sf::Texture GuiWindow::m_bgLeftTexture;
+    sf::Texture GuiWindow::m_bgRightTexture;
+    //
+    sf::Texture GuiWindow::m_tapeLeftTexture;
+    sf::Texture GuiWindow::m_tapeRightTexture;
+    sf::Texture GuiWindow::m_tapeMiddleTexture;
+
+    //
+
     GuiWindow::GuiWindow()
         : m_info()
         , m_innerRect()
         , m_outerRect()
-        , m_borderTopLeftTexture()
-        , m_borderTopRightTexture()
-        , m_borderBotLeftTexture()
-        , m_borderBotRightTexture()
-        , m_borderTopTexture()
-        , m_borderBotTexture()
-        , m_borderLeftTexture()
-        , m_borderRightTexture()
-        , m_smallBorderTopLeftTexture()
-        , m_smallBorderTopRightTexture()
-        , m_smallBorderBotLeftTexture()
-        , m_smallBorderBotRightTexture()
-        , m_smallBorderTopTexture()
-        , m_smallBorderBotTexture()
-        , m_smallBorderLeftTexture()
-        , m_smallBorderRightTexture()
-        , m_bgTopLeftTexture()
-        , m_bgTopRightTexture()
-        , m_bgBotLeftTexture()
-        , m_bgBotRightTexture()
-        , m_bgTopTexture()
-        , m_bgBotTexture()
-        , m_bgLeftTexture()
-        , m_bgRightTexture()
-        , m_tapeLeftTexture()
-        , m_tapeRightTexture()
-        , m_tapeMiddleTexture()
         , m_bgColor(74, 76, 41)
         , m_bgCenterRect()
         , m_bgCenterVerts()

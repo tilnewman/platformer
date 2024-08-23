@@ -6,6 +6,7 @@
 #include "coordinator.hpp"
 
 #include "avatar-textures.hpp"
+#include "gui-window.hpp"
 #include "map-textures.hpp"
 #include "monster-textures.hpp"
 #include "sfml-util.hpp"
@@ -84,6 +85,7 @@ namespace platformer
         AvatarTextureManager::instance().setup(m_settings);
         MonsterTextureManager::instance().setup(m_settings);
         MapTextureManager::instance().setup(m_settings);
+        GuiWindow::setup(m_settings);
 
         m_layout.setup(m_window.getSize());
         m_fonts.setup(m_settings);

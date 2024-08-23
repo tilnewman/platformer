@@ -25,8 +25,6 @@ namespace platformer
 
     void SpellSelectMenu::setup(Context & context)
     {
-        m_windowFrame.setup(context.settings);
-
         m_fadeRects.clear();
         m_glowRects.clear();
         m_spellSprites.clear();
