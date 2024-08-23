@@ -17,15 +17,6 @@ namespace platformer
 
     MonsterTextureManager::MonsterTextureManager()
         : m_textureSets()
-    {}
-
-    MonsterTextureManager & MonsterTextureManager::instance()
-    {
-        static MonsterTextureManager monsterTextureManager;
-        return monsterTextureManager;
-    }
-
-    void MonsterTextureManager::setup(const Settings &)
     {
         // create all texture vectors of correct size so they are never re-allocated
         m_textureSets.resize(static_cast<std::size_t>(MonsterType::Count));
@@ -34,6 +25,14 @@ namespace platformer
             set.textures.resize(static_cast<std::size_t>(MonsterAnim::Count));
         }
     }
+
+    MonsterTextureManager & MonsterTextureManager::instance()
+    {
+        static MonsterTextureManager monsterTextureManager;
+        return monsterTextureManager;
+    }
+
+    void MonsterTextureManager::setup(const Settings &) {}
 
     void MonsterTextureManager::acquire(Context & context, const MonsterType type)
     {
