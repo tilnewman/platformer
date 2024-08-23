@@ -1,9 +1,8 @@
-#ifndef AVATARTEXTURES_HPP_INCLUDED
-#define AVATARTEXTURES_HPP_INCLUDED
+#ifndef AVATAR_TEXTURES_HPP_INCLUDED
+#define AVATAR_TEXTURES_HPP_INCLUDED
 //
 // avatar-textures.hpp
 //
-#include <filesystem>
 #include <string_view>
 #include <vector>
 
@@ -201,4 +200,4 @@ namespace platformer
 
 } // namespace platformer
 
-#endif // AVATARTEXTURES_HPP_INCLUDED
+#endif // AVATAR_TEXTURES_HPP_INCLUDED

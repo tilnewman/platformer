@@ -6,6 +6,7 @@
 #include "avatar-textures.hpp"
 
 #include <vector>
+#include <filesystem>
 
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
