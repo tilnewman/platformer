@@ -89,4 +89,23 @@ namespace platformer
 
     void Dragon::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
 
+    void Dragon::startAttackAnimation(Context &)
+    {
+        const sf::FloatRect collRect{ collisionRect() };
+
+        sf::Vector2f pos;
+        pos.y = collRect.top;
+
+        if (m_isFacingRight)
+        {
+            pos.x = util::right(collRect);
+        }
+        else
+        {
+            pos.x = collRect.left;
+        }
+
+        m_animations.add(pos, MonsterSpell::DragonFire, m_isFacingRight);
+    }
+
 } // namespace platformer

@@ -33,8 +33,10 @@ namespace platformer
         , m_hasSpottedPlayer(false)
         , m_health(startingHealth(setupInfo.type))
         , m_isAlive(true)
+        , m_animations()
     {
         MonsterTextureManager::instance().acquire(context, m_type);
+        m_animations.setup(context.settings);
         initialSpriteSetup(context, setupInfo.image_height_ratio, setupInfo.image_scale);
     }
 
@@ -42,6 +44,8 @@ namespace platformer
 
     void Monster::update(Context & context, const float frameTimeSec)
     {
+        m_animations.update(frameTimeSec);
+
         if (!m_isAlive)
         {
             return;
@@ -115,6 +119,8 @@ namespace platformer
             target.draw(m_sprite, states);
             // util::drawRectangleShape(target, collisionRect(), false, sf::Color::Green);
             // util::drawRectangleShape(target, attackCollisionRect(), false, sf::Color::Red);
+
+            m_animations.draw(target, states);
         }
     }
 
@@ -122,6 +128,7 @@ namespace platformer
     {
         m_sprite.move(amount, 0.0f);
         m_region.left += amount;
+        m_animations.move(amount);
     }
 
     bool Monster::avatarAttack(Context & context, const AttackInfo & attackInfo)
@@ -255,6 +262,7 @@ namespace platformer
             m_anim = MonsterAnim::Attack;
             resetAnimation();
             playAttackSfx(context);
+            startAttackAnimation(context);
         }
     }
 

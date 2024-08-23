@@ -34,6 +34,7 @@ namespace platformer
         void playAttackSfx(Context & context) const final;
         void playHurtSfx(Context & context) const final;
         void playDeathSfx(Context & context) const final;
+        void startAttackAnimation(Context & context) final;
     };
 
 } // namespace platformer

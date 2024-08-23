@@ -6,6 +6,7 @@
 #include "custom-types.hpp"
 #include "harm.hpp"
 #include "imonster.hpp"
+#include "monster-spell-anim.hpp"
 
 #include <filesystem>
 #include <string>
@@ -67,6 +68,7 @@ namespace platformer
         virtual void changeStateAfterSeeingPlayer(Context & context);
         virtual void handleWalking(Context & context, const float frameTimeSec);
         virtual void turnAround();
+        virtual void startAttackAnimation(Context &) {}
 
         virtual float walkSpeed() const                     = 0;
         virtual void playAttackSfx(Context & context) const = 0;
@@ -93,6 +95,7 @@ namespace platformer
         bool m_hasSpottedPlayer;
         Health_t m_health;
         bool m_isAlive;
+        MonsterSpellAnimations m_animations;
     };
 
 } // namespace platformer
