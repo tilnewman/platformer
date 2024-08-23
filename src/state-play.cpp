@@ -48,6 +48,15 @@ namespace platformer
     {
         if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::T))
         {
+            std::size_t temp{ static_cast<std::size_t>(context.player.avatarType()) };
+            
+            ++temp;
+            if (temp >= static_cast<std::size_t>(AvatarType::Count))
+            {
+                temp = 0;
+            }
+
+            context.player.setup(static_cast<AvatarType>(temp));
             context.avatar.changeType(context);
         }
     }

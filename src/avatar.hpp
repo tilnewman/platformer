@@ -68,11 +68,10 @@ namespace platformer
         Avatar();
         ~Avatar();
 
-        void setup(const Context & context, const AvatarType & type);
+        void setup(const Context & context);
         void update(Context & context, const float frameTimeSec);
         void draw(sf::RenderTarget & target, sf::RenderStates states);
         void setPosition(const sf::FloatRect & rect);
-        AvatarType type() const { return m_type; }
         const sf::FloatRect collisionRect() const;
         const sf::FloatRect attackRect() const;
         void triggerDeath(Context & context);

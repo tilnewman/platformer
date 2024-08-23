@@ -77,6 +77,8 @@ namespace platformer
         m_sfx.loadAll();
         m_sfx.willLoop("walk", true);
 
+        m_playerInfo.setup(AvatarType::Assassin);
+
         AvatarTextureManager::instance().setup(m_settings);
         MonsterTextureManager::instance().setup(m_settings);
         MapTextureManager::instance().setup(m_settings);
@@ -87,7 +89,7 @@ namespace platformer
         m_pickups.setup(m_settings);
         m_accents.setup(m_settings);
         m_spells.setup(m_settings);
-        m_avatar.setup(m_context, AvatarType::Assassin);
+        m_avatar.setup(m_context);
         m_playerInfoDisplay.setup(m_context);
 
         m_states.changeTo(m_context, State::Splash);
@@ -168,7 +170,7 @@ namespace platformer
         }
 
         // TODO remove after testing
-        m_avatarTypeText.setString(std::string(toString(m_avatar.type())));
+        m_avatarTypeText.setString(std::string(toString(m_context.player.avatarType())));
         m_avatarAnimText.setString(std::string(toString(m_avatar.anim())));
         m_avatarAnimIndexText.setString(std::to_string(m_avatar.animIndex()));
         m_window.draw(m_avatarTypeText, states);

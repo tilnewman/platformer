@@ -18,6 +18,15 @@ namespace platformer
         , m_coins{ 0 }
     {}
 
+    void PlayerInfo::setup(const AvatarType type)
+    {
+        m_avatarType = type;
+
+        //TODO setup spells table
+
+        //TODO setup initial health and mana max based on type
+    }
+
     Health_t PlayerInfo::healthAdjust(const Health_t adjustment)
     {
         m_health += adjustment;

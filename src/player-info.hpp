@@ -197,6 +197,10 @@ namespace platformer
       public:
         PlayerInfo();
 
+        void setup(const AvatarType type);
+
+        inline AvatarType avatarType() const { return m_avatarType; }
+
         inline Health_t health() const { return m_health; }
         Health_t healthAdjust(const Health_t adjustment);
 
@@ -207,6 +211,7 @@ namespace platformer
         Coin_t coinsAdjust(const Coin_t adjustment);
 
       private:
+        AvatarType m_avatarType;
         Health_t m_health;
         Health_t m_healthMax;
         Mana_t m_mana;

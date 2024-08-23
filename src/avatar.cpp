@@ -20,8 +20,6 @@
 #include "spells-anim.hpp"
 #include "state-manager.hpp"
 
-#include <filesystem>
-
 #include <SFML/Window/Keyboard.hpp>
 
 namespace platformer
@@ -29,7 +27,7 @@ namespace platformer
 
     Avatar::Avatar()
         : m_sprite()
-        , m_type(AvatarType::Assassin) // anything works here
+        , m_type(AvatarType::Count) // anything works here
         , m_anim(AvatarAnim::Walk)
         , m_state(AvatarState::Still)
         , m_elapsedTimeSec(0.0f)
@@ -46,11 +44,11 @@ namespace platformer
 
     Avatar::~Avatar() { AvatarTextureManager::instance().release(m_type); }
 
-    void Avatar::setup(const Context & context, const AvatarType & type)
+    void Avatar::setup(const Context & context)
     {
         m_spellAnim.setup(context.settings);
 
-        m_type  = type;
+        m_type  = context.player.avatarType();
         m_anim  = AvatarAnim::Walk;
         m_state = AvatarState::Still;
 
@@ -126,18 +124,8 @@ namespace platformer
 
     void Avatar::changeType(Context & context)
     {
-        std::size_t temp{ static_cast<std::size_t>(m_type) };
-
-        ++temp;
-        if (temp >= static_cast<std::size_t>(AvatarType::Count))
-        {
-            temp = 0;
-        }
-
         AvatarTextureManager::instance().release(m_type);
-
-        m_type = static_cast<AvatarType>(temp);
-
+        m_type = context.player.avatarType();
         AvatarTextureManager::instance().acquire(context, m_type);
     }
 
@@ -149,6 +137,8 @@ namespace platformer
         }
 
         sf::FloatRect rect{ collisionRect() };
+
+        // make the attack rect slightly bigger vertically so players can attack up and down
         rect.height += 4.0f;
         rect.top -= 2.0f;
 
