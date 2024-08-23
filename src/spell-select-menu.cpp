@@ -20,12 +20,13 @@ namespace platformer
         : m_isVisible{ false }
         , m_spellSprites{}
         , m_glowRects{}
-        , m_windows{}
+        , m_windowFrame{}
     {}
 
     void SpellSelectMenu::setup(Context & context)
     {
-        m_windows.clear();
+        m_windowFrame.setup(context.settings);
+
         m_fadeRects.clear();
         m_glowRects.clear();
         m_spellSprites.clear();
@@ -47,10 +48,7 @@ namespace platformer
             GuiWindowInfo info;
             info.border = GuiWindowBorder::Small;
             info.region = bounds;
-
-            GuiWindow & window{ m_windows.emplace_back() };
-            window.setup(context.settings);
-            window.create(context, info);
+            m_windowFrame.create(context, info);
 
             //
 
@@ -95,10 +93,7 @@ namespace platformer
             util::drawRectangleShape(target, rect, true, sf::Color(0, 0, 0, 200));
         }
 
-        for (const GuiWindow & window : m_windows)
-        {
-            window.draw(target, states);
-        }
+        m_windowFrame.draw(target, states);
     }
 
 } // namespace platformer

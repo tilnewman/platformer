@@ -41,7 +41,7 @@ namespace platformer
         std::vector<sf::Sprite> m_spellSprites;
         std::vector<GlowRect> m_glowRects;
         std::vector<sf::FloatRect> m_fadeRects;
-        std::vector<GuiWindow> m_windows;
+        GuiWindow m_windowFrame;
     };
 
 } // namespace platformer
