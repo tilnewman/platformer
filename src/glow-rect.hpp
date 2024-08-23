@@ -36,7 +36,7 @@ namespace platformer
             const sf::FloatRect & outerRect,
             const sf::FloatRect & innerRect);
 
-        void draw(sf::RenderTarget & target, sf::RenderStates states) const;
+        void draw(sf::RenderTarget & target) const;
 
       private:
         std::vector<sf::Vertex> m_verts;

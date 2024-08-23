@@ -178,34 +178,36 @@ namespace platformer
         m_sprites.clear();
 
         m_bgFadeVerts.clear();
-        util::appendQuadVerts(context.layout.wholeRect(), m_bgFadeVerts, sf::Color(0, 0, 0, 127));
+
+        if (info.will_fade_whole_screen)
+        {
+            util::appendQuadVerts(
+                context.layout.wholeRect(), m_bgFadeVerts, sf::Color(0, 0, 0, 127));
+        }
 
         m_info = info;
 
+        sf::Sprite bgTopLeftSprite{ m_bgTopLeftTexture };
+
         sf::Vector2f betweenCornerSize;
 
-        betweenCornerSize.x = (m_info.inner_size.x - 2.0f);
+        betweenCornerSize.x =
+            (m_info.region.width - (2.0f * bgTopLeftSprite.getGlobalBounds().width));
+
         if (betweenCornerSize.x < 0.0f)
         {
             betweenCornerSize.x = 0.0f;
         }
 
-        betweenCornerSize.y = (m_info.inner_size.y - 2.0f);
+        betweenCornerSize.y = (m_info.region.height - (2.0f * bgTopLeftSprite.getGlobalBounds().height));
         if (betweenCornerSize.y < 0.0f)
         {
             betweenCornerSize.y = 0.0f;
         }
 
-        sf::Sprite & bgTopLeftSprite{ m_sprites.emplace_back(m_bgTopLeftTexture) };
+        bgTopLeftSprite.setPosition(info.region.left, info.region.top);
 
-        const sf::Vector2f totalSize{
-            (betweenCornerSize.x + (bgTopLeftSprite.getGlobalBounds().width * 2.0f)),
-            (betweenCornerSize.y + (bgTopLeftSprite.getGlobalBounds().height * 2.0f))
-        };
-
-        bgTopLeftSprite.setPosition((context.layout.wholeSize() * 0.5f) - (totalSize * 0.5f));
-
-        if (betweenCornerSize.x > 0.0f)
+        if (info.will_draw_background && (betweenCornerSize.x > 0.0f))
         {
             sf::FloatRect bgTopRect;
             bgTopRect.left   = util::right(bgTopLeftSprite);
@@ -226,12 +228,12 @@ namespace platformer
             util::scaleAndCenterInside(bgBotSprite, bgBotRect);
         }
 
-        sf::Sprite & bgTopRightSprite{ m_sprites.emplace_back(m_bgTopRightTexture) };
+        sf::Sprite bgTopRightSprite{ m_bgTopRightTexture };
 
         bgTopRightSprite.setPosition(
             (util::right(bgTopLeftSprite) + betweenCornerSize.x), bgTopLeftSprite.getPosition().y);
 
-        if (betweenCornerSize.y > 0.0f)
+        if (info.will_draw_background && (betweenCornerSize.y > 0.0f))
         {
             sf::FloatRect bgLeftRect;
             bgLeftRect.left   = bgTopLeftSprite.getPosition().x;
@@ -252,12 +254,12 @@ namespace platformer
             util::scaleAndCenterInside(bgRightSprite, bgRightRect);
         }
 
-        sf::Sprite & bgBotLeftSprite{ m_sprites.emplace_back(m_bgBotLeftTexture) };
+        sf::Sprite bgBotLeftSprite{ m_bgBotLeftTexture };
 
         bgBotLeftSprite.setPosition(
             bgTopLeftSprite.getPosition().x, (util::bottom(bgTopLeftSprite) + betweenCornerSize.y));
 
-        sf::Sprite & bgBotRightSprite{ m_sprites.emplace_back(m_bgBotRightTexture) };
+        sf::Sprite bgBotRightSprite{ m_bgBotRightTexture };
 
         bgBotRightSprite.setPosition(
             bgTopRightSprite.getPosition().x, bgBotLeftSprite.getPosition().y);
@@ -269,7 +271,16 @@ namespace platformer
         m_bgCenterRect.width  = (bgTopRightSprite.getPosition().x - util::right(bgTopLeftSprite));
         m_bgCenterRect.height = (bgBotLeftSprite.getPosition().y - util::bottom(bgTopLeftSprite));
 
-        util::appendQuadVerts(m_bgCenterRect, m_bgCenterVerts, m_bgColor);
+        //
+
+        if (info.will_draw_background)
+        {
+            m_sprites.push_back(bgTopLeftSprite);
+            m_sprites.push_back(bgTopRightSprite);
+            m_sprites.push_back(bgBotLeftSprite);
+            m_sprites.push_back(bgBotRightSprite);
+            util::appendQuadVerts(m_bgCenterRect, m_bgCenterVerts, m_bgColor);
+        }
 
         //
 
@@ -417,7 +428,7 @@ namespace platformer
 
                 sf::FloatRect borderTopRect;
                 borderTopRect.left   = util::right(borderTopLeftSprite);
-                borderTopRect.top    = (borderTopLeftSprite.getPosition().y + 1.0f);
+                borderTopRect.top    = (borderTopLeftSprite.getPosition().y);
                 borderTopRect.width  = betweenSizeHoriz;
                 borderTopRect.height = borderTopSprite.getGlobalBounds().height;
 

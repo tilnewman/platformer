@@ -3,6 +3,7 @@
 //
 // spell-select-menu.hpp
 //
+#include "glow-rect.hpp"
 #include "gui-window.hpp"
 #include "player-info.hpp"
 
@@ -29,12 +30,18 @@ namespace platformer
         SpellSelectMenu();
 
         void setup(Context & context);
-        void isVisible(const bool isVisible) { m_isVisible = isVisible; }
+
+        inline void isVisible(const bool isVisible) { m_isVisible = isVisible; }
+        inline bool isVisible() const { return m_isVisible; }
+        
         void draw(sf::RenderTarget & target, sf::RenderStates states) const;
 
       private:
         bool m_isVisible;
         std::vector<sf::Sprite> m_spellSprites;
+        std::vector<GlowRect> m_glowRects;
+        std::vector<sf::FloatRect> m_fadeRects;
+        std::vector<GuiWindow> m_windows;
     };
 
 } // namespace platformer

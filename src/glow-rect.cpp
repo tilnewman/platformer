@@ -126,7 +126,7 @@ namespace platformer
         setTransparentTopRight();
     }
 
-    void GlowRect::draw(sf::RenderTarget & target, sf::RenderStates) const
+    void GlowRect::draw(sf::RenderTarget & target) const
     {
         target.draw(&m_verts[0], m_verts.size(), sf::Quads);
     }

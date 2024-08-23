@@ -64,7 +64,7 @@ namespace platformer
         }
         else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Num1))
         {
-            if (isSpellCaster(context.player.avatarType()))
+            if (isSpellCaster(context.player.avatarType()) && !m_spellSelectMenu.isVisible())
             {
                 m_spellSelectMenu.setup(context);
                 m_spellSelectMenu.isVisible(true);
@@ -72,10 +72,7 @@ namespace platformer
         }
         else if ((event.type == sf::Event::KeyReleased) && (event.key.code == sf::Keyboard::Num1))
         {
-            if (isSpellCaster(context.player.avatarType()))
-            {
-                m_spellSelectMenu.isVisible(false);
-            }
+            m_spellSelectMenu.isVisible(false);
         }
 
     }

@@ -41,8 +41,10 @@ namespace platformer
         std::string title{};
         std::string content{};
         TextDetails details{};
-        sf::Vector2f inner_size{};
+        sf::FloatRect region{};
         GuiWindowBorder border{ GuiWindowBorder::None };
+        bool will_draw_background{ false };
+        bool will_fade_whole_screen{ false };
     };
 
     //

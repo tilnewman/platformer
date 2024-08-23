@@ -77,7 +77,9 @@ namespace platformer
         m_sfx.loadAll();
         m_sfx.willLoop("walk", true);
 
-        m_playerInfo.setup(AvatarType::Assassin);
+        m_playerInfo.setup(AvatarType::Enchantress);
+        m_playerInfo.learnSpell(Spell::TeslaBall);
+        m_playerInfo.learnSpell(Spell::Spikes1);
 
         AvatarTextureManager::instance().setup(m_settings);
         MonsterTextureManager::instance().setup(m_settings);
