@@ -40,7 +40,7 @@ namespace platformer
         context.pickup.draw(context, target, states);
         context.accent.draw(context, target, states);
         context.avatar.draw(target, states);
-        context.spell.draw(context, target, states);
+        context.spell.draw(target, states);
         context.player_display.draw(target, states);
     }
 

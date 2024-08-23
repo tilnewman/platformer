@@ -358,7 +358,7 @@ namespace platformer
         context.level.move(context, moveX);
         context.pickup.move(moveX);
         context.bg_image.move(moveX);
-        // context.spells.move(moveX);
+        context.spell.move(moveX);
     }
 
     void Avatar::killIfOutOfBounds(Context & context)

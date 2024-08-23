@@ -46,26 +46,43 @@ namespace platformer
         // clang-format off
         switch (spell)
         {
-            case Spell::Comet:      { return "comet"; }
-            case Spell::Explosion:  { return "explosion"; }
-            case Spell::Fire:       { return "fire"; }
-            case Spell::Freeze:     { return "freeze"; }
-            case Spell::Gypno:      { return "gypno"; }
-            case Spell::KillAll:    { return "kill-all"; }
-            case Spell::Light:      { return "light"; }
-            case Spell::Lightning1: { return "lightning1"; }
-            case Spell::Lightning2: { return "lightning2"; }
-            case Spell::MidasHand:  { return "midas-hand"; }
-            case Spell::Spikes1:    { return "spikes1"; }
-            case Spell::Spikes2:    { return "spikes2"; }
-            case Spell::SunStrike:  { return "sun-strike"; }
-            case Spell::TeslaBall:  { return "tesla-ball"; }
-            case Spell::Tornado:    { return "tornado"; }
-            case Spell::Water:      { return "water"; }
+            case Spell::Comet:      { return "comet";       }
+            case Spell::Explosion:  { return "explosion";   }
+            case Spell::Fire:       { return "fire";        }
+            case Spell::Freeze:     { return "freeze";      }
+            case Spell::Gypno:      { return "gypno";       }
+            case Spell::KillAll:    { return "kill-all";    }
+            case Spell::Light:      { return "light";       }
+            case Spell::Lightning1: { return "lightning1";  }
+            case Spell::Lightning2: { return "lightning2";  }
+            case Spell::MidasHand:  { return "midas-hand";  }
+            case Spell::Spikes1:    { return "spikes1";     }
+            case Spell::Spikes2:    { return "spikes2";     }
+            case Spell::SunStrike:  { return "sun-strike";  }
+            case Spell::TeslaBall:  { return "tesla-ball";  }
+            case Spell::Tornado:    { return "tornado";     }
+            case Spell::Water:      { return "water";       }
             case Spell::Count:      //intentional fallthrough
-            default:                { return "Error_Spell_unknown";    }
+            default:        { return "Error_Spell_unknown"; }
         }
         // clang-format on
+    }
+
+    inline constexpr float timePerFrameSec(const Spell spell)
+    {
+        if (Spell::Light == spell)
+        {
+            return 0.25f;
+        }
+        else if (
+            (Spell::KillAll == spell) || (Spell::SunStrike == spell) || (Spell::Water == spell))
+        {
+            return 0.175f;
+        }
+        else
+        {
+            return 0.125f;
+        }
     }
 
     //
@@ -73,9 +90,19 @@ namespace platformer
     struct SpellAnim
     {
         bool is_alive{ true };
-        Spell which{ Spell::Comet }; // any spell works here
-        std::size_t anim_index{ 0 };
+        Spell spell{ Spell::Count }; // anything works here
+        std::size_t frame_index{ 0 };
+        float elapsed_time_sec{ 0.0f };
+        float time_per_frame_sec{ 0.0f };
         sf::Sprite sprite{};
+    };
+
+    //
+
+    struct SpellTextures
+    {
+        sf::Texture icon_texture;
+        std::vector<sf::Texture> textures;
     };
 
     //
@@ -86,22 +113,21 @@ namespace platformer
         SpellAnimations();
 
         void setup(const Settings & settings);
-        void add(const Context & context, const sf::Vector2f & pos, const Spell spell);
+        void add(const sf::Vector2f & pos, const Spell spell);
         void update(Context & context, const float frameTimeSec);
-        void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const;
-        const sf::Texture iconTexture(const Spell spell) const;
+        void draw(sf::RenderTarget & target, sf::RenderStates states) const;
+        void move(const float amount);
+
+        inline const sf::Texture iconTexture(const Spell spell) const
+        {
+            return m_textureSets.at(static_cast<std::size_t>(spell)).icon_texture;
+        }
+
         inline void clear() { m_anims.clear(); }
 
       private:
-        std::size_t frameCount(const Spell which) const;
-        sf::IntRect textureRect(const Spell which, const std::size_t frame) const;
-
-      private:
-        std::vector<sf::Texture> m_textures;
-        std::vector<sf::Texture> m_iconTextures;
+        std::vector<SpellTextures> m_textureSets;
         std::vector<SpellAnim> m_anims;
-        float m_elapsedTimeSec;
-        float m_timePerFrameSec;
         sf::Vector2f m_scale;
     };
 

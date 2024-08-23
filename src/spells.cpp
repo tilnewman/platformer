@@ -7,24 +7,25 @@
 
 #include "check-macros.hpp"
 #include "context.hpp"
+#include "filesystem-util.hpp"
 #include "random.hpp"
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
 #include "texture-stats.hpp"
 
+#include <iostream>
+
 namespace platformer
 {
 
     SpellAnimations::SpellAnimations()
-        : m_textures()
-        , m_iconTextures()
-        , m_anims()
-        , m_elapsedTimeSec(0.0f)
-        , m_timePerFrameSec(0.0f)
-        , m_scale(0.0f, 0.0f)
+        : m_textureSets{}
+        , m_anims{}
+        , m_scale{ 0.0f, 0.0f }
     {
-        m_anims.reserve(256);
+        m_textureSets.resize(static_cast<std::size_t>(Spell::Count));
+        m_anims.reserve(8); // just a guess, probably no more than 2 or 3 during play
     }
 
     void SpellAnimations::setup(const Settings & settings)
@@ -32,123 +33,126 @@ namespace platformer
         m_scale.x = settings.spell_scale;
         m_scale.y = settings.spell_scale;
 
-        m_timePerFrameSec = settings.spell_time_per_frame;
-
-        m_textures.reserve(static_cast<std::size_t>(Spell::Count));
-        m_iconTextures.reserve(static_cast<std::size_t>(Spell::Count));
-
-        for (std::size_t i(0); i < static_cast<std::size_t>(Spell::Count); ++i)
+        for (std::size_t spellIndex(0); spellIndex < static_cast<std::size_t>(Spell::Count);
+             ++spellIndex)
         {
-            const Spell spell{ static_cast<Spell>(i) };
+            const Spell spell{ static_cast<Spell>(spellIndex) };
 
-            sf::Texture & texture{ m_textures.emplace_back() };
+            SpellTextures & set{ m_textureSets.at(spellIndex) };
 
-            texture.loadFromFile((settings.media_path / "image/spell-anim" /
-                                  std::string(toName(spell)).append(".png"))
-                                     .string());
+            const std::filesystem::path iconPath{ settings.media_path / "image/spell-anim" /
+                                                  std::string(toName(spell)).append("-icon.png") };
 
-            TextureStats::instance().process(texture);
+            set.icon_texture.loadFromFile(iconPath.string());
+            TextureStats::instance().process(set.icon_texture);
+            set.icon_texture.setSmooth(true);
 
-            texture.setSmooth(true);
+            const std::filesystem::path path{ settings.media_path / "image/spell-anim" /
+                                              toName(spell) };
 
-            sf::Texture & iconTexture{ m_iconTextures.emplace_back() };
+            const std::vector<std::filesystem::path> files{ util::findFilesInDirectory(
+                path, ".png") };
 
-            iconTexture.loadFromFile((settings.media_path / "image/spell-anim" /
-                                      std::string(toName(spell)).append("-icon.png"))
-                                         .string());
+            if (files.empty())
+            {
+                std::cout << "Error:  SpellAnimations::setup() failed to find any spells in "
+                          << path << '\n';
 
-            TextureStats::instance().process(iconTexture);
+                continue;
+            }
 
-            iconTexture.setSmooth(true);
+            set.textures.resize(files.size());
+
+            for (std::size_t frameIndex{ 0 }; frameIndex < files.size(); ++frameIndex)
+            {
+                sf::Texture & texture{ set.textures.at(frameIndex) };
+                texture.loadFromFile(files.at(frameIndex).string());
+                texture.setSmooth(true);
+                TextureStats::instance().process(texture);
+            }
         }
     }
 
-    void SpellAnimations::add(const Context & context, const sf::Vector2f & pos, const Spell spell)
+    void SpellAnimations::add(const sf::Vector2f & pos, const Spell spell)
     {
         if (Spell::Count == spell)
         {
-            std::cout << "Error: SpellAnimations::add() given an unknown spell.\n";
+            std::cout << "Error:  SpellAnimations::add() given an unknown spell.\n";
+            return;
+        }
+
+        const std::vector<sf::Texture> & textures{
+            m_textureSets.at(static_cast<std::size_t>(spell)).textures
+        };
+
+        if (textures.empty())
+        {
             return;
         }
 
         SpellAnim & anim{ m_anims.emplace_back() };
-        anim.is_alive   = true;
-        anim.which      = spell;
-        anim.anim_index = context.random.zeroToOneLessThan(frameCount(anim.which));
-        anim.sprite.setTexture(m_textures.at(static_cast<std::size_t>(spell)), true);
-        anim.sprite.setTextureRect(textureRect(spell, 0));
+        anim.is_alive           = true;
+        anim.spell              = spell;
+        anim.time_per_frame_sec = timePerFrameSec(spell);
+        anim.sprite.setTexture(textures.at(0));
         anim.sprite.setScale(m_scale);
         util::setOriginToCenter(anim.sprite);
         anim.sprite.setPosition(pos);
     }
 
-    std::size_t SpellAnimations::frameCount(const Spell which) const
-    {
-        const sf::Texture & texture{ m_textures.at(static_cast<std::size_t>(which)) };
-        return static_cast<std::size_t>(texture.getSize().x / texture.getSize().y);
-    }
-
-    sf::IntRect SpellAnimations::textureRect(const Spell which, const std::size_t frame) const
-    {
-        const sf::Texture & texture{ m_textures.at(static_cast<std::size_t>(which)) };
-
-        sf::IntRect rect;
-        rect.width  = static_cast<int>(texture.getSize().y);
-        rect.height = rect.width;
-        rect.top    = 0;
-        rect.left   = (static_cast<int>(frame) * rect.width);
-
-        return rect;
-    }
-
     void SpellAnimations::update(Context &, const float frameTimeSec)
     {
-        m_elapsedTimeSec += frameTimeSec;
-        if (m_elapsedTimeSec > m_timePerFrameSec)
+        bool didAnyFinish{ false };
+
+        for (SpellAnim & anim : m_anims)
         {
-            m_elapsedTimeSec -= m_timePerFrameSec;
-
-            bool areAnyFinished = false;
-            for (SpellAnim & anim : m_anims)
+            anim.elapsed_time_sec += frameTimeSec;
+            if (anim.elapsed_time_sec > anim.time_per_frame_sec)
             {
-                ++anim.anim_index;
-                if (anim.anim_index >= frameCount(anim.which))
+                anim.elapsed_time_sec -= anim.time_per_frame_sec;
+
+                const std::vector<sf::Texture> & textures{
+                    m_textureSets.at(static_cast<std::size_t>(anim.spell)).textures
+                };
+
+                ++anim.frame_index;
+                if (anim.frame_index < textures.size())
                 {
-                    anim.anim_index = 0;
-                    areAnyFinished  = true;
-                    anim.is_alive   = false;
+                    anim.sprite.setTexture(textures.at(anim.frame_index));
                 }
-
-                anim.sprite.setTextureRect(textureRect(anim.which, anim.anim_index));
+                else
+                {
+                    didAnyFinish  = true;
+                    anim.is_alive = false;
+                }
             }
+        }
 
-            if (areAnyFinished)
-            {
-                m_anims.erase(
-                    std::remove_if(
-                        std::begin(m_anims),
-                        std::end(m_anims),
-                        [](const SpellAnim & anim) { return !anim.is_alive; }),
-                    std::end(m_anims));
-            }
+        if (didAnyFinish)
+        {
+            m_anims.erase(
+                std::remove_if(
+                    std::begin(m_anims),
+                    std::end(m_anims),
+                    [](const SpellAnim & anim) { return !anim.is_alive; }),
+                std::end(m_anims));
         }
     }
 
-    void SpellAnimations::draw(
-        const Context & context, sf::RenderTarget & target, sf::RenderStates states) const
+    void SpellAnimations::draw(sf::RenderTarget & target, sf::RenderStates states) const
     {
         for (const SpellAnim & anim : m_anims)
         {
-            if (context.layout.wholeRect().intersects(anim.sprite.getGlobalBounds()))
-            {
-                target.draw(anim.sprite, states);
-            }
+            target.draw(anim.sprite, states);
         }
     }
 
-    const sf::Texture SpellAnimations::iconTexture(const Spell spell) const
+    void SpellAnimations::move(const float amount)
     {
-        return m_iconTextures.at(static_cast<std::size_t>(spell));
+        for (SpellAnim & anim : m_anims)
+        {
+            anim.sprite.move(amount, 0.0f);
+        }
     }
 
 } // namespace platformer
