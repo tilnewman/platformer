@@ -13,7 +13,7 @@
 #include "monster-manager.hpp"
 #include "pickups.hpp"
 #include "player-info-display.hpp"
-#include "spells.hpp"
+#include "spells-anim.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Event.hpp>

@@ -17,7 +17,7 @@
 #include "settings.hpp"
 #include "sfml-util.hpp"
 #include "sound-player.hpp"
-#include "spells.hpp"
+#include "spells-anim.hpp"
 #include "state-manager.hpp"
 
 #include <filesystem>

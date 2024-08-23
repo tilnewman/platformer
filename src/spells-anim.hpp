@@ -1,7 +1,7 @@
-#ifndef SPELLS_HPP_INCLUDED
-#define SPELLS_HPP_INCLUDED
+#ifndef SPELLS_ANIM_HPP_INCLUDED
+#define SPELLS_ANIM_HPP_INCLUDED
 //
-// spells.hpp
+// spells-anim.hpp
 //
 #include "player-info.hpp"
 
@@ -67,4 +67,4 @@ namespace platformer
 
 } // namespace platformer
 
-#endif // SPELLS_HPP_INCLUDED
+#endif // SPELLS_ANIM_HPP_INCLUDED

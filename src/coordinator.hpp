@@ -19,7 +19,7 @@
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sound-player.hpp"
-#include "spells.hpp"
+#include "spells-anim.hpp"
 #include "state-manager.hpp"
 #include "stats-display.hpp"
 
