@@ -40,29 +40,23 @@ namespace platformer
             case AvatarType::Viking:        { return "viking";      }
             case AvatarType::Witch:         { return "witch";       }
             case AvatarType::Count:         // intentional fallthrough
-            default:                        { return "error_AvatarType_not_found"; }
+            default:           { return "error_AvatarType_unknown"; }
         }
         // clang-format on
     }
 
     inline constexpr bool isMale(const AvatarType type)
     {
-        // clang-format off
-        switch (type)
-        {
-            case AvatarType::Assassin:      { return true;  }
-            case AvatarType::BlueKnight:    { return true;  }
-            case AvatarType::Druid:         { return false; }
-            case AvatarType::Enchantress:   { return false; }
-            case AvatarType::Ninja:         { return true;  }
-            case AvatarType::RedKnight:     { return true;  }
-            case AvatarType::Rogue:         { return true;  }
-            case AvatarType::Viking:        { return true;  }
-            case AvatarType::Witch:         { return false; }
-            case AvatarType::Count:         // intentional fallthrough
-            default:                        { return true;  }
-        }
-        // clang-format on
+        return (
+            (AvatarType::Druid != type) && (AvatarType::Enchantress != type) &&
+            (AvatarType::Witch != type));
+    }
+
+    inline constexpr bool isSpellCaster(const AvatarType type)
+    {
+        return (
+            (AvatarType::Druid == type) || (AvatarType::Enchantress == type) ||
+            (AvatarType::Witch == type));
     }
 
     //
@@ -93,31 +87,6 @@ namespace platformer
 
         Count
     };
-
-    inline std::vector<Spell> spellSet(const AvatarType type)
-    {
-        if (AvatarType::Witch == type)
-        {
-            return {
-                Spell::Comet, Spell::Explosion, Spell::Spikes2, Spell::Lightning2, Spell::KillAll
-            };
-        }
-        else if (AvatarType::Druid == type)
-        {
-            return { Spell::Freeze,    Spell::Fire,    Spell::Light,
-                     Spell::SunStrike, Spell::Tornado, Spell::Water };
-        }
-        else if (AvatarType::Enchantress == type)
-        {
-            return {
-                Spell::TeslaBall, Spell::Spikes1, Spell::Gypno, Spell::Lightning1, Spell::MidasHand
-            };
-        }
-        else
-        {
-            return {};
-        }
-    }
 
     inline constexpr std::string_view toName(const Spell spell)
     {
@@ -173,6 +142,62 @@ namespace platformer
         // clang-format on
     }
 
+    // TODO figure out the real values
+    inline constexpr Mana_t toManaCost(const Spell spell)
+    {
+        // clang-format off
+        switch (spell)
+        {
+            case Spell::Comet:      { return 10; }
+            case Spell::Explosion:  { return 10; }
+            case Spell::Fire:       { return 10; }
+            case Spell::Freeze:     { return 10; }
+            case Spell::Gypno:      { return 10; }
+            case Spell::KillAll:    { return 10; }
+            case Spell::Light:      { return 10; }
+            case Spell::Lightning1: { return 10; }
+            case Spell::Lightning2: { return 10; }
+            case Spell::MidasHand:  { return 10; }
+            case Spell::Spikes1:    { return 10; }
+            case Spell::Spikes2:    { return 10; }
+            case Spell::SunStrike:  { return 10; }
+            case Spell::TeslaBall:  { return 10; }
+            case Spell::Tornado:    { return 10; }
+            case Spell::Water:      { return 10; }
+            case Spell::Count:      //intentional fallthrough
+            default:                { return 0;  }
+        }
+        // clang-format on
+    }
+
+    // TODO figure out the real values
+    inline constexpr Mana_t toDamage(const Spell spell)
+    {
+        // clang-format off
+        switch (spell)
+        {
+            case Spell::Comet:      { return 10; }
+            case Spell::Explosion:  { return 10; }
+            case Spell::Fire:       { return 10; }
+            case Spell::Freeze:     { return 10; }
+            case Spell::Gypno:      { return 10; }
+            case Spell::KillAll:    { return 10; }
+            case Spell::Light:      { return 10; }
+            case Spell::Lightning1: { return 10; }
+            case Spell::Lightning2: { return 10; }
+            case Spell::MidasHand:  { return 10; }
+            case Spell::Spikes1:    { return 10; }
+            case Spell::Spikes2:    { return 10; }
+            case Spell::SunStrike:  { return 10; }
+            case Spell::TeslaBall:  { return 10; }
+            case Spell::Tornado:    { return 10; }
+            case Spell::Water:      { return 10; }
+            case Spell::Count:      //intentional fallthrough
+            default:                { return 0;  }
+        }
+        // clang-format on
+    }
+
     inline constexpr float timePerFrameSec(const Spell spell)
     {
         if (Spell::Light == spell)
@@ -189,6 +214,41 @@ namespace platformer
             return 0.125f;
         }
     }
+
+    inline std::vector<Spell> makeSpellSet(const AvatarType type)
+    {
+        if (AvatarType::Witch == type)
+        {
+            return {
+                Spell::Comet, Spell::Explosion, Spell::Spikes2, Spell::Lightning2, Spell::KillAll
+            };
+        }
+        else if (AvatarType::Druid == type)
+        {
+            return { Spell::Freeze,    Spell::Fire,    Spell::Light,
+                     Spell::SunStrike, Spell::Tornado, Spell::Water };
+        }
+        else if (AvatarType::Enchantress == type)
+        {
+            return {
+                Spell::TeslaBall, Spell::Spikes1, Spell::Gypno, Spell::Lightning1, Spell::MidasHand
+            };
+        }
+        else
+        {
+            return {};
+        }
+    }
+
+    //
+
+    struct PlayerSpell
+    {
+        Spell spell{ Spell::Count }; // anything works here
+        Mana_t cost{ 0 };
+        Health_t damage{ 0 };
+        bool is_learned{ false };
+    };
 
     //
 
@@ -210,6 +270,9 @@ namespace platformer
         inline Coin_t coins() const { return m_coins; }
         Coin_t coinsAdjust(const Coin_t adjustment);
 
+        inline const std::vector<PlayerSpell> & spells() const { return m_spells; }
+        void learnSpell(const Spell spell);
+
       private:
         AvatarType m_avatarType;
         Health_t m_health;
@@ -217,6 +280,7 @@ namespace platformer
         Mana_t m_mana;
         Mana_t m_manaMax;
         Coin_t m_coins;
+        std::vector<PlayerSpell> m_spells;
     };
 
 } // namespace platformer

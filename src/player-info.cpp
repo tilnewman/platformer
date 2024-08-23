@@ -6,25 +6,36 @@
 #include "player-info.hpp"
 
 #include <algorithm>
+#include <iostream>
 
 namespace platformer
 {
 
     PlayerInfo::PlayerInfo()
-        : m_health{ 0 }
+        : m_avatarType{ AvatarType::Count } // anything works here
+        , m_health{ 0 }
         , m_healthMax{ 100 }
         , m_mana{ 0 }
         , m_manaMax{ 100 }
         , m_coins{ 0 }
+        , m_spells{}
     {}
 
     void PlayerInfo::setup(const AvatarType type)
     {
         m_avatarType = type;
 
-        //TODO setup spells table
+        m_spells.clear();
+        for (const Spell spell : makeSpellSet(type))
+        {
+            PlayerSpell & playerSpell{ m_spells.emplace_back() };
+            playerSpell.cost       = toManaCost(spell);
+            playerSpell.damage     = toDamage(spell);
+            playerSpell.is_learned = false;
+            playerSpell.spell      = spell;
+        }
 
-        //TODO setup initial health and mana max based on type
+        // TODO setup initial health and mana max based on type
     }
 
     Health_t PlayerInfo::healthAdjust(const Health_t adjustment)
@@ -51,6 +62,24 @@ namespace platformer
         }
 
         return m_coins;
+    }
+
+    void PlayerInfo::learnSpell(const Spell spell)
+    {
+        const auto iter{ std::find_if(
+            std::begin(m_spells), std::end(m_spells), [&](const PlayerSpell & ps) {
+                return (ps.spell == spell);
+            }) };
+
+        if (iter == std::end(m_spells))
+        {
+            std::cout << "Error:  PlayerInfo::learnSpell(" << toName(spell) << ") failed for "
+                      << toString(m_avatarType) << ".\n";
+        }
+        else
+        {
+            iter->is_learned = true;
+        }
     }
 
 } // namespace platformer

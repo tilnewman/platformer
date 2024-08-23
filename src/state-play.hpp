@@ -3,6 +3,7 @@
 //
 // state-play.hpp
 //
+#include "spell-select-menu.hpp"
 #include "states.hpp"
 
 #include <SFML/Graphics/RenderStates.hpp>
@@ -33,6 +34,9 @@ namespace platformer
         void handleEvent(Context & context, const sf::Event & event) final;
         void onEnter(Context & context) final;
         void onExit(Context & context) final;
+
+      private:
+        SpellSelectMenu m_spellSelectMenu;
     };
 
 } // namespace platformer

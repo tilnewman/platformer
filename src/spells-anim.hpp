@@ -52,7 +52,7 @@ namespace platformer
         void draw(sf::RenderTarget & target, sf::RenderStates states) const;
         void move(const float amount);
 
-        inline const sf::Texture iconTexture(const Spell spell) const
+        inline const sf::Texture & iconTexture(const Spell spell) const
         {
             return m_textureSets.at(static_cast<std::size_t>(spell)).icon_texture;
         }

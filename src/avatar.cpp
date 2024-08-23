@@ -268,6 +268,7 @@ namespace platformer
         AttackInfo attackInfo;
         attackInfo.rect = attackRect();
 
+        //TODO this needs to be done differently
         if ((AvatarType::Assassin == m_type) || (AvatarType::Ninja == m_type) ||
             (AvatarType::Assassin == m_type))
         {

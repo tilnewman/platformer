@@ -58,8 +58,7 @@ namespace platformer
         const bool isFirstAttack,
         const bool isFacingRight)
     {
-        if ((type != AvatarType::Druid) && (type != AvatarType::Enchantress) &&
-            (type != AvatarType::Witch))
+        if (!isSpellCaster(type))
         {
             return;
         }

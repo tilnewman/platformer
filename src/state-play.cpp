@@ -21,7 +21,9 @@
 namespace platformer
 {
 
-    PlayState::PlayState() {}
+    PlayState::PlayState()
+    : m_spellSelectMenu{}
+    {}
 
     void PlayState::update(Context & context, const float frameTimeSec)
     {
@@ -42,6 +44,7 @@ namespace platformer
         context.avatar.draw(target, states);
         context.spell.draw(target, states);
         context.player_display.draw(target, states);
+        m_spellSelectMenu.draw(target, states);
     }
 
     void PlayState::handleEvent(Context & context, const sf::Event & event)
@@ -59,6 +62,22 @@ namespace platformer
             context.player.setup(static_cast<AvatarType>(temp));
             context.avatar.changeType(context);
         }
+        else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Num1))
+        {
+            if (isSpellCaster(context.player.avatarType()))
+            {
+                m_spellSelectMenu.setup(context);
+                m_spellSelectMenu.isVisible(true);
+            }
+        }
+        else if ((event.type == sf::Event::KeyReleased) && (event.key.code == sf::Keyboard::Num1))
+        {
+            if (isSpellCaster(context.player.avatarType()))
+            {
+                m_spellSelectMenu.isVisible(false);
+            }
+        }
+
     }
 
     void PlayState::onEnter(Context & context) { context.level.load(context); }
