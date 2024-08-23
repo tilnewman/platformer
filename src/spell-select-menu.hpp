@@ -6,6 +6,7 @@
 #include "glow-rect.hpp"
 #include "gui-window.hpp"
 #include "player-info.hpp"
+#include "sliders.hpp"
 
 #include <vector>
 
@@ -29,19 +30,23 @@ namespace platformer
       public:
         SpellSelectMenu();
 
-        void setup(Context & context);
+        void setup(Context & context, const std::size_t selection);
 
-        inline void isVisible(const bool isVisible) { m_isVisible = isVisible; }
         inline bool isVisible() const { return m_isVisible; }
-        
+
+        void update(Context & context, const float frameTimeSec);
         void draw(sf::RenderTarget & target, sf::RenderStates states) const;
 
       private:
         bool m_isVisible;
+        float m_elapsedTimeSec;
         std::vector<sf::Sprite> m_spellSprites;
         std::vector<GlowRect> m_glowRects;
         std::vector<sf::FloatRect> m_fadeRects;
         GuiWindow m_windowFrame;
+        util::SliderFromTo<float, float> m_slider;
+        std::size_t m_selectionTarget;
+
     };
 
 } // namespace platformer

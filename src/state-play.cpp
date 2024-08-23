@@ -9,6 +9,7 @@
 #include "avatar.hpp"
 #include "background-images.hpp"
 #include "context.hpp"
+#include "keys.hpp"
 #include "level.hpp"
 #include "monster-manager.hpp"
 #include "pickups.hpp"
@@ -22,7 +23,7 @@ namespace platformer
 {
 
     PlayState::PlayState()
-    : m_spellSelectMenu{}
+        : m_spellSelectMenu{}
     {}
 
     void PlayState::update(Context & context, const float frameTimeSec)
@@ -32,6 +33,7 @@ namespace platformer
         context.pickup.update(context, frameTimeSec);
         context.accent.update(context, frameTimeSec);
         context.spell.update(context, frameTimeSec);
+        m_spellSelectMenu.update(context, frameTimeSec);
     }
 
     void
@@ -49,10 +51,15 @@ namespace platformer
 
     void PlayState::handleEvent(Context & context, const sf::Event & event)
     {
-        if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::T))
+        if (event.type != sf::Event::KeyPressed)
+        {
+            return;
+        }
+
+        if (event.key.code == sf::Keyboard::T)
         {
             std::size_t temp{ static_cast<std::size_t>(context.player.avatarType()) };
-            
+
             ++temp;
             if (temp >= static_cast<std::size_t>(AvatarType::Count))
             {
@@ -62,19 +69,12 @@ namespace platformer
             context.player.setup(static_cast<AvatarType>(temp));
             context.avatar.changeType(context);
         }
-        else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Num1))
+        else if (
+            isSpellCaster(context.player.avatarType()) && util::keys::isNumberKey(event.key.code))
         {
-            if (isSpellCaster(context.player.avatarType()) && !m_spellSelectMenu.isVisible())
-            {
-                m_spellSelectMenu.setup(context);
-                m_spellSelectMenu.isVisible(true);
-            }
+            m_spellSelectMenu.setup(
+                context, util::keys::toNumberOpt<std::size_t>(event.key.code).value());
         }
-        else if ((event.type == sf::Event::KeyReleased) && (event.key.code == sf::Keyboard::Num1))
-        {
-            m_spellSelectMenu.isVisible(false);
-        }
-
     }
 
     void PlayState::onEnter(Context & context) { context.level.load(context); }

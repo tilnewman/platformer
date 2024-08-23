@@ -8,7 +8,10 @@
 #include "context.hpp"
 #include "screen-layout.hpp"
 #include "sfml-util.hpp"
+#include "sound-player.hpp"
 #include "spells-anim.hpp"
+
+#include <limits>
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -18,54 +21,93 @@ namespace platformer
 
     SpellSelectMenu::SpellSelectMenu()
         : m_isVisible{ false }
+        , m_elapsedTimeSec{ 0.0f }
         , m_spellSprites{}
         , m_glowRects{}
+        , m_fadeRects{}
         , m_windowFrame{}
+        , m_slider{}
+        , m_selectionTarget{ 0 }
     {}
 
-    void SpellSelectMenu::setup(Context & context)
+    void SpellSelectMenu::setup(Context & context, const std::size_t selectionOrig)
     {
         m_fadeRects.clear();
         m_glowRects.clear();
         m_spellSprites.clear();
 
-        sf::Vector2f pos{ context.layout.wholeSize() * sf::Vector2f{ 0.333f, 0.1f } };
+        m_isVisible      = true;
+        m_elapsedTimeSec = 0.0f;
 
         const std::vector<PlayerSpell> & playerSpells{ context.player.spells() };
-        for (const PlayerSpell & playerSpell : playerSpells)
+
+        // players press number keys 1-9 to get here but playerSpells is zero indexed,
+        // so subtract one from the number the player provides
+        const std::size_t selection{ selectionOrig - 1 };
+        
+        if (m_selectionTarget != selection)
         {
+            if ((selection < playerSpells.size()) && (playerSpells.at(selection).is_learned))
+            {
+                context.sfx.play("ui-select-magic");
+                m_selectionTarget = selection;
+                // start anim
+            }
+            else
+            {
+                context.sfx.play("ui-reject-2");
+            }
+        }
+
+        const float iconSize{ context.layout.wholeSize().y * 0.1f };
+
+        sf::Vector2f pos{ context.layout.wholeSize() * sf::Vector2f{ 0.333f, 0.1f } };
+
+        for (std::size_t spellIndex{ 0 }; spellIndex < playerSpells.size(); ++spellIndex)
+        {
+            const PlayerSpell & playerSpell{ playerSpells.at(spellIndex) };
+            const sf::FloatRect rect{ pos.x, pos.y, iconSize, iconSize };
+
             sf::Sprite & sprite{ m_spellSprites.emplace_back() };
             sprite.setTexture(context.spell.iconTexture(playerSpell.spell));
-            sprite.scale(2.0f, 2.0f);
-            sprite.setPosition(pos);
-
-            const sf::FloatRect bounds{ sprite.getGlobalBounds() };
+            util::fitAndCenterInside(sprite, rect);
 
             //
 
-            GuiWindowInfo info;
-            info.border = GuiWindowBorder::Small;
-            info.region = bounds;
-            m_windowFrame.create(context, info);
+            if ((selection == spellIndex) && (playerSpell.is_learned))
+            {
+                GuiWindowInfo info;
+                info.border = GuiWindowBorder::Small;
+                info.region = rect;
+                m_windowFrame.create(context, info);
+            }
 
             //
 
             GlowRect & glowRect{ m_glowRects.emplace_back() };
 
-            glowRect.setup(
-                sf::Color(0, 0, 0, 200), util::scaleRectInPlaceCopy(bounds, 1.25f), bounds);
+            glowRect.setup(sf::Color(0, 0, 0, 200), util::scaleRectInPlaceCopy(rect, 1.25f), rect);
 
             //
 
             if (!playerSpell.is_learned)
             {
-                m_fadeRects.push_back(bounds);
+                m_fadeRects.push_back(rect);
             }
 
             //
 
-            pos.x += bounds.width;
-            pos.x += (bounds.width * 0.5f);
+            pos.x += rect.width;
+            pos.x += (rect.width * 0.5f);
+        }
+    }
+
+    void SpellSelectMenu::update(Context &, const float frameTimeSec)
+    {
+        m_elapsedTimeSec += frameTimeSec;
+        if (m_elapsedTimeSec > 4.0f)
+        {
+            m_isVisible = false;
         }
     }
 
