@@ -30,7 +30,7 @@ namespace platformer
         , m_selectionTarget{ 0 }
     {}
 
-    void SpellSelectMenu::setup(Context & context, const std::size_t selectionOrig)
+    void SpellSelectMenu::setup(Context & t_context, const std::size_t t_selectionOrig)
     {
         m_fadeRects.clear();
         m_glowRects.clear();
@@ -39,29 +39,29 @@ namespace platformer
         m_isVisible      = true;
         m_elapsedTimeSec = 0.0f;
 
-        const std::vector<PlayerSpell> & playerSpells{ context.player.spells() };
+        const std::vector<PlayerSpell> & playerSpells{ t_context.player.spells() };
 
         // players press number keys 1-9 to get here but playerSpells is zero indexed,
         // so subtract one from the number the player provides
-        const std::size_t selection{ selectionOrig - 1 };
+        const std::size_t selection{ t_selectionOrig - 1 };
         
         if (m_selectionTarget != selection)
         {
             if ((selection < playerSpells.size()) && (playerSpells.at(selection).is_learned))
             {
-                context.sfx.play("ui-select-magic");
+                t_context.sfx.play("ui-select-magic");
                 m_selectionTarget = selection;
                 // start anim
             }
             else
             {
-                context.sfx.play("ui-reject-2");
+                t_context.sfx.play("ui-reject-2");
             }
         }
 
-        const float iconSize{ context.layout.wholeSize().y * 0.1f };
+        const float iconSize{ t_context.layout.wholeSize().y * 0.1f };
 
-        sf::Vector2f pos{ context.layout.wholeSize() * sf::Vector2f{ 0.333f, 0.1f } };
+        sf::Vector2f pos{ t_context.layout.wholeSize() * sf::Vector2f{ 0.333f, 0.1f } };
 
         for (std::size_t spellIndex{ 0 }; spellIndex < playerSpells.size(); ++spellIndex)
         {
@@ -69,7 +69,7 @@ namespace platformer
             const sf::FloatRect rect{ pos.x, pos.y, iconSize, iconSize };
 
             sf::Sprite & sprite{ m_spellSprites.emplace_back() };
-            sprite.setTexture(context.spell.iconTexture(playerSpell.spell));
+            sprite.setTexture(t_context.spell.iconTexture(playerSpell.spell));
             util::fitAndCenterInside(sprite, rect);
 
             //
@@ -79,7 +79,7 @@ namespace platformer
                 GuiWindowInfo info;
                 info.border = GuiWindowBorder::Small;
                 info.region = rect;
-                m_windowFrame.create(context, info);
+                m_windowFrame.create(t_context, info);
             }
 
             //
@@ -102,16 +102,16 @@ namespace platformer
         }
     }
 
-    void SpellSelectMenu::update(Context &, const float frameTimeSec)
+    void SpellSelectMenu::update(Context &, const float t_frameTimeSec)
     {
-        m_elapsedTimeSec += frameTimeSec;
+        m_elapsedTimeSec += t_frameTimeSec;
         if (m_elapsedTimeSec > 4.0f)
         {
             m_isVisible = false;
         }
     }
 
-    void SpellSelectMenu::draw(sf::RenderTarget & target, sf::RenderStates states) const
+    void SpellSelectMenu::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
         if (!m_isVisible)
         {
@@ -120,20 +120,20 @@ namespace platformer
 
         for (const GlowRect & glowRect : m_glowRects)
         {
-            glowRect.draw(target);
+            glowRect.draw(t_target);
         }
 
         for (const sf::Sprite & sprite : m_spellSprites)
         {
-            target.draw(sprite, states);
+            t_target.draw(sprite, t_states);
         }
 
         for (const sf::FloatRect & rect : m_fadeRects)
         {
-            util::drawRectangleShape(target, rect, true, sf::Color(0, 0, 0, 200));
+            util::drawRectangleShape(t_target, rect, true, sf::Color(0, 0, 0, 200));
         }
 
-        m_windowFrame.draw(target, states);
+        m_windowFrame.draw(t_target, t_states);
     }
 
 } // namespace platformer

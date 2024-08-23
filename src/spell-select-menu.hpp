@@ -30,12 +30,12 @@ namespace platformer
       public:
         SpellSelectMenu();
 
-        void setup(Context & context, const std::size_t selection);
+        void setup(Context & t_context, const std::size_t t_selection);
 
         inline bool isVisible() const { return m_isVisible; }
 
-        void update(Context & context, const float frameTimeSec);
-        void draw(sf::RenderTarget & target, sf::RenderStates states) const;
+        void update(Context & t_context, const float t_frameTimeSec);
+        void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
 
       private:
         bool m_isVisible;
