@@ -118,7 +118,7 @@ namespace platformer
     const BackgroundImagesInfo
         BackgroundImages::infoFactory(const Context & context, const std::string & name)
     {
-        const sf::Uint8 fadeAlpha{ 32 };
+        const sf::Uint8 fadeAlpha{ 64 };
 
         if (name == "forest")
         {
