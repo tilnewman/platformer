@@ -87,6 +87,10 @@ namespace platformer
         Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
 
       private:
+        void updateSpouts(const float t_frameTimeSec);
+        void updateDrops(const float t_frameTimeSec);
+        void updateSplashes(const float t_frameTimeSec);
+
         std::size_t frameCount(const sf::Texture & t_texture) const;
         sf::IntRect textureRect(const sf::Texture & t_texture, const std::size_t t_frame) const;
 

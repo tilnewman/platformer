@@ -116,6 +116,13 @@ namespace platformer
 
     void AcidSpoutAnimationLayer::update(Context &, const float t_frameTimeSec)
     {
+        updateSpouts(t_frameTimeSec);
+        updateDrops(t_frameTimeSec);
+        updateSplashes(t_frameTimeSec);
+    }
+
+    void AcidSpoutAnimationLayer::updateSpouts(const float t_frameTimeSec)
+    {
         for (AcidSpoutAnim & anim : m_spoutAnims)
         {
             if (anim.is_dripping)
@@ -156,9 +163,10 @@ namespace platformer
                 }
             }
         }
+    }
 
-        //
-
+    void AcidSpoutAnimationLayer::updateDrops(const float t_frameTimeSec)
+    {
         bool didAnyDropsLand{ false };
         for (AcidDropAnim & anim : m_dropAnims)
         {
@@ -173,7 +181,7 @@ namespace platformer
                 AcidSplashAnim & splash{ m_splashAnims.emplace_back() };
                 splash.sprite.setTexture(m_splashTexture);
                 splash.sprite.setTextureRect(textureRect(m_splashTexture, 0));
-                
+
                 splash.sprite.setPosition(
                     (util::center(anim.region).x - (splash.sprite.getGlobalBounds().width * 0.5f)),
                     (util::bottom(anim.region) - (splash.sprite.getGlobalBounds().height * 0.7f)));
@@ -189,9 +197,10 @@ namespace platformer
                     [](const AcidDropAnim & anim) { return !anim.is_alive; }),
                 std::end(m_dropAnims));
         }
+    }
 
-        //
-
+    void AcidSpoutAnimationLayer::updateSplashes(const float t_frameTimeSec)
+    {
         bool didAnySplashAnimsFinish{ false };
         for (AcidSplashAnim & anim : m_splashAnims)
         {
@@ -236,7 +245,6 @@ namespace platformer
         rect.height = rect.width;
         rect.top    = 0;
         rect.left   = (static_cast<int>(frame) * rect.width);
-
         return rect;
     }
 
