@@ -45,6 +45,8 @@ namespace platformer
 
         sf::Vector2f pos{ t_context.layout.wholeSize() * sf::Vector2f{ 0.333f, 0.1f } };
 
+        //
+        
         // setup m_selectionRect and m_windowFrame if first time calling setup()
         if (m_selectionRect.width < 1.0f)
         {
@@ -58,6 +60,8 @@ namespace platformer
 
         const std::vector<PlayerSpell> & playerSpells{ t_context.player.spells() };
 
+        //
+        
         // players press number keys 1-9 to get here but playerSpells is zero indexed,
         // so subtract one from the original selection that the player provided
         const std::size_t selection{ t_selectionOrig - 1 };
@@ -80,6 +84,8 @@ namespace platformer
                 t_context.sfx.play("ui-reject-2");
             }
         }
+
+        //
 
         for (std::size_t spellIndex{ 0 }; spellIndex < playerSpells.size(); ++spellIndex)
         {
