@@ -4,6 +4,7 @@
 
 #include "accents.hpp"
 #include "acid-anim-layer.hpp"
+#include "acid-spout-anim-layer.hpp"
 #include "background-images.hpp"
 #include "check-macros.hpp"
 #include "context.hpp"
@@ -61,7 +62,7 @@ namespace platformer
     bool LevelFileLoader::load(Context & context)
     {
         // TODO fix to be more general
-        const std::filesystem::path path = (context.settings.media_path / "map/mountains-1.json");
+        const std::filesystem::path path = (context.settings.media_path / "map/dungeon1-1.json");
         if (!std::filesystem::exists(path))
         {
             return false;
@@ -258,6 +259,10 @@ namespace platformer
             {
                 parseAcidAnimLayer(context, jsonLayer);
             }
+            else if (layerName == "acid-spout")
+            {
+                parseAcidSpoutAnimLayer(context, jsonLayer);
+            }
             else if (layerName == "water-anim")
             {
                 parseWaterAnimLayer(context, jsonLayer);
@@ -379,7 +384,7 @@ namespace platformer
     void LevelFileLoader::parseAcidAnimLayer(Context & context, Json & json)
     {
         std::vector<sf::FloatRect> rects;
-        rects.reserve(256);
+        rects.reserve(128);
 
         for (Json & acidJson : json["objects"])
         {
@@ -387,6 +392,19 @@ namespace platformer
         }
 
         context.level.tile_layers.push_back(std::make_unique<AcidAnimationLayer>(context, rects));
+    }
+
+    void LevelFileLoader::parseAcidSpoutAnimLayer(Context & context, Json & json) 
+    {
+        std::vector<sf::FloatRect> rects;
+        rects.reserve(32);
+
+        for (Json & acidJson : json["objects"])
+        {
+            rects.push_back(parseAndConvertRect(context, acidJson));
+        }
+
+        context.level.tile_layers.push_back(std::make_unique<AcidSpoutAnimationLayer>(context, rects));
     }
 
     void LevelFileLoader::parseWaterAnimLayer(Context & context, Json & json)

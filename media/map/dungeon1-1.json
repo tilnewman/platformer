@@ -818,6 +818,39 @@
         }, 
         {
          "draworder":"topdown",
+         "id":13,
+         "name":"acid-spout",
+         "objects":[
+                {
+                 "height":144,
+                 "id":98,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":1824,
+                 "y":1024
+                }, 
+                {
+                 "height":144,
+                 "id":99,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":1872,
+                 "y":1024
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":5,
          "name":"spawn",
          "objects":[
@@ -959,8 +992,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":13,
- "nextobjectid":98,
+ "nextlayerid":14,
+ "nextobjectid":100,
  "orientation":"orthogonal",
  "properties":[
         {
