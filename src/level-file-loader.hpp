@@ -33,7 +33,7 @@ namespace platformer
         void parseLayers(Context & context, Json & json);
         void parseTileLayer(Context & context, const TileImage image, Json & json);
         void parseRectLayer(Context & context, Json & json, std::vector<sf::FloatRect> & rects);
-        const sf::FloatRect parseAndConvertRect(const Context & context, Json & json);
+        sf::FloatRect parseAndConvertRect(const Context & context, Json & json);
         void parseSpawnLayer(Context & context, Json & json);
         void parsePickupAnimLayer(Context & context, Json & json);
         void parseAccentAnimLayer(Context & context, Json & json);

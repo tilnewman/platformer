@@ -311,7 +311,7 @@ namespace platformer
         }
     }
 
-    const sf::FloatRect LevelFileLoader::parseAndConvertRect(const Context & context, Json & json)
+    sf::FloatRect LevelFileLoader::parseAndConvertRect(const Context & context, Json & json)
     {
         sf::IntRect mapRect;
         mapRect.left   = json["x"];
