@@ -25,6 +25,27 @@ namespace platformer
 
     //
 
+    struct AcidSplashAnim
+    {
+        bool is_alive{ true };
+        float elapsed_time_sec{ 0.0f };
+        float time_between_frames_sec{ 0.1f };
+        std::size_t frame_index{ 0 };
+        sf::Sprite sprite{};
+    };
+
+    //
+
+    struct AcidDropAnim
+    {
+        bool is_alive{ true };
+        float velocity{ 0.0f };
+        sf::Sprite sprite{};
+        sf::FloatRect region{};
+    };
+
+    //
+
     struct AcidSpoutAnim
     {
         bool is_dripping{ false };
@@ -33,6 +54,7 @@ namespace platformer
         float time_between_frames_sec{ 0.15f };
         std::size_t frame_index{ 0 };
         sf::Sprite sprite{};
+        sf::FloatRect region{};
     };
 
     //
@@ -69,10 +91,13 @@ namespace platformer
         sf::IntRect textureRect(const sf::Texture & t_texture, const std::size_t t_frame) const;
 
       private:
+        float m_scale;
         sf::Texture m_spoutTexture;
         sf::Texture m_dropTexture;
         sf::Texture m_splashTexture;
         std::vector<AcidSpoutAnim> m_spoutAnims;
+        std::vector<AcidDropAnim> m_dropAnims;
+        std::vector<AcidSplashAnim> m_splashAnims;
     };
 
 } // namespace platformer
