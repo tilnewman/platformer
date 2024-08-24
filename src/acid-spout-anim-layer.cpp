@@ -25,7 +25,7 @@ namespace platformer
         : m_spoutTexture{}
         , m_dropTexture{}
         , m_splashTexture{}
-        , m_spoutSprites{}
+        , m_spoutAnims{}
     {
         HarmCollisionManager::instance().addOwner(*this);
 
@@ -46,13 +46,14 @@ namespace platformer
 
         for (const sf::FloatRect & rect : t_rects)
         {
-            sf::Sprite & sprite{ m_spoutSprites.emplace_back() };
-            sprite.setTexture(m_spoutTexture);
-            sprite.setTextureRect(textureRect(m_spoutTexture, 0));
-            sprite.scale(2.0f, 2.0f);
+            AcidSpoutAnim & anim{ m_spoutAnims.emplace_back() };
+            anim.time_between_drips = t_context.random.fromTo(1.0f, 4.0f);
+            anim.sprite.setTexture(m_spoutTexture);
+            anim.sprite.setTextureRect(textureRect(m_spoutTexture, 0));
+            anim.sprite.scale(1.5f, 1.5f);
 
-            sprite.setPosition(
-                (util::center(rect).x - (sprite.getGlobalBounds().width * 0.5f)), rect.top);
+            anim.sprite.setPosition(
+                (util::center(rect).x - (anim.sprite.getGlobalBounds().width * 0.5f)), rect.top);
         }
     }
 
@@ -64,20 +65,55 @@ namespace platformer
     void AcidSpoutAnimationLayer::draw(
         const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
-        for (const sf::Sprite & sprite : m_spoutSprites)
+        for (const AcidSpoutAnim & anim : m_spoutAnims)
         {
-            if (t_context.layout.wholeRect().intersects(sprite.getGlobalBounds()))
+            if (t_context.layout.wholeRect().intersects(anim.sprite.getGlobalBounds()))
             {
-                t_target.draw(sprite, t_states);
+                t_target.draw(anim.sprite, t_states);
             }
         }
     }
 
     void AcidSpoutAnimationLayer::move(const Context &, const float t_amount)
     {
-        for (sf::Sprite & sprite : m_spoutSprites)
+        for (AcidSpoutAnim & anim : m_spoutAnims)
         {
-            sprite.move(t_amount, 0.0f);
+            anim.sprite.move(t_amount, 0.0f);
+        }
+    }
+
+    void AcidSpoutAnimationLayer::update(Context &, const float t_frameTimeSec) 
+    {
+        for (AcidSpoutAnim & anim : m_spoutAnims)
+        {
+            if (anim.is_dripping)
+            {
+                anim.elapsed_time_sec += t_frameTimeSec;
+                if (anim.elapsed_time_sec > anim.time_between_frames_sec)
+                {
+                    anim.elapsed_time_sec -= anim.time_between_frames_sec;
+
+                    ++anim.frame_index;
+                    if (anim.frame_index >= frameCount(m_spoutTexture))
+                    {
+                        anim.frame_index      = 0;
+                        anim.elapsed_time_sec = 0.0f;
+                        anim.is_dripping      = false;
+                    }
+
+                    anim.sprite.setTextureRect(textureRect(m_spoutTexture, anim.frame_index));
+                }
+            }
+            else
+            {
+                anim.elapsed_time_sec += t_frameTimeSec;
+                if (anim.elapsed_time_sec > anim.time_between_drips)
+                {
+                    anim.elapsed_time_sec = 0.0f;
+                    anim.is_dripping      = true;
+                }
+            }
+            
         }
     }
 
@@ -97,8 +133,6 @@ namespace platformer
 
         return rect;
     }
-
-    void AcidSpoutAnimationLayer::update(Context &, const float) {}
 
     Harm AcidSpoutAnimationLayer::avatarCollide(Context &, const sf::FloatRect &)
     {

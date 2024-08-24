@@ -66,7 +66,7 @@ namespace platformer
         {
             harm.damage = 8;
             harm.rect   = collisionRect();
-            harm.sfx    = "wood-hit";
+            harm.sfx    = "hit-wood";
         }
 
         return harm;

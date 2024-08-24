@@ -25,6 +25,18 @@ namespace platformer
 
     //
 
+    struct AcidSpoutAnim
+    {
+        bool is_dripping{ false };
+        float elapsed_time_sec{ 0.0f };
+        float time_between_drips{ 0.0f };
+        float time_between_frames_sec{ 0.15f };
+        std::size_t frame_index{ 0 };
+        sf::Sprite sprite{};
+    };
+
+    //
+
     class AcidSpoutAnimationLayer
         : public ITileLayer
         , public IHarmCollisionOwner
@@ -60,7 +72,7 @@ namespace platformer
         sf::Texture m_spoutTexture;
         sf::Texture m_dropTexture;
         sf::Texture m_splashTexture;
-        std::vector<sf::Sprite> m_spoutSprites;
+        std::vector<AcidSpoutAnim> m_spoutAnims;
     };
 
 } // namespace platformer
