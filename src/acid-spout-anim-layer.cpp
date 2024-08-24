@@ -234,7 +234,14 @@ namespace platformer
 
     std::size_t AcidSpoutAnimationLayer::frameCount(const sf::Texture & t_texture) const
     {
-        return static_cast<std::size_t>(t_texture.getSize().x / t_texture.getSize().y);
+        if (t_texture.getSize().y > 0)
+        {
+            return static_cast<std::size_t>(t_texture.getSize().x / t_texture.getSize().y);
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     sf::IntRect AcidSpoutAnimationLayer::textureRect(
