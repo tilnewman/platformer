@@ -15,6 +15,7 @@
 #include "pickups.hpp"
 #include "player-info-display.hpp"
 #include "spells-anim.hpp"
+#include "state-manager.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Event.hpp>
@@ -29,11 +30,15 @@ namespace platformer
     void PlayState::update(Context & context, const float frameTimeSec)
     {
         context.avatar.update(context, frameTimeSec);
-        context.level.update(context, frameTimeSec);
-        context.pickup.update(context, frameTimeSec);
-        context.accent.update(context, frameTimeSec);
-        context.spell.update(context, frameTimeSec);
-        m_spellSelectMenu.update(context, frameTimeSec);
+
+        if (!context.state.isChangePending())
+        {
+            context.level.update(context, frameTimeSec);
+            context.pickup.update(context, frameTimeSec);
+            context.accent.update(context, frameTimeSec);
+            context.spell.update(context, frameTimeSec);
+            m_spellSelectMenu.update(context, frameTimeSec);
+        }
     }
 
     void

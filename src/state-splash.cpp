@@ -50,7 +50,7 @@ namespace platformer
         m_elpasedTimeSec += frameTimeSec;
         if (m_elpasedTimeSec > 3.0f)
         {
-            context.state.changeTo(context, State::Play);
+            context.state.setChangePending(State::Play);
         }
     }
 
@@ -67,7 +67,7 @@ namespace platformer
             return;
         }
 
-        context.state.changeTo(context, State::Play);
+        context.state.setChangePending(State::Play);
     }
 
 } // namespace platformer

@@ -667,7 +667,7 @@ namespace platformer
             }
             else
             {
-                context.state.changeTo(context, State::LevelDeath);
+                context.state.setChangePending(State::LevelDeath);
             }
         }
 
@@ -716,7 +716,7 @@ namespace platformer
         if (collisionRect().intersects(context.level.exit_rect))
         {
             context.sfx.stopAllLooped();
-            context.state.changeTo(context, State::LevelComplete);
+            context.state.setChangePending(State::LevelComplete);
         }
     }
 

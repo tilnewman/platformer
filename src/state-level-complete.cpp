@@ -55,7 +55,7 @@ namespace platformer
         m_elapsedTimeSec += frameTimeSec;
         if (m_elapsedTimeSec > 4.0f)
         {
-            context.state.changeTo(context, State::Shutdown);
+            context.state.setChangePending(State::Shutdown);
         }
     }
 

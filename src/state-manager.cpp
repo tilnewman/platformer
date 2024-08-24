@@ -16,14 +16,25 @@ namespace platformer
 {
 
     StateManager::StateManager()
-        : m_currentStateUPtr(factory(State::Startup))
+        : m_currentStateUPtr{ factory(State::Startup) }
+        , m_changePendingOpt{ std::nullopt }
     {}
 
-    void StateManager::changeTo(Context & context, const State newState)
+    void StateManager::setChangePending(const State t_state) { m_changePendingOpt = t_state; }
+
+    void StateManager::changeIfPending(Context & t_context)
     {
-        m_currentStateUPtr->onExit(context);
-        m_currentStateUPtr = factory(newState);
-        m_currentStateUPtr->onEnter(context);
+        if (!m_changePendingOpt)
+        {
+            return;
+        }
+
+        m_currentStateUPtr->onExit(t_context);
+
+        m_currentStateUPtr = factory(m_changePendingOpt.value());
+        m_changePendingOpt = std::nullopt;
+
+        m_currentStateUPtr->onEnter(t_context);
     }
 
     std::unique_ptr<IState> StateManager::factory(const State state)

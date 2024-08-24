@@ -96,7 +96,7 @@ namespace platformer
         m_avatar.setup(m_context);
         m_playerInfoDisplay.setup(m_context);
 
-        m_states.changeTo(m_context, State::Splash);
+        m_states.setChangePending(State::Splash);
 
         // TODO remove after testing
         const sf::Color testColor{ 100, 100, 255 };
@@ -151,11 +151,11 @@ namespace platformer
     {
         if (event.type == sf::Event::Closed)
         {
-            m_states.changeTo(m_context, State::Shutdown);
+            m_states.setChangePending(State::Shutdown);
         }
         else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))
         {
-            m_states.changeTo(m_context, State::Shutdown);
+            m_states.setChangePending(State::Shutdown);
         }
 
         m_states.current().handleEvent(m_context, event);
@@ -187,6 +187,7 @@ namespace platformer
     void Coordinator::update(const float frameTimeSec)
     {
         m_states.current().update(m_context, frameTimeSec);
+        m_states.changeIfPending(m_context);
     }
 
     void Coordinator::handleSleepUntilEndOfFrame(const float elapsedTimeSec)
