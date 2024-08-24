@@ -225,8 +225,8 @@ namespace platformer
         }
         else if (AvatarType::Druid == type)
         {
-            return { Spell::Freeze,    Spell::Fire,    Spell::Light,
-                     Spell::SunStrike, Spell::Tornado, Spell::Water };
+            return { Spell::Water,     Spell::Fire,    Spell::Light,
+                     Spell::SunStrike, Spell::Tornado, Spell::Freeze };
         }
         else if (AvatarType::Enchantress == type)
         {

@@ -28,6 +28,8 @@ namespace platformer
         , m_windowFrame{}
         , m_slider{}
         , m_selectionTarget{ 0 }
+        , m_selectionRect{}
+        , m_isMovingSelection{ false }
     {}
 
     void SpellSelectMenu::setup(Context & t_context, const std::size_t t_selectionOrig)
@@ -39,29 +41,45 @@ namespace platformer
         m_isVisible      = true;
         m_elapsedTimeSec = 0.0f;
 
+        const float iconSize{ t_context.layout.wholeSize().y * 0.1f };
+
+        sf::Vector2f pos{ t_context.layout.wholeSize() * sf::Vector2f{ 0.333f, 0.1f } };
+
+        // setup m_selectionRect and m_windowFrame if first time calling setup()
+        if (m_selectionRect.width < 1.0f)
+        {
+            m_selectionRect.left   = pos.x;
+            m_selectionRect.top    = pos.y;
+            m_selectionRect.width  = iconSize;
+            m_selectionRect.height = iconSize;
+
+            m_windowFrame.create(t_context, makeGuiWindowInfo(m_selectionRect));
+        }
+
         const std::vector<PlayerSpell> & playerSpells{ t_context.player.spells() };
 
         // players press number keys 1-9 to get here but playerSpells is zero indexed,
-        // so subtract one from the number the player provides
+        // so subtract one from the original selection that the player provided
         const std::size_t selection{ t_selectionOrig - 1 };
-        
+
         if (m_selectionTarget != selection)
         {
             if ((selection < playerSpells.size()) && (playerSpells.at(selection).is_learned))
             {
+                m_isMovingSelection = true;
                 t_context.sfx.play("ui-select-magic");
                 m_selectionTarget = selection;
-                // start anim
+
+                const float targetHorizPos{ pos.x +
+                                            (static_cast<float>(selection) * (iconSize * 1.5f)) };
+
+                m_slider = util::SliderFromTo<float>(m_selectionRect.left, targetHorizPos, 10.0f);
             }
             else
             {
                 t_context.sfx.play("ui-reject-2");
             }
         }
-
-        const float iconSize{ t_context.layout.wholeSize().y * 0.1f };
-
-        sf::Vector2f pos{ t_context.layout.wholeSize() * sf::Vector2f{ 0.333f, 0.1f } };
 
         for (std::size_t spellIndex{ 0 }; spellIndex < playerSpells.size(); ++spellIndex)
         {
@@ -71,16 +89,6 @@ namespace platformer
             sf::Sprite & sprite{ m_spellSprites.emplace_back() };
             sprite.setTexture(t_context.spell.iconTexture(playerSpell.spell));
             util::fitAndCenterInside(sprite, rect);
-
-            //
-
-            if ((selection == spellIndex) && (playerSpell.is_learned))
-            {
-                GuiWindowInfo info;
-                info.border = GuiWindowBorder::Small;
-                info.region = rect;
-                m_windowFrame.create(t_context, info);
-            }
 
             //
 
@@ -102,12 +110,19 @@ namespace platformer
         }
     }
 
-    void SpellSelectMenu::update(Context &, const float t_frameTimeSec)
+    void SpellSelectMenu::update(Context & t_context, const float t_frameTimeSec)
     {
         m_elapsedTimeSec += t_frameTimeSec;
-        if (m_elapsedTimeSec > 4.0f)
+        if (m_elapsedTimeSec > 3.0f)
         {
             m_isVisible = false;
+        }
+
+        if (m_isMovingSelection)
+        {
+            m_selectionRect.left = m_slider.update(t_frameTimeSec);
+            m_windowFrame.create(t_context, makeGuiWindowInfo(m_selectionRect));
+            m_isMovingSelection = m_slider.isMoving();
         }
     }
 
@@ -134,6 +149,14 @@ namespace platformer
         }
 
         m_windowFrame.draw(t_target, t_states);
+    }
+
+    GuiWindowInfo SpellSelectMenu::makeGuiWindowInfo(const sf::FloatRect & region) const
+    {
+        GuiWindowInfo info;
+        info.border = GuiWindowBorder::Fancy;
+        info.region = region;
+        return info;
     }
 
 } // namespace platformer

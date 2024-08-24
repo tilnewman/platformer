@@ -32,10 +32,13 @@ namespace platformer
 
         void setup(Context & t_context, const std::size_t t_selection);
 
-        inline bool isVisible() const { return m_isVisible; }
+        [[nodiscard]] inline bool isVisible() const noexcept { return m_isVisible; }
 
         void update(Context & t_context, const float t_frameTimeSec);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
+
+      private:
+        GuiWindowInfo makeGuiWindowInfo(const sf::FloatRect & region) const;
 
       private:
         bool m_isVisible;
@@ -46,7 +49,8 @@ namespace platformer
         GuiWindow m_windowFrame;
         util::SliderFromTo<float, float> m_slider;
         std::size_t m_selectionTarget;
-
+        sf::FloatRect m_selectionRect;
+        bool m_isMovingSelection;
     };
 
 } // namespace platformer
