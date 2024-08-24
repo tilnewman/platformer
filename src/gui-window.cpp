@@ -335,7 +335,7 @@ namespace platformer
 
                 sf::FloatRect borderTopRect;
                 borderTopRect.left   = util::right(borderTopLeftSprite);
-                borderTopRect.top    = (borderTopLeftSprite.getPosition().y + 5.0f);
+                borderTopRect.top    = (borderTopLeftSprite.getPosition().y + 4.0f);
                 borderTopRect.width  = betweenSizeHoriz;
                 borderTopRect.height = borderTopSprite.getGlobalBounds().height;
 
@@ -351,7 +351,7 @@ namespace platformer
                 borderBotRect.top =
                     ((util::bottom(borderBotLeftSprite) -
                       borderBotSprite.getGlobalBounds().height) -
-                     3.0f);
+                     4.0f);
 
                 borderBotRect.width  = borderTopRect.width;
                 borderBotRect.height = borderTopRect.height;
