@@ -248,22 +248,37 @@ namespace platformer
         return rect;
     }
 
-    Harm AcidSpoutAnimationLayer::avatarCollide(Context &, const sf::FloatRect &)
+    Harm AcidSpoutAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    {
+        for (const AcidDropAnim & anim : m_dropAnims)
+        {
+            const sf::FloatRect acidRect{ anim.sprite.getGlobalBounds() };
+            if (t_avatarRect.intersects(acidRect))
+            {
+                return makeHarm(acidRect);
+            }
+        }
+
+        for (const AcidSplashAnim & anim : m_splashAnims)
+        {
+            const sf::FloatRect acidRect{ util::scaleRectInPlaceCopy(
+                anim.sprite.getGlobalBounds(), 0.7f) };
+
+            if (t_avatarRect.intersects(acidRect))
+            {
+                return makeHarm(acidRect);
+            }
+        }
+
+        return Harm{};
+    }
+
+    Harm AcidSpoutAnimationLayer::makeHarm(const sf::FloatRect & t_rect) const
     {
         Harm harm;
-
-        // for (const sf::Sprite & sprite : m_sprites)
-        // {
-        //     const sf::FloatRect acidRect{ sprite.getGlobalBounds() };
-        //     if (t_avatarRect.intersects(acidRect))
-        //     {
-        //         harm.rect   = acidRect;
-        //         harm.damage = 99999; // TOOD lookup real max health somewhere
-        //         harm.sfx    = "acid";
-        //         break;
-        //     }
-        // }
-
+        harm.rect   = t_rect;
+        harm.damage = 10;
+        harm.sfx    = "acid";
         return harm;
     }
 

@@ -94,6 +94,8 @@ namespace platformer
         std::size_t frameCount(const sf::Texture & t_texture) const;
         sf::IntRect textureRect(const sf::Texture & t_texture, const std::size_t t_frame) const;
 
+        Harm makeHarm(const sf::FloatRect & t_rect) const;
+
       private:
         float m_scale;
         sf::Texture m_spoutTexture;
