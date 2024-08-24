@@ -7,6 +7,7 @@
 #include <cmath>
 #include <cstddef>
 #include <iomanip>
+#include <numbers>
 #include <sstream>
 #include <string>
 
@@ -229,17 +230,16 @@ namespace util
     // math
     //
 
-    constexpr float pi{ 3.1415926535897932f };
     constexpr float tiny{ 0.0001f }; // this is for games so this is close enough
 
     [[nodiscard]] constexpr float degreesToRadians(const float degrees) noexcept
     {
-        return (degrees * (pi / 180.0f));
+        return (degrees * (std::numbers::pi_v<float> / 180.0f));
     }
 
     [[nodiscard]] constexpr float radiansToDegrees(const float radians) noexcept
     {
-        return (radians * (180.0f / pi));
+        return (radians * (180.0f / std::numbers::pi_v<float>));
     }
 
     [[nodiscard]] inline bool isAbsTiny(const float value) noexcept
