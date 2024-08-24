@@ -18,7 +18,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     target_compile_options(
         ${PROJECT_NAME}
         PUBLIC
-        /std:c++latest
+        /std:c++20
         /permissive-
         /fp:fast
         -DWIN32_LEAN_AND_MEAN
@@ -53,7 +53,7 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         -DNDEBUG
         -lstdc++
         -O3
-        -std=c++17
+        -std=c++20
         -Weverything
         -Wno-c++98-compat
         -Wno-c++98-compat-pedantic
@@ -90,7 +90,7 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     target_compile_options(
         ${PROJECT_NAME}
         PUBLIC
-        -std=c++17
+        -std=c++20
         -O3
         -DNDEBUG
         -lstdc++

@@ -6,6 +6,7 @@
 #include "random.hpp"
 #include "util.hpp"
 
+#include <numbers>
 #include <utility>
 
 namespace util
@@ -56,9 +57,9 @@ namespace util
 
         void restart(const T speed, const T startAt = T(0))
         {
-            speed_ = speed;
-            value_ = std::clamp(startAt, T(0), T(1));
-            radians_ = (radiansFrom_ + (T(3.1415926) * value_));
+            speed_   = speed;
+            value_   = std::clamp(startAt, T(0), T(1));
+            radians_ = (radiansFrom_ + (std::numbers::pi_v<T> * value_));
             update(T(0));
         }
 
@@ -73,7 +74,7 @@ namespace util
                 if ((radians_ > radiansTo_) || isRealClose(radians_, radiansTo_))
                 {
                     radians_ = radiansTo_;
-                    value_ = T(1);
+                    value_   = T(1);
                     stop();
                 }
             }
@@ -86,8 +87,8 @@ namespace util
         T speed_;
         T value_;
         T radians_;
-        inline static constexpr T radiansFrom_{ T(3.1415926) * T(0.5) };
-        inline static constexpr T radiansTo_{ T(3.1415926) * T(1.5) };
+        inline static constexpr T radiansFrom_{ std::numbers::pi_v<T> * T(0.5) };
+        inline static constexpr T radiansTo_{ std::numbers::pi_v<T> * T(1.5) };
     };
 
     //
@@ -133,8 +134,8 @@ namespace util
         Value_t update(const Math_t adjustment)
         {
             const Math_t ratio = slider_.update(adjustment);
-            value_ = (from_ + static_cast<Value_t>(static_cast<Math_t>(diff_ * ratio)));
-            value_ = std::clamp(value_, min_, max_);
+            value_             = (from_ + static_cast<Value_t>(static_cast<Math_t>(diff_ * ratio)));
+            value_             = std::clamp(value_, min_, max_);
             return value_;
         }
 
@@ -216,7 +217,7 @@ namespace util
             restart(const Value_t from, const Value_t to, const Math_t speed, const Value_t startAt)
         {
             from_ = from;
-            to_ = to;
+            to_   = to;
 
             // If StartAtClamp() set value_ to to then start reversed
             if (isRealClose(startAt, to))
