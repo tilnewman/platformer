@@ -3,7 +3,7 @@
 //
 // level-file-loader.hpp
 //
-#include "json.hpp"
+#include "json-wrapper.hpp"
 #include "tile-image.hpp"
 
 #include <string>
