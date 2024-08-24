@@ -91,10 +91,12 @@ namespace platformer
         void updateDrops(const float t_frameTimeSec);
         void updateSplashes(const float t_frameTimeSec);
 
-        std::size_t frameCount(const sf::Texture & t_texture) const;
-        sf::IntRect textureRect(const sf::Texture & t_texture, const std::size_t t_frame) const;
+        [[nodiscard]] std::size_t frameCount(const sf::Texture & t_texture) const;
 
-        Harm makeHarm(const sf::FloatRect & t_rect) const;
+        [[nodiscard]] sf::IntRect
+            textureRect(const sf::Texture & t_texture, const std::size_t t_frame) const;
+
+        [[nodiscard]] Harm makeHarm(const sf::FloatRect & t_rect) const noexcept;
 
       private:
         float m_scale;
