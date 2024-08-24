@@ -694,7 +694,7 @@ namespace platformer
             turnRight();
         }
 
-        // context.sfx.play("respawn"); //TODO
+        context.sfx.play("spawn");
     }
 
     void Avatar::turnRight()
