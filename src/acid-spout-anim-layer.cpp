@@ -280,7 +280,7 @@ namespace platformer
         return Harm{};
     }
 
-    Harm AcidSpoutAnimationLayer::makeHarm(const sf::FloatRect & t_rect) const
+    Harm AcidSpoutAnimationLayer::makeHarm(const sf::FloatRect & t_rect) const noexcept
     {
         Harm harm;
         harm.rect   = t_rect;

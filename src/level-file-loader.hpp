@@ -39,6 +39,7 @@ namespace platformer
         void parseAccentAnimLayer(Context & context, Json & json);
         void parseAcidAnimLayer(Context & context, Json & json);
         void parseAcidSpoutAnimLayer(Context & context, Json & json);
+        void parseFlamingSkullAnimLayer(Context & context, Json & json);
         void parseWaterAnimLayer(Context & context, Json & json);
         void parseLightningAnimLayer(Context & context, Json & json);
         void parseMonsterLayer(Context & context, Json & json);

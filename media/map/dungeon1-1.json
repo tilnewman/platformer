@@ -851,6 +851,28 @@
         }, 
         {
          "draworder":"topdown",
+         "id":14,
+         "name":"fire-skull",
+         "objects":[
+                {
+                 "height":32,
+                 "id":102,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":752,
+                 "y":1120
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":5,
          "name":"spawn",
          "objects":[
@@ -992,8 +1014,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":14,
- "nextobjectid":100,
+ "nextlayerid":15,
+ "nextobjectid":103,
  "orientation":"orthogonal",
  "properties":[
         {

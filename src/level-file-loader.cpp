@@ -8,6 +8,7 @@
 #include "background-images.hpp"
 #include "check-macros.hpp"
 #include "context.hpp"
+#include "flaming-skull-anim-layer.hpp"
 #include "level.hpp"
 #include "lightning-anim-layer.hpp"
 #include "map-textures.hpp"
@@ -263,6 +264,10 @@ namespace platformer
             {
                 parseAcidSpoutAnimLayer(context, jsonLayer);
             }
+            else if (layerName == "fire-skull")
+            {
+                parseFlamingSkullAnimLayer(context, jsonLayer);
+            }
             else if (layerName == "water-anim")
             {
                 parseWaterAnimLayer(context, jsonLayer);
@@ -394,7 +399,7 @@ namespace platformer
         context.level.tile_layers.push_back(std::make_unique<AcidAnimationLayer>(context, rects));
     }
 
-    void LevelFileLoader::parseAcidSpoutAnimLayer(Context & context, Json & json) 
+    void LevelFileLoader::parseAcidSpoutAnimLayer(Context & context, Json & json)
     {
         std::vector<sf::FloatRect> rects;
         rects.reserve(32);
@@ -404,13 +409,28 @@ namespace platformer
             rects.push_back(parseAndConvertRect(context, acidJson));
         }
 
-        context.level.tile_layers.push_back(std::make_unique<AcidSpoutAnimationLayer>(context, rects));
+        context.level.tile_layers.push_back(
+            std::make_unique<AcidSpoutAnimationLayer>(context, rects));
+    }
+
+    void LevelFileLoader::parseFlamingSkullAnimLayer(Context & context, Json & json)
+    {
+        std::vector<sf::FloatRect> rects;
+        rects.reserve(32);
+
+        for (Json & skullJson : json["objects"])
+        {
+            rects.push_back(parseAndConvertRect(context, skullJson));
+        }
+
+        context.level.tile_layers.push_back(
+            std::make_unique<FlamingSkullAnimationLayer>(context, rects));
     }
 
     void LevelFileLoader::parseWaterAnimLayer(Context & context, Json & json)
     {
         std::vector<sf::FloatRect> rects;
-        rects.reserve(256);
+        rects.reserve(128);
 
         for (Json & waterJson : json["objects"])
         {
@@ -423,7 +443,7 @@ namespace platformer
     void LevelFileLoader::parseLightningAnimLayer(Context & context, Json & json)
     {
         std::vector<sf::FloatRect> rects;
-        rects.reserve(256);
+        rects.reserve(32);
 
         for (Json & lightningJson : json["objects"])
         {
