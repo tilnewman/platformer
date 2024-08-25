@@ -119,7 +119,7 @@ namespace util::keys
         return os;
     }
 
-    inline constexpr bool isNumberKey(const sf::Keyboard::Key key) 
+    inline constexpr bool isNumberKey(const sf::Keyboard::Key key)
     {
         return (
             (sf::Keyboard::Num0 == key) || (sf::Keyboard::Num1 == key) ||
@@ -135,16 +135,16 @@ namespace util::keys
         static_assert(std::is_arithmetic_v<T>);
 
         // clang-format off
-        if (key == sf::Keyboard::Num0)      { return T(0); }
-        else if (key == sf::Keyboard::Num1) { return T(1); }
-        else if (key == sf::Keyboard::Num2) { return T(2); }
-        else if (key == sf::Keyboard::Num3) { return T(3); }
-        else if (key == sf::Keyboard::Num4) { return T(4); }
-        else if (key == sf::Keyboard::Num5) { return T(5); }
-        else if (key == sf::Keyboard::Num6) { return T(6); }
-        else if (key == sf::Keyboard::Num7) { return T(7); }
-        else if (key == sf::Keyboard::Num8) { return T(8); }
-        else if (key == sf::Keyboard::Num9) { return T(9); }
+        if      (key == sf::Keyboard::Num0) { return {0}; }
+        else if (key == sf::Keyboard::Num1) { return {1}; }
+        else if (key == sf::Keyboard::Num2) { return {2}; }
+        else if (key == sf::Keyboard::Num3) { return {3}; }
+        else if (key == sf::Keyboard::Num4) { return {4}; }
+        else if (key == sf::Keyboard::Num5) { return {5}; }
+        else if (key == sf::Keyboard::Num6) { return {6}; }
+        else if (key == sf::Keyboard::Num7) { return {7}; }
+        else if (key == sf::Keyboard::Num8) { return {8}; }
+        else if (key == sf::Keyboard::Num9) { return {9}; }
         else { return std::nullopt; }
         // clang-format on
     }
