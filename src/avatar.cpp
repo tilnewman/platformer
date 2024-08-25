@@ -270,7 +270,7 @@ namespace platformer
 
         //TODO this needs to be done differently
         if ((AvatarType::Assassin == m_type) || (AvatarType::Ninja == m_type) ||
-            (AvatarType::Assassin == m_type))
+            (AvatarType::Rogue == m_type))
         {
             if (AvatarState::Attack == m_state)
             {
