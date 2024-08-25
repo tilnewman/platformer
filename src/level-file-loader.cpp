@@ -46,6 +46,7 @@
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
+#include "trap-anim-layer.hpp"
 #include "water-anim-layer.hpp"
 
 #include <exception>
@@ -264,6 +265,10 @@ namespace platformer
             {
                 parseAcidSpoutAnimLayer(context, jsonLayer);
             }
+            else if (layerName == "metal-trap")
+            {
+                parseTrapAnimLayer(context, jsonLayer);
+            }
             else if (layerName == "fire-skull")
             {
                 parseFlamingSkullAnimLayer(context, jsonLayer);
@@ -411,6 +416,19 @@ namespace platformer
 
         context.level.tile_layers.push_back(
             std::make_unique<AcidSpoutAnimationLayer>(context, rects));
+    }
+
+    void LevelFileLoader::parseTrapAnimLayer(Context & context, Json & json)
+    {
+        std::vector<sf::FloatRect> rects;
+        rects.reserve(32);
+
+        for (Json & trapJson : json["objects"])
+        {
+            rects.push_back(parseAndConvertRect(context, trapJson));
+        }
+
+        context.level.tile_layers.push_back(std::make_unique<TrapAnimationLayer>(context, rects));
     }
 
     void LevelFileLoader::parseFlamingSkullAnimLayer(Context & context, Json & json)

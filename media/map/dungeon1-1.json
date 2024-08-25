@@ -798,17 +798,28 @@
                  "width":240,
                  "x":848,
                  "y":1168
-                }, 
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":15,
+         "name":"metal-trap",
+         "objects":[
                 {
-                 "height":112,
-                 "id":70,
-                 "name":"goblin",
+                 "height":160,
+                 "id":103,
+                 "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":288,
-                 "x":416,
-                 "y":1168
+                 "width":32,
+                 "x":576,
+                 "y":1120
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1014,8 +1025,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":15,
- "nextobjectid":103,
+ "nextlayerid":16,
+ "nextobjectid":104,
  "orientation":"orthogonal",
  "properties":[
         {
