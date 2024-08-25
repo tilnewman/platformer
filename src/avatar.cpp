@@ -26,84 +26,84 @@ namespace platformer
 {
 
     Avatar::Avatar()
-        : m_sprite()
-        , m_type(AvatarType::Count) // anything works here
-        , m_anim(AvatarAnim::Walk)
-        , m_state(AvatarState::Still)
-        , m_elapsedTimeSec(0.0f)
-        , m_deathDelayElapsedTimeSec(0.0f)
-        , m_animIndex(0)
-        , m_velocity()
-        , m_hasLanded(false)
-        , m_isFacingRight(true)
-        , m_avatarImageWidthRatio(0.25f)
-        , m_isAnimating(false)
-        , m_hasHitEnemy(false)
-        , m_spellAnim()
+        : m_sprite{}
+        , m_type{ AvatarType::Count } // anything works here
+        , m_anim{ AvatarAnim::Walk }
+        , m_state{ AvatarState::Still }
+        , m_elapsedTimeSec{ 0.0f }
+        , m_deathDelayElapsedTimeSec{ 0.0f }
+        , m_animIndex{ 0 }
+        , m_velocity{}
+        , m_hasLanded{ false }
+        , m_isFacingRight{ true }
+        , m_avatarImageWidthRatio{ 0.25f }
+        , m_isAnimating{ false }
+        , m_hasHitEnemy{ false }
+        , m_spellAnim{}
     {}
 
     Avatar::~Avatar() { AvatarTextureManager::instance().release(m_type); }
 
-    void Avatar::setup(const Context & context)
+    void Avatar::setup(const Context & t_context)
     {
-        m_spellAnim.setup(context.settings);
+        m_spellAnim.setup(t_context.settings);
 
-        m_type  = context.player.avatarType();
+        m_type  = t_context.player.avatarType();
         m_anim  = AvatarAnim::Walk;
         m_state = AvatarState::Still;
 
         AvatarTextureManager & textureManager{ AvatarTextureManager::instance() };
-        textureManager.acquire(context, m_type);
+        textureManager.acquire(t_context, m_type);
         textureManager.set(m_sprite, m_type, m_anim, 0);
-        m_sprite.setScale(context.settings.avatar_scale, context.settings.avatar_scale);
+        m_sprite.setScale(t_context.settings.avatar_scale, t_context.settings.avatar_scale);
     }
 
-    void Avatar::update(Context & context, const float frameTimeSec)
+    void Avatar::update(Context & t_context, const float t_frameTimeSec)
     {
-        m_spellAnim.update(frameTimeSec);
+        m_spellAnim.update(t_frameTimeSec);
 
         // this handleDeath() call must happen first
-        if (handleDeath(context, frameTimeSec))
+        if (handleDeath(t_context, t_frameTimeSec))
         {
             return;
         }
 
         // handleAttacking() should be called BEFORE these three
-        handleAttackState(context);
-        handleAttackingEnemies(context);
-        sideToSideMotion(context, frameTimeSec);
-        jumping(context, frameTimeSec);
+        handleAttackState(t_context);
+        handleAttackingEnemies(t_context);
+        sideToSideMotion(t_context, t_frameTimeSec);
+        jumping(t_context, t_frameTimeSec);
 
-        m_velocity += (context.settings.gravity_acc * frameTimeSec);
+        m_velocity += (t_context.settings.gravity_acc * t_frameTimeSec);
         m_sprite.move(m_velocity);
 
         // moveMap() and collisions should be called AFTER m_sprite.move() above
-        moveMap(context);
-        preventBacktracking(context);
-        collisions(context);
-        exitCollisions(context);
-        hurtCollisions(context);
-        // context.managers.collideAllWithAvatar(context, collisionRect());
-        context.pickup.processCollisionWithAvatar(context, collisionRect());
+        moveMap(t_context);
+        preventBacktracking(t_context);
+        collisions(t_context);
+        exitCollisions(t_context);
+        hurtCollisions(t_context);
+        // t_context.managers.collideAllWithAvatar(t_context, collisionRect());
+        t_context.pickup.processCollisionWithAvatar(t_context, collisionRect());
 
         // these two must happen last
-        killIfOutOfBounds(context);
-        animate(context, frameTimeSec);
+        killIfOutOfBounds(t_context);
+        animate(t_context, t_frameTimeSec);
     }
 
-    void Avatar::draw(sf::RenderTarget & target, sf::RenderStates states)
+    void Avatar::draw(sf::RenderTarget & t_target, sf::RenderStates t_states)
     {
-        target.draw(m_sprite, states);
-        m_spellAnim.draw(target, states);
+        t_target.draw(m_sprite, t_states);
+        m_spellAnim.draw(t_target, t_states);
     }
 
-    void Avatar::setPosition(const sf::FloatRect & rect)
+    void Avatar::setPosition(const sf::FloatRect & t_rect)
     {
-        m_sprite.setPosition(util::center(rect).x, util::bottom(rect));
+        m_sprite.setPosition(util::center(t_rect).x, util::bottom(t_rect));
         m_sprite.move(0.0f, (-110.0f * m_sprite.getScale().y));
     }
 
-    const sf::FloatRect Avatar::collisionRect() const
+    sf::FloatRect Avatar::collisionRect() const
     {
         const sf::FloatRect bounds{ m_sprite.getGlobalBounds() };
         sf::FloatRect rect{ bounds };
@@ -122,14 +122,14 @@ namespace platformer
         return rect;
     }
 
-    void Avatar::changeType(Context & context)
+    void Avatar::changeType(Context & t_context)
     {
         AvatarTextureManager::instance().release(m_type);
-        m_type = context.player.avatarType();
-        AvatarTextureManager::instance().acquire(context, m_type);
+        m_type = t_context.player.avatarType();
+        AvatarTextureManager::instance().acquire(t_context, m_type);
     }
 
-    const sf::FloatRect Avatar::attackRect() const
+    sf::FloatRect Avatar::attackRect() const
     {
         if ((AvatarState::Attack != m_state) && (AvatarState::AttackExtra != m_state))
         {
@@ -160,7 +160,7 @@ namespace platformer
         return rect;
     }
 
-    void Avatar::animate(Context &, const float frameTimeSec)
+    void Avatar::animate(Context &, const float t_frameTimeSec)
     {
         AvatarTextureManager & textureManager{ AvatarTextureManager::instance() };
         const std::size_t frameCount{ textureManager.frameCount(m_type, m_anim) };
@@ -173,7 +173,7 @@ namespace platformer
             return;
         }
 
-        m_elapsedTimeSec += frameTimeSec;
+        m_elapsedTimeSec += t_frameTimeSec;
         if (m_elapsedTimeSec > timePerFrameSec)
         {
             m_elapsedTimeSec -= timePerFrameSec;
@@ -197,7 +197,7 @@ namespace platformer
         }
     }
 
-    void Avatar::handleAttackState(Context & context)
+    void Avatar::handleAttackState(Context & t_context)
     {
         // first frame
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F) && (AvatarState::Attack != m_state) &&
@@ -223,14 +223,14 @@ namespace platformer
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
             {
-                context.sfx.play("swipe", 0.6f);
+                t_context.sfx.play("swipe", 0.6f);
                 m_state = AvatarState::AttackExtra;
                 m_anim  = AvatarAnim::AttackExtra;
                 m_spellAnim.add(spellAnimPos, m_type, false, m_isFacingRight);
             }
             else
             {
-                context.sfx.play("swipe");
+                t_context.sfx.play("swipe");
                 m_state = AvatarState::Attack;
                 m_anim  = AvatarAnim::Attack;
                 m_spellAnim.add(spellAnimPos, m_type, true, m_isFacingRight);
@@ -252,7 +252,7 @@ namespace platformer
         }
     }
 
-    void Avatar::handleAttackingEnemies(Context & context)
+    void Avatar::handleAttackingEnemies(Context & t_context)
     {
         if ((AvatarState::Attack != m_state) && (AvatarState::AttackExtra != m_state))
         {
@@ -268,7 +268,7 @@ namespace platformer
         AttackInfo attackInfo;
         attackInfo.rect = attackRect();
 
-        //TODO this needs to be done differently
+        // TODO this needs to be done differently
         if ((AvatarType::Assassin == m_type) || (AvatarType::Ninja == m_type) ||
             (AvatarType::Rogue == m_type))
         {
@@ -306,17 +306,17 @@ namespace platformer
             }
         }
 
-        if (context.level.monsters.avatarAttack(context, attackInfo))
+        if (t_context.level.monsters.avatarAttack(t_context, attackInfo))
         {
             m_hasHitEnemy = true;
             if ((AvatarType::Druid == m_type) || (AvatarType::Enchantress == m_type) ||
                 (AvatarType::Witch == m_type))
             {
-                context.sfx.play("hit-staff");
+                t_context.sfx.play("hit-staff");
             }
             else
             {
-                context.sfx.play("hit-metal");
+                t_context.sfx.play("hit-metal");
             }
         }
         else
@@ -325,10 +325,10 @@ namespace platformer
         }
     }
 
-    void Avatar::moveMap(Context & context)
+    void Avatar::moveMap(Context & t_context)
     {
         const float posXAfter    = util::center(m_sprite.getGlobalBounds()).x;
-        const float screenMiddle = (context.layout.wholeRect().width * 0.5f);
+        const float screenMiddle = (t_context.layout.wholeRect().width * 0.5f);
 
         if ((m_velocity.x < 0.0f) || (posXAfter < screenMiddle))
         {
@@ -336,7 +336,7 @@ namespace platformer
         }
 
         const float moveX = (screenMiddle - posXAfter);
-        if (!context.level.move(context, moveX))
+        if (!t_context.level.move(t_context, moveX))
         {
             return;
         }
@@ -344,25 +344,25 @@ namespace platformer
         const sf::Vector2f move{ moveX, 0.0f };
         m_sprite.move(move);
 
-        context.accent.move(moveX);
-        context.pickup.move(moveX);
-        context.level.move(context, moveX);
-        context.pickup.move(moveX);
-        context.bg_image.move(moveX);
-        context.spell.move(moveX);
+        t_context.accent.move(moveX);
+        t_context.pickup.move(moveX);
+        t_context.level.move(t_context, moveX);
+        t_context.pickup.move(moveX);
+        t_context.bg_image.move(moveX);
+        t_context.spell.move(moveX);
     }
 
-    void Avatar::killIfOutOfBounds(Context & context)
+    void Avatar::killIfOutOfBounds(Context & t_context)
     {
-        if (!context.layout.wholeRect().intersects(collisionRect()))
+        if (!t_context.layout.wholeRect().intersects(collisionRect()))
         {
-            triggerDeath(context);
+            triggerDeath(t_context);
         }
     }
 
-    void Avatar::preventBacktracking(const Context & context)
+    void Avatar::preventBacktracking(const Context & t_context)
     {
-        const sf::FloatRect backtrackRect{ -100.0f, 0.0f, 100.0f, context.layout.wholeSize().y };
+        const sf::FloatRect backtrackRect{ -100.0f, 0.0f, 100.0f, t_context.layout.wholeSize().y };
 
         sf::FloatRect intersection;
         if (collisionRect().intersects(backtrackRect, intersection))
@@ -372,7 +372,7 @@ namespace platformer
         }
     }
 
-    void Avatar::collisions(Context & context)
+    void Avatar::collisions(Context & t_context)
     {
         const float tolerance = 25.0f; // this magic number brought to you by zTn 2021-8-2
 
@@ -384,8 +384,8 @@ namespace platformer
         footRect.top += footRectHeightAdj;
         footRect.height -= footRectHeightAdj;
 
-        std::vector<sf::FloatRect> rects{ context.level.collisions };
-        context.level.monsters.appendCollisionRects(rects);
+        std::vector<sf::FloatRect> rects{ t_context.level.collisions };
+        t_context.level.monsters.appendCollisionRects(rects);
 
         bool hasHitSomething{ false };
         sf::FloatRect intersection;
@@ -413,7 +413,7 @@ namespace platformer
 
                 if (!m_hasLanded)
                 {
-                    context.sfx.play("land");
+                    t_context.sfx.play("land");
                     m_state = AvatarState::Still;
                     m_anim  = AvatarAnim::Walk;
                     restartAnim();
@@ -453,7 +453,7 @@ namespace platformer
         }
     }
 
-    void Avatar::sideToSideMotion(Context & context, const float frameTimeSec)
+    void Avatar::sideToSideMotion(Context & t_context, const float t_frameTimeSec)
     {
         if ((AvatarState::Hurt == m_state) || (AvatarState::Attack == m_state) ||
             (AvatarState::AttackExtra == m_state))
@@ -471,22 +471,22 @@ namespace platformer
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
             {
                 m_velocity.x +=
-                    ((context.settings.walk_acceleration / jumpMoveDivisor) * frameTimeSec);
+                    ((t_context.settings.walk_acceleration / jumpMoveDivisor) * t_frameTimeSec);
 
-                if (m_velocity.x > context.settings.walk_speed_limit)
+                if (m_velocity.x > t_context.settings.walk_speed_limit)
                 {
-                    m_velocity.x = context.settings.walk_speed_limit;
+                    m_velocity.x = t_context.settings.walk_speed_limit;
                 }
             }
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             {
                 m_velocity.x -=
-                    ((context.settings.walk_acceleration / jumpMoveDivisor) * frameTimeSec);
+                    ((t_context.settings.walk_acceleration / jumpMoveDivisor) * t_frameTimeSec);
 
-                if (m_velocity.x < -context.settings.walk_speed_limit)
+                if (m_velocity.x < -t_context.settings.walk_speed_limit)
                 {
-                    m_velocity.x = -context.settings.walk_speed_limit;
+                    m_velocity.x = -t_context.settings.walk_speed_limit;
                 }
             }
 
@@ -497,16 +497,16 @@ namespace platformer
         {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
             {
-                m_velocity.x += (context.settings.run_acceleration * frameTimeSec);
-                if (m_velocity.x > context.settings.run_speed_limit)
+                m_velocity.x += (t_context.settings.run_acceleration * t_frameTimeSec);
+                if (m_velocity.x > t_context.settings.run_speed_limit)
                 {
-                    m_velocity.x = context.settings.run_speed_limit;
+                    m_velocity.x = t_context.settings.run_speed_limit;
                 }
 
                 if (AvatarState::Run != m_state)
                 {
                     restartAnim();
-                    context.sfx.play("walk");
+                    t_context.sfx.play("walk");
                 }
 
                 m_state = AvatarState::Run;
@@ -514,16 +514,16 @@ namespace platformer
             }
             else
             {
-                m_velocity.x += (context.settings.walk_acceleration * frameTimeSec);
-                if (m_velocity.x > context.settings.walk_speed_limit)
+                m_velocity.x += (t_context.settings.walk_acceleration * t_frameTimeSec);
+                if (m_velocity.x > t_context.settings.walk_speed_limit)
                 {
-                    m_velocity.x = context.settings.walk_speed_limit;
+                    m_velocity.x = t_context.settings.walk_speed_limit;
                 }
 
                 if (AvatarState::Walk != m_state)
                 {
                     restartAnim();
-                    context.sfx.play("walk");
+                    t_context.sfx.play("walk");
                 }
 
                 m_state = AvatarState::Walk;
@@ -539,16 +539,16 @@ namespace platformer
         {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
             {
-                m_velocity.x -= (context.settings.run_acceleration * frameTimeSec);
-                if (m_velocity.x < -context.settings.run_speed_limit)
+                m_velocity.x -= (t_context.settings.run_acceleration * t_frameTimeSec);
+                if (m_velocity.x < -t_context.settings.run_speed_limit)
                 {
-                    m_velocity.x = -context.settings.run_speed_limit;
+                    m_velocity.x = -t_context.settings.run_speed_limit;
                 }
 
                 if (AvatarState::Run != m_state)
                 {
                     restartAnim();
-                    context.sfx.play("walk");
+                    t_context.sfx.play("walk");
                 }
 
                 m_state = AvatarState::Run;
@@ -556,16 +556,16 @@ namespace platformer
             }
             else
             {
-                m_velocity.x -= (context.settings.walk_acceleration * frameTimeSec);
-                if (m_velocity.x < -context.settings.walk_speed_limit)
+                m_velocity.x -= (t_context.settings.walk_acceleration * t_frameTimeSec);
+                if (m_velocity.x < -t_context.settings.walk_speed_limit)
                 {
-                    m_velocity.x = -context.settings.walk_speed_limit;
+                    m_velocity.x = -t_context.settings.walk_speed_limit;
                 }
 
                 if (AvatarState::Walk != m_state)
                 {
                     restartAnim();
-                    context.sfx.play("walk");
+                    t_context.sfx.play("walk");
                 }
 
                 m_state = AvatarState::Walk;
@@ -583,7 +583,7 @@ namespace platformer
             m_state      = AvatarState::Still;
             m_anim       = AvatarAnim::Walk;
             restartAnim();
-            context.sfx.stop("walk");
+            t_context.sfx.stop("walk");
         }
     }
 
@@ -594,7 +594,7 @@ namespace platformer
         m_elapsedTimeSec = 0.0f;
     }
 
-    void Avatar::jumping(Context & context, const float frameTimeSec)
+    void Avatar::jumping(Context & t_context, const float t_frameTimeSec)
     {
         if ((AvatarState::Attack == m_state) || (AvatarState::AttackExtra == m_state) ||
             (AvatarState::Climb == m_state) || (AvatarState::Death == m_state) ||
@@ -606,27 +606,27 @@ namespace platformer
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && m_hasLanded)
         {
             m_hasLanded = false;
-            // context.sfx.play("jump"); //TODO
-            context.sfx.stop("walk");
+            // t_context.sfx.play("jump"); //TODO
+            t_context.sfx.stop("walk");
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
             {
                 m_state = AvatarState::JumpHigh;
                 m_anim  = AvatarAnim::JumpHigh;
-                m_velocity.y -= (context.settings.high_jump_acc * frameTimeSec);
+                m_velocity.y -= (t_context.settings.high_jump_acc * t_frameTimeSec);
             }
             else
             {
                 m_state = AvatarState::Jump;
                 m_anim  = AvatarAnim::Jump;
-                m_velocity.y -= (context.settings.jump_acc * frameTimeSec);
+                m_velocity.y -= (t_context.settings.jump_acc * t_frameTimeSec);
             }
 
             restartAnim();
         }
     }
 
-    void Avatar::triggerDeath(Context & context)
+    void Avatar::triggerDeath(Context & t_context)
     {
         if (AvatarState::Death == m_state)
         {
@@ -636,16 +636,16 @@ namespace platformer
         m_state = AvatarState::Death;
         m_anim  = AvatarAnim::Death;
         restartAnim();
-        context.sfx.stop("walk");
-        context.sfx.play("death-avatar");
+        t_context.sfx.stop("walk");
+        t_context.sfx.play("death-avatar");
         m_velocity = { 0.0f, 0.0f };
 
-        // context.stats.has_player_died = true;
-        // context.stats.enemy_killed    = 0;
-        // context.stats.coin_collected  = 0;
+        // t_context.stats.has_player_died = true;
+        // t_context.stats.enemy_killed    = 0;
+        // t_context.stats.coin_collected  = 0;
     }
 
-    bool Avatar::handleDeath(Context & context, const float frameTimeSec)
+    bool Avatar::handleDeath(Context & t_context, const float t_frameTimeSec)
     {
         if (AvatarState::Death != m_state)
         {
@@ -655,33 +655,33 @@ namespace platformer
         // Delay a few seconds after death before changing states.
         // This allows the player to see how they died, and for all
         // the various sound effects to finish playing.
-        m_deathDelayElapsedTimeSec += frameTimeSec;
-        if (m_deathDelayElapsedTimeSec > context.settings.death_delay_sec)
+        m_deathDelayElapsedTimeSec += t_frameTimeSec;
+        if (m_deathDelayElapsedTimeSec > t_context.settings.death_delay_sec)
         {
             m_deathDelayElapsedTimeSec = 0.0f;
 
-            if (context.level_info.playerLives() > 1)
+            if (t_context.level_info.playerLives() > 1)
             {
-                context.level_info.playerLivesAdjust(-1);
-                respawn(context);
+                t_context.level_info.playerLivesAdjust(-1);
+                respawn(t_context);
             }
             else
             {
-                context.state.setChangePending(State::LevelDeath);
+                t_context.state.setChangePending(State::LevelDeath);
             }
         }
 
-        animate(context, frameTimeSec);
+        animate(t_context, t_frameTimeSec);
         return true;
     }
 
-    void Avatar::respawn(Context & context)
+    void Avatar::respawn(Context & t_context)
     {
-        context.accent.clear();
-        context.pickup.clear();
-        context.spell.clear();
+        t_context.accent.clear();
+        t_context.pickup.clear();
+        t_context.spell.clear();
 
-        context.level.load(context);
+        t_context.level.load(t_context);
 
         m_state = AvatarState::Still;
         m_anim  = AvatarAnim::Walk;
@@ -694,7 +694,7 @@ namespace platformer
             turnRight();
         }
 
-        context.sfx.play("spawn");
+        t_context.sfx.play("spawn");
     }
 
     void Avatar::turnRight()
@@ -711,16 +711,16 @@ namespace platformer
         m_sprite.move((m_sprite.getGlobalBounds().width * (1.0f - m_avatarImageWidthRatio)), 0.0f);
     }
 
-    void Avatar::exitCollisions(Context & context) const
+    void Avatar::exitCollisions(Context & t_context) const
     {
-        if (collisionRect().intersects(context.level.exit_rect))
+        if (collisionRect().intersects(t_context.level.exit_rect))
         {
-            context.sfx.stopAllLooped();
-            context.state.setChangePending(State::LevelComplete);
+            t_context.sfx.stopAllLooped();
+            t_context.state.setChangePending(State::LevelComplete);
         }
     }
 
-    void Avatar::hurtCollisions(Context & context)
+    void Avatar::hurtCollisions(Context & t_context)
     {
         if (AvatarState::Hurt == m_state)
         {
@@ -728,23 +728,23 @@ namespace platformer
         }
 
         const sf::FloatRect avatarRect{ collisionRect() };
-        harm(context, HarmCollisionManager::instance().avatarCollide(context, avatarRect));
-        harm(context, context.level.monsters.avatarCollide(avatarRect));
+        harm(t_context, HarmCollisionManager::instance().avatarCollide(t_context, avatarRect));
+        harm(t_context, t_context.level.monsters.avatarCollide(avatarRect));
     }
 
-    void Avatar::harm(Context & context, const Harm & harm)
+    void Avatar::harm(Context & t_context, const Harm & t_harm)
     {
-        if (!harm.isAnyHarmDone())
+        if (!t_harm.isAnyHarmDone())
         {
             return;
         }
 
-        if (!harm.sfx.empty())
+        if (!t_harm.sfx.empty())
         {
-            context.sfx.play(harm.sfx);
+            t_context.sfx.play(t_harm.sfx);
         }
 
-        if (harm.damage <= 0)
+        if (t_harm.damage <= 0)
         {
             return;
         }
@@ -756,7 +756,7 @@ namespace platformer
         const float recoilSpeed{ 3.5f };
         m_velocity.y = -recoilSpeed;
 
-        const float collisionRectCenterHoriz{ util::center(harm.rect).x };
+        const float collisionRectCenterHoriz{ util::center(t_harm.rect).x };
         if (collisionRectCenterHoriz < util::center(collisionRect()).x)
         {
             m_velocity.x = recoilSpeed;
@@ -767,7 +767,7 @@ namespace platformer
         }
 
         // TODO subtract harm.damage from player health and check for death
-        context.sfx.play("hurt-avatar");
+        t_context.sfx.play("hurt-avatar");
     }
 
 } // namespace platformer

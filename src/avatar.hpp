@@ -44,10 +44,10 @@ namespace platformer
         Still
     };
 
-    inline constexpr std::string_view toString(const AvatarState state)
+    inline constexpr std::string_view toString(const AvatarState t_state)
     {
         // clang-format off
-        switch (state)
+        switch (t_state)
         {
             case AvatarState::Attack:       { return "Attack";      }
             case AvatarState::AttackExtra:  { return "AttackExtra"; }
@@ -74,37 +74,37 @@ namespace platformer
         Avatar();
         ~Avatar();
 
-        void setup(const Context & context);
-        void update(Context & context, const float frameTimeSec);
-        void draw(sf::RenderTarget & target, sf::RenderStates states);
-        void setPosition(const sf::FloatRect & rect);
-        const sf::FloatRect collisionRect() const;
-        const sf::FloatRect attackRect() const;
-        void triggerDeath(Context & context);
+        void setup(const Context & t_context);
+        void update(Context & t_context, const float t_frameTimeSec);
+        void draw(sf::RenderTarget & t_target, sf::RenderStates t_states);
+        void setPosition(const sf::FloatRect & t_rect);
+        [[nodiscard]] sf::FloatRect collisionRect() const;
+        [[nodiscard]] sf::FloatRect attackRect() const;
+        void triggerDeath(Context & t_context);
 
         // TODO remove after testing
-        void changeType(Context & context);
-        AvatarAnim anim() const { return m_anim; }
-        std::size_t animIndex() const { return m_animIndex; }
+        void changeType(Context & t_context);
+        [[nodiscard]] inline AvatarAnim anim() const noexcept { return m_anim; }
+        [[nodiscard]] inline std::size_t animIndex() const noexcept { return m_animIndex; }
 
       private:
-        void animate(Context & context, const float frameTimeSec);
-        void handleAttackState(Context & context);
-        void handleAttackingEnemies(Context & context);
-        void moveMap(Context & context);
-        void killIfOutOfBounds(Context & context);
-        void preventBacktracking(const Context & context);
-        void collisions(Context & context);
-        void sideToSideMotion(Context & context, const float frameTimeSec);
+        void animate(Context & t_context, const float t_frameTimeSec);
+        void handleAttackState(Context & t_context);
+        void handleAttackingEnemies(Context & t_context);
+        void moveMap(Context & t_context);
+        void killIfOutOfBounds(Context & t_context);
+        void preventBacktracking(const Context & t_context);
+        void collisions(Context & t_context);
+        void sideToSideMotion(Context & t_context, const float t_frameTimeSec);
         void restartAnim();
-        void jumping(Context & context, const float frameTimeSec);
-        bool handleDeath(Context & context, const float frameTimeSec);
-        void respawn(Context & context);
+        void jumping(Context & t_context, const float t_frameTimeSec);
+        bool handleDeath(Context & t_context, const float t_frameTimeSec);
+        void respawn(Context & t_context);
         void turnRight();
         void turnLeft();
-        void exitCollisions(Context & context) const;
-        void hurtCollisions(Context & context);
-        void harm(Context & context, const Harm & harm);
+        void exitCollisions(Context & t_context) const;
+        void hurtCollisions(Context & t_context);
+        void harm(Context & t_context, const Harm & t_harm);
 
       private:
         sf::Sprite m_sprite;
