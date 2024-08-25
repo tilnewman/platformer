@@ -190,12 +190,7 @@ namespace platformer
 
         if (didAnyDropsLand)
         {
-            m_dropAnims.erase(
-                std::remove_if(
-                    std::begin(m_dropAnims),
-                    std::end(m_dropAnims),
-                    [](const AcidDropAnim & anim) { return !anim.is_alive; }),
-                std::end(m_dropAnims));
+            std::erase_if(m_dropAnims, [](const AcidDropAnim & anim) { return !anim.is_alive; });
         }
     }
 
@@ -223,12 +218,8 @@ namespace platformer
 
         if (didAnySplashAnimsFinish)
         {
-            m_splashAnims.erase(
-                std::remove_if(
-                    std::begin(m_splashAnims),
-                    std::end(m_splashAnims),
-                    [](const AcidSplashAnim & anim) { return !anim.is_alive; }),
-                std::end(m_splashAnims));
+            std::erase_if(
+                m_splashAnims, [](const AcidSplashAnim & anim) { return !anim.is_alive; });
         }
     }
 
