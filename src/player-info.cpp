@@ -21,12 +21,12 @@ namespace platformer
         , m_spells{}
     {}
 
-    void PlayerInfo::setup(const AvatarType type)
+    void PlayerInfo::setup(const AvatarType t_type)
     {
-        m_avatarType = type;
+        m_avatarType = t_type;
 
         m_spells.clear();
-        for (const Spell spell : makeSpellSet(type))
+        for (const Spell spell : makeSpellSet(t_type))
         {
             PlayerSpell & playerSpell{ m_spells.emplace_back() };
             playerSpell.cost       = toManaCost(spell);
@@ -38,23 +38,23 @@ namespace platformer
         // TODO setup initial health and mana max based on type
     }
 
-    Health_t PlayerInfo::healthAdjust(const Health_t adjustment)
+    Health_t PlayerInfo::healthAdjust(const Health_t t_adjustment)
     {
-        m_health += adjustment;
+        m_health += t_adjustment;
         m_health = std::clamp(m_health, 0, m_healthMax);
         return m_health;
     }
 
-    Mana_t PlayerInfo::manaAdjust(const Mana_t adjustment)
+    Mana_t PlayerInfo::manaAdjust(const Mana_t t_adjustment)
     {
-        m_mana += adjustment;
+        m_mana += t_adjustment;
         m_mana = std::clamp(m_mana, 0, m_manaMax);
         return m_mana;
     }
 
-    Coin_t PlayerInfo::coinsAdjust(const Coin_t adjustment)
+    Coin_t PlayerInfo::coinsAdjust(const Coin_t t_adjustment)
     {
-        m_coins += adjustment;
+        m_coins += t_adjustment;
 
         if (m_coins < 0)
         {
@@ -64,16 +64,16 @@ namespace platformer
         return m_coins;
     }
 
-    void PlayerInfo::learnSpell(const Spell spell)
+    void PlayerInfo::learnSpell(const Spell t_spell)
     {
         const auto iter{ std::find_if(
             std::begin(m_spells), std::end(m_spells), [&](const PlayerSpell & ps) {
-                return (ps.spell == spell);
+                return (ps.spell == t_spell);
             }) };
 
         if (iter == std::end(m_spells))
         {
-            std::cout << "Error:  PlayerInfo::learnSpell(" << toName(spell) << ") failed for "
+            std::cout << "Error:  PlayerInfo::learnSpell(" << toName(t_spell) << ") failed for "
                       << toString(m_avatarType) << ".\n";
         }
         else

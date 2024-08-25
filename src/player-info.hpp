@@ -25,10 +25,10 @@ namespace platformer
         Count
     };
 
-    inline constexpr std::string_view toString(const AvatarType type)
+    inline constexpr std::string_view toString(const AvatarType t_type)
     {
         // clang-format off
-        switch (type)
+        switch (t_type)
         {
             case AvatarType::Assassin:      { return "assassin";    }
             case AvatarType::BlueKnight:    { return "blue-knight"; }
@@ -45,18 +45,18 @@ namespace platformer
         // clang-format on
     }
 
-    inline constexpr bool isMale(const AvatarType type)
+    inline constexpr bool isMale(const AvatarType t_type)
     {
         return (
-            (AvatarType::Druid != type) && (AvatarType::Enchantress != type) &&
-            (AvatarType::Witch != type));
+            (AvatarType::Druid != t_type) && (AvatarType::Enchantress != t_type) &&
+            (AvatarType::Witch != t_type));
     }
 
-    inline constexpr bool isSpellCaster(const AvatarType type)
+    inline constexpr bool isSpellCaster(const AvatarType t_type)
     {
         return (
-            (AvatarType::Druid == type) || (AvatarType::Enchantress == type) ||
-            (AvatarType::Witch == type));
+            (AvatarType::Druid == t_type) || (AvatarType::Enchantress == t_type) ||
+            (AvatarType::Witch == t_type));
     }
 
     //
@@ -88,10 +88,10 @@ namespace platformer
         Count
     };
 
-    inline constexpr std::string_view toName(const Spell spell)
+    inline constexpr std::string_view toName(const Spell t_spell)
     {
         // clang-format off
-        switch (spell)
+        switch (t_spell)
         {
             case Spell::Comet:      { return "Comet";           }
             case Spell::Explosion:  { return "Explosion";       }
@@ -115,10 +115,10 @@ namespace platformer
         // clang-format on
     }
 
-    inline constexpr std::string_view toFilesystemName(const Spell spell)
+    inline constexpr std::string_view toFilesystemName(const Spell t_spell)
     {
         // clang-format off
-        switch (spell)
+        switch (t_spell)
         {
             case Spell::Comet:      { return "comet";       }
             case Spell::Explosion:  { return "explosion";   }
@@ -143,10 +143,10 @@ namespace platformer
     }
 
     // TODO figure out the real values
-    inline constexpr Mana_t toManaCost(const Spell spell)
+    inline constexpr Mana_t toManaCost(const Spell t_spell)
     {
         // clang-format off
-        switch (spell)
+        switch (t_spell)
         {
             case Spell::Comet:      { return 10; }
             case Spell::Explosion:  { return 10; }
@@ -171,10 +171,10 @@ namespace platformer
     }
 
     // TODO figure out the real values
-    inline constexpr Mana_t toDamage(const Spell spell)
+    inline constexpr Mana_t toDamage(const Spell t_spell)
     {
         // clang-format off
-        switch (spell)
+        switch (t_spell)
         {
             case Spell::Comet:      { return 10; }
             case Spell::Explosion:  { return 10; }
@@ -198,14 +198,15 @@ namespace platformer
         // clang-format on
     }
 
-    inline constexpr float timePerFrameSec(const Spell spell)
+    inline constexpr float timePerFrameSec(const Spell t_spell)
     {
-        if (Spell::Light == spell)
+        if (Spell::Light == t_spell)
         {
             return 0.25f;
         }
         else if (
-            (Spell::KillAll == spell) || (Spell::SunStrike == spell) || (Spell::Water == spell))
+            (Spell::KillAll == t_spell) || (Spell::SunStrike == t_spell) ||
+            (Spell::Water == t_spell))
         {
             return 0.175f;
         }
@@ -215,20 +216,20 @@ namespace platformer
         }
     }
 
-    inline std::vector<Spell> makeSpellSet(const AvatarType type)
+    inline std::vector<Spell> makeSpellSet(const AvatarType t_type)
     {
-        if (AvatarType::Witch == type)
+        if (AvatarType::Witch == t_type)
         {
             return {
                 Spell::Comet, Spell::Explosion, Spell::Spikes2, Spell::Lightning2, Spell::KillAll
             };
         }
-        else if (AvatarType::Druid == type)
+        else if (AvatarType::Druid == t_type)
         {
             return { Spell::Water,     Spell::Fire,    Spell::Light,
                      Spell::SunStrike, Spell::Tornado, Spell::Freeze };
         }
-        else if (AvatarType::Enchantress == type)
+        else if (AvatarType::Enchantress == t_type)
         {
             return {
                 Spell::TeslaBall, Spell::Spikes1, Spell::Gypno, Spell::Lightning1, Spell::MidasHand
@@ -257,21 +258,21 @@ namespace platformer
       public:
         PlayerInfo();
 
-        void setup(const AvatarType type);
+        void setup(const AvatarType t_type);
 
         inline AvatarType avatarType() const { return m_avatarType; }
 
         inline Health_t health() const { return m_health; }
-        Health_t healthAdjust(const Health_t adjustment);
+        Health_t healthAdjust(const Health_t t_adjustment);
 
         inline Mana_t mana() const { return m_mana; }
-        Mana_t manaAdjust(const Mana_t adjustment);
+        Mana_t manaAdjust(const Mana_t t_adjustment);
 
         inline Coin_t coins() const { return m_coins; }
-        Coin_t coinsAdjust(const Coin_t adjustment);
+        Coin_t coinsAdjust(const Coin_t t_adjustment);
 
         inline const std::vector<PlayerSpell> & spells() const { return m_spells; }
-        void learnSpell(const Spell spell);
+        void learnSpell(const Spell t_spell);
 
       private:
         AvatarType m_avatarType;
