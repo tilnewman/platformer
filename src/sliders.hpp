@@ -32,14 +32,14 @@ namespace util
         static_assert(std::is_floating_point_v<T>);
 
       public:
-        constexpr SliderRatio()
+        constexpr SliderRatio() noexcept
             : m_isMoving{ false }
             , m_speed{ 0 }
             , m_value{ 0 }
             , m_radians{ 0 }
         {}
 
-        explicit constexpr SliderRatio(const T t_speed, const T t_startAt = T(0))
+        explicit constexpr SliderRatio(const T t_speed, const T t_startAt = T(0)) noexcept
             : m_isMoving{ true }
             , m_speed{ 0 }
             , m_value{ 0 }
@@ -100,7 +100,7 @@ namespace util
         static_assert(std::is_floating_point_v<Math_t>);
 
       public:
-        constexpr SliderFromTo()
+        constexpr SliderFromTo() noexcept
             : m_from{ 0 }
             , m_to{ 0 }
             , m_max{ 0 }
@@ -112,7 +112,7 @@ namespace util
         {}
 
         explicit constexpr SliderFromTo(
-            const Value_t t_from, const Value_t t_to, const Math_t t_speed)
+            const Value_t t_from, const Value_t t_to, const Math_t t_speed) noexcept
             : m_from{ t_from }
             , m_to{ t_to }
             , m_max{ util::max(t_from, t_to) }
@@ -167,14 +167,15 @@ namespace util
     class SliderOscillator
     {
       public:
-        constexpr SliderOscillator()
+        constexpr SliderOscillator() noexcept
             : m_from{ 0 }
             , m_to{ 0 }
             , m_slider{}
         {}
 
         // Use this constructor to start Value() at from.
-        constexpr SliderOscillator(const Value_t t_from, const Value_t t_to, const Math_t t_speed)
+        constexpr SliderOscillator(
+            const Value_t t_from, const Value_t t_to, const Math_t t_speed) noexcept
             : m_from{ 0 }
             , m_to{ 0 }
             , m_slider{}
@@ -184,7 +185,10 @@ namespace util
 
         // Use this constructor if you want to specify the starting value.
         constexpr SliderOscillator(
-            const Value_t t_from, const Value_t t_to, const Math_t t_speed, const Value_t t_startAt)
+            const Value_t t_from,
+            const Value_t t_to,
+            const Math_t t_speed,
+            const Value_t t_startAt) noexcept
             : m_from{ 0 }
             , m_to{ 0 }
             , m_slider{}
