@@ -42,7 +42,6 @@ namespace platformer
         void parseSpawnLayer(Context & t_context, const nlohmann::json & t_json);
         void parsePickupAnimLayer(Context & t_context, const nlohmann::json & t_json);
         void parseAccentAnimLayer(Context & t_context, const nlohmann::json & t_json);
-        void parseLightningAnimLayer(Context & t_context, const nlohmann::json & t_json);
         void parseMonsterLayer(Context & t_context, const nlohmann::json & t_json);
 
         template <typename Layer_t>
