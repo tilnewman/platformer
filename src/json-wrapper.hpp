@@ -5,6 +5,7 @@
 //
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wswitch-enum"
+#pragma GCC diagnostic ignored "-Wuseless-cast"
 #include "json.hpp"
 #pragma GCC diagnostic pop
 

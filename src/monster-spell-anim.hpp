@@ -48,7 +48,7 @@ namespace platformer
 
     struct MonsterSpellTextures
     {
-        std::vector<sf::Texture> textures;
+        std::vector<sf::Texture> textures{};
     };
 
     //

@@ -39,8 +39,8 @@ namespace platformer
 
     struct SpellTextures
     {
-        sf::Texture icon_texture;
-        std::vector<sf::Texture> textures;
+        sf::Texture icon_texture{};
+        std::vector<sf::Texture> textures{};
     };
 
     //
