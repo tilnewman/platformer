@@ -8,6 +8,7 @@
 #include "background-images.hpp"
 #include "check-macros.hpp"
 #include "flaming-skull-anim-layer.hpp"
+#include "ghost-bottle-anim-layer.hpp"
 #include "lightning-anim-layer.hpp"
 #include "map-textures.hpp"
 #include "monster-baby-dragon.hpp"
@@ -279,6 +280,10 @@ namespace platformer
             else if (layerName == "lightning-anim")
             {
                 parseLayerOfRects<LightningAnimationLayer>(t_context, jsonLayer);
+            }
+            else if (layerName == "ghost-bottle")
+            {
+                parseLayerOfRects<GhostBottleAnimationLayer>(t_context, jsonLayer);
             }
             else if (layerName == "monster")
             {

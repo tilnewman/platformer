@@ -785,6 +785,50 @@
         }, 
         {
          "draworder":"topdown",
+         "id":16,
+         "name":"ghost-bottle",
+         "objects":[
+                {
+                 "height":16,
+                 "id":104,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":608,
+                 "y":1264
+                }, 
+                {
+                 "height":16,
+                 "id":105,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":640,
+                 "y":1264
+                }, 
+                {
+                 "height":16,
+                 "id":106,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":672,
+                 "y":1264
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":12,
          "name":"monster",
          "objects":[
@@ -798,28 +842,6 @@
                  "width":240,
                  "x":848,
                  "y":1168
-                }],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
-        }, 
-        {
-         "draworder":"topdown",
-         "id":15,
-         "name":"metal-trap",
-         "objects":[
-                {
-                 "height":160,
-                 "id":103,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":32,
-                 "x":576,
-                 "y":1120
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1025,8 +1047,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":16,
- "nextobjectid":104,
+ "nextlayerid":17,
+ "nextobjectid":107,
  "orientation":"orthogonal",
  "properties":[
         {
