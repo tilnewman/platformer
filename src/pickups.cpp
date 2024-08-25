@@ -78,7 +78,15 @@ namespace platformer
     std::size_t PickupAnimations::frameCount(const Pickup which) const
     {
         const sf::Texture & texture{ m_textures.at(static_cast<std::size_t>(which)) };
-        return static_cast<std::size_t>(texture.getSize().x / texture.getSize().y);
+
+        if (texture.getSize().y > 0)
+        {
+            return static_cast<std::size_t>(texture.getSize().x / texture.getSize().y);
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     const sf::IntRect

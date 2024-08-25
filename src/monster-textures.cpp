@@ -93,7 +93,15 @@ namespace platformer
         MonsterTextureManager::frameCount(const MonsterType type, const MonsterAnim anim) const
     {
         const sf::Texture & texture{ getTexture(type, anim) };
-        return static_cast<std::size_t>(texture.getSize().x / texture.getSize().y);
+
+        if (texture.getSize().y > 0)
+        {
+            return static_cast<std::size_t>(texture.getSize().x / texture.getSize().y);
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     const sf::Texture &

@@ -72,7 +72,14 @@ namespace platformer
 
     std::size_t WaterAnimationLayer::frameCount() const
     {
-        return static_cast<std::size_t>(m_texture.getSize().x / m_texture.getSize().y);
+        if (m_texture.getSize().y > 0)
+        {
+            return static_cast<std::size_t>(m_texture.getSize().x / m_texture.getSize().y);
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     sf::IntRect WaterAnimationLayer::textureRect(const std::size_t frame) const
