@@ -27,14 +27,10 @@ namespace platformer
 
     void HarmCollisionManager::removeOwner(IHarmCollisionOwner & owner)
     {
-        m_owners.erase(
-            std::remove_if(
-                std::begin(m_owners),
-                std::end(m_owners),
-                [&](const std::reference_wrapper<IHarmCollisionOwner> & refWrapper) {
-                    return (&owner == &refWrapper.get());
-                }),
-            std::end(m_owners));
+        std::erase_if(
+            m_owners, [&](const std::reference_wrapper<IHarmCollisionOwner> & refWrapper) {
+                return (&owner == &refWrapper.get());
+            });
     }
 
     Harm HarmCollisionManager::avatarCollide(Context & context, const sf::FloatRect & avatarRect)

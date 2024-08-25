@@ -136,12 +136,7 @@ namespace platformer
 
         if (didAnyFinish)
         {
-            m_anims.erase(
-                std::remove_if(
-                    std::begin(m_anims),
-                    std::end(m_anims),
-                    [](const MonsterSpellAnim & anim) { return !anim.is_alive; }),
-                std::end(m_anims));
+            std::erase_if(m_anims, [](const MonsterSpellAnim & anim) { return !anim.is_alive; });
         }
     }
 

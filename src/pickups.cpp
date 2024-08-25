@@ -142,12 +142,8 @@ namespace platformer
 
         if (didAnyFlaresFinish)
         {
-            m_flareAnims.erase(
-                std::remove_if(
-                    std::begin(m_flareAnims),
-                    std::end(m_flareAnims),
-                    [](const PickupFlareAnim & anim) { return (anim.is_alive == false); }),
-                std::end(m_flareAnims));
+            std::erase_if(
+                m_flareAnims, [](const PickupFlareAnim & anim) { return !anim.is_alive; });
         }
     }
 
@@ -208,12 +204,7 @@ namespace platformer
 
         if (wereAnyPickedUp)
         {
-            m_anims.erase(
-                std::remove_if(
-                    std::begin(m_anims),
-                    std::end(m_anims),
-                    [](const PickupAnim & anim) { return (anim.is_alive == false); }),
-                std::end(m_anims));
+            std::erase_if(m_anims, [](const PickupAnim & anim) { return !anim.is_alive; });
         }
     }
 
