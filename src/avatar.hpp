@@ -6,6 +6,7 @@
 #include "avatar-spell-anims.hpp"
 #include "avatar-textures.hpp"
 #include "harm.hpp"
+#include "player-info.hpp"
 
 #include <string_view>
 #include <vector>
