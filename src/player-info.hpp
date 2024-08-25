@@ -260,18 +260,46 @@ namespace platformer
 
         void setup(const AvatarType t_type);
 
-        inline AvatarType avatarType() const { return m_avatarType; }
+        [[nodiscard]] inline constexpr AvatarType avatarType() const noexcept
+        {
+            return m_avatarType;
+        }
 
-        inline Health_t health() const { return m_health; }
-        Health_t healthAdjust(const Health_t t_adjustment);
+        [[nodiscard]] inline constexpr Health_t health() const noexcept { return m_health; }
 
-        inline Mana_t mana() const { return m_mana; }
-        Mana_t manaAdjust(const Mana_t t_adjustment);
+        constexpr Health_t healthAdjust(const Health_t t_adjustment) noexcept
+        {
+            m_health = std::clamp((m_health + t_adjustment), 0, m_healthMax);
+            return m_health;
+        }
 
-        inline Coin_t coins() const { return m_coins; }
-        Coin_t coinsAdjust(const Coin_t t_adjustment);
+        [[nodiscard]] inline constexpr Mana_t mana() const noexcept { return m_mana; }
 
-        inline const std::vector<PlayerSpell> & spells() const { return m_spells; }
+        constexpr Mana_t manaAdjust(const Mana_t t_adjustment) noexcept
+        {
+            m_mana = std::clamp((m_mana + t_adjustment), 0, m_manaMax);
+            return m_mana;
+        }
+
+        [[nodiscard]] inline constexpr Coin_t coins() const noexcept { return m_coins; }
+
+        constexpr Coin_t coinsAdjust(const Coin_t t_adjustment) noexcept
+        {
+            m_coins += t_adjustment;
+
+            if (m_coins < 0)
+            {
+                m_coins = 0;
+            }
+
+            return m_coins;
+        }
+
+        [[nodiscard]] inline constexpr const std::vector<PlayerSpell> & spells() const noexcept
+        {
+            return m_spells;
+        }
+
         void learnSpell(const Spell t_spell);
 
       private:

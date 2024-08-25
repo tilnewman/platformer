@@ -38,32 +38,6 @@ namespace platformer
         // TODO setup initial health and mana max based on type
     }
 
-    Health_t PlayerInfo::healthAdjust(const Health_t t_adjustment)
-    {
-        m_health += t_adjustment;
-        m_health = std::clamp(m_health, 0, m_healthMax);
-        return m_health;
-    }
-
-    Mana_t PlayerInfo::manaAdjust(const Mana_t t_adjustment)
-    {
-        m_mana += t_adjustment;
-        m_mana = std::clamp(m_mana, 0, m_manaMax);
-        return m_mana;
-    }
-
-    Coin_t PlayerInfo::coinsAdjust(const Coin_t t_adjustment)
-    {
-        m_coins += t_adjustment;
-
-        if (m_coins < 0)
-        {
-            m_coins = 0;
-        }
-
-        return m_coins;
-    }
-
     void PlayerInfo::learnSpell(const Spell t_spell)
     {
         const auto iter{ std::find_if(
