@@ -17,7 +17,7 @@ namespace platformer
 {
 
     AvatarTextureManager::AvatarTextureManager()
-        : m_textureSets()
+        : m_textureSets{}
     {}
 
     AvatarTextureManager & AvatarTextureManager::instance()
@@ -26,7 +26,7 @@ namespace platformer
         return avatarTextureManager;
     }
 
-    void AvatarTextureManager::setup(const Settings & settings)
+    void AvatarTextureManager::setup(const Settings & t_settings)
     {
         // size all vectors so that no re-allocations ever occur
         m_textureSets.resize(static_cast<std::size_t>(AvatarType::Count));
@@ -36,7 +36,7 @@ namespace platformer
         {
             const AvatarType type{ static_cast<AvatarType>(typeIndex) };
 
-            const std::filesystem::path typePath{ settings.media_path / "image/avatar" /
+            const std::filesystem::path typePath{ t_settings.media_path / "image/avatar" /
                                                   toString(type) };
 
             AvatarTextureSet & set{ m_textureSets.at(typeIndex) };
@@ -64,14 +64,14 @@ namespace platformer
         }
     }
 
-    void AvatarTextureManager::acquire(const Context & context, const AvatarType type)
+    void AvatarTextureManager::acquire(const Context & t_context, const AvatarType t_type)
     {
-        AvatarTextureSet & set{ m_textureSets.at(static_cast<std::size_t>(type)) };
+        AvatarTextureSet & set{ m_textureSets.at(static_cast<std::size_t>(t_type)) };
 
         if (0 == set.ref_count)
         {
-            const std::filesystem::path typePath{ context.settings.media_path / "image/avatar" /
-                                                  toString(type) };
+            const std::filesystem::path typePath{ t_context.settings.media_path / "image/avatar" /
+                                                  toString(t_type) };
 
             for (std::size_t animIndex(0); animIndex < static_cast<std::size_t>(AvatarAnim::Count);
                  ++animIndex)
@@ -106,9 +106,9 @@ namespace platformer
         ++set.ref_count;
     }
 
-    void AvatarTextureManager::release(const AvatarType type)
+    void AvatarTextureManager::release(const AvatarType t_type)
     {
-        AvatarTextureSet & set{ m_textureSets.at(static_cast<std::size_t>(type)) };
+        AvatarTextureSet & set{ m_textureSets.at(static_cast<std::size_t>(t_type)) };
 
         if (set.ref_count <= 1)
         {
@@ -129,25 +129,25 @@ namespace platformer
     }
 
     void AvatarTextureManager::set(
-        sf::Sprite & sprite,
-        const AvatarType type,
-        const AvatarAnim anim,
-        const std::size_t frame) const
+        sf::Sprite & t_sprite,
+        const AvatarType t_type,
+        const AvatarAnim t_anim,
+        const std::size_t t_frame) const
     {
-        const AvatarTextureSet & set{ m_textureSets.at(static_cast<std::size_t>(type)) };
-        const AnimTextures & anims{ set.anims.at(static_cast<std::size_t>(anim)) };
+        const AvatarTextureSet & set{ m_textureSets.at(static_cast<std::size_t>(t_type)) };
+        const AnimTextures & anims{ set.anims.at(static_cast<std::size_t>(t_anim)) };
 
-        if (frame >= anims.textures.size())
+        if (t_frame >= anims.textures.size())
         {
-            std::cout << "Error: AvatarTextureManager::set(" << toString(type) << ", "
-                      << toString(anim) << ", frameIndex=" << frame
+            std::cout << "Error: AvatarTextureManager::set(" << toString(t_type) << ", "
+                      << toString(t_anim) << ", frameIndex=" << t_frame
                       << ") but that frameIndex is >= to the max of " << anims.textures.size()
                       << '\n';
 
             return;
         }
 
-        sprite.setTexture(anims.textures.at(frame), true);
+        t_sprite.setTexture(anims.textures.at(t_frame), true);
     }
 
 } // namespace platformer

@@ -18,7 +18,7 @@ namespace platformer
     struct Settings;
 
     //
-    
+
     enum class AvatarAnim : std::size_t
     {
         Attack = 0,
@@ -35,32 +35,32 @@ namespace platformer
         Count
     };
 
-    inline constexpr std::string_view toString(const AvatarAnim anim)
+    inline constexpr std::string_view toString(const AvatarAnim t_anim)
     {
         // clang-format off
-        switch (anim)
+        switch (t_anim)
         {
-            case AvatarAnim::Attack:        { return "attack"; }
+            case AvatarAnim::Attack:        { return "attack";       }
             case AvatarAnim::AttackExtra:   { return "attack_extra"; }
-            case AvatarAnim::Climb:         { return "climb"; }
-            case AvatarAnim::Death:         { return "death"; }
-            case AvatarAnim::Hurt:          { return "hurt"; }
-            case AvatarAnim::Idle:          { return "idle"; }
-            case AvatarAnim::Jump:          { return "jump"; }
-            case AvatarAnim::JumpHigh:      { return "jump_high"; }
-            case AvatarAnim::Push:          { return "push"; }
-            case AvatarAnim::Run:           { return "run"; }
-            case AvatarAnim::Walk:          { return "walk"; }
+            case AvatarAnim::Climb:         { return "climb";        }
+            case AvatarAnim::Death:         { return "death";        }
+            case AvatarAnim::Hurt:          { return "hurt";         }
+            case AvatarAnim::Idle:          { return "idle";         }
+            case AvatarAnim::Jump:          { return "jump";         }
+            case AvatarAnim::JumpHigh:      { return "jump_high";    }
+            case AvatarAnim::Push:          { return "push";         }
+            case AvatarAnim::Run:           { return "run";          }
+            case AvatarAnim::Walk:          { return "walk";         }
             case AvatarAnim::Count:         // intentional fallthrough
-            default:                        { return "error_AvatarAnin_not_found"; }
+            default:          { return "error_AvatarAnin_not_found"; }
         }
         // clang-format on
     }
 
-    inline constexpr float avatarTimePerFrameSec(const AvatarAnim anim)
+    inline constexpr float avatarTimePerFrameSec(const AvatarAnim t_anim)
     {
         // clang-format off
-        switch (anim)
+        switch (t_anim)
         {
             case AvatarAnim::Attack:        { return 0.08f; }
             case AvatarAnim::AttackExtra:   { return 0.08f; }
@@ -79,11 +79,12 @@ namespace platformer
         // clang-format on
     }
 
-    inline constexpr bool doesAnimLoop(const AvatarAnim anim)
+    inline constexpr bool doesAnimLoop(const AvatarAnim t_anim)
     {
         return (
-            (anim == AvatarAnim::Climb) || (anim == AvatarAnim::Idle) ||
-            (anim == AvatarAnim::Push) || (anim == AvatarAnim::Run) || (anim == AvatarAnim::Walk));
+            (t_anim == AvatarAnim::Climb) || (t_anim == AvatarAnim::Idle) ||
+            (t_anim == AvatarAnim::Push) || (t_anim == AvatarAnim::Run) ||
+            (t_anim == AvatarAnim::Walk));
     }
 
     //
@@ -112,32 +113,33 @@ namespace platformer
 
         static AvatarTextureManager & instance();
 
-        void setup(const Settings & settings);
+        void setup(const Settings & t_settings);
 
-        void acquire(const Context & context, const AvatarType type);
-        void release(const AvatarType type);
+        void acquire(const Context & t_context, const AvatarType t_type);
+        void release(const AvatarType t_type);
 
         void
-            set(sf::Sprite & sprite,
-                const AvatarType type,
-                const AvatarAnim anim,
-                const std::size_t frame) const;
+            set(sf::Sprite & t_sprite,
+                const AvatarType t_type,
+                const AvatarAnim t_anim,
+                const std::size_t t_frame) const;
 
-        inline std::size_t frameCount(const AvatarType type, const AvatarAnim anim) const
+        [[nodiscard]] inline constexpr std::size_t
+            frameCount(const AvatarType t_type, const AvatarAnim t_anim) const
         {
-            return m_textureSets.at(static_cast<std::size_t>(type))
-                .anims.at(static_cast<std::size_t>(anim))
+            return m_textureSets.at(static_cast<std::size_t>(t_type))
+                .anims.at(static_cast<std::size_t>(t_anim))
                 .textures.size();
         }
 
-        inline const sf::Texture & getDefault(const AvatarType type) const
+        [[nodiscard]] inline constexpr const sf::Texture & getDefault(const AvatarType t_type) const
         {
-            return m_textureSets.at(static_cast<std::size_t>(type)).defalt;
+            return m_textureSets.at(static_cast<std::size_t>(t_type)).defalt;
         }
 
-        inline const sf::Texture & getIcon(const AvatarType type) const
+        [[nodiscard]] inline constexpr const sf::Texture & getIcon(const AvatarType t_type) const
         {
-            return m_textureSets.at(static_cast<std::size_t>(type)).icon;
+            return m_textureSets.at(static_cast<std::size_t>(t_type)).icon;
         }
 
       private:
