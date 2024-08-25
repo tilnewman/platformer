@@ -3,9 +3,12 @@
 //
 // level-file-loader.hpp
 //
+#include "context.hpp"
 #include "json-wrapper.hpp"
+#include "level.hpp"
 #include "tile-image.hpp"
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -13,37 +16,48 @@
 
 namespace platformer
 {
-    struct Context;
-    struct Settings;
-    using Json = nlohmann::json;
-
-    //
 
     class LevelFileLoader
     {
       public:
         LevelFileLoader();
 
-        bool load(Context & context);
+        bool load(Context & t_context);
 
       private:
-        void parseLevelDetails(Context & context, Json & json);
-        void parseObjectTextureGIDs(Json & json);
-        void parseBackgroundImageName(Context & context, Json & json);
-        void parseLayers(Context & context, Json & json);
-        void parseTileLayer(Context & context, const TileImage image, Json & json);
-        void parseRectLayer(Context & context, Json & json, std::vector<sf::FloatRect> & rects);
-        sf::FloatRect parseAndConvertRect(const Context & context, Json & json);
-        void parseSpawnLayer(Context & context, Json & json);
-        void parsePickupAnimLayer(Context & context, Json & json);
-        void parseAccentAnimLayer(Context & context, Json & json);
-        void parseAcidAnimLayer(Context & context, Json & json);
-        void parseAcidSpoutAnimLayer(Context & context, Json & json);
-        void parseTrapAnimLayer(Context & context, Json & json);
-        void parseFlamingSkullAnimLayer(Context & context, Json & json);
-        void parseWaterAnimLayer(Context & context, Json & json);
-        void parseLightningAnimLayer(Context & context, Json & json);
-        void parseMonsterLayer(Context & context, Json & json);
+        void parseLevelDetails(Context & t_context, const nlohmann::json & t_json);
+        void parseObjectTextureGIDs(const nlohmann::json & t_json);
+        void parseBackgroundImageName(Context & t_context, const nlohmann::json & t_json);
+        void parseLayers(Context & t_context, const nlohmann::json & t_json);
+
+        void parseTileLayer(
+            Context & t_context, const TileImage image, const nlohmann::json & t_json);
+
+        void parseRectLayer(
+            Context & t_context,
+            const nlohmann::json & t_json,
+            std::vector<sf::FloatRect> & t_rects);
+
+        sf::FloatRect parseAndConvertRect(const Context & t_context, const nlohmann::json & t_json);
+        void parseSpawnLayer(Context & t_context, const nlohmann::json & t_json);
+        void parsePickupAnimLayer(Context & t_context, const nlohmann::json & t_json);
+        void parseAccentAnimLayer(Context & t_context, const nlohmann::json & t_json);
+        void parseLightningAnimLayer(Context & t_context, const nlohmann::json & t_json);
+        void parseMonsterLayer(Context & t_context, const nlohmann::json & t_json);
+
+        template <typename Layer_t>
+        void parseLayerOfRects(Context & t_context, const nlohmann::json & t_json)
+        {
+            std::vector<sf::FloatRect> rects;
+            rects.reserve(128);
+
+            for (const nlohmann::json & subJson : t_json["objects"])
+            {
+                rects.push_back(parseAndConvertRect(t_context, subJson));
+            }
+
+            t_context.level.tile_layers.push_back(std::make_unique<Layer_t>(t_context, rects));
+        }
 
       private:
         std::string m_pathStr;

@@ -7,9 +7,7 @@
 #include "acid-spout-anim-layer.hpp"
 #include "background-images.hpp"
 #include "check-macros.hpp"
-#include "context.hpp"
 #include "flaming-skull-anim-layer.hpp"
-#include "level.hpp"
 #include "lightning-anim-layer.hpp"
 #include "map-textures.hpp"
 #include "monster-baby-dragon.hpp"
@@ -61,10 +59,10 @@ namespace platformer
         : m_pathStr()
     {}
 
-    bool LevelFileLoader::load(Context & context)
+    bool LevelFileLoader::load(Context & t_context)
     {
         // TODO fix to be more general
-        const std::filesystem::path path = (context.settings.media_path / "map/dungeon1-1.json");
+        const std::filesystem::path path = (t_context.settings.media_path / "map/dungeon1-1.json");
         if (!std::filesystem::exists(path))
         {
             return false;
@@ -72,7 +70,7 @@ namespace platformer
 
         m_pathStr = path.string();
 
-        Json json;
+        nlohmann::json json;
 
         {
             std::ifstream iStream(m_pathStr);
@@ -80,45 +78,45 @@ namespace platformer
             iStream >> json;
         }
 
-        parseLevelDetails(context, json);
-        parseBackgroundImageName(context, json);
+        parseLevelDetails(t_context, json);
+        parseBackgroundImageName(t_context, json);
         parseObjectTextureGIDs(json);
 
         // everything else in the level file is saved in "layers"
         // which are parsed in order from back to front here, one at a time
-        parseLayers(context, json);
+        parseLayers(t_context, json);
 
         return true;
     }
 
-    void LevelFileLoader::parseLevelDetails(Context & context, Json & json)
+    void LevelFileLoader::parseLevelDetails(Context & t_context, const nlohmann::json & t_json)
     {
         // parse level tile size and counts
-        context.level.tile_count = { json["width"], json["height"] };
-        context.level.tile_size  = { json["tilewidth"], json["tileheight"] };
+        t_context.level.tile_count = { t_json["width"], t_json["height"] };
+        t_context.level.tile_size  = { t_json["tilewidth"], t_json["tileheight"] };
 
-        context.level.tile_size_texture = sf::Vector2f{ context.level.tile_size };
+        t_context.level.tile_size_texture = sf::Vector2f{ t_context.level.tile_size };
 
-        context.level.tile_size_screen =
-            (sf::Vector2f{ context.level.tile_size } * context.settings.tile_scale);
+        t_context.level.tile_size_screen =
+            (sf::Vector2f{ t_context.level.tile_size } * t_context.settings.tile_scale);
 
-        context.level.tile_size_screen.x = floorf(context.level.tile_size_screen.x);
-        context.level.tile_size_screen.y = floorf(context.level.tile_size_screen.y);
+        t_context.level.tile_size_screen.x = floorf(t_context.level.tile_size_screen.x);
+        t_context.level.tile_size_screen.y = floorf(t_context.level.tile_size_screen.y);
 
         // calc map position offset
-        const sf::Vector2f tileCountF{ context.level.tile_count };
-        const sf::Vector2f mapSizeOrig{ context.level.tile_size_screen * tileCountF };
+        const sf::Vector2f tileCountF{ t_context.level.tile_count };
+        const sf::Vector2f mapSizeOrig{ t_context.level.tile_size_screen * tileCountF };
 
         const float heightOffset{
-            (context.layout.wholeRect().top + context.layout.wholeRect().height) - mapSizeOrig.y
+            (t_context.layout.wholeRect().top + t_context.layout.wholeRect().height) - mapSizeOrig.y
         };
 
-        context.level.map_position_offset = { 0.0f, heightOffset };
+        t_context.level.map_position_offset = { 0.0f, heightOffset };
     }
 
-    void LevelFileLoader::parseObjectTextureGIDs(Json & wholeJson)
+    void LevelFileLoader::parseObjectTextureGIDs(const nlohmann::json & wholeJson)
     {
-        for (Json & json : wholeJson["tilesets"])
+        for (const nlohmann::json & json : wholeJson["tilesets"])
         {
             const std::string sourceStr{ json["source"] };
             const std::filesystem::path path{ sourceStr };
@@ -171,10 +169,11 @@ namespace platformer
         }
     }
 
-    void LevelFileLoader::parseBackgroundImageName(Context & context, Json & json)
+    void LevelFileLoader::parseBackgroundImageName(
+        Context & t_context, const nlohmann::json & t_json)
     {
         std::string backgroundImageName;
-        for (Json & propJson : json["properties"])
+        for (const nlohmann::json & propJson : t_json["properties"])
         {
             const std::string propName = propJson["name"];
             if ("background" == propName)
@@ -196,94 +195,94 @@ namespace platformer
                          "\"background\", there will be no background on this map.\n";
         }
 
-        context.bg_image.setup(context, backgroundImageName);
+        t_context.bg_image.setup(t_context, backgroundImageName);
     }
 
-    void LevelFileLoader::parseLayers(Context & context, Json & jsonWholeFile)
+    void LevelFileLoader::parseLayers(Context & t_context, const nlohmann::json & jsonWholeFile)
     {
-        for (Json & jsonLayer : jsonWholeFile["layers"])
+        for (const nlohmann::json & jsonLayer : jsonWholeFile["layers"])
         {
             const std::string layerName = jsonLayer["name"];
 
             if (layerName == toString(TileImage::CastleGround))
             {
-                parseTileLayer(context, TileImage::CastleGround, jsonLayer);
+                parseTileLayer(t_context, TileImage::CastleGround, jsonLayer);
             }
             else if (layerName == toString(TileImage::CastleObject))
             {
-                parseTileLayer(context, TileImage::CastleObject, jsonLayer);
+                parseTileLayer(t_context, TileImage::CastleObject, jsonLayer);
             }
             else if (layerName == toString(TileImage::Dungeon1Ground))
             {
-                parseTileLayer(context, TileImage::Dungeon1Ground, jsonLayer);
+                parseTileLayer(t_context, TileImage::Dungeon1Ground, jsonLayer);
             }
             else if (layerName == toString(TileImage::Dungeon2Ground))
             {
-                parseTileLayer(context, TileImage::Dungeon2Ground, jsonLayer);
+                parseTileLayer(t_context, TileImage::Dungeon2Ground, jsonLayer);
             }
             else if (layerName == toString(TileImage::Dungeon2Object))
             {
-                parseTileLayer(context, TileImage::Dungeon2Object, jsonLayer);
+                parseTileLayer(t_context, TileImage::Dungeon2Object, jsonLayer);
             }
             else if (layerName == toString(TileImage::ForestGround))
             {
-                parseTileLayer(context, TileImage::ForestGround, jsonLayer);
+                parseTileLayer(t_context, TileImage::ForestGround, jsonLayer);
             }
             else if (layerName == toString(TileImage::ForestTrees))
             {
-                parseTileLayer(context, TileImage::ForestTrees, jsonLayer);
+                parseTileLayer(t_context, TileImage::ForestTrees, jsonLayer);
             }
             else if (layerName == toString(TileImage::MountainsGround))
             {
-                parseTileLayer(context, TileImage::MountainsGround, jsonLayer);
+                parseTileLayer(t_context, TileImage::MountainsGround, jsonLayer);
             }
             else if (layerName == toString(TileImage::MountainsObject))
             {
-                parseTileLayer(context, TileImage::MountainsObject, jsonLayer);
+                parseTileLayer(t_context, TileImage::MountainsObject, jsonLayer);
             }
             else if (layerName == "collision")
             {
-                parseRectLayer(context, jsonLayer, context.level.collisions);
+                parseRectLayer(t_context, jsonLayer, t_context.level.collisions);
             }
             else if (layerName == "spawn")
             {
-                parseSpawnLayer(context, jsonLayer);
+                parseSpawnLayer(t_context, jsonLayer);
             }
             else if (layerName == "pickup-anim")
             {
-                parsePickupAnimLayer(context, jsonLayer);
+                parsePickupAnimLayer(t_context, jsonLayer);
             }
             else if (layerName == "accent-anim")
             {
-                parseAccentAnimLayer(context, jsonLayer);
+                parseAccentAnimLayer(t_context, jsonLayer);
             }
             else if (layerName == "acid-anim")
             {
-                parseAcidAnimLayer(context, jsonLayer);
+                parseLayerOfRects<AcidAnimationLayer>(t_context, jsonLayer);
             }
             else if (layerName == "acid-spout")
             {
-                parseAcidSpoutAnimLayer(context, jsonLayer);
+                parseLayerOfRects<AcidSpoutAnimationLayer>(t_context, jsonLayer);
             }
             else if (layerName == "metal-trap")
             {
-                parseTrapAnimLayer(context, jsonLayer);
+                parseLayerOfRects<TrapAnimationLayer>(t_context, jsonLayer);
             }
             else if (layerName == "fire-skull")
             {
-                parseFlamingSkullAnimLayer(context, jsonLayer);
+                parseLayerOfRects<FlamingSkullAnimationLayer>(t_context, jsonLayer);
             }
             else if (layerName == "water-anim")
             {
-                parseWaterAnimLayer(context, jsonLayer);
+                parseLayerOfRects<WaterAnimationLayer>(t_context, jsonLayer);
             }
             else if (layerName == "lightning-anim")
             {
-                parseLightningAnimLayer(context, jsonLayer);
+                parseLayerOfRects<LightningAnimationLayer>(t_context, jsonLayer);
             }
             else if (layerName == "monster")
             {
-                parseMonsterLayer(context, jsonLayer);
+                parseMonsterLayer(t_context, jsonLayer);
             }
             else
             {
@@ -293,67 +292,70 @@ namespace platformer
         }
     }
 
-    void LevelFileLoader::parseTileLayer(Context & context, const TileImage image, Json & json)
+    void LevelFileLoader::parseTileLayer(
+        Context & t_context, const TileImage image, const nlohmann::json & t_json)
     {
-        const std::vector<int> indexes = json["data"];
+        const std::vector<int> indexes = t_json["data"];
 
         M_CHECK(
             !indexes.empty(),
             "Error Parsing Level File " << m_pathStr << ":  tile layer for image " << image
                                         << " was empty.");
 
-        context.level.tile_layers.push_back(std::make_unique<TileLayer>(context, image, indexes));
+        t_context.level.tile_layers.push_back(
+            std::make_unique<TileLayer>(t_context, image, indexes));
     }
 
     void LevelFileLoader::parseRectLayer(
-        Context & context, Json & json, std::vector<sf::FloatRect> & rects)
+        Context & t_context, const nlohmann::json & t_json, std::vector<sf::FloatRect> & t_rects)
     {
-        rects.clear();
+        t_rects.clear();
 
-        for (Json & collJson : json["objects"])
+        for (const nlohmann::json & collJson : t_json["objects"])
         {
-            rects.emplace_back(parseAndConvertRect(context, collJson));
+            t_rects.emplace_back(parseAndConvertRect(t_context, collJson));
         }
     }
 
-    sf::FloatRect LevelFileLoader::parseAndConvertRect(const Context & context, Json & json)
+    sf::FloatRect LevelFileLoader::parseAndConvertRect(
+        const Context & t_context, const nlohmann::json & t_json)
     {
         sf::IntRect mapRect;
-        mapRect.left   = json["x"];
-        mapRect.top    = json["y"];
-        mapRect.width  = json["width"];
-        mapRect.height = json["height"];
+        mapRect.left   = t_json["x"];
+        mapRect.top    = t_json["y"];
+        mapRect.width  = t_json["width"];
+        mapRect.height = t_json["height"];
 
         // convert from map to screen coordinates
         sf::FloatRect screenRect{ mapRect };
-        screenRect.left *= context.settings.tile_scale;
-        screenRect.top *= context.settings.tile_scale;
-        screenRect.width *= context.settings.tile_scale;
-        screenRect.height *= context.settings.tile_scale;
+        screenRect.left *= t_context.settings.tile_scale;
+        screenRect.top *= t_context.settings.tile_scale;
+        screenRect.width *= t_context.settings.tile_scale;
+        screenRect.height *= t_context.settings.tile_scale;
         //
-        screenRect.left += context.level.map_position_offset.x;
-        screenRect.top += context.level.map_position_offset.y;
+        screenRect.left += t_context.level.map_position_offset.x;
+        screenRect.top += t_context.level.map_position_offset.y;
 
         return screenRect;
     }
 
-    void LevelFileLoader::parseSpawnLayer(Context & context, Json & json)
+    void LevelFileLoader::parseSpawnLayer(Context & t_context, const nlohmann::json & t_json)
     {
-        context.level.enter_rect = { 0.0f, 0.0f, -1.0f, -1.0f };
-        context.level.exit_rect  = { 0.0f, 0.0f, -1.0f, -1.0f };
+        t_context.level.enter_rect = { 0.0f, 0.0f, -1.0f, -1.0f };
+        t_context.level.exit_rect  = { 0.0f, 0.0f, -1.0f, -1.0f };
 
-        for (Json & spawnJson : json["objects"])
+        for (const nlohmann::json & spawnJson : t_json["objects"])
         {
             const std::string name   = spawnJson["name"];
-            const sf::FloatRect rect = parseAndConvertRect(context, spawnJson);
+            const sf::FloatRect rect = parseAndConvertRect(t_context, spawnJson);
 
             if (name == "enter")
             {
-                context.level.enter_rect = rect;
+                t_context.level.enter_rect = rect;
             }
             else if (name == "exit")
             {
-                context.level.exit_rect = rect;
+                t_context.level.exit_rect = rect;
             }
             else
             {
@@ -363,241 +365,160 @@ namespace platformer
         }
 
         M_CHECK(
-            (context.level.enter_rect.width > 0.0f),
+            (t_context.level.enter_rect.width > 0.0f),
             "Error Parsing Level File " << m_pathStr << ":  Failed to find enter location.");
 
         M_CHECK(
-            (context.level.exit_rect.width > 0.0f),
+            (t_context.level.exit_rect.width > 0.0f),
             "Error Parsing Level File " << m_pathStr << ":  Failed to find exit location.");
     }
 
-    void LevelFileLoader::parsePickupAnimLayer(Context & context, Json & json)
+    void LevelFileLoader::parsePickupAnimLayer(Context & t_context, const nlohmann::json & t_json)
     {
-        for (Json & pickupJson : json["objects"])
+        for (const nlohmann::json & pickupJson : t_json["objects"])
         {
             const std::string name   = pickupJson["name"];
-            const sf::FloatRect rect = parseAndConvertRect(context, pickupJson);
-            context.pickup.add(context, rect, name);
+            const sf::FloatRect rect = parseAndConvertRect(t_context, pickupJson);
+            t_context.pickup.add(t_context, rect, name);
         }
     }
 
-    void LevelFileLoader::parseAccentAnimLayer(Context & context, Json & json)
+    void LevelFileLoader::parseAccentAnimLayer(Context & t_context, const nlohmann::json & t_json)
     {
-        for (Json & accentJson : json["objects"])
+        for (const nlohmann::json & accentJson : t_json["objects"])
         {
             const std::string name   = accentJson["name"];
-            const sf::FloatRect rect = parseAndConvertRect(context, accentJson);
-            context.accent.add(context, rect, name);
+            const sf::FloatRect rect = parseAndConvertRect(t_context, accentJson);
+            t_context.accent.add(t_context, rect, name);
         }
     }
 
-    void LevelFileLoader::parseAcidAnimLayer(Context & context, Json & json)
+    void LevelFileLoader::parseMonsterLayer(Context & t_context, const nlohmann::json & t_json)
     {
-        std::vector<sf::FloatRect> rects;
-        rects.reserve(128);
-
-        for (Json & acidJson : json["objects"])
-        {
-            rects.push_back(parseAndConvertRect(context, acidJson));
-        }
-
-        context.level.tile_layers.push_back(std::make_unique<AcidAnimationLayer>(context, rects));
-    }
-
-    void LevelFileLoader::parseAcidSpoutAnimLayer(Context & context, Json & json)
-    {
-        std::vector<sf::FloatRect> rects;
-        rects.reserve(32);
-
-        for (Json & acidJson : json["objects"])
-        {
-            rects.push_back(parseAndConvertRect(context, acidJson));
-        }
-
-        context.level.tile_layers.push_back(
-            std::make_unique<AcidSpoutAnimationLayer>(context, rects));
-    }
-
-    void LevelFileLoader::parseTrapAnimLayer(Context & context, Json & json)
-    {
-        std::vector<sf::FloatRect> rects;
-        rects.reserve(32);
-
-        for (Json & trapJson : json["objects"])
-        {
-            rects.push_back(parseAndConvertRect(context, trapJson));
-        }
-
-        context.level.tile_layers.push_back(std::make_unique<TrapAnimationLayer>(context, rects));
-    }
-
-    void LevelFileLoader::parseFlamingSkullAnimLayer(Context & context, Json & json)
-    {
-        std::vector<sf::FloatRect> rects;
-        rects.reserve(32);
-
-        for (Json & skullJson : json["objects"])
-        {
-            rects.push_back(parseAndConvertRect(context, skullJson));
-        }
-
-        context.level.tile_layers.push_back(
-            std::make_unique<FlamingSkullAnimationLayer>(context, rects));
-    }
-
-    void LevelFileLoader::parseWaterAnimLayer(Context & context, Json & json)
-    {
-        std::vector<sf::FloatRect> rects;
-        rects.reserve(128);
-
-        for (Json & waterJson : json["objects"])
-        {
-            rects.push_back(parseAndConvertRect(context, waterJson));
-        }
-
-        context.level.tile_layers.push_back(std::make_unique<WaterAnimationLayer>(context, rects));
-    }
-
-    void LevelFileLoader::parseLightningAnimLayer(Context & context, Json & json)
-    {
-        std::vector<sf::FloatRect> rects;
-        rects.reserve(32);
-
-        for (Json & lightningJson : json["objects"])
-        {
-            rects.push_back(parseAndConvertRect(context, lightningJson));
-        }
-
-        context.level.tile_layers.push_back(
-            std::make_unique<LightningAnimationLayer>(context, rects));
-    }
-
-    void LevelFileLoader::parseMonsterLayer(Context & context, Json & json)
-    {
-        for (Json & monsterJson : json["objects"])
+        for (const nlohmann::json & monsterJson : t_json["objects"])
         {
             const std::string name   = monsterJson["name"];
-            const sf::FloatRect rect = parseAndConvertRect(context, monsterJson);
+            const sf::FloatRect rect = parseAndConvertRect(t_context, monsterJson);
 
             if (name == "goblin")
             {
-                context.level.monsters.add(std::make_unique<Goblin>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Goblin>(t_context, rect));
             }
             else if (name == "dino")
             {
-                context.level.monsters.add(std::make_unique<Dino>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Dino>(t_context, rect));
             }
             else if (name == "spider")
             {
-                context.level.monsters.add(std::make_unique<Spider>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Spider>(t_context, rect));
             }
             else if (name == "ent")
             {
-                context.level.monsters.add(std::make_unique<Ent>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Ent>(t_context, rect));
             }
             else if (name == "big-knight")
             {
-                context.level.monsters.add(std::make_unique<BigKnight>(context, rect));
+                t_context.level.monsters.add(std::make_unique<BigKnight>(t_context, rect));
             }
             else if (name == "little-knight")
             {
-                context.level.monsters.add(std::make_unique<LittleKnight>(context, rect));
+                t_context.level.monsters.add(std::make_unique<LittleKnight>(t_context, rect));
             }
             else if (name == "bone-dragon")
             {
-                context.level.monsters.add(std::make_unique<BoneDragon>(context, rect));
+                t_context.level.monsters.add(std::make_unique<BoneDragon>(t_context, rect));
             }
             else if (name == "ghost")
             {
-                context.level.monsters.add(std::make_unique<Ghost>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Ghost>(t_context, rect));
             }
             else if (name == "skeleton")
             {
-                context.level.monsters.add(std::make_unique<Skeleton>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Skeleton>(t_context, rect));
             }
             else if (name == "vampire")
             {
-                context.level.monsters.add(std::make_unique<Vampire>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Vampire>(t_context, rect));
             }
             else if (name == "fire-knight")
             {
-                context.level.monsters.add(std::make_unique<FireKnight>(context, rect));
+                t_context.level.monsters.add(std::make_unique<FireKnight>(t_context, rect));
             }
             else if (name == "fire-imp")
             {
-                context.level.monsters.add(std::make_unique<FireImp>(context, rect));
+                t_context.level.monsters.add(std::make_unique<FireImp>(t_context, rect));
             }
             else if (name == "hound")
             {
-                context.level.monsters.add(std::make_unique<Hound>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Hound>(t_context, rect));
             }
             else if (name == "imp")
             {
-                context.level.monsters.add(std::make_unique<Imp>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Imp>(t_context, rect));
             }
             else if (name == "salamander")
             {
-                context.level.monsters.add(std::make_unique<Salamander>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Salamander>(t_context, rect));
             }
             else if (name == "skull")
             {
-                context.level.monsters.add(std::make_unique<Skull>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Skull>(t_context, rect));
             }
             else if (name == "bear")
             {
-                context.level.monsters.add(std::make_unique<Bear>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Bear>(t_context, rect));
             }
             else if (name == "dwarf")
             {
-                context.level.monsters.add(std::make_unique<Dwarf>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Dwarf>(t_context, rect));
             }
             else if (name == "orc")
             {
-                context.level.monsters.add(std::make_unique<Orc>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Orc>(t_context, rect));
             }
             else if (name == "snake")
             {
-                context.level.monsters.add(std::make_unique<Snake>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Snake>(t_context, rect));
             }
             else if (name == "yeti")
             {
-                context.level.monsters.add(std::make_unique<Yeti>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Yeti>(t_context, rect));
             }
             else if (name == "demon")
             {
-                context.level.monsters.add(std::make_unique<Demon>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Demon>(t_context, rect));
             }
             else if (name == "dragon")
             {
-                context.level.monsters.add(std::make_unique<Dragon>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Dragon>(t_context, rect));
             }
             else if (name == "djinn")
             {
-                context.level.monsters.add(std::make_unique<Djinn>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Djinn>(t_context, rect));
             }
             else if (name == "lizard")
             {
-                context.level.monsters.add(std::make_unique<Lizard>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Lizard>(t_context, rect));
             }
             else if (name == "medusa")
             {
-                context.level.monsters.add(std::make_unique<Medusa>(context, rect));
+                t_context.level.monsters.add(std::make_unique<Medusa>(t_context, rect));
             }
             else if (name == "baby-dragon")
             {
-                context.level.monsters.add(std::make_unique<BabyDragon>(context, rect));
+                t_context.level.monsters.add(std::make_unique<BabyDragon>(t_context, rect));
             }
             else if (name == "boss-tribal")
             {
-                context.level.monsters.add(std::make_unique<BossTribal>(context, rect));
+                t_context.level.monsters.add(std::make_unique<BossTribal>(t_context, rect));
             }
             else if (name == "boss-knight")
             {
-                context.level.monsters.add(std::make_unique<BossKnight>(context, rect));
+                t_context.level.monsters.add(std::make_unique<BossKnight>(t_context, rect));
             }
             else if (name == "boss-wizard")
             {
-                context.level.monsters.add(std::make_unique<BossWizard>(context, rect));
+                t_context.level.monsters.add(std::make_unique<BossWizard>(t_context, rect));
             }
             else
             {
