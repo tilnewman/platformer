@@ -20,7 +20,10 @@ namespace platformer
         , m_changePendingOpt{ std::nullopt }
     {}
 
-    void StateManager::setChangePending(const State t_state) { m_changePendingOpt = t_state; }
+    void StateManager::setChangePending(const State t_state) noexcept
+    {
+        m_changePendingOpt = t_state;
+    }
 
     void StateManager::changeIfPending(Context & t_context)
     {

@@ -40,10 +40,10 @@ namespace platformer
         Count
     };
 
-    inline constexpr std::string_view toFilename(const Accent pickup)
+    inline constexpr std::string_view toFilename(const Accent t_pickup)
     {
         // clang-format off
-        switch (pickup)
+        switch (t_pickup)
         {
             case Accent::LampGobletLarge:   { return "lamp-goblet-large.png";   }
             case Accent::LampGobletMedium:  { return "lamp-goblet-medium.png";  }
@@ -67,10 +67,10 @@ namespace platformer
         // clang-format on
     }
 
-    inline constexpr bool isVine(const Accent accent)
+    inline constexpr bool isVine(const Accent t_accent)
     {
         // clang-format off
-        switch (accent)
+        switch (t_accent)
         {
             case Accent::LampGobletLarge:
             case Accent::LampGobletMedium:
@@ -94,26 +94,26 @@ namespace platformer
         // clang-format on
     }
 
-    inline Accent stringToAccent(const std::string & name)
+    inline Accent stringToAccent(const std::string & t_name)
     {
         // clang-format off
-        if      (name == "lamp-goblet-large")   return Accent::LampGobletLarge;
-        else if (name == "lamp-goblet-medium")  return Accent::LampGobletMedium;
-        else if (name == "lamp-goblet-small")   return Accent::LampGobletSmall;
-        else if (name == "lamp-hanging")        return Accent::LampHanging;
-        else if (name == "lamp-short")          return Accent::LampShort;
-        else if (name == "lamp-tall")           return Accent::LampTall;
-        else if (name == "lamp-tri")            return Accent::LampTri;
-        else if (name == "vine-loop1")          return Accent::VineLoop1;
-        else if (name == "vine-loop2")          return Accent::VineLoop2;
-        else if (name == "vine-loop3")          return Accent::VineLoop3;
-        else if (name == "vine-loop4")          return Accent::VineLoop4;
-        else if (name == "vine-loop5")          return Accent::VineLoop5;
-        else if (name == "vine-loop6")          return Accent::VineLoop6;
-        else if (name == "vine1")               return Accent::Vine1;
-        else if (name == "vine2")               return Accent::Vine2;
-        else if (name == "vine3")               return Accent::Vine3;
-        else                                    return Accent::Count;
+        if      (t_name == "lamp-goblet-large")   return Accent::LampGobletLarge;
+        else if (t_name == "lamp-goblet-medium")  return Accent::LampGobletMedium;
+        else if (t_name == "lamp-goblet-small")   return Accent::LampGobletSmall;
+        else if (t_name == "lamp-hanging")        return Accent::LampHanging;
+        else if (t_name == "lamp-short")          return Accent::LampShort;
+        else if (t_name == "lamp-tall")           return Accent::LampTall;
+        else if (t_name == "lamp-tri")            return Accent::LampTri;
+        else if (t_name == "vine-loop1")          return Accent::VineLoop1;
+        else if (t_name == "vine-loop2")          return Accent::VineLoop2;
+        else if (t_name == "vine-loop3")          return Accent::VineLoop3;
+        else if (t_name == "vine-loop4")          return Accent::VineLoop4;
+        else if (t_name == "vine-loop5")          return Accent::VineLoop5;
+        else if (t_name == "vine-loop6")          return Accent::VineLoop6;
+        else if (t_name == "vine1")               return Accent::Vine1;
+        else if (t_name == "vine2")               return Accent::Vine2;
+        else if (t_name == "vine3")               return Accent::Vine3;
+        else                                      return Accent::Count;
         // clang-format on
     }
 
@@ -121,7 +121,7 @@ namespace platformer
 
     struct AccentAnim
     {
-        Accent which{ Accent::Vine1 }; // any accent works here
+        Accent which{ Accent::Vine1 }; // anything works here
         std::size_t anim_index{ 0 };
         sf::Sprite sprite{};
     };
@@ -133,16 +133,25 @@ namespace platformer
       public:
         AccentAnimations();
 
-        void setup(const Settings & settings);
-        void add(const Context & context, const sf::FloatRect & rect, const std::string & name);
-        void update(Context & context, const float frameTimeSec);
-        void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const;
-        void move(const float amount);
-        inline void clear() { m_anims.clear(); }
+        void setup(const Settings & t_settings);
+
+        void add(
+            const Context & t_context, const sf::FloatRect & t_rect, const std::string & t_name);
+
+        void update(Context & t_context, const float t_frameTimeSec);
+
+        void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
+            const;
+
+        void move(const float t_amount);
+
+        inline void clear() noexcept { m_anims.clear(); }
 
       private:
-        std::size_t frameCount(const Accent which) const;
-        const sf::IntRect textureRect(const Accent which, const std::size_t frame) const;
+        [[nodiscard]] std::size_t frameCount(const Accent t_which) const noexcept;
+
+        [[nodiscard]] sf::IntRect
+            textureRect(const Accent t_which, const std::size_t t_frame) const noexcept;
 
       private:
         std::vector<sf::Texture> m_textures;
