@@ -18,75 +18,73 @@ namespace platformer
 {
 
     AvatarSpellAnimations::AvatarSpellAnimations()
-        : m_druidTextures()
-        , m_enchantressTextures()
-        , m_witchTextures()
-        , m_anims()
-        , m_timePerFrameSec(0.1f)
-        , m_scale(0.0f, 0.0f)
+        : m_druidTextures{}
+        , m_enchantressTextures{}
+        , m_witchTextures{}
+        , m_anims{}
+        , m_timePerFrameSec{ 0.1f }
+        , m_scale{}
     {
         // harmless guess, probably no more than 2 or 3 at once during gameplay
         m_anims.reserve(8);
     }
 
-    void AvatarSpellAnimations::setup(const Settings & settings)
+    void AvatarSpellAnimations::setup(const Settings & t_settings)
     {
-        m_scale.x = settings.avatar_scale;
-        m_scale.y = settings.avatar_scale;
+        m_scale.x = t_settings.avatar_scale;
+        m_scale.y = t_settings.avatar_scale;
 
-        loadTextures(m_druidTextures.first, (settings.media_path / "image/avatar/druid/fire"));
-
-        loadTextures(
-            m_druidTextures.second, (settings.media_path / "image/avatar/druid/fire_extra"));
+        loadTextures(m_druidTextures.first, (t_settings.media_path / "image/avatar/druid/fire"));
 
         loadTextures(
-            m_enchantressTextures.first, (settings.media_path / "image/avatar/enchantress/fire"));
+            m_druidTextures.second, (t_settings.media_path / "image/avatar/druid/fire_extra"));
+
+        loadTextures(
+            m_enchantressTextures.first, (t_settings.media_path / "image/avatar/enchantress/fire"));
 
         loadTextures(
             m_enchantressTextures.second,
-            (settings.media_path / "image/avatar/enchantress/fire_extra"));
+            (t_settings.media_path / "image/avatar/enchantress/fire_extra"));
 
-        loadTextures(m_witchTextures.first, (settings.media_path / "image/avatar/witch/fire"));
+        loadTextures(m_witchTextures.first, (t_settings.media_path / "image/avatar/witch/fire"));
 
         loadTextures(
-            m_witchTextures.second, (settings.media_path / "image/avatar/witch/fire_extra"));
+            m_witchTextures.second, (t_settings.media_path / "image/avatar/witch/fire_extra"));
     }
 
     void AvatarSpellAnimations::add(
-        const sf::Vector2f & pos,
-        const AvatarType type,
-        const bool isFirstAttack,
-        const bool isFacingRight)
+        const sf::Vector2f & t_pos,
+        const AvatarType t_type,
+        const bool t_isFirstAttack,
+        const bool t_isFacingRight)
     {
-        if (!isSpellCaster(type))
+        if (!isSpellCaster(t_type))
         {
             return;
         }
 
-        const std::vector<sf::Texture> & textures{ getTextures(type, isFirstAttack) };
-
         AvatarSpellAnim & anim{ m_anims.emplace_back() };
-        anim.is_first_anim   = isFirstAttack;
-        anim.type            = type;
-        anim.is_moving_right = isFacingRight;
-        anim.sprite.setTexture(textures.at(0));
+        anim.is_first_anim   = t_isFirstAttack;
+        anim.type            = t_type;
+        anim.is_moving_right = t_isFacingRight;
+        anim.sprite.setTexture(getTextures(t_type, t_isFirstAttack).at(0));
         util::setOriginToCenter(anim.sprite);
         anim.sprite.scale(m_scale);
-        anim.sprite.setPosition(pos);
+        anim.sprite.setPosition(t_pos);
 
-        if (!isFacingRight)
+        if (!t_isFacingRight)
         {
             anim.sprite.scale(-1.0f, 1.0f);
         }
     }
 
-    void AvatarSpellAnimations::update(const float frameTimeSec)
+    void AvatarSpellAnimations::update(const float t_frameTimeSec)
     {
         bool didAnyFinish{ false };
 
         for (AvatarSpellAnim & anim : m_anims)
         {
-            const float moveAmount{ frameTimeSec * 40.0f };
+            const float moveAmount{ t_frameTimeSec * 40.0f };
             if (anim.is_moving_right)
             {
                 anim.sprite.move(moveAmount, 0.0f);
@@ -96,7 +94,7 @@ namespace platformer
                 anim.sprite.move(-moveAmount, 0.0f);
             }
 
-            anim.elapsed_time_sec += frameTimeSec;
+            anim.elapsed_time_sec += t_frameTimeSec;
             if (anim.elapsed_time_sec > m_timePerFrameSec)
             {
                 anim.elapsed_time_sec -= m_timePerFrameSec;
@@ -123,51 +121,52 @@ namespace platformer
         }
     }
 
-    void AvatarSpellAnimations::draw(sf::RenderTarget & target, sf::RenderStates states) const
+    void AvatarSpellAnimations::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
         for (const AvatarSpellAnim & anim : m_anims)
         {
-            target.draw(anim.sprite, states);
+            t_target.draw(anim.sprite, t_states);
         }
     }
 
-    void AvatarSpellAnimations::move(const float amount)
+    void AvatarSpellAnimations::move(const float t_amount)
     {
         for (AvatarSpellAnim & anim : m_anims)
         {
-            anim.sprite.move(amount, 0.0f);
+            anim.sprite.move(t_amount, 0.0f);
         }
     }
 
     void AvatarSpellAnimations::loadTextures(
-        std::vector<sf::Texture> & textures, const std::filesystem::path & path) const
+        std::vector<sf::Texture> & t_textures, const std::filesystem::path & t_path) const
     {
-        const std::vector<std::filesystem::path> files{ util::findFilesInDirectory(path, ".png") };
+        const std::vector<std::filesystem::path> files{ util::findFilesInDirectory(
+            t_path, ".png") };
 
         if (files.empty())
         {
-            std::cout << "Error:  AvatarSpellAnimations::loadTextures(" << path
+            std::cout << "Error:  AvatarSpellAnimations::loadTextures(" << t_path
                       << ") found no files.\n";
 
             return;
         }
 
-        textures.resize(files.size());
+        t_textures.resize(files.size());
 
         for (std::size_t frameCounter(0); frameCounter < files.size(); ++frameCounter)
         {
-            sf::Texture & texture{ textures.at(frameCounter) };
+            sf::Texture & texture{ t_textures.at(frameCounter) };
             texture.loadFromFile(files.at(frameCounter).string());
             TextureStats::instance().process(texture);
         }
     }
 
-    const std::vector<sf::Texture> &
-        AvatarSpellAnimations::getTextures(const AvatarType type, const bool isFirstAttack) const
+    const std::vector<sf::Texture> & AvatarSpellAnimations::getTextures(
+        const AvatarType t_type, const bool t_isFirstAttack) const
     {
-        if (AvatarType::Druid == type)
+        if (AvatarType::Druid == t_type)
         {
-            if (isFirstAttack)
+            if (t_isFirstAttack)
             {
                 return m_druidTextures.first;
             }
@@ -176,9 +175,9 @@ namespace platformer
                 return m_druidTextures.second;
             }
         }
-        else if (AvatarType::Enchantress == type)
+        else if (AvatarType::Enchantress == t_type)
         {
-            if (isFirstAttack)
+            if (t_isFirstAttack)
             {
                 return m_enchantressTextures.first;
             }
@@ -189,8 +188,8 @@ namespace platformer
         }
         else
         {
-            // default to witch if type is invalid -i don't have the heart to throw
-            if (isFirstAttack)
+            // default to witch if t_type is invalid -i don't have the heart to throw
+            if (t_isFirstAttack)
             {
                 return m_witchTextures.first;
             }
