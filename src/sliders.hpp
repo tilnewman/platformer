@@ -32,14 +32,14 @@ namespace util
         static_assert(std::is_floating_point_v<T>);
 
       public:
-        SliderRatio()
+        constexpr SliderRatio()
             : m_isMoving{ false }
             , m_speed{ 0 }
             , m_value{ 0 }
             , m_radians{ 0 }
         {}
 
-        explicit SliderRatio(const T t_speed, const T t_startAt = T(0))
+        explicit constexpr SliderRatio(const T t_speed, const T t_startAt = T(0))
             : m_isMoving{ true }
             , m_speed{ 0 }
             , m_value{ 0 }
@@ -100,7 +100,7 @@ namespace util
         static_assert(std::is_floating_point_v<Math_t>);
 
       public:
-        SliderFromTo()
+        constexpr SliderFromTo()
             : m_from{ 0 }
             , m_to{ 0 }
             , m_max{ 0 }
@@ -111,7 +111,8 @@ namespace util
             , m_slider()
         {}
 
-        explicit SliderFromTo(const Value_t t_from, const Value_t t_to, const Math_t t_speed)
+        explicit constexpr SliderFromTo(
+            const Value_t t_from, const Value_t t_to, const Math_t t_speed)
             : m_from{ t_from }
             , m_to{ t_to }
             , m_max{ util::max(t_from, t_to) }
@@ -166,14 +167,14 @@ namespace util
     class SliderOscillator
     {
       public:
-        SliderOscillator()
+        constexpr SliderOscillator()
             : m_from{ 0 }
             , m_to{ 0 }
             , m_slider{}
         {}
 
         // Use this constructor to start Value() at from.
-        SliderOscillator(const Value_t t_from, const Value_t t_to, const Math_t t_speed)
+        constexpr SliderOscillator(const Value_t t_from, const Value_t t_to, const Math_t t_speed)
             : m_from{ 0 }
             , m_to{ 0 }
             , m_slider{}
@@ -182,7 +183,7 @@ namespace util
         }
 
         // Use this constructor if you want to specify the starting value.
-        SliderOscillator(
+        constexpr SliderOscillator(
             const Value_t t_from, const Value_t t_to, const Math_t t_speed, const Value_t t_startAt)
             : m_from{ 0 }
             , m_to{ 0 }
@@ -269,7 +270,7 @@ namespace util
     class SliderDrift
     {
       public:
-        SliderDrift()
+        constexpr SliderDrift()
             : m_valueRange{ 0, 0 }
             , m_speedRange{ 0, 0 }
             , m_slider{}
@@ -297,19 +298,19 @@ namespace util
         }
 
         [[nodiscard]] inline constexpr Math_t speed() const noexcept { return m_slider.speed(); }
-        
+
         inline constexpr void speed(const Math_t t_newSpeed) noexcept
         {
             m_slider.speed(t_newSpeed);
         }
-        
+
         [[nodiscard]] inline constexpr Value_t value() const noexcept { return m_slider.value(); }
-        
+
         [[nodiscard]] inline constexpr bool isMoving() const noexcept
         {
             return m_slider.isMoving();
         }
-        
+
         inline constexpr void stop() noexcept { m_slider.stop(); }
 
         [[nodiscard]] inline constexpr float ratio() const noexcept
