@@ -54,7 +54,7 @@ namespace platformer
 
       private:
         [[nodiscard]] std::size_t frameCount() const noexcept;
-        [[ondiscard]] sf::IntRect textureRect(const std::size_t t_frame) const noexcept;
+        [[nodiscard]] sf::IntRect textureRect(const std::size_t t_frame) const noexcept;
 
       private:
         sf::Texture m_texture;
