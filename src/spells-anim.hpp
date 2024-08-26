@@ -28,7 +28,7 @@ namespace platformer
     struct SpellAnim
     {
         bool is_alive{ true };
-        Spell spell{ Spell::Count }; // anything works here
+        Spell spell{ Spell::Comet }; // anything works here
         std::size_t frame_index{ 0 };
         float elapsed_time_sec{ 0.0f };
         float time_per_frame_sec{ 0.0f };
@@ -50,18 +50,18 @@ namespace platformer
       public:
         SpellAnimations();
 
-        void setup(const Settings & settings);
-        void add(const sf::Vector2f & pos, const Spell spell);
-        void update(Context & context, const float frameTimeSec);
-        void draw(sf::RenderTarget & target, sf::RenderStates states) const;
-        void move(const float amount);
+        void setup(const Settings & t_settings);
+        void add(const sf::Vector2f & t_pos, const Spell t_spell);
+        void update(Context & t_context, const float t_frameTimeSec);
+        void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
+        void move(const float t_amount);
 
-        inline const sf::Texture & iconTexture(const Spell spell) const
+        [[nodiscard]] inline const sf::Texture & iconTexture(const Spell spell) const
         {
             return m_textureSets.at(static_cast<std::size_t>(spell)).icon_texture;
         }
 
-        inline void clear() { m_anims.clear(); }
+        inline void clear() noexcept { m_anims.clear(); }
 
       private:
         std::vector<SpellTextures> m_textureSets;

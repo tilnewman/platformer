@@ -12,8 +12,8 @@ namespace platformer
 {
 
     ScreenLayout::ScreenLayout()
-        : m_wholeSize()
-        , m_wholeRect()
+        : m_wholeSize{}
+        , m_wholeRect{}
     {}
 
     void ScreenLayout::setup(const sf::Vector2u & windowSize)

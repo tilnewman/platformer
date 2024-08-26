@@ -14,10 +14,10 @@ namespace platformer
       public:
         ScreenLayout();
 
-        void setup(const sf::Vector2u & windowSize);
+        void setup(const sf::Vector2u & t_windowSize);
 
-        inline const sf::Vector2f wholeSize() const { return m_wholeSize; }
-        inline const sf::FloatRect wholeRect() const { return m_wholeRect; }
+        [[nodiscard]] inline sf::Vector2f wholeSize() const noexcept { return m_wholeSize; }
+        [[nodiscard]] inline sf::FloatRect wholeRect() const noexcept { return m_wholeRect; }
 
       private:
         sf::Vector2f m_wholeSize;

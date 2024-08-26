@@ -22,16 +22,19 @@ namespace platformer
     SpellAnimations::SpellAnimations()
         : m_textureSets{}
         , m_anims{}
-        , m_scale{ 0.0f, 0.0f }
+        , m_scale{}
     {
+        // important size to prevent any reallocations
         m_textureSets.resize(static_cast<std::size_t>(Spell::Count));
-        m_anims.reserve(8); // just a guess, probably no more than 2 or 3 during play
+
+        // just a guess, probably no more than 2 or 3 during play
+        m_anims.reserve(8);
     }
 
-    void SpellAnimations::setup(const Settings & settings)
+    void SpellAnimations::setup(const Settings & t_settings)
     {
-        m_scale.x = settings.spell_scale;
-        m_scale.y = settings.spell_scale;
+        m_scale.x = t_settings.spell_scale;
+        m_scale.y = t_settings.spell_scale;
 
         for (std::size_t spellIndex(0); spellIndex < static_cast<std::size_t>(Spell::Count);
              ++spellIndex)
@@ -41,7 +44,7 @@ namespace platformer
             SpellTextures & set{ m_textureSets.at(spellIndex) };
 
             const std::filesystem::path iconPath{
-                settings.media_path / "image/spell-anim" /
+                t_settings.media_path / "image/spell-anim" /
                 std::string(toFilesystemName(spell)).append("-icon.png")
             };
 
@@ -49,7 +52,7 @@ namespace platformer
             TextureStats::instance().process(set.icon_texture);
             set.icon_texture.setSmooth(true);
 
-            const std::filesystem::path path{ settings.media_path / "image/spell-anim" /
+            const std::filesystem::path path{ t_settings.media_path / "image/spell-anim" /
                                               toFilesystemName(spell) };
 
             const std::vector<std::filesystem::path> files{ util::findFilesInDirectory(
@@ -75,16 +78,16 @@ namespace platformer
         }
     }
 
-    void SpellAnimations::add(const sf::Vector2f & pos, const Spell spell)
+    void SpellAnimations::add(const sf::Vector2f & t_pos, const Spell t_spell)
     {
-        if (Spell::Count == spell)
+        if (Spell::Count == t_spell)
         {
             std::cout << "Error:  SpellAnimations::add() given an unknown spell.\n";
             return;
         }
 
         const std::vector<sf::Texture> & textures{
-            m_textureSets.at(static_cast<std::size_t>(spell)).textures
+            m_textureSets.at(static_cast<std::size_t>(t_spell)).textures
         };
 
         if (textures.empty())
@@ -94,21 +97,21 @@ namespace platformer
 
         SpellAnim & anim{ m_anims.emplace_back() };
         anim.is_alive           = true;
-        anim.spell              = spell;
-        anim.time_per_frame_sec = timePerFrameSec(spell);
+        anim.spell              = t_spell;
+        anim.time_per_frame_sec = timePerFrameSec(t_spell);
         anim.sprite.setTexture(textures.at(0));
         anim.sprite.setScale(m_scale);
         util::setOriginToCenter(anim.sprite);
-        anim.sprite.setPosition(pos);
+        anim.sprite.setPosition(t_pos);
     }
 
-    void SpellAnimations::update(Context &, const float frameTimeSec)
+    void SpellAnimations::update(Context &, const float t_frameTimeSec)
     {
         bool didAnyFinish{ false };
 
         for (SpellAnim & anim : m_anims)
         {
-            anim.elapsed_time_sec += frameTimeSec;
+            anim.elapsed_time_sec += t_frameTimeSec;
             if (anim.elapsed_time_sec > anim.time_per_frame_sec)
             {
                 anim.elapsed_time_sec -= anim.time_per_frame_sec;
@@ -136,19 +139,19 @@ namespace platformer
         }
     }
 
-    void SpellAnimations::draw(sf::RenderTarget & target, sf::RenderStates states) const
+    void SpellAnimations::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
         for (const SpellAnim & anim : m_anims)
         {
-            target.draw(anim.sprite, states);
+            t_target.draw(anim.sprite, t_states);
         }
     }
 
-    void SpellAnimations::move(const float amount)
+    void SpellAnimations::move(const float t_amount)
     {
         for (SpellAnim & anim : m_anims)
         {
-            anim.sprite.move(amount, 0.0f);
+            anim.sprite.move(t_amount, 0.0f);
         }
     }
 
