@@ -51,46 +51,47 @@ namespace platformer
     //
 
     GuiWindow::GuiWindow()
-        : m_info()
-        , m_innerRect()
-        , m_outerRect()
-        , m_bgColor(74, 76, 41)
-        , m_bgCenterRect()
-        , m_bgCenterVerts()
-        , m_sprites()
-        , m_titleText()
-        , m_contentTexts()
-        , m_bgFadeVerts()
+        : m_info{}
+        , m_innerRect{}
+        , m_outerRect{}
+        , m_bgColor{ 74, 76, 41 }
+        , m_bgCenterRect{}
+        , m_bgCenterVerts{}
+        , m_sprites{}
+        , m_titleText{}
+        , m_contentTexts{}
+        , m_bgFadeVerts{}
     {
         m_bgCenterVerts.reserve(util::verts_per_quad);
         m_bgFadeVerts.reserve(util::verts_per_quad);
         m_sprites.reserve(16);
     }
 
-    void GuiWindow::setup(const Settings & settings)
+    void GuiWindow::setup(const Settings & t_settings)
     {
         m_borderTopLeftTexture.loadFromFile(
-            (settings.media_path / "image/ui/border-top-left.png").string());
+            (t_settings.media_path / "image/ui/border-top-left.png").string());
 
         m_borderTopRightTexture.loadFromFile(
-            (settings.media_path / "image/ui/border-top-right.png").string());
+            (t_settings.media_path / "image/ui/border-top-right.png").string());
 
         m_borderBotLeftTexture.loadFromFile(
-            (settings.media_path / "image/ui/border-bottom-left.png").string());
+            (t_settings.media_path / "image/ui/border-bottom-left.png").string());
 
         m_borderBotRightTexture.loadFromFile(
-            (settings.media_path / "image/ui/border-bottom-right.png").string());
+            (t_settings.media_path / "image/ui/border-bottom-right.png").string());
 
-        m_borderTopTexture.loadFromFile((settings.media_path / "image/ui/border-top.png").string());
+        m_borderTopTexture.loadFromFile(
+            (t_settings.media_path / "image/ui/border-top.png").string());
 
         m_borderBotTexture.loadFromFile(
-            (settings.media_path / "image/ui/border-bottom.png").string());
+            (t_settings.media_path / "image/ui/border-bottom.png").string());
 
         m_borderLeftTexture.loadFromFile(
-            (settings.media_path / "image/ui/border-left.png").string());
+            (t_settings.media_path / "image/ui/border-left.png").string());
 
         m_borderRightTexture.loadFromFile(
-            (settings.media_path / "image/ui/border-right.png").string());
+            (t_settings.media_path / "image/ui/border-right.png").string());
 
         TextureStats::instance().process(m_borderTopLeftTexture);
         TextureStats::instance().process(m_borderTopRightTexture);
@@ -104,28 +105,28 @@ namespace platformer
         //
 
         m_smallBorderTopLeftTexture.loadFromFile(
-            (settings.media_path / "image/ui/small-border-top-left.png").string());
+            (t_settings.media_path / "image/ui/small-border-top-left.png").string());
 
         m_smallBorderTopRightTexture.loadFromFile(
-            (settings.media_path / "image/ui/small-border-top-right.png").string());
+            (t_settings.media_path / "image/ui/small-border-top-right.png").string());
 
         m_smallBorderBotLeftTexture.loadFromFile(
-            (settings.media_path / "image/ui/small-border-bottom-left.png").string());
+            (t_settings.media_path / "image/ui/small-border-bottom-left.png").string());
 
         m_smallBorderBotRightTexture.loadFromFile(
-            (settings.media_path / "image/ui/small-border-bottom-right.png").string());
+            (t_settings.media_path / "image/ui/small-border-bottom-right.png").string());
 
         m_smallBorderTopTexture.loadFromFile(
-            (settings.media_path / "image/ui/small-border-top.png").string());
+            (t_settings.media_path / "image/ui/small-border-top.png").string());
 
         m_smallBorderBotTexture.loadFromFile(
-            (settings.media_path / "image/ui/small-border-bottom.png").string());
+            (t_settings.media_path / "image/ui/small-border-bottom.png").string());
 
         m_smallBorderLeftTexture.loadFromFile(
-            (settings.media_path / "image/ui/small-border-left.png").string());
+            (t_settings.media_path / "image/ui/small-border-left.png").string());
 
         m_smallBorderRightTexture.loadFromFile(
-            (settings.media_path / "image/ui/small-border-right.png").string());
+            (t_settings.media_path / "image/ui/small-border-right.png").string());
 
         TextureStats::instance().process(m_smallBorderTopLeftTexture);
         TextureStats::instance().process(m_smallBorderTopRightTexture);
@@ -139,23 +140,27 @@ namespace platformer
         //
 
         m_bgTopLeftTexture.loadFromFile(
-            (settings.media_path / "image/ui/menu-bg-top-left.png").string());
+            (t_settings.media_path / "image/ui/menu-bg-top-left.png").string());
 
         m_bgTopRightTexture.loadFromFile(
-            (settings.media_path / "image/ui/menu-bg-top-right.png").string());
+            (t_settings.media_path / "image/ui/menu-bg-top-right.png").string());
 
         m_bgBotLeftTexture.loadFromFile(
-            (settings.media_path / "image/ui/menu-bg-bottom-left.png").string());
+            (t_settings.media_path / "image/ui/menu-bg-bottom-left.png").string());
 
         m_bgBotRightTexture.loadFromFile(
-            (settings.media_path / "image/ui/menu-bg-bottom-right.png").string());
+            (t_settings.media_path / "image/ui/menu-bg-bottom-right.png").string());
 
-        m_bgTopTexture.loadFromFile((settings.media_path / "image/ui/menu-bg-top.png").string());
-        m_bgBotTexture.loadFromFile((settings.media_path / "image/ui/menu-bg-bottom.png").string());
-        m_bgLeftTexture.loadFromFile((settings.media_path / "image/ui/menu-bg-left.png").string());
+        m_bgTopTexture.loadFromFile((t_settings.media_path / "image/ui/menu-bg-top.png").string());
+
+        m_bgBotTexture.loadFromFile(
+            (t_settings.media_path / "image/ui/menu-bg-bottom.png").string());
+
+        m_bgLeftTexture.loadFromFile(
+            (t_settings.media_path / "image/ui/menu-bg-left.png").string());
 
         m_bgRightTexture.loadFromFile(
-            (settings.media_path / "image/ui/menu-bg-right.png").string());
+            (t_settings.media_path / "image/ui/menu-bg-right.png").string());
 
         TextureStats::instance().process(m_bgTopLeftTexture);
         TextureStats::instance().process(m_bgTopRightTexture);
@@ -168,30 +173,32 @@ namespace platformer
 
         //
 
-        m_tapeLeftTexture.loadFromFile((settings.media_path / "image/ui/tape-left.png").string());
-        m_tapeRightTexture.loadFromFile((settings.media_path / "image/ui/tape-right.png").string());
+        m_tapeLeftTexture.loadFromFile((t_settings.media_path / "image/ui/tape-left.png").string());
+
+        m_tapeRightTexture.loadFromFile(
+            (t_settings.media_path / "image/ui/tape-right.png").string());
 
         m_tapeMiddleTexture.loadFromFile(
-            (settings.media_path / "image/ui/tape-middle.png").string());
+            (t_settings.media_path / "image/ui/tape-middle.png").string());
 
         TextureStats::instance().process(m_tapeLeftTexture);
         TextureStats::instance().process(m_tapeRightTexture);
         TextureStats::instance().process(m_tapeMiddleTexture);
     }
 
-    void GuiWindow::create(Context & context, const GuiWindowInfo & info)
+    void GuiWindow::create(Context & t_context, const GuiWindowInfo & t_info)
     {
         m_sprites.clear();
 
         m_bgFadeVerts.clear();
 
-        if (info.will_fade_whole_screen)
+        if (t_info.will_fade_whole_screen)
         {
             util::appendQuadVerts(
-                context.layout.wholeRect(), m_bgFadeVerts, sf::Color(0, 0, 0, 127));
+                t_context.layout.wholeRect(), m_bgFadeVerts, sf::Color(0, 0, 0, 127));
         }
 
-        m_info = info;
+        m_info = t_info;
 
         sf::Sprite bgTopLeftSprite{ m_bgTopLeftTexture };
 
@@ -205,15 +212,16 @@ namespace platformer
             betweenCornerSize.x = 0.0f;
         }
 
-        betweenCornerSize.y = (m_info.region.height - (2.0f * bgTopLeftSprite.getGlobalBounds().height));
+        betweenCornerSize.y =
+            (m_info.region.height - (2.0f * bgTopLeftSprite.getGlobalBounds().height));
         if (betweenCornerSize.y < 0.0f)
         {
             betweenCornerSize.y = 0.0f;
         }
 
-        bgTopLeftSprite.setPosition(info.region.left, info.region.top);
+        bgTopLeftSprite.setPosition(t_info.region.left, t_info.region.top);
 
-        if (info.will_draw_background && (betweenCornerSize.x > 0.0f))
+        if (t_info.will_draw_background && (betweenCornerSize.x > 0.0f))
         {
             sf::FloatRect bgTopRect;
             bgTopRect.left   = util::right(bgTopLeftSprite);
@@ -239,7 +247,7 @@ namespace platformer
         bgTopRightSprite.setPosition(
             (util::right(bgTopLeftSprite) + betweenCornerSize.x), bgTopLeftSprite.getPosition().y);
 
-        if (info.will_draw_background && (betweenCornerSize.y > 0.0f))
+        if (t_info.will_draw_background && (betweenCornerSize.y > 0.0f))
         {
             sf::FloatRect bgLeftRect;
             bgLeftRect.left   = bgTopLeftSprite.getPosition().x;
@@ -279,7 +287,7 @@ namespace platformer
 
         //
 
-        if (info.will_draw_background)
+        if (t_info.will_draw_background)
         {
             m_sprites.push_back(bgTopLeftSprite);
             m_sprites.push_back(bgTopRightSprite);
@@ -505,22 +513,22 @@ namespace platformer
             sf::Sprite & tapeLeftSprite{ m_sprites.emplace_back(m_tapeLeftTexture) };
 
             tapeLeftSprite.setPosition(
-                ((context.layout.wholeSize().x * 0.5f) - tapeLeftSprite.getGlobalBounds().width),
+                ((t_context.layout.wholeSize().x * 0.5f) - tapeLeftSprite.getGlobalBounds().width),
                 (m_outerRect.top - (tapeLeftSprite.getGlobalBounds().height * 0.65f)));
 
             sf::Sprite & tapeRightSprite{ m_sprites.emplace_back(m_tapeRightTexture) };
 
             tapeRightSprite.setPosition(
-                (context.layout.wholeSize().x * 0.5f),
+                (t_context.layout.wholeSize().x * 0.5f),
                 (m_outerRect.top - (tapeRightSprite.getGlobalBounds().height * 0.65f)));
 
             sf::FloatRect titleRect;
-            titleRect.left   = ((context.layout.wholeSize().x * 0.5f) - 100.0f);
+            titleRect.left   = ((t_context.layout.wholeSize().x * 0.5f) - 100.0f);
             titleRect.top    = (tapeLeftSprite.getPosition().y + 14.0f);
             titleRect.width  = 200.0f;
             titleRect.height = 37.0f;
 
-            m_titleText = context.font.makeText(
+            m_titleText = t_context.font.makeText(
                 Font::Default, FontSize::Medium, m_info.title, sf::Color(32, 32, 32));
 
             util::fitAndCenterInside(m_titleText, titleRect);
@@ -541,7 +549,7 @@ namespace platformer
                 sf::FloatRect tapeMiddleRect;
 
                 tapeMiddleRect.left =
-                    ((context.layout.wholeSize().x * 0.5f) - (betweenTapeSize * 0.5f));
+                    ((t_context.layout.wholeSize().x * 0.5f) - (betweenTapeSize * 0.5f));
 
                 tapeMiddleRect.top    = (tapeLeftSprite.getPosition().y + 8.0f);
                 tapeMiddleRect.width  = betweenTapeSize;
@@ -557,7 +565,7 @@ namespace platformer
             m_outerRect.top = tapeLeftSprite.getPosition().y;
         }
 
-        m_contentTexts = TextLayout::layout(context, m_info.content, m_innerRect, m_info.details);
+        m_contentTexts = TextLayout::layout(t_context, m_info.content, m_innerRect, m_info.details);
     }
 
     void GuiWindow::draw(sf::RenderTarget & target, sf::RenderStates states) const

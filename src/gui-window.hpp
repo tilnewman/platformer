@@ -54,12 +54,12 @@ namespace platformer
       public:
         GuiWindow();
 
-        static void setup(const Settings & settings);
+        static void setup(const Settings & t_settings);
 
-        void create(Context & context, const GuiWindowInfo & info);
-        void draw(sf::RenderTarget & target, sf::RenderStates states) const;
-        inline const sf::FloatRect innerRect() const { return m_innerRect; }
-        inline const sf::FloatRect outerRect() const { return m_outerRect; }
+        void create(Context & t_context, const GuiWindowInfo & t_info);
+        void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
+        [[nodiscard]] inline sf::FloatRect innerRect() const noexcept { return m_innerRect; }
+        [[nodiscard]] inline sf::FloatRect outerRect() const noexcept { return m_outerRect; }
 
       private:
         GuiWindowInfo m_info;
