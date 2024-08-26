@@ -16,62 +16,65 @@ namespace util::keys
 {
     static const sf::Keyboard::Key not_a_key{ sf::Keyboard::Unknown };
 
-    inline constexpr std::string_view toString(const sf::Keyboard::Key dir)
+    [[nodiscard]] inline constexpr std::string_view toString(const sf::Keyboard::Key t_dir) noexcept
     {
         // clang-format off
-        if      (dir == sf::Keyboard::Up)    { return "Down";  }
-        else if (dir == sf::Keyboard::Down)  { return "Up";    }
-        else if (dir == sf::Keyboard::Left)  { return "Right"; }
-        else if (dir == sf::Keyboard::Right) { return "Left";  }
-        else                                 { return "";      }
+        if      (t_dir == sf::Keyboard::Up)    { return "Down";  }
+        else if (t_dir == sf::Keyboard::Down)  { return "Up";    }
+        else if (t_dir == sf::Keyboard::Left)  { return "Right"; }
+        else if (t_dir == sf::Keyboard::Right) { return "Left";  }
+        else                                   { return "";      }
         // clang-format on
     }
 
-    inline constexpr bool isHoriz(const sf::Keyboard::Key dir)
+    [[nodiscard]] inline constexpr bool isHoriz(const sf::Keyboard::Key t_dir) noexcept
     {
-        return ((dir == sf::Keyboard::Left) || (dir == sf::Keyboard::Right));
+        return ((t_dir == sf::Keyboard::Left) || (t_dir == sf::Keyboard::Right));
     }
 
-    inline constexpr bool isVert(const sf::Keyboard::Key dir)
+    [[nodiscard]] inline constexpr bool isVert(const sf::Keyboard::Key t_dir) noexcept
     {
-        return ((dir == sf::Keyboard::Up) || (dir == sf::Keyboard::Down));
+        return ((t_dir == sf::Keyboard::Up) || (t_dir == sf::Keyboard::Down));
     }
 
-    inline constexpr bool isArrow(const sf::Keyboard::Key dir)
+    [[nodiscard]] inline constexpr bool isArrow(const sf::Keyboard::Key t_dir) noexcept
     {
-        return (isHoriz(dir) || isVert(dir));
+        return (isHoriz(t_dir) || isVert(t_dir));
     }
 
-    inline constexpr sf::Keyboard::Key opposite(const sf::Keyboard::Key dir)
+    [[nodiscard]] inline constexpr sf::Keyboard::Key
+        opposite(const sf::Keyboard::Key t_dir) noexcept
     {
         // clang-format off
-        if      (dir == sf::Keyboard::Up)    { return sf::Keyboard::Down;  }
-        else if (dir == sf::Keyboard::Down)  { return sf::Keyboard::Up;    }
-        else if (dir == sf::Keyboard::Left)  { return sf::Keyboard::Right; }
-        else if (dir == sf::Keyboard::Right) { return sf::Keyboard::Left;  }
-        else                                 { return dir;                 }
+        if      (t_dir == sf::Keyboard::Up)    { return sf::Keyboard::Down;  }
+        else if (t_dir == sf::Keyboard::Down)  { return sf::Keyboard::Up;    }
+        else if (t_dir == sf::Keyboard::Left)  { return sf::Keyboard::Right; }
+        else if (t_dir == sf::Keyboard::Right) { return sf::Keyboard::Left;  }
+        else                                   { return t_dir;               }
         // clang-format on
     }
 
-    inline constexpr bool isOpposite(const sf::Keyboard::Key first, const sf::Keyboard::Key second)
+    [[nodiscard]] inline constexpr bool
+        isOpposite(const sf::Keyboard::Key t_first, const sf::Keyboard::Key t_second) noexcept
     {
-        return (opposite(first) == second);
+        return (opposite(t_first) == t_second);
     }
 
-    inline constexpr bool isLateral(const sf::Keyboard::Key first, const sf::Keyboard::Key second)
+    [[nodiscard]] inline constexpr bool
+        isLateral(const sf::Keyboard::Key t_first, const sf::Keyboard::Key t_second) noexcept
     {
-        return ((isHoriz(first) && isVert(second)) || (isHoriz(second) && isVert(first)));
+        return ((isHoriz(t_first) && isVert(t_second)) || (isHoriz(t_second) && isVert(t_first)));
     }
 
-    inline constexpr std::pair<sf::Keyboard::Key, sf::Keyboard::Key>
-        lateralPair(const sf::Keyboard::Key dir)
+    [[nodiscard]] inline constexpr std::pair<sf::Keyboard::Key, sf::Keyboard::Key>
+        lateralPair(const sf::Keyboard::Key t_dir) noexcept
     {
-        if (isHoriz(dir))
+        if (isHoriz(t_dir))
         {
             return { sf::Keyboard::Up, sf::Keyboard::Down };
         }
 
-        if (isVert(dir))
+        if (isVert(t_dir))
         {
             return { sf::Keyboard::Left, sf::Keyboard::Right };
         }
@@ -79,10 +82,10 @@ namespace util::keys
         return { not_a_key, not_a_key };
     }
 
-    inline sf::Keyboard::Key theOnlyArrowKeyDown()
+    [[nodiscard]] inline sf::Keyboard::Key theOnlyArrowKeyDown() noexcept
     {
-        sf::Keyboard::Key dir{ not_a_key };
         std::size_t count{ 0 };
+        sf::Keyboard::Key dir{ not_a_key };
 
         // clang-format off
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))    { ++count; dir = sf::Keyboard::Up;    }
@@ -101,51 +104,53 @@ namespace util::keys
         }
     }
 
-    inline void allTheArrowKeysDown(std::vector<sf::Keyboard::Key> & arrowKeys)
+    inline void allTheArrowKeysDown(std::vector<sf::Keyboard::Key> & t_arrowKeys)
     {
+        t_arrowKeys.reserve(4);
+
         // clang-format off
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))     { arrowKeys.push_back( sf::Keyboard::Up   ); }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))   { arrowKeys.push_back( sf::Keyboard::Down ); }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))   { arrowKeys.push_back( sf::Keyboard::Left ); }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))  { arrowKeys.push_back( sf::Keyboard::Right); }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))    { t_arrowKeys.push_back( sf::Keyboard::Up   ); }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))  { t_arrowKeys.push_back( sf::Keyboard::Down ); }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))  { t_arrowKeys.push_back( sf::Keyboard::Left ); }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) { t_arrowKeys.push_back( sf::Keyboard::Right); }
         // clang-format on
     }
 
     //
 
-    inline std::ostream & operator<<(std::ostream & os, const sf::Keyboard::Key dir)
+    inline std::ostream & operator<<(std::ostream & os, const sf::Keyboard::Key t_dir)
     {
-        os << keys::toString(dir);
+        os << keys::toString(t_dir);
         return os;
     }
 
-    inline constexpr bool isNumberKey(const sf::Keyboard::Key key)
+    [[nodiscard]] inline constexpr bool isNumberKey(const sf::Keyboard::Key t_key) noexcept
     {
         return (
-            (sf::Keyboard::Num0 == key) || (sf::Keyboard::Num1 == key) ||
-            (sf::Keyboard::Num2 == key) || (sf::Keyboard::Num3 == key) ||
-            (sf::Keyboard::Num4 == key) || (sf::Keyboard::Num5 == key) ||
-            (sf::Keyboard::Num6 == key) || (sf::Keyboard::Num7 == key) ||
-            (sf::Keyboard::Num8 == key) || (sf::Keyboard::Num9 == key));
+            (sf::Keyboard::Num0 == t_key) || (sf::Keyboard::Num1 == t_key) ||
+            (sf::Keyboard::Num2 == t_key) || (sf::Keyboard::Num3 == t_key) ||
+            (sf::Keyboard::Num4 == t_key) || (sf::Keyboard::Num5 == t_key) ||
+            (sf::Keyboard::Num6 == t_key) || (sf::Keyboard::Num7 == t_key) ||
+            (sf::Keyboard::Num8 == t_key) || (sf::Keyboard::Num9 == t_key));
     }
 
     template <typename T>
-    constexpr std::optional<T> toNumberOpt(const sf::Keyboard::Key key)
+    [[nodiscard]] constexpr std::optional<T> toNumberOpt(const sf::Keyboard::Key t_key) noexcept
     {
         static_assert(std::is_arithmetic_v<T>);
 
         // clang-format off
-        if      (key == sf::Keyboard::Num0) { return {0}; }
-        else if (key == sf::Keyboard::Num1) { return {1}; }
-        else if (key == sf::Keyboard::Num2) { return {2}; }
-        else if (key == sf::Keyboard::Num3) { return {3}; }
-        else if (key == sf::Keyboard::Num4) { return {4}; }
-        else if (key == sf::Keyboard::Num5) { return {5}; }
-        else if (key == sf::Keyboard::Num6) { return {6}; }
-        else if (key == sf::Keyboard::Num7) { return {7}; }
-        else if (key == sf::Keyboard::Num8) { return {8}; }
-        else if (key == sf::Keyboard::Num9) { return {9}; }
-        else { return std::nullopt; }
+        if      (t_key == sf::Keyboard::Num0) { return {0}; }
+        else if (t_key == sf::Keyboard::Num1) { return {1}; }
+        else if (t_key == sf::Keyboard::Num2) { return {2}; }
+        else if (t_key == sf::Keyboard::Num3) { return {3}; }
+        else if (t_key == sf::Keyboard::Num4) { return {4}; }
+        else if (t_key == sf::Keyboard::Num5) { return {5}; }
+        else if (t_key == sf::Keyboard::Num6) { return {6}; }
+        else if (t_key == sf::Keyboard::Num7) { return {7}; }
+        else if (t_key == sf::Keyboard::Num8) { return {8}; }
+        else if (t_key == sf::Keyboard::Num9) { return {9}; }
+        else                                  { return {};  }
         // clang-format on
     }
 
