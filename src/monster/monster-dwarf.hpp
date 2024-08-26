@@ -1,0 +1,42 @@
+#ifndef MONSTER_DWARF_HPP_INCLUDED
+#define MONSTER_DWARF_HPP_INCLUDED
+//
+// monster-dwarf.hpp
+//
+#include "subsystem/harm.hpp"
+#include "monster/monster.hpp"
+
+#include <filesystem>
+#include <string>
+
+#include <SFML/Graphics/Rect.hpp>
+
+namespace platformer
+{
+
+    struct Context;
+
+    //
+
+    class Dwarf : public Monster
+    {
+      public:
+        Dwarf(Context & context, const sf::FloatRect & region);
+        virtual ~Dwarf() override = default;
+
+        // IMonster functions
+        const Harm avatarCollide(const sf::FloatRect & avatarRect) final;
+        const sf::FloatRect collisionRect() const final;
+        const sf::FloatRect attackCollisionRect() const final;
+
+      protected:
+        inline float walkSpeed() const final { return 40.0f; }
+        void playAttackSfx(Context & context) const final;
+        void playHurtSfx(Context & context) const final;
+        void playDeathSfx(Context & context) const final;
+        void turnAround() final;
+    };
+
+} // namespace platformer
+
+#endif // MONSTER_BEAR_HPP_INCLUDED

@@ -2,122 +2,87 @@ cmake_minimum_required(VERSION 3.8)
 project("bramblefore" VERSION 0.5.0 LANGUAGES CXX)
 
 
-file(GLOB source_files *.?pp)
-add_executable(${PROJECT_NAME} ${source_files})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 
-find_package(SFML 2.6.1 COMPONENTS window graphics audio REQUIRED)
-target_link_libraries(${PROJECT_NAME} sfml-system sfml-window sfml-graphics sfml-audio)
+#list of library names (also the directory name)
+set(library_names avatar map monster player state subsystem ui util)
 
 
-#compiler/linker options
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+#list of directories with executables
+set(executable_directory_names bramblefore)
 
-    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
-    target_compile_options(
-        ${PROJECT_NAME}
-        PUBLIC
-        /std:c++20
-        /permissive-
-        /fp:fast
-        -DWIN32_LEAN_AND_MEAN
-        /MP
-        /Wall
-        /wd26812
-        /wd26451
-        /w14254
-        /w14263
-        /w14265
-        /w14287
-        /w14296
-        /w14311
-        /w14545
-        /w14546
-        /w14547
-        /w14549
-        /w14555
-        /w14619
-        /w14640
-        /w14826
-        /w14905
-        /w14906
-        /w14928
-        /we4289)
+#list of all sub-directories
+set(sub_directory_names ${library_names} ${executable_directory_names})
+
+
+#compiler specific tasks
+set(custom_compile_flags "")
+set(custom_link_flags "")
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+
+    file (READ ../build-flags/msvc.txt custom_compile_flags)
+
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
+
+    set(custom_link_flags ${custom_link_flags} -pthread)
+    file (READ ../build-flags/gnu.txt custom_compile_flags)
 
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 
-    target_compile_options(
-        ${PROJECT_NAME}
-        PUBLIC
-        -DNDEBUG
-        -lstdc++
-        -O3
-        -std=c++20
-        -Weverything
-        -Wno-c++98-compat
-        -Wno-c++98-compat-pedantic
-        -Wno-covered-switch-default
-        -Wno-deprecated
-        -Wno-disabled-macro-expansion
-        -Wno-error
-        -Wno-exit-time-destructors
-        -Wno-global-constructors
-        -Wno-newline-eof
-        -Wno-padded
-        -Wno-unused-command-line-argument
-        -Wno-weak-vtables
-        -Wno-poison-system-directories
-        -Wno-documentation-unknown-command
-        -Wno-ctad-maybe-unsupported
-        -Woverloaded-virtual
-        -Wcast-align
-        -Wformat=2)
+    file (READ ../build-flags/clang.txt custom_compile_flags)
 
+    #Clang's Address Sanitizer stuff here
+    option(ADDRESS_SANITIZER "Clang's Address Sanitizer" OFF)
 
-    option(ASAN "Using Clang's Address Sanitizer" ON)
-
-    if(ASAN)
-	message(" *** Using Clang's Address Sanitizer *** (-DASAN=OFF will disable it)")
-        target_compile_options(${PROJECT_NAME} PUBLIC -fsanitize=address -fno-omit-frame-pointer)
-        target_link_libraries(${PROJECT_NAME} -fsanitize=address -fno-omit-frame-pointer)
+    if(ADDRESS_SANITIZER)
+	    message("Clang's Address Sanitizer ENABLED")
+	    set(custom_compile_flags ${custom_compile_flags} -fsanitize=address -fno-omit-frame-pointer)
+	    set(custom_link_flags ${custom_link_flags} -fsanitize=address -fno-omit-frame-pointer)
     endif()
-
-elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-
-    target_compile_options(
-        ${PROJECT_NAME}
-        PUBLIC
-        -std=c++20
-        -O3
-        -DNDEBUG
-        -lstdc++
-        -ffast-math
-        -pedantic
-        -Wall
-        -Wconversion
-        -Weffc++
-        -Wextra
-        -Wfatal-errors
-        -Wfloat-equal
-        -Wshadow
-        -Wsign-conversion
-        -Wstrict-null-sentinel
-        -Wswitch-default
-        -Wundef
-        -Wunreachable-code
-        -Wunused-parameter
-        -Wcast-align
-        -Wmisleading-indentation
-        -Wduplicated-cond
-        -Wduplicated-branches
-        -Wlogical-op
-        -Wnull-dereference
-        -Wuseless-cast
-        -Wformat=2)
 
 else()
 
-    message(FATAL_ERROR " Unknwon Compiler: ${CMAKE_CXX_COMPILER_ID}")
+    message(FATAL_ERROR " Unknown Compiler: ${CMAKE_CXX_COMPILER_ID}")
 
 endif()
+
+
+#print/echo custom compile/link flags that were set above
+message( ${CMAKE_CXX_COMPILER_ID} " Compile Flags: " ${custom_compile_flags})
+message( ${CMAKE_CXX_COMPILER_ID} " Link Flags: " ${custom_link_flags})
+
+
+find_package(SFML 2.6.1 COMPONENTS window graphics audio REQUIRED)
+
+
+#sets compiler flags, linker flags, and dependencies common to all targets
+function(setup_target name)
+    
+    #why the fuck doesn't target_compile_options line work?! Using set_target_properties instead...
+    #target_compile_options(${name} PUBLIC ${custom_compile_flags})
+    set_target_properties(${name} PROPERTIES COMPILE_FLAGS ${custom_compile_flags})
+
+    target_link_libraries(${name} PUBLIC ${custom_link_flags})
+    
+    target_link_libraries(${name} PUBLIC sfml-window sfml-graphics sfml-audio)
+    
+    set(library_names_excluding_current ${library_names})
+    list(REMOVE_ITEM library_names_excluding_current ${name})
+    target_link_libraries(${name} PUBLIC ${library_names_excluding_current})
+        
+endfunction()
+
+
+#add libraries
+foreach(library_name ${library_names})
+    add_subdirectory(${library_name})
+endforeach()
+
+
+#add executables
+foreach(executable_directory_name ${executable_directory_names})
+    add_subdirectory(${executable_directory_name})
+endforeach()
