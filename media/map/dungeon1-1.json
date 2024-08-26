@@ -787,10 +787,32 @@
          "draworder":"topdown",
          "id":16,
          "name":"ghost-bottle",
+         "objects":[],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":17,
+         "name":"bomb",
          "objects":[
                 {
                  "height":16,
-                 "id":104,
+                 "id":107,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":576,
+                 "y":1264
+                }, 
+                {
+                 "height":16,
+                 "id":108,
                  "name":"",
                  "rotation":0,
                  "type":"",
@@ -801,24 +823,13 @@
                 }, 
                 {
                  "height":16,
-                 "id":105,
+                 "id":109,
                  "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
                  "x":640,
-                 "y":1264
-                }, 
-                {
-                 "height":16,
-                 "id":106,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":672,
                  "y":1264
                 }],
          "opacity":1,
@@ -1047,8 +1058,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":17,
- "nextobjectid":107,
+ "nextlayerid":18,
+ "nextobjectid":110,
  "orientation":"orthogonal",
  "properties":[
         {

@@ -5,6 +5,7 @@
 #include "accents.hpp"
 #include "anim-layer-acid-spout.hpp"
 #include "anim-layer-acid.hpp"
+#include "anim-layer-bomb.hpp"
 #include "anim-layer-flaming-skull.hpp"
 #include "anim-layer-ghost-bottle.hpp"
 #include "anim-layer-lightning.hpp"
@@ -284,6 +285,10 @@ namespace platformer
             else if (layerName == "ghost-bottle")
             {
                 parseLayerOfRects<GhostBottleAnimationLayer>(t_context, jsonLayer);
+            }
+            else if (layerName == "bomb")
+            {
+                parseLayerOfRects<BombAnimationLayer>(t_context, jsonLayer);
             }
             else if (layerName == "monster")
             {

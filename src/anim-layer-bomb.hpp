@@ -1,7 +1,7 @@
-#ifndef ANIM_LAYER_GHOST_BOTTLE_HPP_INCLUDED
-#define ANIM_LAYER_GHOST_BOTTLE_HPP_INCLUDED
+#ifndef ANIM_LAYER_BOMB_HPP_INCLUDED
+#define ANIM_LAYER_BOMB_HPP_INCLUDED
 //
-// anim-layer-ghost-bottle.hpp
+// anim-layer-bomb.hpp
 //
 #include "harm-collision-manager.hpp"
 #include "tile-layer.hpp"
@@ -25,9 +25,9 @@ namespace platformer
 
     //
 
-    struct GhostBottleAnim
+    struct BombAnim
     {
-        bool has_emerged{ false };
+        bool has_exploded{ false };
         float elapsed_time_sec{ 0.0f };
         float time_between_frames_sec{ 0.175f };
         std::size_t frame_index{ 0 };
@@ -37,13 +37,13 @@ namespace platformer
 
     //
 
-    class GhostBottleAnimationLayer
+    class BombAnimationLayer
         : public ITileLayer
         , public IHarmCollisionOwner
     {
       public:
-        GhostBottleAnimationLayer(Context & t_context, const std::vector<sf::FloatRect> & t_rects);
-        virtual ~GhostBottleAnimationLayer() override;
+        BombAnimationLayer(Context & t_context, const std::vector<sf::FloatRect> & t_rects);
+        virtual ~BombAnimationLayer() override;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const final;
@@ -70,9 +70,9 @@ namespace platformer
 
       private:
         sf::Texture m_texture;
-        std::vector<GhostBottleAnim> m_anims;
+        std::vector<BombAnim> m_anims;
     };
 
 } // namespace platformer
 
-#endif // ANIM_LAYER_GHOST_BOTTLE_HPP_INCLUDED
+#endif // ANIM_LAYER_BOMB_HPP_INCLUDED
