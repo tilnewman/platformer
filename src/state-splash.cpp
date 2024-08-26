@@ -19,55 +19,57 @@ namespace platformer
 {
 
     SplashState::SplashState()
-        : m_texture()
-        , m_sprite()
-        , m_text()
-        , m_elpasedTimeSec(0.0f)
+        : m_texture{}
+        , m_sprite{}
+        , m_text{}
+        , m_elpasedTimeSec{ 0.0f }
     {}
 
-    void SplashState::onEnter(Context & context)
+    void SplashState::onEnter(Context & t_context)
     {
         m_texture.loadFromFile(
-            (context.settings.media_path / "image/splash/characters.png").string());
+            (t_context.settings.media_path / "image/splash/characters.png").string());
 
         m_sprite.setTexture(m_texture);
 
-        sf::FloatRect rect{ context.layout.wholeRect() };
+        sf::FloatRect rect{ t_context.layout.wholeRect() };
         util::scaleRectInPlace(rect, 0.5f);
         util::fitAndCenterInside(m_sprite, rect);
-        m_sprite.setPosition(m_sprite.getPosition().x, (context.layout.wholeRect().height * 0.1f));
 
-        m_text = context.font.makeText(
-            Font::Default, FontSize::Huge, "Some Damn Game", sf::Color(220, 220, 220));
+        m_sprite.setPosition(
+            m_sprite.getPosition().x, (t_context.layout.wholeRect().height * 0.1f));
 
-        util::centerInside(m_text, context.layout.wholeRect());
+        m_text = t_context.font.makeText(
+            Font::Default, FontSize::Huge, "Bramblefore", sf::Color(220, 220, 220));
+
+        util::centerInside(m_text, t_context.layout.wholeRect());
 
         m_text.move(0.0f, m_text.getGlobalBounds().height);
     }
 
-    void SplashState::update(Context & context, const float frameTimeSec)
+    void SplashState::update(Context & t_context, const float t_frameTimeSec)
     {
-        m_elpasedTimeSec += frameTimeSec;
+        m_elpasedTimeSec += t_frameTimeSec;
         if (m_elpasedTimeSec > 3.0f)
         {
-            context.state.setChangePending(State::Play);
+            t_context.state.setChangePending(State::Play);
         }
     }
 
-    void SplashState::draw(Context &, sf::RenderTarget & target, sf::RenderStates states) const
+    void SplashState::draw(Context &, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
-        target.draw(m_sprite, states);
-        target.draw(m_text, states);
+        t_target.draw(m_sprite, t_states);
+        t_target.draw(m_text, t_states);
     }
 
-    void SplashState::handleEvent(Context & context, const sf::Event & event)
+    void SplashState::handleEvent(Context & t_context, const sf::Event & t_event)
     {
-        if (event.type != sf::Event::KeyPressed)
+        if (t_event.type != sf::Event::KeyPressed)
         {
             return;
         }
 
-        context.state.setChangePending(State::Play);
+        t_context.state.setChangePending(State::Play);
     }
 
 } // namespace platformer

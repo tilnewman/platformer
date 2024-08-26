@@ -30,18 +30,18 @@ namespace platformer
         Shutdown
     };
 
-    inline constexpr std::string_view toString(const State state)
+    [[nodiscard]] inline constexpr std::string_view toString(const State state) noexcept
     {
         // clang-format off
         switch (state)
         {
-            case State::Startup:        { return "Startup";                        }
-            case State::Splash:         { return "Splash";                         }
-            case State::Play:           { return "Play";                           }
-            case State::LevelComplete:  { return "LevelComplete";                  }
-            case State::LevelDeath:     { return "LevelDeath";                     }
-            case State::Shutdown:       { return "Shutdown";                       }
-            default:                    { return "Error_toString()_unknown_State"; }
+            case State::Startup:        { return "Startup";       }
+            case State::Splash:         { return "Splash";        }
+            case State::Play:           { return "Play";          }
+            case State::LevelComplete:  { return "LevelComplete"; }
+            case State::LevelDeath:     { return "LevelDeath";    }
+            case State::Shutdown:       { return "Shutdown";      }
+            default:   { return "Error_toString()_unknown_State"; }
         }
         // clang-format on
     }
@@ -52,7 +52,7 @@ namespace platformer
     {
         virtual ~IState() = default;
 
-        virtual State which() const                                                    = 0;
+        [[nodiscard]] virtual State which() const                                      = 0;
         virtual void update(Context & context, const float frameTimeSec)               = 0;
         virtual void draw(Context & c, sf::RenderTarget & t, sf::RenderStates s) const = 0;
         virtual void handleEvent(Context & context, const sf::Event & event)           = 0;
@@ -66,7 +66,7 @@ namespace platformer
     {
         virtual ~StartupState() override = default;
 
-        State which() const final { return State::Startup; }
+        [[nodiscard]] State which() const final { return State::Startup; }
         void update(Context &, const float) final {}
         void draw(Context &, sf::RenderTarget &, sf::RenderStates) const final {}
         void handleEvent(Context &, const sf::Event &) final {}
@@ -80,7 +80,7 @@ namespace platformer
     {
         virtual ~ShutdownState() override = default;
 
-        State which() const final { return State::Shutdown; }
+        [[nodiscard]] State which() const final { return State::Shutdown; }
         void update(Context &, const float) final {}
         void draw(Context &, sf::RenderTarget &, sf::RenderStates) const final {}
         void handleEvent(Context &, const sf::Event &) final {}
