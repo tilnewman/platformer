@@ -3,11 +3,8 @@
 //
 // monster-dragon.hpp
 //
-#include "subsystem/harm.hpp"
 #include "monster/monster.hpp"
-
-#include <filesystem>
-#include <string>
+#include "subsystem/harm.hpp"
 
 #include <SFML/Graphics/Rect.hpp>
 
@@ -21,20 +18,19 @@ namespace platformer
     class Dragon : public Monster
     {
       public:
-        Dragon(Context & context, const sf::FloatRect & region);
+        Dragon(Context & t_context, const sf::FloatRect & t_region);
         virtual ~Dragon() override = default;
 
         // IMonster functions
-        const Harm avatarCollide(const sf::FloatRect & avatarRect) final;
+        const Harm avatarCollide(const sf::FloatRect & t_avatarRect) final;
         const sf::FloatRect collisionRect() const final;
         const sf::FloatRect attackCollisionRect() const final;
 
       protected:
-        inline float walkSpeed() const final { return 50.0f; }
-        void playAttackSfx(Context & context) const final;
-        void playHurtSfx(Context & context) const final;
-        void playDeathSfx(Context & context) const final;
-        void startAttackAnimation(Context & context) final;
+        void playAttackSfx(Context & t_context) const final;
+        void playHurtSfx(Context & t_context) const final;
+        void playDeathSfx(Context & t_context) const final;
+        void startAttackAnimation(Context & t_context) final;
     };
 
 } // namespace platformer

@@ -6,13 +6,11 @@
 #include "monster/monster-baby-dragon.hpp"
 
 #include "avatar/avatar.hpp"
+#include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "bramblefore/settings.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
-
-#include <filesystem>
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -20,8 +18,8 @@
 namespace platformer
 {
 
-    BabyDragon::BabyDragon(Context & context, const sf::FloatRect & region)
-        : Monster(context, { MonsterType::BabyDragon, region, 0.85f })
+    BabyDragon::BabyDragon(Context & t_context, const sf::FloatRect & t_region)
+        : Monster{ t_context, { MonsterType::BabyDragon, t_region, 0.85f } }
     {}
 
     const sf::FloatRect BabyDragon::collisionRect() const
@@ -58,11 +56,11 @@ namespace platformer
         return rect;
     }
 
-    const Harm BabyDragon::avatarCollide(const sf::FloatRect & avatarRect)
+    const Harm BabyDragon::avatarCollide(const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 
-        if ((MonsterAnim::Attack == m_anim) && avatarRect.intersects(attackCollisionRect()))
+        if ((MonsterAnim::Attack == m_anim) && t_avatarRect.intersects(attackCollisionRect()))
         {
             harm.damage = 25;
             harm.rect   = collisionRect();
@@ -72,10 +70,10 @@ namespace platformer
         return harm;
     }
 
-    void BabyDragon::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
+    void BabyDragon::playAttackSfx(Context & t_context) const { t_context.sfx.play("attack-ent"); }
 
-    void BabyDragon::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
+    void BabyDragon::playHurtSfx(Context & t_context) const { t_context.sfx.play("hurt-ent"); }
 
-    void BabyDragon::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
+    void BabyDragon::playDeathSfx(Context & t_context) const { t_context.sfx.play("death-ent"); }
 
 } // namespace platformer

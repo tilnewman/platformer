@@ -273,7 +273,7 @@ namespace platformer
             return;
         }
 
-        const float speed{ walkSpeed() };
+        const float speed{ walkSpeed(m_type) };
         if (m_isFacingRight)
         {
             m_sprite.move((speed * t_frameTimeSec), 0.0f);

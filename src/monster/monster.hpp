@@ -73,7 +73,6 @@ namespace platformer
         virtual void turnAround();
         virtual void startAttackAnimation(Context &) {}
 
-        [[nodiscard]] virtual float walkSpeed() const       = 0;
         virtual void playAttackSfx(Context & context) const = 0;
         virtual void playHurtSfx(Context & context) const   = 0;
         virtual void playDeathSfx(Context & context) const  = 0;

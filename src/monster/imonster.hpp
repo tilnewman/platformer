@@ -59,10 +59,10 @@ namespace platformer
         Count
     };
 
-    inline constexpr std::string_view toString(const MonsterType type)
+    inline constexpr std::string_view toString(const MonsterType t_type) noexcept
     {
         // clang-format off
-        switch (type)
+        switch (t_type)
         {
             case MonsterType::BabyDragon:    { return "baby-dragon";    }
             case MonsterType::Bear:          { return "bear";           }
@@ -100,10 +100,10 @@ namespace platformer
         // clang-format on
     }
 
-    inline constexpr Health_t startingHealth(const MonsterType type)
+    inline constexpr Health_t startingHealth(const MonsterType t_type) noexcept
     {
         // clang-format off
-        switch (type)
+        switch (t_type)
         {
             case MonsterType::BabyDragon:    { return 25;  }
             case MonsterType::Bear:          { return 30;  }
@@ -141,6 +141,47 @@ namespace platformer
         // clang-format on
     }
 
+    inline constexpr float walkSpeed(const MonsterType t_type) noexcept
+    {
+        // clang-format off
+        switch (t_type)
+        {
+            case MonsterType::BabyDragon:    { return 40.0f; }
+            case MonsterType::Bear:          { return 40.0f; }
+            case MonsterType::BigKnight:     { return 45.0f; }
+            case MonsterType::BoneDragon:    { return 40.0f; }
+            case MonsterType::Demon:         { return 45.0f; }
+            case MonsterType::Dino:          { return 30.0f; }
+            case MonsterType::Djinn:         { return 40.0f; }
+            case MonsterType::Dragon:        { return 50.0f; }
+            case MonsterType::Dwarf:         { return 40.0f; }
+            case MonsterType::Ent:           { return 30.0f; }
+            case MonsterType::FireImp:       { return 30.0f; }
+            case MonsterType::FireKnight:    { return 40.0f; }
+            case MonsterType::Ghost:         { return 40.0f; }
+            case MonsterType::Goblin:        { return 40.0f; }
+            case MonsterType::Hound:         { return 40.0f; }
+            case MonsterType::Imp:           { return 30.0f; }
+            case MonsterType::LittleKnight:  { return 30.0f; }
+            case MonsterType::Lizard:        { return 40.0f; }
+            case MonsterType::Medusa:        { return 40.0f; }
+            case MonsterType::Orc:           { return 45.0f; }
+            case MonsterType::Salamander:    { return 40.0f; }
+            case MonsterType::Skeleton:      { return 40.0f; }
+            case MonsterType::Skull:         { return 30.0f; }
+            case MonsterType::Snake:         { return 30.0f; }
+            case MonsterType::Spider:        { return 50.0f; }
+            case MonsterType::Vampire:       { return 40.0f; }
+            case MonsterType::Yeti:          { return 40.0f; }
+            case MonsterType::BossTribal:    { return 75.0f; }
+            case MonsterType::BossKnight:    { return 75.0f; }
+            case MonsterType::BossWizard:    { return 75.0f; }
+            case MonsterType::Count: //intentional fallthrough      
+            default:                         { return 0.0f;  }
+        }
+        // clang-format on
+    }
+
     //
 
     enum class MonsterAnim : std::size_t
@@ -153,10 +194,10 @@ namespace platformer
         Count
     };
 
-    inline constexpr std::string_view toString(const MonsterAnim anim)
+    inline constexpr std::string_view toString(const MonsterAnim t_anim) noexcept
     {
         // clang-format off
-        switch (anim)
+        switch (t_anim)
         {
             case MonsterAnim::Attack:      { return "attack"; }
             case MonsterAnim::Death:       { return "death";  }
@@ -169,19 +210,18 @@ namespace platformer
         // clang-format on
     }
 
-    inline constexpr bool doesAnimLoop(const MonsterAnim anim)
+    inline constexpr bool doesAnimLoop(const MonsterAnim t_anim) noexcept
     {
-        return ((anim == MonsterAnim::Walk) || (anim == MonsterAnim::Idle));
+        return ((t_anim == MonsterAnim::Walk) || (t_anim == MonsterAnim::Idle));
     }
 
     //
 
     struct AttackInfo
     {
-        explicit AttackInfo(
-            const Health_t attackDamage = 0, const sf::FloatRect & avatarAttackRect = {})
-            : damage(attackDamage)
-            , rect(avatarAttackRect)
+        explicit AttackInfo(const Health_t t_damage = 0, const sf::FloatRect & t_rect = {})
+            : damage(t_damage)
+            , rect(t_rect)
         {}
 
         Health_t damage;
@@ -194,13 +234,13 @@ namespace platformer
     {
         virtual ~IMonster() = default;
 
-        virtual void update(Context & context, const float frameTimeSec)                     = 0;
+        virtual void update(Context & t_context, const float t_frameTimeSec)                 = 0;
         virtual void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const = 0;
-        virtual void move(const float amount)                                                = 0;
-        virtual const Harm avatarCollide(const sf::FloatRect & avatarRect)                   = 0;
+        virtual void move(const float t_amount)                                              = 0;
+        virtual const Harm avatarCollide(const sf::FloatRect & t_avatarRect)                 = 0;
         virtual const sf::FloatRect collisionRect() const                                    = 0;
         virtual const sf::FloatRect attackCollisionRect() const                              = 0;
-        virtual bool avatarAttack(Context & context, const AttackInfo & attackInfo)          = 0;
+        virtual bool avatarAttack(Context & t_context, const AttackInfo & t_attackInfo)      = 0;
     };
 
 } // namespace platformer
