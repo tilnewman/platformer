@@ -14,14 +14,14 @@ namespace platformer
 {
 
     TextureStats::TextureStats()
-        : m_count(0)
-        , m_byteCount(0)
+        : m_count{ 0 }
+        , m_byteCount{ 0 }
     {}
 
-    void TextureStats::process(const sf::Texture & texture)
+    void TextureStats::process(const sf::Texture & t_texture)
     {
         ++m_count;
-        m_byteCount += static_cast<std::size_t>(texture.getSize().x * texture.getSize().y * 4u);
+        m_byteCount += static_cast<std::size_t>(t_texture.getSize().x * t_texture.getSize().y * 4u);
     }
 
     void TextureStats::dumpInfo()
