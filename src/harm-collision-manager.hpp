@@ -19,7 +19,8 @@ namespace platformer
     struct IHarmCollisionOwner
     {
         virtual ~IHarmCollisionOwner() = default;
-        virtual Harm avatarCollide(Context & context, const sf::FloatRect & avatarRect) = 0;
+        [[nodiscard]] virtual Harm
+            avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) = 0;
     };
 
     //
@@ -29,9 +30,9 @@ namespace platformer
       public:
         static HarmCollisionManager & instance();
 
-        void addOwner(IHarmCollisionOwner & owner);
-        void removeOwner(IHarmCollisionOwner & owner);
-        Harm avatarCollide(Context & context, const sf::FloatRect & avatarRect);
+        void addOwner(IHarmCollisionOwner & t_owner);
+        void removeOwner(IHarmCollisionOwner & t_owner);
+        [[nodiscard]] Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect);
 
       private:
         HarmCollisionManager();

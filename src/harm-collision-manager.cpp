@@ -13,31 +13,35 @@
 namespace platformer
 {
 
+    HarmCollisionManager::HarmCollisionManager()
+        : m_owners{}
+    {}
+
     HarmCollisionManager & HarmCollisionManager::instance()
     {
         static HarmCollisionManager instance;
         return instance;
     }
 
-    HarmCollisionManager::HarmCollisionManager()
-        : m_owners()
-    {}
+    void HarmCollisionManager::addOwner(IHarmCollisionOwner & t_owner)
+    {
+        m_owners.push_back(t_owner);
+    }
 
-    void HarmCollisionManager::addOwner(IHarmCollisionOwner & owner) { m_owners.push_back(owner); }
-
-    void HarmCollisionManager::removeOwner(IHarmCollisionOwner & owner)
+    void HarmCollisionManager::removeOwner(IHarmCollisionOwner & t_owner)
     {
         std::erase_if(
             m_owners, [&](const std::reference_wrapper<IHarmCollisionOwner> & refWrapper) {
-                return (&owner == &refWrapper.get());
+                return (&t_owner == &refWrapper.get());
             });
     }
 
-    Harm HarmCollisionManager::avatarCollide(Context & context, const sf::FloatRect & avatarRect)
+    Harm
+        HarmCollisionManager::avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect)
     {
         for (auto & ownerRefWrapper : m_owners)
         {
-            const Harm harm{ ownerRefWrapper.get().avatarCollide(context, avatarRect) };
+            const Harm harm{ ownerRefWrapper.get().avatarCollide(t_context, t_avatarRect) };
             if (harm.isAnyHarmDone())
             {
                 return harm;
