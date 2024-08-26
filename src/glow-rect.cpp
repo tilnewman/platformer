@@ -18,21 +18,25 @@ namespace platformer
     {}
 
     void GlowRect::setup(
-        const sf::Color & color, const sf::FloatRect & outerRect, const float innerResizeRatio)
+        const sf::Color & t_color,
+        const sf::FloatRect & t_outerRect,
+        const float t_innerResizeRatio)
     {
-        setup(color, outerRect, util::scaleRectInPlaceCopy(outerRect, innerResizeRatio));
+        setup(t_color, t_outerRect, util::scaleRectInPlaceCopy(t_outerRect, t_innerResizeRatio));
     }
 
     void GlowRect::setup(
-        const sf::Color & color,
-        const sf::FloatRect & outerRect,
-        const sf::Vector2f & innerResizeRatios)
+        const sf::Color & t_color,
+        const sf::FloatRect & t_outerRect,
+        const sf::Vector2f & t_innerResizeRatios)
     {
-        setup(color, outerRect, util::scaleRectInPlaceCopy(outerRect, innerResizeRatios));
+        setup(t_color, t_outerRect, util::scaleRectInPlaceCopy(t_outerRect, t_innerResizeRatios));
     }
 
     void GlowRect::setup(
-        const sf::Color & color, const sf::FloatRect & outerRect, const sf::FloatRect & innerRect)
+        const sf::Color & t_color,
+        const sf::FloatRect & t_outerRect,
+        const sf::FloatRect & t_innerRect)
     {
         const auto setTransparentTopLeft = [&]() {
             m_verts.at(m_verts.size() - 4).color = sf::Color::Transparent;
@@ -52,23 +56,23 @@ namespace platformer
 
         m_verts.clear();
 
-        util::appendQuadVerts(innerRect, m_verts, color);
+        util::appendQuadVerts(t_innerRect, m_verts, t_color);
 
-        const sf::FloatRect topLeftRect{ outerRect.left,
-                                         outerRect.top,
-                                         (innerRect.left - outerRect.left),
-                                         (innerRect.top - outerRect.top) };
+        const sf::FloatRect topLeftRect{ t_outerRect.left,
+                                         t_outerRect.top,
+                                         (t_innerRect.left - t_outerRect.left),
+                                         (t_innerRect.top - t_outerRect.top) };
 
-        util::appendQuadVerts(topLeftRect, m_verts, color);
+        util::appendQuadVerts(topLeftRect, m_verts, t_color);
         setTransparentBotLeft();
         setTransparentTopLeft();
         setTransparentTopRight();
 
         const sf::FloatRect topRect{
-            innerRect.left, outerRect.top, innerRect.width, topLeftRect.height
+            t_innerRect.left, t_outerRect.top, t_innerRect.width, topLeftRect.height
         };
 
-        util::appendQuadVerts(topRect, m_verts, color);
+        util::appendQuadVerts(topRect, m_verts, t_color);
         setTransparentTopLeft();
         setTransparentTopRight();
 
@@ -76,59 +80,60 @@ namespace platformer
             util::right(topRect), topRect.top, topLeftRect.width, topLeftRect.height
         };
 
-        util::appendQuadVerts(topRightRect, m_verts, color);
+        util::appendQuadVerts(topRightRect, m_verts, t_color);
         setTransparentTopLeft();
         setTransparentTopRight();
         setTransparentBotRight();
 
         const sf::FloatRect leftRect{
-            outerRect.left, innerRect.top, topLeftRect.width, innerRect.height
+            t_outerRect.left, t_innerRect.top, topLeftRect.width, t_innerRect.height
         };
 
-        util::appendQuadVerts(leftRect, m_verts, color);
+        util::appendQuadVerts(leftRect, m_verts, t_color);
         setTransparentTopLeft();
         setTransparentBotLeft();
 
         const sf::FloatRect rightRect{
-            util::right(innerRect), innerRect.top, leftRect.width, innerRect.height
+            util::right(t_innerRect), t_innerRect.top, leftRect.width, t_innerRect.height
 
         };
 
-        util::appendQuadVerts(rightRect, m_verts, color);
+        util::appendQuadVerts(rightRect, m_verts, t_color);
         setTransparentTopRight();
         setTransparentBotRight();
 
         const sf::FloatRect botLeftRect{
-            outerRect.left, util::bottom(innerRect), leftRect.width, topLeftRect.height
+            t_outerRect.left, util::bottom(t_innerRect), leftRect.width, topLeftRect.height
         };
 
-        util::appendQuadVerts(botLeftRect, m_verts, color);
+        util::appendQuadVerts(botLeftRect, m_verts, t_color);
         setTransparentTopLeft();
         setTransparentBotLeft();
         setTransparentBotRight();
 
         const sf::FloatRect botRect{
-            innerRect.left, util::bottom(innerRect), innerRect.width, topLeftRect.height
+            t_innerRect.left, util::bottom(t_innerRect), t_innerRect.width, topLeftRect.height
 
         };
 
-        util::appendQuadVerts(botRect, m_verts, color);
+        util::appendQuadVerts(botRect, m_verts, t_color);
         setTransparentBotLeft();
         setTransparentBotRight();
 
-        const sf::FloatRect botRightRect{
-            util::right(innerRect), util::bottom(innerRect), topRightRect.width, topRightRect.height
-        };
+        const sf::FloatRect botRightRect{ util::right(t_innerRect),
+                                          util::bottom(t_innerRect),
+                                          topRightRect.width,
+                                          topRightRect.height };
 
-        util::appendQuadVerts(botRightRect, m_verts, color);
+        util::appendQuadVerts(botRightRect, m_verts, t_color);
         setTransparentBotLeft();
         setTransparentBotRight();
         setTransparentTopRight();
     }
 
-    void GlowRect::draw(sf::RenderTarget & target) const
+    void GlowRect::draw(sf::RenderTarget & t_target) const
     {
-        target.draw(&m_verts[0], m_verts.size(), sf::Quads);
+        t_target.draw(&m_verts[0], m_verts.size(), sf::Quads);
     }
 
 } // namespace platformer

@@ -24,19 +24,21 @@ namespace platformer
         GlowRect();
 
         void setup(
-            const sf::Color & color, const sf::FloatRect & outerRect, const float innerResizeRatio);
-        
-        void setup(
-            const sf::Color & color,
-            const sf::FloatRect & outerRect,
-            const sf::Vector2f & innerResizeRatios);
-        
-        void setup(
-            const sf::Color & color,
-            const sf::FloatRect & outerRect,
-            const sf::FloatRect & innerRect);
+            const sf::Color & t_color,
+            const sf::FloatRect & t_outerRect,
+            const float t_innerResizeRatio);
 
-        void draw(sf::RenderTarget & target) const;
+        void setup(
+            const sf::Color & t_color,
+            const sf::FloatRect & t_outerRect,
+            const sf::Vector2f & t_innerResizeRatios);
+
+        void setup(
+            const sf::Color & t_color,
+            const sf::FloatRect & t_outerRect,
+            const sf::FloatRect & t_innerRect);
+
+        void draw(sf::RenderTarget & t_target) const;
 
       private:
         std::vector<sf::Vertex> m_verts;
