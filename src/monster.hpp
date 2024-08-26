@@ -31,14 +31,14 @@ namespace platformer
     struct MonsterSetupInfo
     {
         MonsterSetupInfo(
-            const MonsterType monsterType,
-            const sf::FloatRect & roamRegion,
-            const float imageHeightRatio,
-            const float imageScale = 1.0f)
-            : type(monsterType)
-            , region(roamRegion)
-            , image_height_ratio(imageHeightRatio)
-            , image_scale(imageScale)
+            const MonsterType t_monsterType,
+            const sf::FloatRect & t_roamRegion,
+            const float t_imageHeightRatio,
+            const float t_imageScale = 1.0f)
+            : type(t_monsterType)
+            , region(t_roamRegion)
+            , image_height_ratio(t_imageHeightRatio)
+            , image_scale(t_imageScale)
         {}
 
         MonsterType type;
@@ -52,25 +52,28 @@ namespace platformer
     class Monster : public IMonster
     {
       public:
-        Monster(Context & context, const MonsterSetupInfo & setupInfo);
+        Monster(Context & t_context, const MonsterSetupInfo & t_setupInfo);
         virtual ~Monster() override;
 
         // IMonster functions
-        void update(Context & context, const float frameTimeSec) override;
-        void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const override;
-        void move(const float amount) override;
-        bool avatarAttack(Context & context, const AttackInfo & attackInfo) override;
+        void update(Context & t_context, const float t_frameTimeSec) override;
+
+        void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
+            const override;
+
+        void move(const float t_amount) override;
+        bool avatarAttack(Context & t_context, const AttackInfo & t_attackInfo) override;
 
       protected:
         virtual bool animate(); // returns true if animation is finished
-        virtual float timePerFrameSec(const MonsterAnim anim) const;
+        [[nodiscard]] virtual float timePerFrameSec(const MonsterAnim anim) const noexcept;
         virtual void changeStateBeforeSeeingPlayer(Context & context);
         virtual void changeStateAfterSeeingPlayer(Context & context);
         virtual void handleWalking(Context & context, const float frameTimeSec);
         virtual void turnAround();
         virtual void startAttackAnimation(Context &) {}
 
-        virtual float walkSpeed() const                     = 0;
+        [[nodiscard]] virtual float walkSpeed() const       = 0;
         virtual void playAttackSfx(Context & context) const = 0;
         virtual void playHurtSfx(Context & context) const   = 0;
         virtual void playDeathSfx(Context & context) const  = 0;

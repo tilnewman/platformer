@@ -20,47 +20,47 @@
 namespace platformer
 {
 
-    Monster::Monster(Context & context, const MonsterSetupInfo & setupInfo)
-        : m_type(setupInfo.type)
-        , m_region(setupInfo.region)
-        , m_anim(MonsterAnim::Idle)
-        , m_animFrame(0)
-        , m_sprite()
-        , m_elapsedTimeSec(0.0f)
-        , m_isFacingRight(true)
-        , m_stateElapsedTimeSec(0.0f)
-        , m_stateTimeUntilChangeSec(0.0f)
-        , m_hasSpottedPlayer(false)
-        , m_health(startingHealth(setupInfo.type))
-        , m_isAlive(true)
-        , m_animations()
+    Monster::Monster(Context & t_context, const MonsterSetupInfo & t_setupInfo)
+        : m_type{ t_setupInfo.type }
+        , m_region{ t_setupInfo.region }
+        , m_anim{ MonsterAnim::Idle }
+        , m_animFrame{ 0 }
+        , m_sprite{}
+        , m_elapsedTimeSec{ 0.0f }
+        , m_isFacingRight{ true }
+        , m_stateElapsedTimeSec{ 0.0f }
+        , m_stateTimeUntilChangeSec{ 0.0f }
+        , m_hasSpottedPlayer{ false }
+        , m_health{ startingHealth(t_setupInfo.type) }
+        , m_isAlive{ true }
+        , m_animations{}
     {
-        MonsterTextureManager::instance().acquire(context, m_type);
-        m_animations.setup(context.settings);
-        initialSpriteSetup(context, setupInfo.image_height_ratio, setupInfo.image_scale);
+        MonsterTextureManager::instance().acquire(t_context, m_type);
+        m_animations.setup(t_context.settings);
+        initialSpriteSetup(t_context, t_setupInfo.image_height_ratio, t_setupInfo.image_scale);
     }
 
     Monster::~Monster() { MonsterTextureManager::instance().release(m_type); }
 
-    void Monster::update(Context & context, const float frameTimeSec)
+    void Monster::update(Context & t_context, const float t_frameTimeSec)
     {
-        m_animations.update(frameTimeSec);
+        m_animations.update(t_frameTimeSec);
 
         if (!m_isAlive)
         {
             return;
         }
 
-        if (!m_hasSpottedPlayer && m_region.intersects(context.avatar.collisionRect()))
+        if (!m_hasSpottedPlayer && m_region.intersects(t_context.avatar.collisionRect()))
         {
             m_hasSpottedPlayer = true;
-            turnToFacePlayer(context);
+            turnToFacePlayer(t_context);
         }
 
-        m_elapsedTimeSec += frameTimeSec;
-        m_stateElapsedTimeSec += frameTimeSec;
+        m_elapsedTimeSec += t_frameTimeSec;
+        m_stateElapsedTimeSec += t_frameTimeSec;
 
-        handleWalking(context, frameTimeSec);
+        handleWalking(t_context, t_frameTimeSec);
 
         if (!animate())
         {
@@ -75,11 +75,11 @@ namespace platformer
 
                 if (m_hasSpottedPlayer)
                 {
-                    changeStateAfterSeeingPlayer(context);
+                    changeStateAfterSeeingPlayer(t_context);
                 }
                 else
                 {
-                    changeStateBeforeSeeingPlayer(context);
+                    changeStateBeforeSeeingPlayer(t_context);
                 }
             }
         }
@@ -101,61 +101,61 @@ namespace platformer
             {
                 if (m_hasSpottedPlayer)
                 {
-                    changeStateAfterSeeingPlayer(context);
+                    changeStateAfterSeeingPlayer(t_context);
                 }
                 else
                 {
-                    changeStateBeforeSeeingPlayer(context);
+                    changeStateBeforeSeeingPlayer(t_context);
                 }
             }
         }
     }
 
     void Monster::draw(
-        const Context & context, sf::RenderTarget & target, sf::RenderStates states) const
+        const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
-        if (context.layout.wholeRect().intersects(m_sprite.getGlobalBounds()))
+        if (t_context.layout.wholeRect().intersects(m_sprite.getGlobalBounds()))
         {
-            target.draw(m_sprite, states);
+            t_target.draw(m_sprite, t_states);
             // util::drawRectangleShape(target, collisionRect(), false, sf::Color::Green);
             // util::drawRectangleShape(target, attackCollisionRect(), false, sf::Color::Red);
 
-            m_animations.draw(target, states);
+            m_animations.draw(t_target, t_states);
         }
     }
 
-    void Monster::move(const float amount)
+    void Monster::move(const float t_amount)
     {
-        m_sprite.move(amount, 0.0f);
-        m_region.left += amount;
-        m_animations.move(amount);
+        m_sprite.move(t_amount, 0.0f);
+        m_region.left += t_amount;
+        m_animations.move(t_amount);
     }
 
-    bool Monster::avatarAttack(Context & context, const AttackInfo & attackInfo)
+    bool Monster::avatarAttack(Context & t_context, const AttackInfo & t_attackInfo)
     {
         if ((MonsterAnim::Death == m_anim) || (MonsterAnim::Hurt == m_anim))
         {
             return false;
         }
 
-        if (!attackInfo.rect.intersects(collisionRect()))
+        if (!t_attackInfo.rect.intersects(collisionRect()))
         {
             return false;
         }
 
-        m_health -= attackInfo.damage;
+        m_health -= t_attackInfo.damage;
 
         if (m_health > 0)
         {
             m_anim = MonsterAnim::Hurt;
             resetAnimation();
-            playHurtSfx(context);
+            playHurtSfx(t_context);
         }
         else
         {
             m_anim = MonsterAnim::Death;
             resetAnimation();
-            playDeathSfx(context);
+            playDeathSfx(t_context);
         }
 
         return true;
@@ -186,10 +186,10 @@ namespace platformer
         return isAnimationFinished;
     }
 
-    float Monster::timePerFrameSec(const MonsterAnim anim) const
+    float Monster::timePerFrameSec(const MonsterAnim t_anim) const noexcept
     {
         // clang-format off
-        switch (anim)
+        switch (t_anim)
         {
             case MonsterAnim::Attack:        { return 0.1f;   }
             case MonsterAnim::Death:         { return 0.175f; }
@@ -202,7 +202,7 @@ namespace platformer
         // clang-format on
     }
 
-    void Monster::changeStateBeforeSeeingPlayer(Context & context)
+    void Monster::changeStateBeforeSeeingPlayer(Context & t_context)
     {
         if (MonsterAnim::Death == m_anim)
         {
@@ -210,14 +210,14 @@ namespace platformer
         }
 
         m_elapsedTimeSec          = 0.0f;
-        m_stateTimeUntilChangeSec = context.random.fromTo(1.0f, 6.0f);
+        m_stateTimeUntilChangeSec = t_context.random.fromTo(1.0f, 6.0f);
 
-        const int isNextActionWalking{ context.random.boolean() };
+        const int isNextActionWalking{ t_context.random.boolean() };
         if (isNextActionWalking)
         {
             m_anim = MonsterAnim::Walk;
             resetAnimation();
-            const bool willChangeDirection{ context.random.boolean() };
+            const bool willChangeDirection{ t_context.random.boolean() };
             if (willChangeDirection)
             {
                 turnAround();
@@ -232,9 +232,9 @@ namespace platformer
         }
     }
 
-    void Monster::changeStateAfterSeeingPlayer(Context & context)
+    void Monster::changeStateAfterSeeingPlayer(Context & t_context)
     {
-        if (!context.layout.wholeRect().intersects(collisionRect()))
+        if (!t_context.layout.wholeRect().intersects(collisionRect()))
         {
             return;
         }
@@ -244,29 +244,29 @@ namespace platformer
             return;
         }
 
-        turnToFacePlayer(context);
+        turnToFacePlayer(t_context);
 
         m_elapsedTimeSec      = 0.0f;
         m_stateElapsedTimeSec = 0.0f;
 
-        const int isNextActionWalking{ context.random.boolean() };
+        const int isNextActionWalking{ t_context.random.boolean() };
         if (isNextActionWalking)
         {
             m_anim = MonsterAnim::Walk;
             resetAnimation();
-            m_stateTimeUntilChangeSec = context.random.fromTo(1.0f, 2.0f);
+            m_stateTimeUntilChangeSec = t_context.random.fromTo(1.0f, 2.0f);
         }
         else
         {
             // in all other cases just attack
             m_anim = MonsterAnim::Attack;
             resetAnimation();
-            playAttackSfx(context);
-            startAttackAnimation(context);
+            playAttackSfx(t_context);
+            startAttackAnimation(t_context);
         }
     }
 
-    void Monster::handleWalking(Context & context, const float frameTimeSec)
+    void Monster::handleWalking(Context & t_context, const float t_frameTimeSec)
     {
         if (MonsterAnim::Walk != m_anim)
         {
@@ -276,14 +276,14 @@ namespace platformer
         const float speed{ walkSpeed() };
         if (m_isFacingRight)
         {
-            m_sprite.move((speed * frameTimeSec), 0.0f);
+            m_sprite.move((speed * t_frameTimeSec), 0.0f);
         }
         else
         {
-            m_sprite.move(-(speed * frameTimeSec), 0.0f);
+            m_sprite.move(-(speed * t_frameTimeSec), 0.0f);
         }
 
-        const sf::FloatRect avatarRect{ context.avatar.collisionRect() };
+        const sf::FloatRect avatarRect{ t_context.avatar.collisionRect() };
         const sf::FloatRect monsterRect{ collisionRect() };
 
         // backoff if walking into the player
@@ -320,23 +320,23 @@ namespace platformer
     }
 
     void Monster::initialSpriteSetup(
-        Context & context, const float imageHeightOffsetRatio, const float imageScale)
+        Context & t_context, const float t_imageHeightOffsetRatio, const float t_imageScale)
     {
         MonsterTextureManager::instance().setTexture(m_sprite, m_type, m_anim, m_animFrame);
-        m_sprite.setScale(context.settings.monster_scale, context.settings.monster_scale);
-        m_sprite.scale(imageScale, imageScale);
+        m_sprite.setScale(t_context.settings.monster_scale, t_context.settings.monster_scale);
+        m_sprite.scale(t_imageScale, t_imageScale);
         util::setOriginToCenter(m_sprite);
 
         m_sprite.setPosition(
-            context.random.fromTo(m_region.left, util::right(m_region)),
+            t_context.random.fromTo(m_region.left, util::right(m_region)),
             (util::bottom(m_region) - m_sprite.getGlobalBounds().height));
 
-        m_sprite.move(0.0f, (imageHeightOffsetRatio * m_sprite.getGlobalBounds().height));
+        m_sprite.move(0.0f, (t_imageHeightOffsetRatio * m_sprite.getGlobalBounds().height));
     }
 
-    void Monster::turnToFacePlayer(Context & context)
+    void Monster::turnToFacePlayer(Context & t_context)
     {
-        const bool isPlayerToTheRight{ util::center(context.avatar.collisionRect()).x >
+        const bool isPlayerToTheRight{ util::center(t_context.avatar.collisionRect()).x >
                                        util::center(collisionRect()).x };
 
         if (isPlayerToTheRight != m_isFacingRight)
