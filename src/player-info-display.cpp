@@ -24,66 +24,66 @@ namespace platformer
 {
 
     PlayerInfoDisplay::PlayerInfoDisplay()
-        : m_halfFrameTexture()
-        , m_halfFrameSprite()
-        , m_fullFrameTexture()
-        , m_fullFrameSprite()
-        , m_avatarIconSprite()
-        , m_bgFadeVerts()
-        , m_barFrameTexture()
-        , m_healthBarFrameSprite()
-        , m_manaBarFrameSprite()
-        , m_barFillLeftTexture()
-        , m_barFillMiddleTexture()
-        , m_barFillRightTexture()
-        , m_healthBarRect()
-        , m_healthBarLeftSprite()
-        , m_healthBarMiddleSprite()
-        , m_healthBarRightSprite()
-        , m_manaBarRect()
-        , m_manaBarLeftSprite()
-        , m_manaBarMiddleSprite()
-        , m_manaBarRightSprite()
-        , m_healthColor(255, 50, 50)
-        , m_manaColor(50, 50, 255)
-        , m_barFillMax(226.0f)
-        , m_willDrawHealthBarRight(true)
-        , m_willDrawHealthBarLeft(true)
-        , m_willDrawManaBarRight(true)
-        , m_willDrawManaBarLeft(true)
-        , m_coinTexture()
-        , m_coinSprite()
-        , m_coinText()
-        , m_starBrownTexture()
-        , m_starBrown1Sprite()
-        , m_starBrown2Sprite()
-        , m_starBrown3Sprite()
-        , m_starBrown4Sprite()
-        , m_starBrown5Sprite()
-        , m_starYellowTexture()
-        , m_starYellow1Sprite()
-        , m_starYellow2Sprite()
-        , m_starYellow3Sprite()
-        , m_starYellow4Sprite()
-        , m_starYellow5Sprite()
+        : m_halfFrameTexture{}
+        , m_halfFrameSprite{}
+        , m_fullFrameTexture{}
+        , m_fullFrameSprite{}
+        , m_avatarIconSprite{}
+        , m_bgFadeVerts{}
+        , m_barFrameTexture{}
+        , m_healthBarFrameSprite{}
+        , m_manaBarFrameSprite{}
+        , m_barFillLeftTexture{}
+        , m_barFillMiddleTexture{}
+        , m_barFillRightTexture{}
+        , m_healthBarRect{}
+        , m_healthBarLeftSprite{}
+        , m_healthBarMiddleSprite{}
+        , m_healthBarRightSprite{}
+        , m_manaBarRect{}
+        , m_manaBarLeftSprite{}
+        , m_manaBarMiddleSprite{}
+        , m_manaBarRightSprite{}
+        , m_healthColor{ 255, 50, 50 }
+        , m_manaColor{ 50, 50, 255 }
+        , m_barFillMax{ 226.0f }
+        , m_willDrawHealthBarRight{ true }
+        , m_willDrawHealthBarLeft{ true }
+        , m_willDrawManaBarRight{ true }
+        , m_willDrawManaBarLeft{ true }
+        , m_coinTexture{}
+        , m_coinSprite{}
+        , m_coinText{}
+        , m_starBrownTexture{}
+        , m_starBrown1Sprite{}
+        , m_starBrown2Sprite{}
+        , m_starBrown3Sprite{}
+        , m_starBrown4Sprite{}
+        , m_starBrown5Sprite{}
+        , m_starYellowTexture{}
+        , m_starYellow1Sprite{}
+        , m_starYellow2Sprite{}
+        , m_starYellow3Sprite{}
+        , m_starYellow4Sprite{}
+        , m_starYellow5Sprite{}
     {}
 
-    void PlayerInfoDisplay::setup(const Context & context)
+    void PlayerInfoDisplay::setup(const Context & t_context)
     {
         m_halfFrameTexture.loadFromFile(
-            (context.settings.media_path / "image/ui/half-frame.png").string());
+            (t_context.settings.media_path / "image/ui/half-frame.png").string());
 
         TextureStats::instance().process(m_halfFrameTexture);
         m_halfFrameSprite.setTexture(m_halfFrameTexture);
         m_halfFrameSprite.scale(2.0f, 2.0f);
 
-        const float posDimm{ context.layout.wholeSize().y * 0.1f };
+        const float posDimm{ t_context.layout.wholeSize().y * 0.1f };
         m_halfFrameSprite.setPosition(posDimm, posDimm);
 
         //
 
         m_fullFrameTexture.loadFromFile(
-            (context.settings.media_path / "image/ui/full-frame.png").string());
+            (t_context.settings.media_path / "image/ui/full-frame.png").string());
 
         TextureStats::instance().process(m_fullFrameTexture);
         m_fullFrameSprite.setTexture(m_fullFrameTexture);
@@ -101,14 +101,14 @@ namespace platformer
         //
 
         m_avatarIconSprite.setTexture(
-            AvatarTextureManager::instance().getIcon(context.player.avatarType()));
+            AvatarTextureManager::instance().getIcon(t_context.player.avatarType()));
 
         util::scaleAndCenterInside(m_avatarIconSprite, m_bgRect);
 
         //
 
         m_barFrameTexture.loadFromFile(
-            (context.settings.media_path / "image/ui/bar-frame.png").string());
+            (t_context.settings.media_path / "image/ui/bar-frame.png").string());
 
         TextureStats::instance().process(m_barFrameTexture);
 
@@ -132,7 +132,7 @@ namespace platformer
         //
 
         m_barFillLeftTexture.loadFromFile(
-            (context.settings.media_path / "image/ui/bar-fill-left.png").string());
+            (t_context.settings.media_path / "image/ui/bar-fill-left.png").string());
 
         TextureStats::instance().process(m_barFillLeftTexture);
 
@@ -146,7 +146,7 @@ namespace platformer
         //
 
         m_barFillMiddleTexture.loadFromFile(
-            (context.settings.media_path / "image/ui/bar-fill-middle.png").string());
+            (t_context.settings.media_path / "image/ui/bar-fill-middle.png").string());
 
         TextureStats::instance().process(m_barFillMiddleTexture);
 
@@ -164,7 +164,7 @@ namespace platformer
         //
 
         m_barFillRightTexture.loadFromFile(
-            (context.settings.media_path / "image/ui/bar-fill-right.png").string());
+            (t_context.settings.media_path / "image/ui/bar-fill-right.png").string());
 
         TextureStats::instance().process(m_barFillRightTexture);
 
@@ -214,7 +214,7 @@ namespace platformer
         const float starRectHeightMiddle{ m_healthBarFrameSprite.getPosition().y -
                                           (starRectHeight * 0.5f) };
 
-        m_coinTexture.loadFromFile((context.settings.media_path / "image/ui/coin.png").string());
+        m_coinTexture.loadFromFile((t_context.settings.media_path / "image/ui/coin.png").string());
         TextureStats::instance().process(m_coinTexture);
         m_coinTexture.setSmooth(true);
         m_coinSprite.setTexture(m_coinTexture);
@@ -227,7 +227,7 @@ namespace platformer
         //
 
         m_coinText =
-            context.font.makeText(Font::Default, FontSize::Large, "0", sf::Color(236, 218, 95));
+            t_context.font.makeText(Font::Default, FontSize::Large, "0", sf::Color(236, 218, 95));
 
         m_coinText.scale(1.4f, 1.4f);
 
@@ -238,7 +238,7 @@ namespace platformer
         //
 
         m_starBrownTexture.loadFromFile(
-            (context.settings.media_path / "image/ui/star-brown.png").string());
+            (t_context.settings.media_path / "image/ui/star-brown.png").string());
 
         TextureStats::instance().process(m_starBrownTexture);
         m_starBrownTexture.setSmooth(true);
@@ -276,101 +276,101 @@ namespace platformer
         //
 
         m_starYellowTexture.loadFromFile(
-            (context.settings.media_path / "image/ui/star-yellow.png").string());
+            (t_context.settings.media_path / "image/ui/star-yellow.png").string());
 
         TextureStats::instance().process(m_starYellowTexture);
         m_starYellowTexture.setSmooth(true);
 
         m_starYellow1Sprite.setTexture(m_starYellowTexture);
         m_starYellow1Sprite.scale(m_starBrown1Sprite.getScale());
-        
+
         m_starYellow2Sprite.setTexture(m_starYellowTexture);
         m_starYellow2Sprite.scale(m_starBrown1Sprite.getScale());
-        
+
         m_starYellow3Sprite.setTexture(m_starYellowTexture);
         m_starYellow3Sprite.scale(m_starBrown1Sprite.getScale());
-        
+
         m_starYellow4Sprite.setTexture(m_starYellowTexture);
         m_starYellow4Sprite.scale(m_starBrown1Sprite.getScale());
-        
+
         m_starYellow5Sprite.setTexture(m_starYellowTexture);
         m_starYellow5Sprite.scale(m_starBrown1Sprite.getScale());
-    
+
         setStarCount(0);
     }
 
-    void PlayerInfoDisplay::draw(sf::RenderTarget & target, sf::RenderStates states) const
+    void PlayerInfoDisplay::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
-        target.draw(m_halfFrameSprite, states);
-        target.draw(&m_bgFadeVerts[0], m_bgFadeVerts.size(), sf::Quads, states);
-        target.draw(m_avatarIconSprite, states);
-        target.draw(m_fullFrameSprite, states);
+        t_target.draw(m_halfFrameSprite, t_states);
+        t_target.draw(&m_bgFadeVerts[0], m_bgFadeVerts.size(), sf::Quads, t_states);
+        t_target.draw(m_avatarIconSprite, t_states);
+        t_target.draw(m_fullFrameSprite, t_states);
 
-        target.draw(m_healthBarFrameSprite, states);
-        target.draw(m_healthBarMiddleSprite, states);
+        t_target.draw(m_healthBarFrameSprite, t_states);
+        t_target.draw(m_healthBarMiddleSprite, t_states);
 
         if (m_willDrawHealthBarLeft)
         {
-            target.draw(m_healthBarLeftSprite, states);
+            t_target.draw(m_healthBarLeftSprite, t_states);
         }
 
         if (m_willDrawHealthBarRight)
         {
-            target.draw(m_healthBarRightSprite, states);
+            t_target.draw(m_healthBarRightSprite, t_states);
         }
 
-        target.draw(m_manaBarFrameSprite, states);
-        target.draw(m_manaBarMiddleSprite, states);
+        t_target.draw(m_manaBarFrameSprite, t_states);
+        t_target.draw(m_manaBarMiddleSprite, t_states);
 
         if (m_willDrawManaBarLeft)
         {
-            target.draw(m_manaBarLeftSprite, states);
+            t_target.draw(m_manaBarLeftSprite, t_states);
         }
 
         if (m_willDrawManaBarRight)
         {
-            target.draw(m_manaBarRightSprite, states);
+            t_target.draw(m_manaBarRightSprite, t_states);
         }
 
-        target.draw(m_coinSprite, states);
-        target.draw(m_coinText);
+        t_target.draw(m_coinSprite, t_states);
+        t_target.draw(m_coinText);
 
-        target.draw(m_starBrown1Sprite, states);
-        target.draw(m_starBrown2Sprite, states);
-        target.draw(m_starBrown3Sprite, states);
-        target.draw(m_starBrown4Sprite, states);
-        target.draw(m_starBrown5Sprite, states);
+        t_target.draw(m_starBrown1Sprite, t_states);
+        t_target.draw(m_starBrown2Sprite, t_states);
+        t_target.draw(m_starBrown3Sprite, t_states);
+        t_target.draw(m_starBrown4Sprite, t_states);
+        t_target.draw(m_starBrown5Sprite, t_states);
 
-        target.draw(m_starYellow1Sprite, states);
-        target.draw(m_starYellow2Sprite, states);
-        target.draw(m_starYellow3Sprite, states);
-        target.draw(m_starYellow4Sprite, states);
-        target.draw(m_starYellow5Sprite, states);
+        t_target.draw(m_starYellow1Sprite, t_states);
+        t_target.draw(m_starYellow2Sprite, t_states);
+        t_target.draw(m_starYellow3Sprite, t_states);
+        t_target.draw(m_starYellow4Sprite, t_states);
+        t_target.draw(m_starYellow5Sprite, t_states);
     }
 
-    void PlayerInfoDisplay::setHealthBar(const float ratio)
+    void PlayerInfoDisplay::setHealthBar(const float t_ratio)
     {
-        m_willDrawHealthBarRight = (ratio >= 1.0f);
-        m_willDrawHealthBarLeft  = (ratio > 0.0f);
-        m_healthBarRect.width    = (m_barFillMax * ratio);
+        m_willDrawHealthBarRight = (t_ratio >= 1.0f);
+        m_willDrawHealthBarLeft  = (t_ratio > 0.0f);
+        m_healthBarRect.width    = (m_barFillMax * t_ratio);
         util::scaleAndCenterInside(m_healthBarMiddleSprite, m_healthBarRect);
     }
 
-    void PlayerInfoDisplay::setManaBar(const float ratio)
+    void PlayerInfoDisplay::setManaBar(const float t_ratio)
     {
-        m_willDrawManaBarRight = (ratio >= 1.0f);
-        m_willDrawManaBarLeft  = (ratio > 0.0f);
-        m_manaBarRect.width    = (m_barFillMax * ratio);
+        m_willDrawManaBarRight = (t_ratio >= 1.0f);
+        m_willDrawManaBarLeft  = (t_ratio > 0.0f);
+        m_manaBarRect.width    = (m_barFillMax * t_ratio);
         util::scaleAndCenterInside(m_manaBarMiddleSprite, m_manaBarRect);
     }
 
-    void PlayerInfoDisplay::setCoinCount(const int count)
+    void PlayerInfoDisplay::setCoinCount(const int t_count)
     {
-        m_coinText.setString(std::to_string(count));
+        m_coinText.setString(std::to_string(t_count));
         util::setOriginToPosition(m_coinText);
     }
 
-    void PlayerInfoDisplay::setStarCount(const int count)
+    void PlayerInfoDisplay::setStarCount(const int t_count)
     {
         m_starYellow1Sprite.setPosition(-100.0f, -100.0f);
         m_starYellow2Sprite.setPosition(-100.0f, -100.0f);
@@ -378,25 +378,25 @@ namespace platformer
         m_starYellow4Sprite.setPosition(-100.0f, -100.0f);
         m_starYellow5Sprite.setPosition(-100.0f, -100.0f);
 
-        if (0 == count)
+        if (0 == t_count)
         {
         }
-        else if (1 == count)
+        else if (1 == t_count)
         {
             m_starYellow1Sprite.setPosition(m_starBrown1Sprite.getPosition());
         }
-        else if (2 == count)
+        else if (2 == t_count)
         {
             m_starYellow1Sprite.setPosition(m_starBrown1Sprite.getPosition());
             m_starYellow2Sprite.setPosition(m_starBrown2Sprite.getPosition());
         }
-        else if (3 == count)
+        else if (3 == t_count)
         {
             m_starYellow1Sprite.setPosition(m_starBrown1Sprite.getPosition());
             m_starYellow2Sprite.setPosition(m_starBrown2Sprite.getPosition());
             m_starYellow3Sprite.setPosition(m_starBrown3Sprite.getPosition());
         }
-        else if (4 == count)
+        else if (4 == t_count)
         {
             m_starYellow1Sprite.setPosition(m_starBrown1Sprite.getPosition());
             m_starYellow2Sprite.setPosition(m_starBrown2Sprite.getPosition());

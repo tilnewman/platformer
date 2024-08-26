@@ -28,12 +28,12 @@ namespace platformer
       public:
         PlayerInfoDisplay();
 
-        void setup(const Context & context);
-        void draw(sf::RenderTarget & target, sf::RenderStates states) const;
-        void setHealthBar(const float ratio);
-        void setManaBar(const float ratio);
-        void setCoinCount(const int count);
-        void setStarCount(const int count);
+        void setup(const Context & t_context);
+        void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
+        void setHealthBar(const float t_ratio);
+        void setManaBar(const float t_ratio);
+        void setCoinCount(const int t_count);
+        void setStarCount(const int t_count);
 
       private:
         sf::Texture m_halfFrameTexture;
@@ -84,7 +84,7 @@ namespace platformer
         sf::Sprite m_starBrown3Sprite;
         sf::Sprite m_starBrown4Sprite;
         sf::Sprite m_starBrown5Sprite;
-        
+
         sf::Texture m_starYellowTexture;
         sf::Sprite m_starYellow1Sprite;
         sf::Sprite m_starYellow2Sprite;
