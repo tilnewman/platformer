@@ -50,10 +50,4 @@ namespace platformer
         return rect;
     }
 
-    void BabyDragon::playAttackSfx(Context & t_context) const { t_context.sfx.play("attack-ent"); }
-
-    void BabyDragon::playHurtSfx(Context & t_context) const { t_context.sfx.play("hurt-ent"); }
-
-    void BabyDragon::playDeathSfx(Context & t_context) const { t_context.sfx.play("death-ent"); }
-
 } // namespace platformer

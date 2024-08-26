@@ -60,12 +60,6 @@ namespace platformer
         return rect;
     }
 
-    void FireKnight::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
-
-    void FireKnight::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
-
-    void FireKnight::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
-
     void FireKnight::turnAround()
     {
         m_sprite.scale(-1.0f, 1.0f);

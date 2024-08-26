@@ -50,10 +50,4 @@ namespace platformer
         return rect;
     }
 
-    void Yeti::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
-
-    void Yeti::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
-
-    void Yeti::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
-
 } // namespace platformer

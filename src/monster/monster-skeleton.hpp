@@ -20,14 +20,10 @@ namespace platformer
         Skeleton(Context & t_context, const sf::FloatRect & t_region);
         virtual ~Skeleton() override = default;
 
-        // IMonster functions
         sf::FloatRect collisionRect() const final;
         sf::FloatRect attackCollisionRect() const final;
 
       protected:
-        void playAttackSfx(Context & t_context) const final;
-        void playHurtSfx(Context & t_context) const final;
-        void playDeathSfx(Context & t_context) const final;
         void turnAround() final;
     };
 

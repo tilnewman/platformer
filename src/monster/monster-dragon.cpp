@@ -61,12 +61,6 @@ namespace platformer
         return rect;
     }
 
-    void Dragon::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
-
-    void Dragon::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
-
-    void Dragon::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
-
     void Dragon::startAttackAnimation(Context &)
     {
         const sf::FloatRect collRect{ collisionRect() };

@@ -50,10 +50,4 @@ namespace platformer
         return rect;
     }
 
-    void Goblin::playAttackSfx(Context & context) const { context.sfx.play("swipe"); }
-
-    void Goblin::playHurtSfx(Context & context) const { context.sfx.play("hurt-goblin"); }
-
-    void Goblin::playDeathSfx(Context & context) const { context.sfx.play("death-goblin"); }
-
 } // namespace platformer

@@ -50,10 +50,4 @@ namespace platformer
         return rect;
     }
 
-    void BigKnight::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
-
-    void BigKnight::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
-
-    void BigKnight::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
-
 } // namespace platformer

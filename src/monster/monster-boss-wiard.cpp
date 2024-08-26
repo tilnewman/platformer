@@ -62,12 +62,6 @@ namespace platformer
         return rect;
     }
 
-    void BossWizard::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
-
-    void BossWizard::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
-
-    void BossWizard::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
-
     void BossWizard::turnAround()
     {
         m_sprite.scale(-1.0f, 1.0f);

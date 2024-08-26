@@ -266,6 +266,132 @@ namespace platformer
         // clang-format on
     }
 
+    // TODO need to go and get real sfx here
+    inline constexpr std::string_view attackSfx(const MonsterType t_type) noexcept
+    {
+        // clang-format off
+        switch (t_type)
+        {
+            case MonsterType::BabyDragon:    { return ""; }
+            case MonsterType::Bear:          { return ""; }
+            case MonsterType::BigKnight:     { return ""; }
+            case MonsterType::BoneDragon:    { return ""; }
+            case MonsterType::Demon:         { return ""; }
+            case MonsterType::Dino:          { return "attack-dino"; }
+            case MonsterType::Djinn:         { return ""; }
+            case MonsterType::Dragon:        { return ""; }
+            case MonsterType::Dwarf:         { return ""; }
+            case MonsterType::Ent:           { return "attack-ent"; }
+            case MonsterType::FireImp:       { return ""; }
+            case MonsterType::FireKnight:    { return ""; }
+            case MonsterType::Ghost:         { return "swipe"; }
+            case MonsterType::Goblin:        { return ""; }
+            case MonsterType::Hound:         { return ""; }
+            case MonsterType::Imp:           { return ""; }
+            case MonsterType::LittleKnight:  { return ""; }
+            case MonsterType::Lizard:        { return ""; }
+            case MonsterType::Medusa:        { return ""; }
+            case MonsterType::Orc:           { return ""; }
+            case MonsterType::Salamander:    { return ""; }
+            case MonsterType::Skeleton:      { return ""; }
+            case MonsterType::Skull:         { return ""; }
+            case MonsterType::Snake:         { return ""; }
+            case MonsterType::Spider:        { return "attack-spider"; }
+            case MonsterType::Vampire:       { return ""; }
+            case MonsterType::Yeti:          { return ""; }
+            case MonsterType::BossTribal:    { return ""; }
+            case MonsterType::BossKnight:    { return ""; }
+            case MonsterType::BossWizard:    { return ""; }
+            case MonsterType::Count: //intentional fallthrough      
+            default:                         { return "";  }
+        }
+        // clang-format on
+    }
+
+    // TODO need to go and get real sfx here
+    inline constexpr std::string_view hurtSfx(const MonsterType t_type) noexcept
+    {
+        // clang-format off
+        switch (t_type)
+        {
+            case MonsterType::BabyDragon:    { return ""; }
+            case MonsterType::Bear:          { return ""; }
+            case MonsterType::BigKnight:     { return ""; }
+            case MonsterType::BoneDragon:    { return ""; }
+            case MonsterType::Demon:         { return ""; }
+            case MonsterType::Dino:          { return "hurt-dino"; }
+            case MonsterType::Djinn:         { return ""; }
+            case MonsterType::Dragon:        { return ""; }
+            case MonsterType::Dwarf:         { return ""; }
+            case MonsterType::Ent:           { return "hurt-ent"; }
+            case MonsterType::FireImp:       { return ""; }
+            case MonsterType::FireKnight:    { return ""; }
+            case MonsterType::Ghost:         { return ""; }
+            case MonsterType::Goblin:        { return "hurt-goblin"; }
+            case MonsterType::Hound:         { return ""; }
+            case MonsterType::Imp:           { return ""; }
+            case MonsterType::LittleKnight:  { return ""; }
+            case MonsterType::Lizard:        { return ""; }
+            case MonsterType::Medusa:        { return ""; }
+            case MonsterType::Orc:           { return ""; }
+            case MonsterType::Salamander:    { return ""; }
+            case MonsterType::Skeleton:      { return ""; }
+            case MonsterType::Skull:         { return ""; }
+            case MonsterType::Snake:         { return ""; }
+            case MonsterType::Spider:        { return "hurt-spider"; }
+            case MonsterType::Vampire:       { return ""; }
+            case MonsterType::Yeti:          { return ""; }
+            case MonsterType::BossTribal:    { return ""; }
+            case MonsterType::BossKnight:    { return ""; }
+            case MonsterType::BossWizard:    { return ""; }
+            case MonsterType::Count: //intentional fallthrough      
+            default:                         { return "";  }
+        }
+        // clang-format on
+    }
+
+    // TODO need to go and get real sfx here
+    inline constexpr std::string_view deathSfx(const MonsterType t_type) noexcept
+    {
+        // clang-format off
+        switch (t_type)
+        {
+            case MonsterType::BabyDragon:    { return ""; }
+            case MonsterType::Bear:          { return ""; }
+            case MonsterType::BigKnight:     { return ""; }
+            case MonsterType::BoneDragon:    { return ""; }
+            case MonsterType::Demon:         { return ""; }
+            case MonsterType::Dino:          { return "death-dino"; }
+            case MonsterType::Djinn:         { return ""; }
+            case MonsterType::Dragon:        { return ""; }
+            case MonsterType::Dwarf:         { return ""; }
+            case MonsterType::Ent:           { return "death-ent"; }
+            case MonsterType::FireImp:       { return ""; }
+            case MonsterType::FireKnight:    { return ""; }
+            case MonsterType::Ghost:         { return ""; }
+            case MonsterType::Goblin:        { return "death-goblin"; }
+            case MonsterType::Hound:         { return ""; }
+            case MonsterType::Imp:           { return ""; }
+            case MonsterType::LittleKnight:  { return ""; }
+            case MonsterType::Lizard:        { return ""; }
+            case MonsterType::Medusa:        { return ""; }
+            case MonsterType::Orc:           { return ""; }
+            case MonsterType::Salamander:    { return ""; }
+            case MonsterType::Skeleton:      { return ""; }
+            case MonsterType::Skull:         { return ""; }
+            case MonsterType::Snake:         { return ""; }
+            case MonsterType::Spider:        { return "death-spider"; }
+            case MonsterType::Vampire:       { return ""; }
+            case MonsterType::Yeti:          { return ""; }
+            case MonsterType::BossTribal:    { return ""; }
+            case MonsterType::BossKnight:    { return ""; }
+            case MonsterType::BossWizard:    { return ""; }
+            case MonsterType::Count: //intentional fallthrough      
+            default:                         { return "";  }
+        }
+        // clang-format on
+    }
+
     //
 
     enum class MonsterAnim : std::size_t

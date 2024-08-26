@@ -149,13 +149,23 @@ namespace platformer
         {
             m_anim = MonsterAnim::Hurt;
             resetAnimation();
-            playHurtSfx(t_context);
+
+            const std::string hurtSfxName{ hurtSfx(m_type) };
+            if (!hurtSfxName.empty())
+            {
+                t_context.sfx.play(hurtSfxName);
+            }
         }
         else
         {
             m_anim = MonsterAnim::Death;
             resetAnimation();
-            playDeathSfx(t_context);
+            
+            const std::string deathSfxName{ hurtSfx(m_type) };
+            if (!deathSfxName.empty())
+            {
+                t_context.sfx.play(deathSfxName);
+            }
         }
 
         return true;
@@ -275,7 +285,13 @@ namespace platformer
             // in all other cases just attack
             m_anim = MonsterAnim::Attack;
             resetAnimation();
-            playAttackSfx(t_context);
+
+            const std::string attackSfxName{ hurtSfx(m_type) };
+            if (!attackSfxName.empty())
+            {
+                t_context.sfx.play(attackSfxName);
+            }
+
             startAttackAnimation(t_context);
         }
     }

@@ -50,10 +50,4 @@ namespace platformer
         return rect;
     }
 
-    void Dino::playAttackSfx(Context & context) const { context.sfx.play("attack-dino"); }
-
-    void Dino::playHurtSfx(Context & context) const { context.sfx.play("hurt-dino"); }
-
-    void Dino::playDeathSfx(Context & context) const { context.sfx.play("death-dino"); }
-
 } // namespace platformer

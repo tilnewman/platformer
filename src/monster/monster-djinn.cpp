@@ -60,12 +60,6 @@ namespace platformer
         return rect;
     }
 
-    void Djinn::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
-
-    void Djinn::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
-
-    void Djinn::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
-
     void Djinn::turnAround()
     {
         m_sprite.scale(-1.0f, 1.0f);

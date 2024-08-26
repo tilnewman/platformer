@@ -60,12 +60,6 @@ namespace platformer
         return rect;
     }
 
-    void Vampire::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
-
-    void Vampire::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
-
-    void Vampire::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
-
     void Vampire::turnAround()
     {
         m_sprite.scale(-1.0f, 1.0f);

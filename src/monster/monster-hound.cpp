@@ -51,10 +51,4 @@ namespace platformer
         return rect;
     }
 
-    void Hound::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
-
-    void Hound::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
-
-    void Hound::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
-
 } // namespace platformer

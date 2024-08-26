@@ -58,12 +58,6 @@ namespace platformer
         return rect;
     }
 
-    void Orc::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
-
-    void Orc::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
-
-    void Orc::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
-
     void Orc::turnAround()
     {
         m_sprite.scale(-1.0f, 1.0f);

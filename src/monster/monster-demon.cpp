@@ -58,12 +58,6 @@ namespace platformer
         return rect;
     }
 
-    void Demon::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
-
-    void Demon::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
-
-    void Demon::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
-
     void Demon::turnAround()
     {
         m_sprite.scale(-1.0f, 1.0f);

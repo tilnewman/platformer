@@ -50,10 +50,4 @@ namespace platformer
         return rect;
     }
 
-    void Spider::playAttackSfx(Context & context) const { context.sfx.play("attack-spider"); }
-
-    void Spider::playHurtSfx(Context & context) const { context.sfx.play("hurt-spider"); }
-
-    void Spider::playDeathSfx(Context & context) const { context.sfx.play("death-spider"); }
-
 } // namespace platformer

@@ -60,12 +60,6 @@ namespace platformer
         return rect;
     }
 
-    void Skeleton::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
-
-    void Skeleton::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
-
-    void Skeleton::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
-
     void Skeleton::turnAround()
     {
         m_sprite.scale(-1.0f, 1.0f);

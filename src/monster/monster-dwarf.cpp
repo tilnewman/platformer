@@ -57,13 +57,7 @@ namespace platformer
 
         return rect;
     }
-
-    void Dwarf::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
-
-    void Dwarf::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
-
-    void Dwarf::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
-
+    
     void Dwarf::turnAround()
     {
         m_sprite.scale(-1.0f, 1.0f);

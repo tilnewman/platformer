@@ -50,10 +50,4 @@ namespace platformer
         return rect;
     }
 
-    void BoneDragon::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
-
-    void BoneDragon::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
-
-    void BoneDragon::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
-
 } // namespace platformer

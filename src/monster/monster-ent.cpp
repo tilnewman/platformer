@@ -50,10 +50,4 @@ namespace platformer
         return rect;
     }
 
-    void Ent::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
-
-    void Ent::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
-
-    void Ent::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
-
 } // namespace platformer

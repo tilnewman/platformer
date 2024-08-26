@@ -59,12 +59,6 @@ namespace platformer
         return rect;
     }
 
-    void Snake::playAttackSfx(Context & context) const { context.sfx.play("attack-dino"); }
-
-    void Snake::playHurtSfx(Context & context) const { context.sfx.play("hurt-dino"); }
-
-    void Snake::playDeathSfx(Context & context) const { context.sfx.play("death-dino"); }
-
     void Snake::turnAround()
     {
         m_sprite.scale(-1.0f, 1.0f);

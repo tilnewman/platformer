@@ -62,12 +62,6 @@ namespace platformer
         return rect;
     }
 
-    void BossTribal::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
-
-    void BossTribal::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
-
-    void BossTribal::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
-
     void BossTribal::turnAround()
     {
         m_sprite.scale(-1.0f, 1.0f);

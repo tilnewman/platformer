@@ -50,10 +50,4 @@ namespace platformer
         return rect;
     }
 
-    void Medusa::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
-
-    void Medusa::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
-
-    void Medusa::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
-
 } // namespace platformer

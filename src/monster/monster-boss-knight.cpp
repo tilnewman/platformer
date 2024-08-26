@@ -62,12 +62,6 @@ namespace platformer
         return rect;
     }
 
-    void BossKnight::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
-
-    void BossKnight::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
-
-    void BossKnight::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
-
     void BossKnight::turnAround()
     {
         m_sprite.scale(-1.0f, 1.0f);

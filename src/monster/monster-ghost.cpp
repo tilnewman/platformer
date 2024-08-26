@@ -50,10 +50,4 @@ namespace platformer
         return rect;
     }
 
-    void Ghost::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
-
-    void Ghost::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
-
-    void Ghost::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
-
 } // namespace platformer

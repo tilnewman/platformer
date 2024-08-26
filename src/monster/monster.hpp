@@ -75,10 +75,6 @@ namespace platformer
         virtual void turnAround();
         virtual void startAttackAnimation(Context &) {}
 
-        virtual void playAttackSfx(Context & context) const = 0;
-        virtual void playHurtSfx(Context & context) const   = 0;
-        virtual void playDeathSfx(Context & context) const  = 0;
-
         void resetAnimation();
 
         void initialSpriteSetup(

@@ -50,10 +50,4 @@ namespace platformer
         return rect;
     }
 
-    void FireImp::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
-
-    void FireImp::playHurtSfx(Context & context) const { context.sfx.play("hurt-ent"); }
-
-    void FireImp::playDeathSfx(Context & context) const { context.sfx.play("death-ent"); }
-
 } // namespace platformer
