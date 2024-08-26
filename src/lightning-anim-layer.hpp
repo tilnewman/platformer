@@ -41,17 +41,18 @@ namespace platformer
         , public IHarmCollisionOwner
     {
       public:
-        LightningAnimationLayer(
-            Context & context, const std::vector<sf::FloatRect> & rects);
+        LightningAnimationLayer(Context & t_context, const std::vector<sf::FloatRect> & t_rects);
 
         virtual ~LightningAnimationLayer() override;
 
-        void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const override;
-        void move(const Context & context, const float amount) override;
+        void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
+            const override;
+
+        void move(const Context & t_context, const float t_amount) override;
         float findFarthestHorizVert() const override { return 0.0f; }
         void dumpInfo() const override {}
 
-        void update(Context & context, const float frameTimeSec) override;
+        void update(Context & t_context, const float t_frameTimeSec) override;
 
         void appendVertLayer(
             const Context &,
@@ -61,10 +62,11 @@ namespace platformer
             const sf::Vector2f &) override
         {}
 
-        Harm avatarCollide(Context & context, const sf::FloatRect & avatarRect) override;
+        [[nodiscard]] Harm
+            avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) override;
 
       private:
-        sf::IntRect textureRect(const std::size_t frame) const;
+        [[nodiscard]] sf::IntRect textureRect(const std::size_t frame) const noexcept;
 
       private:
         sf::Texture m_texture;

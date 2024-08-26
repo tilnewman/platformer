@@ -14,12 +14,16 @@ namespace platformer
     class LevelInfo
     {
       public:
-        explicit LevelInfo(const Settings & settings)
-            : m_playerLives(settings.player_lives_per_level)
+        explicit LevelInfo(const Settings & t_settings)
+            : m_playerLives{ t_settings.player_lives_per_level }
         {}
 
-        inline int playerLives() const { return m_playerLives; }
-        inline void playerLivesAdjust(const int adjustment) { m_playerLives += adjustment; }
+        [[nodiscard]] inline int playerLives() const noexcept { return m_playerLives; }
+
+        inline void playerLivesAdjust(const int t_adjustment) noexcept
+        {
+            m_playerLives += t_adjustment;
+        }
 
       private:
         int m_playerLives;

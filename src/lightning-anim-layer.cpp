@@ -20,23 +20,23 @@ namespace platformer
 {
 
     LightningAnimationLayer::LightningAnimationLayer(
-        Context & context, const std::vector<sf::FloatRect> & rects)
-        : m_texture()
-        , m_anims()
-        , m_timebetweenFrames(0.1f)
-        , m_frameCount(8)
+        Context & t_context, const std::vector<sf::FloatRect> & t_rects)
+        : m_texture{}
+        , m_anims{}
+        , m_timebetweenFrames{ 0.1f }
+        , m_frameCount{ 8 }
     {
         HarmCollisionManager::instance().addOwner(*this);
 
         m_texture.loadFromFile(
-            (context.settings.media_path / "image/map-anim/lightning.png").string());
+            (t_context.settings.media_path / "image/map-anim/lightning.png").string());
 
         m_texture.setSmooth(true);
 
         TextureStats::instance().process(m_texture);
 
-        m_anims.reserve(rects.size());
-        for (const sf::FloatRect & rect : rects)
+        m_anims.reserve(t_rects.size());
+        for (const sf::FloatRect & rect : t_rects)
         {
             LightningAnim & anim{ m_anims.emplace_back() };
             anim.sprite.setTexture(m_texture);
@@ -46,7 +46,7 @@ namespace platformer
                 (util::center(rect).x - anim.sprite.getGlobalBounds().width),
                 (util::bottom(rect) - anim.sprite.getGlobalBounds().height));
 
-            anim.time_between_anim_sec = context.random.fromTo(2.0f, 6.0f);
+            anim.time_between_anim_sec = t_context.random.fromTo(2.0f, 6.0f);
             anim.is_animating          = false;
             anim.elapsed_time_sec      = 0.0f;
             anim.frame_index           = 0;
@@ -59,41 +59,40 @@ namespace platformer
     }
 
     void LightningAnimationLayer::draw(
-        const Context & context, sf::RenderTarget & target, sf::RenderStates states) const
+        const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
         for (const LightningAnim & anim : m_anims)
         {
-            if (context.layout.wholeRect().intersects(anim.sprite.getGlobalBounds()))
+            if (t_context.layout.wholeRect().intersects(anim.sprite.getGlobalBounds()))
             {
-                target.draw(anim.sprite, states);
+                t_target.draw(anim.sprite, t_states);
             }
         }
     }
 
-    void LightningAnimationLayer::move(const Context &, const float amount)
+    void LightningAnimationLayer::move(const Context &, const float t_amount)
     {
         for (LightningAnim & anim : m_anims)
         {
-            anim.sprite.move(amount, 0.0f);
+            anim.sprite.move(t_amount, 0.0f);
         }
     }
 
-    sf::IntRect LightningAnimationLayer::textureRect(const std::size_t frame) const
+    sf::IntRect LightningAnimationLayer::textureRect(const std::size_t t_frame) const noexcept
     {
         sf::IntRect rect;
         rect.width  = 64;
         rect.height = static_cast<int>(m_texture.getSize().y);
         rect.top    = 0;
-        rect.left   = (static_cast<int>(frame) * rect.width);
-
+        rect.left   = (static_cast<int>(t_frame) * rect.width);
         return rect;
     }
 
-    void LightningAnimationLayer::update(Context &, const float frameTimeSec)
+    void LightningAnimationLayer::update(Context &, const float t_frameTimeSec)
     {
         for (LightningAnim & anim : m_anims)
         {
-            anim.elapsed_time_sec += frameTimeSec;
+            anim.elapsed_time_sec += t_frameTimeSec;
 
             if (anim.is_animating)
             {
@@ -123,7 +122,7 @@ namespace platformer
         }
     }
 
-    Harm LightningAnimationLayer::avatarCollide(Context &, const sf::FloatRect & avatarRect)
+    Harm LightningAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 
@@ -137,7 +136,7 @@ namespace platformer
             const sf::FloatRect reducedBounds{ util::scaleRectInPlaceCopy(
                 anim.sprite.getGlobalBounds(), 0.75f) };
 
-            if (!reducedBounds.intersects(avatarRect))
+            if (!reducedBounds.intersects(t_avatarRect))
             {
                 continue;
             }
