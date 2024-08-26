@@ -29,11 +29,14 @@ namespace platformer
         virtual ~PlayState() override = default;
 
         State which() const final { return State::Play; }
-        void update(Context & context, const float) final;
-        void draw(Context & c, sf::RenderTarget & t, sf::RenderStates s) const final;
-        void handleEvent(Context & context, const sf::Event & event) final;
-        void onEnter(Context & context) final;
-        void onExit(Context & context) final;
+        void update(Context & t_context, const float t_frameTimeSec) final;
+
+        void draw(Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
+            const final;
+
+        void handleEvent(Context & t_context, const sf::Event & t_event) final;
+        void onEnter(Context & t_context) final;
+        void onExit(Context & t_context) final;
 
       private:
         SpellSelectMenu m_spellSelectMenu;

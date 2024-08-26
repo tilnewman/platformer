@@ -27,43 +27,43 @@ namespace platformer
         : m_spellSelectMenu{}
     {}
 
-    void PlayState::update(Context & context, const float frameTimeSec)
+    void PlayState::update(Context & t_context, const float t_frameTimeSec)
     {
-        context.avatar.update(context, frameTimeSec);
+        t_context.avatar.update(t_context, t_frameTimeSec);
 
-        if (!context.state.isChangePending())
+        if (!t_context.state.isChangePending())
         {
-            context.level.update(context, frameTimeSec);
-            context.pickup.update(context, frameTimeSec);
-            context.accent.update(context, frameTimeSec);
-            context.spell.update(context, frameTimeSec);
-            m_spellSelectMenu.update(context, frameTimeSec);
+            t_context.level.update(t_context, t_frameTimeSec);
+            t_context.pickup.update(t_context, t_frameTimeSec);
+            t_context.accent.update(t_context, t_frameTimeSec);
+            t_context.spell.update(t_context, t_frameTimeSec);
+            m_spellSelectMenu.update(t_context, t_frameTimeSec);
         }
     }
 
-    void
-        PlayState::draw(Context & context, sf::RenderTarget & target, sf::RenderStates states) const
+    void PlayState::draw(
+        Context & t_context, sf::RenderTarget & target, sf::RenderStates states) const
     {
-        context.bg_image.draw(target, states);
-        context.level.draw(context, target, states);
-        context.pickup.draw(context, target, states);
-        context.accent.draw(context, target, states);
-        context.avatar.draw(target, states);
-        context.spell.draw(target, states);
-        context.player_display.draw(target, states);
+        t_context.bg_image.draw(target, states);
+        t_context.level.draw(t_context, target, states);
+        t_context.pickup.draw(t_context, target, states);
+        t_context.accent.draw(t_context, target, states);
+        t_context.avatar.draw(target, states);
+        t_context.spell.draw(target, states);
+        t_context.player_display.draw(target, states);
         m_spellSelectMenu.draw(target, states);
     }
 
-    void PlayState::handleEvent(Context & context, const sf::Event & event)
+    void PlayState::handleEvent(Context & t_context, const sf::Event & t_event)
     {
-        if (event.type != sf::Event::KeyPressed)
+        if (t_event.type != sf::Event::KeyPressed)
         {
             return;
         }
 
-        if (event.key.code == sf::Keyboard::T)
+        if (t_event.key.code == sf::Keyboard::T)
         {
-            std::size_t temp{ static_cast<std::size_t>(context.player.avatarType()) };
+            std::size_t temp{ static_cast<std::size_t>(t_context.player.avatarType()) };
 
             ++temp;
             if (temp >= static_cast<std::size_t>(AvatarType::Count))
@@ -71,18 +71,19 @@ namespace platformer
                 temp = 0;
             }
 
-            context.player.setup(static_cast<AvatarType>(temp));
-            context.avatar.changeType(context);
+            t_context.player.setup(static_cast<AvatarType>(temp));
+            t_context.avatar.changeType(t_context);
         }
         else if (
-            isSpellCaster(context.player.avatarType()) && util::keys::isNumberKey(event.key.code))
+            isSpellCaster(t_context.player.avatarType()) &&
+            util::keys::isNumberKey(t_event.key.code))
         {
             m_spellSelectMenu.setup(
-                context, util::keys::toNumberOpt<std::size_t>(event.key.code).value());
+                t_context, util::keys::toNumberOpt<std::size_t>(t_event.key.code).value());
         }
     }
 
-    void PlayState::onEnter(Context & context) { context.level.load(context); }
+    void PlayState::onEnter(Context & t_context) { t_context.level.load(t_context); }
 
     void PlayState::onExit(Context &) {}
 
