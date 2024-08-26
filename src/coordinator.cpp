@@ -20,51 +20,38 @@
 namespace platformer
 {
 
-    Coordinator::Coordinator(const Settings & settings)
-        : m_window()
-        , m_settings(settings)
-        , m_random()
-        , m_sfx(m_random)
-        , m_states()
-        , m_fonts()
-        , m_avatar()
-        , m_layout()
-        , m_levelLoader()
-        , m_level()
-        , m_backgroundImages()
-        , m_pickups()
-        , m_accents()
-        , m_spells()
-        , m_itemImages()
-        , m_levelInfo(settings)
-        , m_playerInfo()
-        , m_playerInfoDisplay()
-        , m_context(
-              m_settings,
-              m_window,
-              m_random,
-              m_sfx,
-              m_states,
-              m_fonts,
-              m_avatar,
-              m_layout,
-              m_levelLoader,
-              m_level,
-              m_backgroundImages,
-              m_pickups,
-              m_accents,
-              m_spells,
-              m_itemImages,
-              m_levelInfo,
-              m_playerInfo,
-              m_playerInfoDisplay)
-        , m_fpsValues()
-        , m_oneSecondClock()
-        , m_elapsedTimeSec(0.0f)
-        , m_statsDisplayUPtr()
-        , m_avatarTypeText()
-        , m_avatarAnimText()
-        , m_avatarAnimIndexText()
+    Coordinator::Coordinator(const Settings & t_settings)
+        : m_window{}
+        , m_settings{ t_settings }
+        , m_random{}
+        , m_sfx{ m_random }
+        , m_states{}
+        , m_fonts{}
+        , m_avatar{}
+        , m_layout{}
+        , m_levelLoader{}
+        , m_level{}
+        , m_backgroundImages{}
+        , m_pickups{}
+        , m_accents{}
+        , m_spells{}
+        , m_itemImages{}
+        , m_levelInfo{ t_settings }
+        , m_playerInfo{}
+        , m_playerInfoDisplay{}
+        , m_context{ m_settings,  m_window,           m_random,
+                     m_sfx,       m_states,           m_fonts,
+                     m_avatar,    m_layout,           m_levelLoader,
+                     m_level,     m_backgroundImages, m_pickups,
+                     m_accents,   m_spells,           m_itemImages,
+                     m_levelInfo, m_playerInfo,       m_playerInfoDisplay }
+        , m_fpsValues{}
+        , m_oneSecondClock{}
+        , m_elapsedTimeSec{ 0.0f }
+        , m_statsDisplayUPtr{}
+        , m_avatarTypeText{}
+        , m_avatarAnimText{}
+        , m_avatarAnimIndexText{}
     {
         m_fpsValues.reserve(128);
     }
@@ -184,17 +171,17 @@ namespace platformer
         m_window.display();
     }
 
-    void Coordinator::update(const float frameTimeSec)
+    void Coordinator::update(const float t_frameTimeSec)
     {
-        m_states.current().update(m_context, frameTimeSec);
+        m_states.current().update(m_context, t_frameTimeSec);
         m_states.changeIfPending(m_context);
     }
 
-    void Coordinator::handleSleepUntilEndOfFrame(const float elapsedTimeSec)
+    void Coordinator::handleSleepUntilEndOfFrame(const float t_elapsedTimeSec)
     {
-        m_fpsValues.push_back(static_cast<std::size_t>(1.0f / elapsedTimeSec));
+        m_fpsValues.push_back(static_cast<std::size_t>(1.0f / t_elapsedTimeSec));
 
-        float timeRemainingSec{ (1.0f / m_settings.frame_rate) - elapsedTimeSec };
+        float timeRemainingSec{ (1.0f / m_settings.frame_rate) - t_elapsedTimeSec };
 
         sf::Clock delayClock;
         while (timeRemainingSec > 0.0f)
@@ -218,7 +205,7 @@ namespace platformer
                 std::cout << "FPS " << stats << '\n';
             }
 
-            std::sort(std::begin(m_fpsValues), std::end(m_fpsValues));
+            std::ranges::sort(m_fpsValues);
 
             m_statsDisplayUPtr = std::make_unique<util::GraphDisplay<std::size_t>>(
                 m_fpsValues, sf::Vector2u{ 500, 200 });
@@ -227,15 +214,15 @@ namespace platformer
         }
     }
 
-    void Coordinator::setupRenderWindow(sf::VideoMode & videoMode)
+    void Coordinator::setupRenderWindow(sf::VideoMode & t_videoMode)
     {
-        std::cout << "Attempting video mode " << videoMode << "...";
-        m_window.create(videoMode, "Platformer", sf::Style::Fullscreen);
+        std::cout << "Attempting video mode " << t_videoMode << "...";
+        m_window.create(t_videoMode, "Platformer", sf::Style::Fullscreen);
 
         // sometimes the resolution of the window created does not match what was specified
         const unsigned actualWidth{ m_window.getSize().x };
         const unsigned actualHeight{ m_window.getSize().y };
-        if ((videoMode.width == actualWidth) && (videoMode.height == actualHeight))
+        if ((t_videoMode.width == actualWidth) && (t_videoMode.height == actualHeight))
         {
             std::cout << "Success.\n";
         }
@@ -244,10 +231,10 @@ namespace platformer
             std::cout << "Failed"
                       << ".  ";
 
-            videoMode.width  = actualWidth;
-            videoMode.height = actualHeight;
+            t_videoMode.width  = actualWidth;
+            t_videoMode.height = actualHeight;
 
-            std::cout << "SFML switched to " << videoMode << " instead.\n";
+            std::cout << "SFML switched to " << t_videoMode << " instead.\n";
         }
     }
 

@@ -38,7 +38,7 @@ namespace platformer
     class Coordinator
     {
       public:
-        explicit Coordinator(const Settings & settings);
+        explicit Coordinator(const Settings & t_settings);
 
         void play();
 
@@ -47,12 +47,12 @@ namespace platformer
         void teardown();
         void gameLoop();
         void handleEvents();
-        void handleEvent(const sf::Event & event);
-        void update(const float frameTimeSec);
+        void handleEvent(const sf::Event & t_event);
+        void update(const float t_frameTimeSec);
         void draw();
-        void handleSleepUntilEndOfFrame(const float actualFrameTimeSec);
+        void handleSleepUntilEndOfFrame(const float t_actualFrameTimeSec);
         void handleOncePerSecondTasks();
-        void setupRenderWindow(sf::VideoMode & videoMode);
+        void setupRenderWindow(sf::VideoMode & t_videoMode);
 
       private:
         sf::RenderWindow m_window;
