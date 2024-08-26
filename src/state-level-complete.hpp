@@ -23,8 +23,11 @@ namespace platformer
         virtual ~LevelCompleteState() override = default;
 
         State which() const final { return State::LevelComplete; }
-        void update(Context & context, const float) final;
-        void draw(Context & c, sf::RenderTarget & t, sf::RenderStates s) const final;
+        void update(Context & t_context, const float t_frameTimeSec) final;
+
+        void
+            draw(Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const final;
+        
         void handleEvent(Context &, const sf::Event &) final {}
         void onEnter(Context &) final;
         void onExit(Context &) final {}

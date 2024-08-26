@@ -19,18 +19,18 @@ namespace platformer
 {
 
     LevelCompleteState::LevelCompleteState()
-        : m_texture()
-        , m_sprite()
-        , m_text()
-        , m_elapsedTimeSec(0.0f)
+        : m_texture{}
+        , m_sprite{}
+        , m_text{}
+        , m_elapsedTimeSec{ 0.0f }
     {}
 
-    void LevelCompleteState::onEnter(Context & context)
+    void LevelCompleteState::onEnter(Context & t_context)
     {
-        const sf::FloatRect wholeRect{ context.layout.wholeRect() };
+        const sf::FloatRect wholeRect{ t_context.layout.wholeRect() };
 
         m_texture.loadFromFile(
-            (context.settings.media_path / "image/splash/knight-win.png").string());
+            (t_context.settings.media_path / "image/splash/knight-win.png").string());
 
         TextureStats::instance().process(m_texture);
         m_texture.setSmooth(true);
@@ -42,7 +42,7 @@ namespace platformer
 
         //
 
-        m_text = context.font.makeText(
+        m_text = t_context.font.makeText(
             Font::Default, FontSize::Huge, "You Survived!", sf::Color(220, 220, 220));
 
         m_text.setPosition(
@@ -50,20 +50,20 @@ namespace platformer
             (util::bottom(m_sprite) + (wholeRect.height * 0.015f)));
     }
 
-    void LevelCompleteState::update(Context & context, const float frameTimeSec)
+    void LevelCompleteState::update(Context & t_context, const float t_frameTimeSec)
     {
-        m_elapsedTimeSec += frameTimeSec;
+        m_elapsedTimeSec += t_frameTimeSec;
         if (m_elapsedTimeSec > 4.0f)
         {
-            context.state.setChangePending(State::Shutdown);
+            t_context.state.setChangePending(State::Shutdown);
         }
     }
 
     void LevelCompleteState::draw(
-        Context &, sf::RenderTarget & target, sf::RenderStates states) const
+        Context &, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
-        target.draw(m_sprite, states);
-        target.draw(m_text, states);
+        t_target.draw(m_sprite, t_states);
+        t_target.draw(m_text, t_states);
     }
 
 } // namespace platformer
