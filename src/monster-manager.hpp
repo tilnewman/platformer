@@ -29,15 +29,22 @@ namespace platformer
       public:
         MonsterManager();
 
-        inline void add(std::unique_ptr<IMonster> m) { m_monsters.push_back(std::move(m)); }
+        inline void add(std::unique_ptr<IMonster> monster)
+        {
+            m_monsters.push_back(std::move(monster));
+        }
+
         inline void clear() { return m_monsters.clear(); }
 
-        void update(Context & context, const float frameTimeSec);
-        void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const;
-        void move(const float amount);
-        const Harm avatarCollide(const sf::FloatRect & avatarRect);
-        void appendCollisionRects(std::vector<sf::FloatRect> & rects) const;
-        bool avatarAttack(Context & context, const AttackInfo & attackInfo);
+        void update(Context & t_context, const float t_frameTimeSec);
+
+        void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
+            const;
+
+        void move(const float t_amount);
+        const Harm avatarCollide(const sf::FloatRect & t_avatarRect);
+        void appendCollisionRects(std::vector<sf::FloatRect> & t_rects) const;
+        bool avatarAttack(Context & t_context, const AttackInfo & t_attackInfo);
 
       private:
         std::vector<std::unique_ptr<IMonster>> m_monsters;

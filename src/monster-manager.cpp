@@ -14,39 +14,39 @@ namespace platformer
 {
 
     MonsterManager::MonsterManager()
-        : m_monsters()
+        : m_monsters{}
     {}
 
-    void MonsterManager::update(Context & context, const float frameTimeSec)
+    void MonsterManager::update(Context & t_context, const float t_frameTimeSec)
     {
         for (auto & monsterUPtr : m_monsters)
         {
-            monsterUPtr->update(context, frameTimeSec);
+            monsterUPtr->update(t_context, t_frameTimeSec);
         }
     }
 
     void MonsterManager::draw(
-        const Context & context, sf::RenderTarget & target, sf::RenderStates states) const
+        const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
         for (const auto & monsterUPtr : m_monsters)
         {
-            monsterUPtr->draw(context, target, states);
+            monsterUPtr->draw(t_context, t_target, t_states);
         }
     }
 
-    void MonsterManager::move(const float amount)
+    void MonsterManager::move(const float t_amount)
     {
         for (auto & monsterUPtr : m_monsters)
         {
-            monsterUPtr->move(amount);
+            monsterUPtr->move(t_amount);
         }
     }
 
-    const Harm MonsterManager::avatarCollide(const sf::FloatRect & avatarRect)
+    const Harm MonsterManager::avatarCollide(const sf::FloatRect & t_avatarRect)
     {
         for (auto & monsterUPtr : m_monsters)
         {
-            const Harm harm{ monsterUPtr->avatarCollide(avatarRect) };
+            const Harm harm{ monsterUPtr->avatarCollide(t_avatarRect) };
             if (harm.isAnyHarmDone())
             {
                 return harm;
@@ -56,19 +56,19 @@ namespace platformer
         return Harm{};
     }
 
-    void MonsterManager::appendCollisionRects(std::vector<sf::FloatRect> & rects) const
+    void MonsterManager::appendCollisionRects(std::vector<sf::FloatRect> & t_rects) const
     {
         for (auto & monsterUPtr : m_monsters)
         {
-            rects.push_back(monsterUPtr->collisionRect());
+            t_rects.push_back(monsterUPtr->collisionRect());
         }
     }
 
-    bool MonsterManager::avatarAttack(Context & context, const AttackInfo & attackInfo)
+    bool MonsterManager::avatarAttack(Context & t_context, const AttackInfo & t_attackInfo)
     {
         for (auto & monsterUPtr : m_monsters)
         {
-            if (monsterUPtr->avatarAttack(context, attackInfo))
+            if (monsterUPtr->avatarAttack(t_context, t_attackInfo))
             {
                 return true;
             }
