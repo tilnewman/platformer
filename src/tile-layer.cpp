@@ -20,34 +20,34 @@ namespace platformer
 {
 
     TileLayer::TileLayer(
-        const Context & context, const TileImage image, const std::vector<int> & indexes)
-        : m_image(image)
-        , m_indexes(indexes)
-        , m_verts()
-        , m_visibleVerts()
+        const Context & t_context, const TileImage t_image, const std::vector<int> & t_indexes)
+        : m_image{ t_image }
+        , m_indexes{ t_indexes }
+        , m_verts{}
+        , m_visibleVerts{}
     {
-        MapTextureManager::instance().acquire(context, m_image);
-        m_verts.reserve(indexes.size() * util::verts_per_quad);
-        m_visibleVerts.reserve(indexes.size() * util::verts_per_quad);
+        MapTextureManager::instance().acquire(t_context, m_image);
+        m_verts.reserve(t_indexes.size() * util::verts_per_quad);
+        m_visibleVerts.reserve(t_indexes.size() * util::verts_per_quad);
     }
 
     TileLayer::~TileLayer() { MapTextureManager::instance().release(m_image); }
 
     void TileLayer::draw(
-        const Context &, sf::RenderTarget & target, sf::RenderStates states) const
+        const Context &, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
-        states.texture = &MapTextureManager::instance().get(m_image).texture;
-        target.draw(&m_visibleVerts[0], m_visibleVerts.size(), sf::Quads, states);
+        t_states.texture = &MapTextureManager::instance().get(m_image).texture;
+        t_target.draw(&m_visibleVerts[0], m_visibleVerts.size(), sf::Quads, t_states);
     }
 
-    void TileLayer::move(const Context & context, const float move)
+    void TileLayer::move(const Context & t_context, const float t_move)
     {
         for (sf::Vertex & vertex : m_verts)
         {
-            vertex.position.x += move;
+            vertex.position.x += t_move;
         }
 
-        populateVisibleVerts(context.layout.wholeRect());
+        populateVisibleVerts(t_context.layout.wholeRect());
     }
 
     float TileLayer::findFarthestHorizVert() const
@@ -71,7 +71,7 @@ namespace platformer
                   << ", visible=" << (m_visibleVerts.size() / util::verts_per_quad) << "\n";
     }
 
-    void TileLayer::populateVisibleVerts(const sf::FloatRect & visibleRect)
+    void TileLayer::populateVisibleVerts(const sf::FloatRect & t_visibleRect)
     {
         m_visibleVerts.clear();
 
@@ -83,10 +83,10 @@ namespace platformer
             const sf::Vertex botRightVert = m_verts[vertIndex++];
             const sf::Vertex botLeftVert  = m_verts[vertIndex++];
 
-            if (visibleRect.contains(topLeftVert.position) ||
-                visibleRect.contains(topRightVert.position) ||
-                visibleRect.contains(botRightVert.position) ||
-                visibleRect.contains(botLeftVert.position))
+            if (t_visibleRect.contains(topLeftVert.position) ||
+                t_visibleRect.contains(topRightVert.position) ||
+                t_visibleRect.contains(botRightVert.position) ||
+                t_visibleRect.contains(botLeftVert.position))
             {
                 m_visibleVerts.push_back(topLeftVert);
                 m_visibleVerts.push_back(topRightVert);
@@ -97,31 +97,31 @@ namespace platformer
     }
 
     void TileLayer::appendVertLayer(
-        const Context & context,
-        const sf::Vector2f & mapPositionOffset,
-        const sf::Vector2i & count,
-        const sf::Vector2i & size,
-        const sf::Vector2f & sizeOnScreen)
+        const Context & t_context,
+        const sf::Vector2f & t_mapPositionOffset,
+        const sf::Vector2i & t_count,
+        const sf::Vector2i & t_size,
+        const sf::Vector2f & t_sizeOnScreen)
     {
         const TileTexture & tileTexture = MapTextureManager::instance().get(m_image);
 
-        const sf::Vector2i textureTileCount{ tileTexture.size / size };
+        const sf::Vector2i textureTileCount{ tileTexture.size / t_size };
 
         const std::size_t totalCount =
-            (static_cast<std::size_t>(count.x) * static_cast<std::size_t>(count.y));
+            (static_cast<std::size_t>(t_count.x) * static_cast<std::size_t>(t_count.y));
 
         M_CHECK(
             (totalCount == m_indexes.size()),
             "index_count=" << m_indexes.size() << " does not equal tile_count=" << totalCount);
 
-        const sf::Vector2i sizeOnScreenI(sizeOnScreen);
+        const sf::Vector2i sizeOnScreenI(t_sizeOnScreen);
 
         std::size_t textureIndex = 0;
-        for (int y(0); y < count.y; ++y)
+        for (int y(0); y < t_count.y; ++y)
         {
             const float posY = static_cast<float>(y * sizeOnScreenI.y);
 
-            for (int x(0); x < count.x; ++x)
+            for (int x(0); x < t_count.x; ++x)
             {
                 const float posX = static_cast<float>(x * sizeOnScreenI.x);
 
@@ -133,20 +133,20 @@ namespace platformer
 
                 const int index(textureIndexOrig - tileTexture.gid);
 
-                const int texturePosX((index % textureTileCount.x) * size.x);
-                const int texturePosY((index / textureTileCount.x) * size.y);
+                const int texturePosX((index % textureTileCount.x) * t_size.x);
+                const int texturePosY((index / textureTileCount.x) * t_size.y);
 
                 const sf::Vector2i texturePos{ texturePosX, texturePosY };
-                const sf::IntRect textureRect{ texturePos, size };
+                const sf::IntRect textureRect{ texturePos, t_size };
 
-                const sf::Vector2f screenPos(sf::Vector2f(posX, posY) + mapPositionOffset);
-                const sf::FloatRect screenRect{ screenPos, sizeOnScreen };
+                const sf::Vector2f screenPos(sf::Vector2f(posX, posY) + t_mapPositionOffset);
+                const sf::FloatRect screenRect{ screenPos, t_sizeOnScreen };
 
                 util::appendQuadVerts(screenRect, textureRect, m_verts);
             }
         }
 
-        populateVisibleVerts(context.layout.wholeRect());
+        populateVisibleVerts(t_context.layout.wholeRect());
     }
 
 } // namespace platformer

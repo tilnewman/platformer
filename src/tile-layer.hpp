@@ -30,17 +30,17 @@ namespace platformer
         virtual ~ITileLayer() = default;
 
         virtual void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const = 0;
-        virtual void move(const Context & context, const float move)                         = 0;
+        virtual void move(const Context & t_context, const float t_move)                     = 0;
         virtual float findFarthestHorizVert() const                                          = 0;
         virtual void dumpInfo() const                                                        = 0;
-        virtual void update(Context & context, const float frameTimeSec)                     = 0;
+        virtual void update(Context & t_context, const float t_frameTimeSec)                 = 0;
 
         virtual void appendVertLayer(
-            const Context & context,
-            const sf::Vector2f & mapPositionOffset,
-            const sf::Vector2i & count,
-            const sf::Vector2i & size,
-            const sf::Vector2f & sizeOnScreen) = 0;
+            const Context & t_context,
+            const sf::Vector2f & t_mapPositionOffset,
+            const sf::Vector2i & t_count,
+            const sf::Vector2i & t_size,
+            const sf::Vector2f & t_sizeOnScreen) = 0;
     };
 
     //
@@ -48,24 +48,28 @@ namespace platformer
     class TileLayer : public ITileLayer
     {
       public:
-        TileLayer(const Context & context, const TileImage image, const std::vector<int> & indexes);
+        TileLayer(
+            const Context & t_context, const TileImage t_image, const std::vector<int> & t_indexes);
+
         virtual ~TileLayer() override;
 
-        void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const override;
-        void move(const Context & context, const float move) override;
+        void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
+            const override;
+
+        void move(const Context & t_context, const float t_move) override;
         float findFarthestHorizVert() const override;
         void dumpInfo() const override;
         void update(Context &, const float) override {}
 
         void appendVertLayer(
-            const Context & context,
-            const sf::Vector2f & mapPositionOffset,
-            const sf::Vector2i & count,
-            const sf::Vector2i & size,
-            const sf::Vector2f & sizeOnScreen) override;
+            const Context & t_context,
+            const sf::Vector2f & t_mapPositionOffset,
+            const sf::Vector2i & t_count,
+            const sf::Vector2i & t_size,
+            const sf::Vector2f & t_sizeOnScreen) override;
 
       private:
-        void populateVisibleVerts(const sf::FloatRect & visibleRect);
+        void populateVisibleVerts(const sf::FloatRect & t_visibleRect);
 
       private:
         TileImage m_image;
