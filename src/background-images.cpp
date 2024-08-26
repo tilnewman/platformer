@@ -16,25 +16,25 @@ namespace platformer
 {
 
     BackgroundImages::BackgroundImages()
-        : m_loadedSetName()
-        , m_backgroundTexture()
-        , m_overlayTexture()
-        , m_backgroundSprite()
-        , m_overlaySprite()
-        , m_slidingImages()
-        , m_fadeQuads()
+        : m_loadedSetName{}
+        , m_backgroundTexture{}
+        , m_overlayTexture{}
+        , m_backgroundSprite{}
+        , m_overlaySprite{}
+        , m_slidingImages{}
+        , m_fadeQuads{}
     {}
 
-    void BackgroundImages::setup(const Context & context, const std::string & name)
+    void BackgroundImages::setup(const Context & t_context, const std::string & t_name)
     {
-        if (name == m_loadedSetName)
+        if (t_name == m_loadedSetName)
         {
             return;
         }
 
-        m_loadedSetName = name;
+        m_loadedSetName = t_name;
 
-        const BackgroundImagesInfo infoPack{ infoFactory(context, name) };
+        const BackgroundImagesInfo infoPack{ infoFactory(t_context, t_name) };
 
         // there won't always be a static background image
         if (!infoPack.background_path.empty())
@@ -42,7 +42,7 @@ namespace platformer
             m_backgroundTexture.loadFromFile(infoPack.background_path.string());
             TextureStats::instance().process(m_backgroundTexture);
             m_backgroundSprite.setTexture(m_backgroundTexture);
-            util::scaleAndCenterInside(m_backgroundSprite, context.layout.wholeRect());
+            util::scaleAndCenterInside(m_backgroundSprite, t_context.layout.wholeRect());
         }
 
         // there won't always be a static overlay image
@@ -51,7 +51,7 @@ namespace platformer
             m_overlayTexture.loadFromFile(infoPack.overlay_path.string());
             TextureStats::instance().process(m_overlayTexture);
             m_overlaySprite.setTexture(m_overlayTexture);
-            util::scaleAndCenterInside(m_overlaySprite, context.layout.wholeRect());
+            util::scaleAndCenterInside(m_overlaySprite, t_context.layout.wholeRect());
         }
 
         // doubt there will ever be more than eight of these
@@ -70,8 +70,8 @@ namespace platformer
             TextureStats::instance().process(slidingImage.texture);
             slidingImage.sprite_left.setTexture(slidingImage.texture);
             slidingImage.sprite_right.setTexture(slidingImage.texture);
-            util::scaleAndCenterInside(slidingImage.sprite_left, context.layout.wholeRect());
-            util::scaleAndCenterInside(slidingImage.sprite_right, context.layout.wholeRect());
+            util::scaleAndCenterInside(slidingImage.sprite_left, t_context.layout.wholeRect());
+            util::scaleAndCenterInside(slidingImage.sprite_right, t_context.layout.wholeRect());
             slidingImage.sprite_right.move(slidingImage.sprite_left.getGlobalBounds().width, 0.0f);
         }
 
@@ -79,31 +79,31 @@ namespace platformer
         {
             m_fadeQuads.clear();
             util::appendQuadVerts(
-                context.layout.wholeRect(), m_fadeQuads, sf::Color(0, 0, 0, infoPack.fade_alpha));
+                t_context.layout.wholeRect(), m_fadeQuads, sf::Color(0, 0, 0, infoPack.fade_alpha));
         }
     }
 
-    void BackgroundImages::draw(sf::RenderTarget & target, sf::RenderStates states) const
+    void BackgroundImages::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
-        target.draw(m_backgroundSprite, states);
+        t_target.draw(m_backgroundSprite, t_states);
 
         for (const SlidingImage & image : m_slidingImages)
         {
-            target.draw(image.sprite_left, states);
-            target.draw(image.sprite_right, states);
+            t_target.draw(image.sprite_left, t_states);
+            t_target.draw(image.sprite_right, t_states);
         }
 
-        target.draw(m_overlaySprite, states);
+        t_target.draw(m_overlaySprite, t_states);
 
-        target.draw(&m_fadeQuads[0], m_fadeQuads.size(), sf::Quads, states);
+        t_target.draw(&m_fadeQuads[0], m_fadeQuads.size(), sf::Quads, t_states);
     }
 
-    void BackgroundImages::move(const float amount)
+    void BackgroundImages::move(const float t_amount)
     {
         for (SlidingImage & image : m_slidingImages)
         {
-            image.sprite_left.move((amount * image.info.move_ratio), 0.0f);
-            image.sprite_right.move((amount * image.info.move_ratio), 0.0f);
+            image.sprite_left.move((t_amount * image.info.move_ratio), 0.0f);
+            image.sprite_right.move((t_amount * image.info.move_ratio), 0.0f);
 
             if (image.sprite_right.getPosition().x < 0.0f)
             {
@@ -115,155 +115,160 @@ namespace platformer
         }
     }
 
-    const BackgroundImagesInfo
-        BackgroundImages::infoFactory(const Context & context, const std::string & name)
+    BackgroundImagesInfo
+        BackgroundImages::infoFactory(const Context & t_context, const std::string & t_name)
     {
         const sf::Uint8 fadeAlpha{ 64 };
 
-        if (name == "forest")
+        if (t_name == "forest")
         {
             std::vector<SlidingImageInfo> slidingImages;
 
             slidingImages.push_back(
                 { 0.2f,
-                  (context.settings.media_path / "image/background/forest/clouds-back.png") });
+                  (t_context.settings.media_path / "image/background/forest/clouds-back.png") });
 
             slidingImages.push_back(
                 { 0.4f,
-                  (context.settings.media_path / "image/background/forest/clouds-front.png") });
+                  (t_context.settings.media_path / "image/background/forest/clouds-front.png") });
 
             slidingImages.push_back(
-                { 0.6f, (context.settings.media_path / "image/background/forest/mountains.png") });
+                { 0.6f,
+                  (t_context.settings.media_path / "image/background/forest/mountains.png") });
 
             slidingImages.push_back(
-                { 0.7f, (context.settings.media_path / "image/background/forest/mist.png") });
+                { 0.7f, (t_context.settings.media_path / "image/background/forest/mist.png") });
 
             slidingImages.push_back(
-                { 0.8f, (context.settings.media_path / "image/background/forest/trees.png") });
+                { 0.8f, (t_context.settings.media_path / "image/background/forest/trees.png") });
 
             BackgroundImagesInfo info(
                 fadeAlpha,
-                (context.settings.media_path / "image/background/forest/sky.png"),
+                (t_context.settings.media_path / "image/background/forest/sky.png"),
                 slidingImages,
                 {});
 
             return info;
         }
-        else if (name == "underground-swamp")
+        else if (t_name == "underground-swamp")
         {
             std::vector<SlidingImageInfo> slidingImages;
 
             slidingImages.push_back({ 0.2f,
-                                      (context.settings.media_path /
+                                      (t_context.settings.media_path /
                                        "image/background/underground-swamp/ruins-back.png") });
 
             slidingImages.push_back({ 0.4f,
-                                      (context.settings.media_path /
+                                      (t_context.settings.media_path /
                                        "image/background/underground-swamp/ruins-front.png") });
 
             slidingImages.push_back({ 0.6f,
-                                      (context.settings.media_path /
+                                      (t_context.settings.media_path /
                                        "image/background/underground-swamp/floor-back.png") });
 
             slidingImages.push_back({ 0.8f,
-                                      (context.settings.media_path /
+                                      (t_context.settings.media_path /
                                        "image/background/underground-swamp/floor-front.png") });
 
             slidingImages.push_back({ 0.8f,
-                                      (context.settings.media_path /
+                                      (t_context.settings.media_path /
                                        "image/background/underground-swamp/chains.png") });
 
             BackgroundImagesInfo info(
                 fadeAlpha,
-                (context.settings.media_path / "image/background/underground-swamp/background.png"),
+                (t_context.settings.media_path /
+                 "image/background/underground-swamp/background.png"),
                 slidingImages,
                 {});
 
             return info;
         }
-        else if (name == "underground-cave")
+        else if (t_name == "underground-cave")
         {
             std::vector<SlidingImageInfo> slidingImages;
 
             slidingImages.push_back({ 0.2f,
-                                      (context.settings.media_path /
+                                      (t_context.settings.media_path /
                                        "image/background/underground-cave/rock-back.png") });
 
             slidingImages.push_back({ 0.4f,
-                                      (context.settings.media_path /
+                                      (t_context.settings.media_path /
                                        "image/background/underground-cave/rock-middle.png") });
 
             slidingImages.push_back(
                 { 0.6f,
-                  (context.settings.media_path / "image/background/underground-cave/mist.png") });
+                  (t_context.settings.media_path / "image/background/underground-cave/mist.png") });
 
             slidingImages.push_back({ 0.8f,
-                                      (context.settings.media_path /
+                                      (t_context.settings.media_path /
                                        "image/background/underground-cave/rock-front1.png") });
 
             slidingImages.push_back({ 0.8f,
-                                      (context.settings.media_path /
+                                      (t_context.settings.media_path /
                                        "image/background/underground-cave/rock-front2.png") });
 
             BackgroundImagesInfo info(
                 fadeAlpha,
-                (context.settings.media_path / "image/background/underground-cave/background.png"),
+                (t_context.settings.media_path /
+                 "image/background/underground-cave/background.png"),
                 slidingImages,
                 {});
 
             return info;
         }
-        else if (name == "mountains")
+        else if (t_name == "mountains")
         {
             std::vector<SlidingImageInfo> slidingImages;
 
             slidingImages.push_back(
-                { 0.1f, (context.settings.media_path / "image/background/mountains/clouds1.png") });
+                { 0.1f,
+                  (t_context.settings.media_path / "image/background/mountains/clouds1.png") });
 
             slidingImages.push_back(
-                { 0.2f, (context.settings.media_path / "image/background/mountains/clouds2.png") });
+                { 0.2f,
+                  (t_context.settings.media_path / "image/background/mountains/clouds2.png") });
 
             slidingImages.push_back(
                 { 0.4f,
-                  (context.settings.media_path / "image/background/mountains/rocks-back.png") });
+                  (t_context.settings.media_path / "image/background/mountains/rocks-back.png") });
+
+            slidingImages.push_back({ 0.6f,
+                                      (t_context.settings.media_path /
+                                       "image/background/mountains/rocks-middle.png") });
 
             slidingImages.push_back(
-                { 0.6f,
-                  (context.settings.media_path / "image/background/mountains/rocks-middle.png") });
-
-            slidingImages.push_back(
-                { 0.7f, (context.settings.media_path / "image/background/mountains/mist.png") });
+                { 0.7f, (t_context.settings.media_path / "image/background/mountains/mist.png") });
 
             slidingImages.push_back(
                 { 0.8f,
-                  (context.settings.media_path / "image/background/mountains/rocks-front.png") });
+                  (t_context.settings.media_path / "image/background/mountains/rocks-front.png") });
 
             BackgroundImagesInfo info(
                 fadeAlpha,
-                (context.settings.media_path / "image/background/mountains/sky.png"),
+                (t_context.settings.media_path / "image/background/mountains/sky.png"),
                 slidingImages,
                 {});
 
             return info;
         }
-        else if (name == "castle")
+        else if (t_name == "castle")
         {
             std::vector<SlidingImageInfo> slidingImages;
 
             slidingImages.push_back(
-                { 0.1f, (context.settings.media_path / "image/background/castle/sky.png") });
+                { 0.1f, (t_context.settings.media_path / "image/background/castle/sky.png") });
 
             slidingImages.push_back(
-                { 0.2f, (context.settings.media_path / "image/background/castle/trees.png") });
+                { 0.2f, (t_context.settings.media_path / "image/background/castle/trees.png") });
 
             slidingImages.push_back(
-                { 0.4f, (context.settings.media_path / "image/background/castle/wall.png") });
+                { 0.4f, (t_context.settings.media_path / "image/background/castle/wall.png") });
 
             slidingImages.push_back(
-                { 0.6f, (context.settings.media_path / "image/background/castle/floor.png") });
+                { 0.6f, (t_context.settings.media_path / "image/background/castle/floor.png") });
 
             slidingImages.push_back(
-                { 0.8f, (context.settings.media_path / "image/background/castle/pillars.png") });
+                { 0.8f, (t_context.settings.media_path / "image/background/castle/pillars.png") });
 
             BackgroundImagesInfo info(fadeAlpha, {}, slidingImages, {});
 
@@ -271,7 +276,7 @@ namespace platformer
         }
         else
         {
-            std::cout << "Error: BackgroundImages::infoFactory(\"" << name
+            std::cout << "Error: BackgroundImages::infoFactory(\"" << t_name
                       << "\") given unknown name.  No background will be shown on this map.\n";
 
             return BackgroundImagesInfo{ 0, {}, {}, {} };

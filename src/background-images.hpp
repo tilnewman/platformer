@@ -26,13 +26,13 @@ namespace platformer
     struct SlidingImageInfo
     {
         SlidingImageInfo()
-            : move_ratio(0.0f)
-            , path()
+            : move_ratio{ 0.0f }
+            , path{}
         {}
 
-        SlidingImageInfo(const float moveRatio, const std::filesystem::path & filePath)
-            : move_ratio(moveRatio)
-            , path(filePath)
+        SlidingImageInfo(const float t_moveRatio, const std::filesystem::path & t_filePath)
+            : move_ratio{ t_moveRatio }
+            , path{ t_filePath }
         {}
 
         float move_ratio;
@@ -44,14 +44,14 @@ namespace platformer
     struct BackgroundImagesInfo
     {
         BackgroundImagesInfo(
-            const sf::Uint8 fadeAlpha,
-            const std::filesystem::path & backgroundPath,
-            const std::vector<SlidingImageInfo> & slidingImages,
-            const std::filesystem::path & overlayPath)
-            : fade_alpha(fadeAlpha)
-            , background_path(backgroundPath)
-            , sliding_images(slidingImages)
-            , overlay_path(overlayPath)
+            const sf::Uint8 t_fadeAlpha,
+            const std::filesystem::path & t_backgroundPath,
+            const std::vector<SlidingImageInfo> & t_slidingImages,
+            const std::filesystem::path & t_overlayPath)
+            : fade_alpha{ t_fadeAlpha }
+            , background_path{ t_backgroundPath }
+            , sliding_images{ t_slidingImages }
+            , overlay_path{ t_overlayPath }
         {}
 
         sf::Uint8 fade_alpha;
@@ -77,12 +77,13 @@ namespace platformer
       public:
         BackgroundImages();
 
-        void setup(const Context & context, const std::string & name);
-        void draw(sf::RenderTarget & target, sf::RenderStates states) const;
-        void move(const float amount);
+        void setup(const Context & t_context, const std::string & t_name);
+        void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
+        void move(const float t_amount);
 
       private:
-        const BackgroundImagesInfo infoFactory(const Context & context, const std::string & name);
+        [[nodiscard]] BackgroundImagesInfo
+            infoFactory(const Context & t_context, const std::string & t_name);
 
       private:
         std::string m_loadedSetName;
