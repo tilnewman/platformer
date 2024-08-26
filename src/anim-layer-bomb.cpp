@@ -131,9 +131,9 @@ namespace platformer
             {
                 anim.has_exploded = true;
 
-                harm.rect        = anim.coll_rect;
-                harm.damage      = 40;
-                harm.sfx         = "bomb";
+                harm.rect   = anim.coll_rect;
+                harm.damage = 40;
+                harm.sfx    = "bomb";
 
                 break;
             }
