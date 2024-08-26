@@ -4,14 +4,15 @@
 // filesystem-util.hpp
 //
 #include <filesystem>
+#include <ranges>
 #include <string>
 #include <vector>
 
 namespace util
 {
 
-    inline std::vector<std::filesystem::path>
-        findFilesInDirectory(const std::filesystem::path & t_dirPath, const std::string & t_extension)
+    inline std::vector<std::filesystem::path> findFilesInDirectory(
+        const std::filesystem::path & t_dirPath, const std::string & t_extension)
     {
         std::vector<std::filesystem::path> files;
 
@@ -20,18 +21,16 @@ namespace util
             return files;
         }
 
-        files.reserve(64); // based on how many files I know are out there on disc
+        files.reserve(64); // based on how many files I know are in the media folders
 
-        for (const auto & entry : std::filesystem::directory_iterator{ t_dirPath })
-        {
-            if (entry.is_regular_file() && (entry.path().extension() == t_extension))
-            {
-                files.push_back(entry.path());
-            }
-        }
+        auto regularFilesWithExtension =
+            std::filesystem::directory_iterator{ t_dirPath } |
+            std::views::filter([](const auto & entry) { return entry.is_regular_file(); }) |
+            std::views::filter(
+                [&](const auto & entry) { return (entry.path().extension() == t_extension); });
 
+        std::ranges::copy(regularFilesWithExtension, std::back_inserter(files));
         std::ranges::sort(files);
-
         return files;
     }
 
