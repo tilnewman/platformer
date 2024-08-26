@@ -86,10 +86,10 @@ namespace platformer
         Count
     };
 
-    inline constexpr std::string_view toString(const Item item)
+    [[nodiscard]] inline constexpr std::string_view toString(const Item t_item) noexcept
     {
         // clang-format off
-        switch (item)
+        switch (t_item)
         {
             case Item::Bone:            { return "Bone";            }
             case Item::Berries:         { return "Berries";         }
@@ -161,7 +161,7 @@ namespace platformer
         // clang-format on
     }
 
-    inline const sf::IntRect textureRect(const Item item)
+    [[nodiscard]] inline sf::IntRect textureRect(const Item item) noexcept
     {
         // clang-format off
         switch (item)
@@ -243,9 +243,17 @@ namespace platformer
       public:
         ItemImages();
 
-        void setup(const Settings & settings);
-        const sf::Sprite sprite(const Item item) const;
-        const sf::Sprite background() const;
+        void setup(const Settings & t_settings);
+
+        [[nodiscard]] sf::Sprite sprite(const Item t_item) const noexcept
+        {
+            return sf::Sprite(m_iconsTexture, textureRect(t_item));
+        }
+
+        [[nodiscard]] sf::Sprite background() const noexcept
+        {
+            return sf::Sprite(m_backgroundTexture);
+        }
 
       private:
         sf::Texture m_iconsTexture;

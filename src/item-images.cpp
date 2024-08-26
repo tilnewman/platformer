@@ -14,29 +14,22 @@ namespace platformer
 {
 
     ItemImages::ItemImages()
-        : m_iconsTexture()
-        , m_backgroundTexture()
+        : m_iconsTexture{}
+        , m_backgroundTexture{}
     {}
 
-    void ItemImages::setup(const Settings & settings)
+    void ItemImages::setup(const Settings & t_settings)
     {
-        m_iconsTexture.loadFromFile((settings.media_path / "image/item/items.png").string());
+        m_iconsTexture.loadFromFile((t_settings.media_path / "image/item/items.png").string());
         m_iconsTexture.setSmooth(true);
         TextureStats::instance().process(m_iconsTexture);
 
         m_backgroundTexture.loadFromFile(
-            (settings.media_path / "image/item/item-background.png").string());
+            (t_settings.media_path / "image/item/item-background.png").string());
 
         m_backgroundTexture.setSmooth(false);
 
         TextureStats::instance().process(m_backgroundTexture);
     }
-
-    const sf::Sprite ItemImages::sprite(const Item item) const
-    {
-        return sf::Sprite(m_iconsTexture, textureRect(item));
-    }
-
-    const sf::Sprite ItemImages::background() const { return sf::Sprite(m_backgroundTexture); }
 
 } // namespace platformer
