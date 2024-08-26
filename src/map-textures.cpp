@@ -14,8 +14,9 @@ namespace platformer
 {
 
     MapTextureManager::MapTextureManager()
-        : m_tileTextures()
+        : m_tileTextures{}
     {
+        // size only this once to prevent any re-allocations
         m_tileTextures.resize(static_cast<std::size_t>(TileImage::Count));
     }
 
@@ -25,15 +26,15 @@ namespace platformer
         return mapTextureManager;
     }
 
-    void MapTextureManager::acquire(const Context & context, const TileImage image)
+    void MapTextureManager::acquire(const Context & t_context, const TileImage t_image)
     {
-        TileTexture & tileTexture{ m_tileTextures.at(static_cast<std::size_t>(image)) };
+        TileTexture & tileTexture{ m_tileTextures.at(static_cast<std::size_t>(t_image)) };
 
         if (0 == tileTexture.ref_count)
         {
             tileTexture.texture.loadFromFile(
-                (context.settings.media_path /
-                 std::string("image/map/").append(toImageFilename(image)))
+                (t_context.settings.media_path /
+                 std::string("image/map/").append(toImageFilename(t_image)))
                     .string());
 
             TextureStats::instance().process(tileTexture.texture);
@@ -43,9 +44,9 @@ namespace platformer
         ++tileTexture.ref_count;
     }
 
-    void MapTextureManager::release(const TileImage image)
+    void MapTextureManager::release(const TileImage t_image)
     {
-        TileTexture & tileTexture{ m_tileTextures.at(static_cast<std::size_t>(image)) };
+        TileTexture & tileTexture{ m_tileTextures.at(static_cast<std::size_t>(t_image)) };
 
         if (tileTexture.ref_count <= 1)
         {
@@ -57,7 +58,5 @@ namespace platformer
             --tileTexture.ref_count;
         }
     }
-
-    void MapTextureManager::setup(const Settings &) {}
 
 } // namespace platformer
