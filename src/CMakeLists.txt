@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project("platformer" VERSION 0.5.0 LANGUAGES CXX)
+project("bramblefore" VERSION 0.5.0 LANGUAGES CXX)
 
 
 file(GLOB source_files *.?pp)
