@@ -25,7 +25,7 @@ namespace platformer
         Count
     };
 
-    inline constexpr std::string_view toString(const AvatarType t_type)
+    [[nodiscard]] inline constexpr std::string_view toString(const AvatarType t_type) noexcept
     {
         // clang-format off
         switch (t_type)
@@ -45,14 +45,14 @@ namespace platformer
         // clang-format on
     }
 
-    inline constexpr bool isMale(const AvatarType t_type)
+    [[nodiscard]] inline constexpr bool isMale(const AvatarType t_type) noexcept
     {
         return (
             (AvatarType::Druid != t_type) && (AvatarType::Enchantress != t_type) &&
             (AvatarType::Witch != t_type));
     }
 
-    inline constexpr bool isSpellCaster(const AvatarType t_type)
+    [[nodiscard]] inline constexpr bool isSpellCaster(const AvatarType t_type) noexcept
     {
         return (
             (AvatarType::Druid == t_type) || (AvatarType::Enchantress == t_type) ||
@@ -88,7 +88,7 @@ namespace platformer
         Count
     };
 
-    inline constexpr std::string_view toName(const Spell t_spell)
+    [[nodiscard]] inline constexpr std::string_view toName(const Spell t_spell) noexcept
     {
         // clang-format off
         switch (t_spell)
@@ -115,7 +115,7 @@ namespace platformer
         // clang-format on
     }
 
-    inline constexpr std::string_view toFilesystemName(const Spell t_spell)
+    [[nodiscard]] inline constexpr std::string_view toFilesystemName(const Spell t_spell) noexcept
     {
         // clang-format off
         switch (t_spell)
@@ -143,7 +143,7 @@ namespace platformer
     }
 
     // TODO figure out the real values
-    inline constexpr Mana_t toManaCost(const Spell t_spell)
+    [[nodiscard]] inline constexpr Mana_t toManaCost(const Spell t_spell) noexcept
     {
         // clang-format off
         switch (t_spell)
@@ -171,7 +171,7 @@ namespace platformer
     }
 
     // TODO figure out the real values
-    inline constexpr Mana_t toDamage(const Spell t_spell)
+    [[nodiscard]] inline constexpr Mana_t toDamage(const Spell t_spell) noexcept
     {
         // clang-format off
         switch (t_spell)
@@ -198,7 +198,7 @@ namespace platformer
         // clang-format on
     }
 
-    inline constexpr float timePerFrameSec(const Spell t_spell)
+    [[nodiscard]] inline constexpr float timePerFrameSec(const Spell t_spell) noexcept
     {
         if (Spell::Light == t_spell)
         {
@@ -216,7 +216,7 @@ namespace platformer
         }
     }
 
-    inline std::vector<Spell> makeSpellSet(const AvatarType t_type)
+    [[nodiscard]] inline constexpr std::vector<Spell> makeSpellSet(const AvatarType t_type) noexcept
     {
         if (AvatarType::Witch == t_type)
         {
