@@ -20,19 +20,19 @@ namespace platformer
 {
 
     Level::Level()
-        : map_position_offset()
-        , tile_size_screen()
-        , tile_size_texture()
-        , collisions()
-        , enter_rect()
-        , exit_rect()
-        , name()
-        , tile_count()
-        , tile_size()
-        , tile_layers()
-        , monsters()
-        , farthest_horiz_traveled(0.0f)
-        , farthest_horiz_map_pixel(0.0f)
+        : map_position_offset{}
+        , tile_size_screen{}
+        , tile_size_texture{}
+        , collisions{}
+        , enter_rect{}
+        , exit_rect{}
+        , name{}
+        , tile_count{}
+        , tile_size{}
+        , tile_layers{}
+        , monsters{}
+        , farthest_horiz_traveled{ 0.0f }
+        , farthest_horiz_map_pixel{ 0.0f }
     {
         tile_layers.reserve(32);
         collisions.reserve(1024);
@@ -47,14 +47,14 @@ namespace platformer
         farthest_horiz_map_pixel = 0.0f;
     }
 
-    bool Level::load(Context & context)
+    bool Level::load(Context & t_context)
     {
         reset();
 
-        if (context.level_loader.load(context))
+        if (t_context.level_loader.load(t_context))
         {
-            appendVertLayers(context);
-            context.avatar.setPosition(enter_rect);
+            appendVertLayers(t_context);
+            t_context.avatar.setPosition(enter_rect);
             farthest_horiz_map_pixel = findFarthestHorizMapPixel();
             // dumpInfo();
             return true;
@@ -66,28 +66,28 @@ namespace platformer
         }
     }
 
-    bool Level::move(const Context & context, const float amount)
+    bool Level::move(const Context & t_context, const float t_amount)
     {
-        farthest_horiz_traveled += util::abs(amount);
-        if (farthest_horiz_traveled > (farthest_horiz_map_pixel - context.layout.wholeSize().x))
+        farthest_horiz_traveled += util::abs(t_amount);
+        if (farthest_horiz_traveled > (farthest_horiz_map_pixel - t_context.layout.wholeSize().x))
         {
             return false;
         }
 
-        enter_rect.left += amount;
-        exit_rect.left += amount;
+        enter_rect.left += t_amount;
+        exit_rect.left += t_amount;
 
         for (sf::FloatRect & rect : collisions)
         {
-            rect.left += amount;
+            rect.left += t_amount;
         }
 
         for (auto & layerUPtr : tile_layers)
         {
-            layerUPtr->move(context, amount);
+            layerUPtr->move(t_context, t_amount);
         }
 
-        monsters.move(amount);
+        monsters.move(t_amount);
         return true;
     }
 
@@ -107,18 +107,18 @@ namespace platformer
         return farthestHorizPos;
     }
 
-    void Level::appendVertLayers(const Context & context)
+    void Level::appendVertLayers(const Context & t_context)
     {
         for (auto & layerUPtr : tile_layers)
         {
             layerUPtr->appendVertLayer(
-                context, map_position_offset, tile_count, tile_size, tile_size_screen);
+                t_context, map_position_offset, tile_count, tile_size, tile_size_screen);
         }
     }
 
     void Level::dumpInfo() const
     {
-        std::cout << "Level Graphics Info\n";
+        std::cout << "Map Graphics Layer Info:\n";
 
         for (const auto & layerUPtr : tile_layers)
         {
@@ -129,24 +129,24 @@ namespace platformer
     }
 
     void Level::draw(
-        const Context & context, sf::RenderTarget & target, sf::RenderStates states) const
+        const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
         for (auto & layerUPtr : tile_layers)
         {
-            layerUPtr->draw(context, target, states);
+            layerUPtr->draw(t_context, t_target, t_states);
         }
 
-        monsters.draw(context, target, states);
+        monsters.draw(t_context, t_target, t_states);
     }
 
-    void Level::update(Context & context, const float frameTimeSec)
+    void Level::update(Context & t_context, const float t_frameTimeSec)
     {
         for (auto & layerUPtr : tile_layers)
         {
-            layerUPtr->update(context, frameTimeSec);
+            layerUPtr->update(t_context, t_frameTimeSec);
         }
 
-        monsters.update(context, frameTimeSec);
+        monsters.update(t_context, t_frameTimeSec);
     }
 
 } // namespace platformer

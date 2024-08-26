@@ -22,11 +22,14 @@ namespace platformer
     {
         Level();
 
-        bool load(Context & context);
+        bool load(Context & t_context);
         void reset();
-        bool move(const Context & context, const float move);
-        void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const;
-        void update(Context & context, const float frameTimeSec);
+        bool move(const Context & t_context, const float t_move);
+
+        void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
+            const;
+
+        void update(Context & t_context, const float t_frameTimeSec);
 
         sf::Vector2f map_position_offset;
         sf::Vector2f tile_size_screen;
@@ -43,7 +46,7 @@ namespace platformer
         float farthest_horiz_map_pixel;
 
       private:
-        void appendVertLayers(const Context & context);
+        void appendVertLayers(const Context & t_context);
         void dumpInfo() const;
         float findFarthestHorizMapPixel() const;
     };

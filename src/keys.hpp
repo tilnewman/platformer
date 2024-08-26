@@ -106,8 +106,6 @@ namespace util::keys
 
     inline void allTheArrowKeysDown(std::vector<sf::Keyboard::Key> & t_arrowKeys)
     {
-        t_arrowKeys.reserve(4);
-
         // clang-format off
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))    { t_arrowKeys.push_back( sf::Keyboard::Up   ); }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))  { t_arrowKeys.push_back( sf::Keyboard::Down ); }
