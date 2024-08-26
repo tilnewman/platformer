@@ -34,11 +34,11 @@ namespace platformer
       public:
         GuiWindowPaper();
 
-        void setup(const Settings & settings);
-        void create(Context & context, const bool useBigPaper, const GuiWindowInfo & info);
-        void draw(sf::RenderTarget & target, sf::RenderStates states) const;
-        inline const sf::FloatRect innerRect() const { return m_innerRect; }
-        inline const sf::FloatRect outerRect() const { return m_outerRect; }
+        void setup(const Settings & t_settings);
+        void create(Context & t_context, const bool t_useBigPaper, const GuiWindowInfo & t_info);
+        void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
+        [[nodiscard]] inline sf::FloatRect innerRect() const noexcept { return m_innerRect; }
+        [[nodiscard]] inline sf::FloatRect outerRect() const noexcept { return m_outerRect; }
 
       private:
         GuiWindowInfo m_info;

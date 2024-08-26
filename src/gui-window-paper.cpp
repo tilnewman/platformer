@@ -18,38 +18,39 @@ namespace platformer
 {
 
     GuiWindowPaper::GuiWindowPaper()
-        : m_info()
-        , m_innerRect()
-        , m_outerRect()
-        , m_paper1Texture()
-        , m_paper2Texture()
-        , m_tapeLeftTexture()
-        , m_tapeRightTexture()
-        , m_tapeMiddleTexture()
-        , m_paperSprite()
-        , m_tapeLeftSprite()
-        , m_tapeRightSprite()
-        , m_tapeMiddleSprite()
-        , m_titleText()
-        , m_contentTexts()
-        , m_bgFadeVerts()
+        : m_info{}
+        , m_innerRect{}
+        , m_outerRect{}
+        , m_paper1Texture{}
+        , m_paper2Texture{}
+        , m_tapeLeftTexture{}
+        , m_tapeRightTexture{}
+        , m_tapeMiddleTexture{}
+        , m_paperSprite{}
+        , m_tapeLeftSprite{}
+        , m_tapeRightSprite{}
+        , m_tapeMiddleSprite{}
+        , m_titleText{}
+        , m_contentTexts{}
+        , m_bgFadeVerts{}
     {
         m_bgFadeVerts.reserve(util::verts_per_quad);
     }
 
-    void GuiWindowPaper::setup(const Settings & settings)
+    void GuiWindowPaper::setup(const Settings & t_settings)
     {
-        m_paper1Texture.loadFromFile((settings.media_path / "image/ui/paper1.png").string());
-        m_paper2Texture.loadFromFile((settings.media_path / "image/ui/paper2.png").string());
+        m_paper1Texture.loadFromFile((t_settings.media_path / "image/ui/paper1.png").string());
+        m_paper2Texture.loadFromFile((t_settings.media_path / "image/ui/paper2.png").string());
 
         TextureStats::instance().process(m_paper1Texture);
         TextureStats::instance().process(m_paper2Texture);
 
-        m_tapeLeftTexture.loadFromFile((settings.media_path / "image/ui/tape-left.png").string());
-        m_tapeRightTexture.loadFromFile((settings.media_path / "image/ui/tape-right.png").string());
+        m_tapeLeftTexture.loadFromFile((t_settings.media_path / "image/ui/tape-left.png").string());
+        m_tapeRightTexture.loadFromFile(
+            (t_settings.media_path / "image/ui/tape-right.png").string());
 
         m_tapeMiddleTexture.loadFromFile(
-            (settings.media_path / "image/ui/tape-middle.png").string());
+            (t_settings.media_path / "image/ui/tape-middle.png").string());
 
         TextureStats::instance().process(m_tapeLeftTexture);
         TextureStats::instance().process(m_tapeRightTexture);
@@ -57,21 +58,21 @@ namespace platformer
     }
 
     void GuiWindowPaper::create(
-        Context & context, const bool useBigPaper, const GuiWindowInfo & info)
+        Context & t_context, const bool t_useBigPaper, const GuiWindowInfo & t_info)
     {
         m_bgFadeVerts.clear();
-        util::appendQuadVerts(context.layout.wholeRect(), m_bgFadeVerts, sf::Color(0, 0, 0, 127));
+        util::appendQuadVerts(t_context.layout.wholeRect(), m_bgFadeVerts, sf::Color(0, 0, 0, 127));
 
-        m_info = info;
+        m_info = t_info;
 
-        if (useBigPaper)
+        if (t_useBigPaper)
         {
             m_paperSprite.setTexture(m_paper2Texture);
 
             m_paperSprite.setPosition(
-                ((context.layout.wholeSize().x * 0.5f) -
+                ((t_context.layout.wholeSize().x * 0.5f) -
                  (m_paperSprite.getGlobalBounds().width * 0.5f)),
-                ((context.layout.wholeSize().y * 0.5f) -
+                ((t_context.layout.wholeSize().y * 0.5f) -
                  (m_paperSprite.getGlobalBounds().height * 0.5f)));
 
             m_innerRect.left   = (m_paperSprite.getPosition().x + 32.0f);
@@ -84,9 +85,9 @@ namespace platformer
             m_paperSprite.setTexture(m_paper1Texture);
 
             m_paperSprite.setPosition(
-                ((context.layout.wholeSize().x * 0.5f) -
+                ((t_context.layout.wholeSize().x * 0.5f) -
                  (m_paperSprite.getGlobalBounds().width * 0.5f)),
-                ((context.layout.wholeSize().y * 0.5f) -
+                ((t_context.layout.wholeSize().y * 0.5f) -
                  (m_paperSprite.getGlobalBounds().height * 0.5f)));
 
             m_innerRect.left   = (m_paperSprite.getPosition().x + 48.0f);
@@ -102,22 +103,23 @@ namespace platformer
             m_tapeLeftSprite.setTexture(m_tapeLeftTexture);
 
             m_tapeLeftSprite.setPosition(
-                ((context.layout.wholeSize().x * 0.5f) - m_tapeLeftSprite.getGlobalBounds().width),
+                ((t_context.layout.wholeSize().x * 0.5f) -
+                 m_tapeLeftSprite.getGlobalBounds().width),
                 (m_outerRect.top - (m_tapeLeftSprite.getGlobalBounds().height * 0.65f)));
 
             m_tapeRightSprite.setTexture(m_tapeRightTexture);
 
             m_tapeRightSprite.setPosition(
-                (context.layout.wholeSize().x * 0.5f),
+                (t_context.layout.wholeSize().x * 0.5f),
                 (m_outerRect.top - (m_tapeRightSprite.getGlobalBounds().height * 0.65f)));
 
             sf::FloatRect titleRect;
-            titleRect.left   = ((context.layout.wholeSize().x * 0.5f) - 100.0f);
+            titleRect.left   = ((t_context.layout.wholeSize().x * 0.5f) - 100.0f);
             titleRect.top    = (m_tapeLeftSprite.getPosition().y + 14.0f);
             titleRect.width  = 200.0f;
             titleRect.height = 37.0f;
 
-            m_titleText = context.font.makeText(
+            m_titleText = t_context.font.makeText(
                 Font::Default, FontSize::Medium, m_info.title, sf::Color(32, 32, 32));
 
             util::fitAndCenterInside(m_titleText, titleRect);
@@ -138,7 +140,7 @@ namespace platformer
                 sf::FloatRect tapeMiddleRect;
 
                 tapeMiddleRect.left =
-                    ((context.layout.wholeSize().x * 0.5f) - (betweenTapeSize * 0.5f));
+                    ((t_context.layout.wholeSize().x * 0.5f) - (betweenTapeSize * 0.5f));
 
                 tapeMiddleRect.top    = (m_tapeLeftSprite.getPosition().y + 8.0f);
                 tapeMiddleRect.width  = betweenTapeSize;
@@ -154,21 +156,21 @@ namespace platformer
             m_outerRect.top = m_tapeLeftSprite.getPosition().y;
         }
 
-        m_contentTexts = TextLayout::layout(context, m_info.content, m_innerRect, m_info.details);
+        m_contentTexts = TextLayout::layout(t_context, m_info.content, m_innerRect, m_info.details);
     }
 
-    void GuiWindowPaper::draw(sf::RenderTarget & target, sf::RenderStates states) const
+    void GuiWindowPaper::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
-        target.draw(&m_bgFadeVerts[0], m_bgFadeVerts.size(), sf::Quads, states);
-        target.draw(m_paperSprite, states);
-        target.draw(m_tapeLeftSprite, states);
-        target.draw(m_tapeRightSprite, states);
-        target.draw(m_tapeMiddleSprite, states);
-        target.draw(m_titleText, states);
+        t_target.draw(&m_bgFadeVerts[0], m_bgFadeVerts.size(), sf::Quads, t_states);
+        t_target.draw(m_paperSprite, t_states);
+        t_target.draw(m_tapeLeftSprite, t_states);
+        t_target.draw(m_tapeRightSprite, t_states);
+        t_target.draw(m_tapeMiddleSprite, t_states);
+        t_target.draw(m_titleText, t_states);
 
         for (const sf::Text & text : m_contentTexts)
         {
-            target.draw(text, states);
+            t_target.draw(text, t_states);
         }
     }
 
