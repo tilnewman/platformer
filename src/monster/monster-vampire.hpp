@@ -4,7 +4,6 @@
 // monster-vampire.hpp
 //
 #include "monster/monster.hpp"
-#include "subsystem/harm.hpp"
 
 #include <SFML/Graphics/Rect.hpp>
 
@@ -22,9 +21,8 @@ namespace platformer
         virtual ~Vampire() override = default;
 
         // IMonster functions
-        const Harm avatarCollide(const sf::FloatRect & t_avatarRect) final;
-        const sf::FloatRect collisionRect() const final;
-        const sf::FloatRect attackCollisionRect() const final;
+        sf::FloatRect collisionRect() const final;
+        sf::FloatRect attackCollisionRect() const final;
 
       protected:
         void playAttackSfx(Context & t_context) const final;

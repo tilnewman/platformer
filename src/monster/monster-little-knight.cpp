@@ -16,7 +16,7 @@ namespace platformer
         : Monster{ t_context, { MonsterType::LittleKnight, t_region, 0.85f } }
     {}
 
-    const sf::FloatRect LittleKnight::collisionRect() const
+    sf::FloatRect LittleKnight::collisionRect() const
     {
         if (MonsterAnim::Death == m_anim)
         {
@@ -31,7 +31,7 @@ namespace platformer
         }
     }
 
-    const sf::FloatRect LittleKnight::attackCollisionRect() const
+    sf::FloatRect LittleKnight::attackCollisionRect() const
     {
         sf::FloatRect rect{ collisionRect() };
 
@@ -49,20 +49,6 @@ namespace platformer
         util::scaleRectInPlace(rect, 1.1f);
 
         return rect;
-    }
-
-    const Harm LittleKnight::avatarCollide(const sf::FloatRect & avatarRect)
-    {
-        Harm harm;
-
-        if ((MonsterAnim::Attack == m_anim) && avatarRect.intersects(attackCollisionRect()))
-        {
-            harm.damage = attackDamage(m_type);
-            harm.rect   = collisionRect();
-            harm.sfx    = "hit-wood";
-        }
-
-        return harm;
     }
 
     void LittleKnight::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }

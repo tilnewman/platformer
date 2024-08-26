@@ -161,6 +161,20 @@ namespace platformer
         return true;
     }
 
+    Harm Monster::avatarCollide(const sf::FloatRect & t_avatarRect)
+    {
+        Harm harm;
+
+        if ((MonsterAnim::Attack == m_anim) && t_avatarRect.intersects(attackCollisionRect()))
+        {
+            harm.damage = attackDamage(m_type);
+            harm.rect   = collisionRect();
+            harm.sfx    = hitSfx(m_type);
+        }
+
+        return harm;
+    }
+
     bool Monster::animate()
     {
         bool isAnimationFinished{ false };

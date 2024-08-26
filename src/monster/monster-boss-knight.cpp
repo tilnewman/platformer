@@ -5,26 +5,18 @@
 //
 #include "monster/monster-boss-knight.hpp"
 
-#include "avatar/avatar.hpp"
 #include "subsystem/context.hpp"
-#include "subsystem/screen-layout.hpp"
-#include "bramblefore/settings.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
-
-#include <filesystem>
-
-#include <SFML/Graphics/RenderStates.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
 
 namespace platformer
 {
 
-    BossKnight::BossKnight(Context & context, const sf::FloatRect & region)
-        : Monster(context, { MonsterType::BossKnight, region, 0.7f })
+    BossKnight::BossKnight(Context & t_context, const sf::FloatRect & t_region)
+        : Monster{ t_context, { MonsterType::BossKnight, t_region, 0.7f } }
     {}
 
-    const sf::FloatRect BossKnight::collisionRect() const
+    sf::FloatRect BossKnight::collisionRect() const
     {
         if (MonsterAnim::Death == m_anim)
         {
@@ -50,7 +42,7 @@ namespace platformer
         }
     }
 
-    const sf::FloatRect BossKnight::attackCollisionRect() const
+    sf::FloatRect BossKnight::attackCollisionRect() const
     {
         sf::FloatRect rect{ collisionRect() };
 
@@ -68,20 +60,6 @@ namespace platformer
         util::scaleRectInPlace(rect, 1.1f);
 
         return rect;
-    }
-
-    const Harm BossKnight::avatarCollide(const sf::FloatRect & avatarRect)
-    {
-        Harm harm;
-
-        if ((MonsterAnim::Attack == m_anim) && avatarRect.intersects(attackCollisionRect()))
-        {
-            harm.damage = attackDamage(m_type);
-            harm.rect   = collisionRect();
-            harm.sfx    = "hit-wood";
-        }
-
-        return harm;
     }
 
     void BossKnight::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }

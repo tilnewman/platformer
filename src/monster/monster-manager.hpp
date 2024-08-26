@@ -42,7 +42,7 @@ namespace platformer
             const;
 
         void move(const float t_amount);
-        const Harm avatarCollide(const sf::FloatRect & t_avatarRect);
+        Harm avatarCollide(const sf::FloatRect & t_avatarRect);
         void appendCollisionRects(std::vector<sf::FloatRect> & t_rects) const;
         bool avatarAttack(Context & t_context, const AttackInfo & t_attackInfo);
 

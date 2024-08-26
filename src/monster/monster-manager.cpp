@@ -42,7 +42,7 @@ namespace platformer
         }
     }
 
-    const Harm MonsterManager::avatarCollide(const sf::FloatRect & t_avatarRect)
+    Harm MonsterManager::avatarCollide(const sf::FloatRect & t_avatarRect)
     {
         for (auto & monsterUPtr : m_monsters)
         {

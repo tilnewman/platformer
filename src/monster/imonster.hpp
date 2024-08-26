@@ -182,7 +182,7 @@ namespace platformer
         // clang-format on
     }
 
-    //TODO need real values here
+    // TODO need real values here
     inline constexpr Health_t attackDamage(const MonsterType t_type) noexcept
     {
         // clang-format off
@@ -220,6 +220,48 @@ namespace platformer
             case MonsterType::BossWizard:    { return 1; }
             case MonsterType::Count: //intentional fallthrough      
             default:                         { return 0;  }
+        }
+        // clang-format on
+    }
+
+    // TODO need real sound effects here
+    inline constexpr std::string_view hitSfx(const MonsterType t_type) noexcept
+    {
+        // clang-format off
+        switch (t_type)
+        {
+            case MonsterType::BabyDragon:    { return ""; }
+            case MonsterType::Bear:          { return ""; }
+            case MonsterType::BigKnight:     { return ""; }
+            case MonsterType::BoneDragon:    { return ""; }
+            case MonsterType::Demon:         { return ""; }
+            case MonsterType::Dino:          { return ""; }
+            case MonsterType::Djinn:         { return ""; }
+            case MonsterType::Dragon:        { return ""; }
+            case MonsterType::Dwarf:         { return "hit-wood"; }
+            case MonsterType::Ent:           { return "hit-wood"; }
+            case MonsterType::FireImp:       { return ""; }
+            case MonsterType::FireKnight:    { return ""; }
+            case MonsterType::Ghost:         { return ""; }
+            case MonsterType::Goblin:        { return "hit-wood"; }
+            case MonsterType::Hound:         { return ""; }
+            case MonsterType::Imp:           { return ""; }
+            case MonsterType::LittleKnight:  { return ""; }
+            case MonsterType::Lizard:        { return ""; }
+            case MonsterType::Medusa:        { return ""; }
+            case MonsterType::Orc:           { return "hit-wood"; }
+            case MonsterType::Salamander:    { return ""; }
+            case MonsterType::Skeleton:      { return "hit-wood"; }
+            case MonsterType::Skull:         { return ""; }
+            case MonsterType::Snake:         { return ""; }
+            case MonsterType::Spider:        { return ""; }
+            case MonsterType::Vampire:       { return ""; }
+            case MonsterType::Yeti:          { return ""; }
+            case MonsterType::BossTribal:    { return ""; }
+            case MonsterType::BossKnight:    { return ""; }
+            case MonsterType::BossWizard:    { return ""; }
+            case MonsterType::Count: //intentional fallthrough      
+            default:                         { return "";  }
         }
         // clang-format on
     }
@@ -279,9 +321,9 @@ namespace platformer
         virtual void update(Context & t_context, const float t_frameTimeSec)                 = 0;
         virtual void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const = 0;
         virtual void move(const float t_amount)                                              = 0;
-        virtual const Harm avatarCollide(const sf::FloatRect & t_avatarRect)                 = 0;
-        virtual const sf::FloatRect collisionRect() const                                    = 0;
-        virtual const sf::FloatRect attackCollisionRect() const                              = 0;
+        virtual Harm avatarCollide(const sf::FloatRect & t_avatarRect)                       = 0;
+        virtual sf::FloatRect collisionRect() const                                          = 0;
+        virtual sf::FloatRect attackCollisionRect() const                                    = 0;
         virtual bool avatarAttack(Context & t_context, const AttackInfo & t_attackInfo)      = 0;
     };
 

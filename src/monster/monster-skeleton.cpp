@@ -16,7 +16,7 @@ namespace platformer
         : Monster{ t_context, { MonsterType::Skeleton, t_region, 0.75f } }
     {}
 
-    const sf::FloatRect Skeleton::collisionRect() const
+    sf::FloatRect Skeleton::collisionRect() const
     {
         if (MonsterAnim::Death == m_anim)
         {
@@ -40,7 +40,7 @@ namespace platformer
         }
     }
 
-    const sf::FloatRect Skeleton::attackCollisionRect() const
+    sf::FloatRect Skeleton::attackCollisionRect() const
     {
         sf::FloatRect rect{ collisionRect() };
 
@@ -58,20 +58,6 @@ namespace platformer
         util::scaleRectInPlace(rect, 1.1f);
 
         return rect;
-    }
-
-    const Harm Skeleton::avatarCollide(const sf::FloatRect & avatarRect)
-    {
-        Harm harm;
-
-        if ((MonsterAnim::Attack == m_anim) && avatarRect.intersects(attackCollisionRect()))
-        {
-            harm.damage = attackDamage(m_type);
-            harm.rect   = collisionRect();
-            harm.sfx    = "hit-wood";
-        }
-
-        return harm;
     }
 
     void Skeleton::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }

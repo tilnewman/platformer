@@ -16,7 +16,7 @@ namespace platformer
         : Monster{ t_context, { MonsterType::BabyDragon, t_region, 0.85f } }
     {}
 
-    const sf::FloatRect BabyDragon::collisionRect() const
+    sf::FloatRect BabyDragon::collisionRect() const
     {
         if (MonsterAnim::Death == m_anim)
         {
@@ -30,7 +30,7 @@ namespace platformer
         }
     }
 
-    const sf::FloatRect BabyDragon::attackCollisionRect() const
+    sf::FloatRect BabyDragon::attackCollisionRect() const
     {
         sf::FloatRect rect{ collisionRect() };
 
@@ -48,20 +48,6 @@ namespace platformer
         util::scaleRectInPlace(rect, 1.1f);
 
         return rect;
-    }
-
-    const Harm BabyDragon::avatarCollide(const sf::FloatRect & t_avatarRect)
-    {
-        Harm harm;
-
-        if ((MonsterAnim::Attack == m_anim) && t_avatarRect.intersects(attackCollisionRect()))
-        {
-            harm.damage = attackDamage(m_type);
-            harm.rect   = collisionRect();
-            harm.sfx    = "hit-wood";
-        }
-
-        return harm;
     }
 
     void BabyDragon::playAttackSfx(Context & t_context) const { t_context.sfx.play("attack-ent"); }

@@ -16,7 +16,7 @@ namespace platformer
         : Monster{ t_context, { MonsterType::BossWizard, t_region, 0.75f } }
     {}
 
-    const sf::FloatRect BossWizard::collisionRect() const
+    sf::FloatRect BossWizard::collisionRect() const
     {
         if (MonsterAnim::Death == m_anim)
         {
@@ -42,7 +42,7 @@ namespace platformer
         }
     }
 
-    const sf::FloatRect BossWizard::attackCollisionRect() const
+    sf::FloatRect BossWizard::attackCollisionRect() const
     {
         sf::FloatRect rect{ collisionRect() };
 
@@ -60,20 +60,6 @@ namespace platformer
         util::scaleRectInPlace(rect, 1.1f);
 
         return rect;
-    }
-
-    const Harm BossWizard::avatarCollide(const sf::FloatRect & avatarRect)
-    {
-        Harm harm;
-
-        if ((MonsterAnim::Attack == m_anim) && avatarRect.intersects(attackCollisionRect()))
-        {
-            harm.damage = attackDamage(m_type);
-            harm.rect   = collisionRect();
-            harm.sfx    = "hit-wood";
-        }
-
-        return harm;
     }
 
     void BossWizard::playAttackSfx(Context & context) const { context.sfx.play("attack-ent"); }
