@@ -1,9 +1,9 @@
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 //
-// water-anim-layer.cpp
+// anim-layer-water.cpp
 //
-#include "water-anim-layer.hpp"
+#include "anim-layer-water.hpp"
 
 #include "avatar.hpp"
 #include "context.hpp"

@@ -1,7 +1,7 @@
-#ifndef FLAMING_SKULL_ANIM_LAYER_HPP_INCLUDED
-#define FLAMING_SKULL_ANIM_LAYER_HPP_INCLUDED
+#ifndef ANIM_LAYER_GHOST_BOTTLE_HPP_INCLUDED
+#define ANIM_LAYER_GHOST_BOTTLE_HPP_INCLUDED
 //
-// flaming-skull-anim-layer.hpp
+// anim-layer-ghost-bottle.hpp
 //
 #include "harm-collision-manager.hpp"
 #include "tile-layer.hpp"
@@ -25,37 +25,25 @@ namespace platformer
 
     //
 
-    enum class FlameDirection
+    struct GhostBottleAnim
     {
-        Up,
-        Down,
-        Left,
-        Right
-    };
-
-    //
-
-    struct FlamesAnim
-    {
-        bool is_alive{ false };
+        bool has_emerged{ false };
         float elapsed_time_sec{ 0.0f };
-        float time_between_flaming{ 0.0f };
-        float time_between_frames_sec{ 0.15f };
+        float time_between_frames_sec{ 0.175f };
         std::size_t frame_index{ 0 };
         sf::Sprite sprite{};
-        bool is_flaming{ false };
-        FlameDirection direction{ FlameDirection::Up }; // anything works here
+        sf::FloatRect coll_rect{};
     };
 
     //
 
-    class FlamingSkullAnimationLayer
+    class GhostBottleAnimationLayer
         : public ITileLayer
         , public IHarmCollisionOwner
     {
       public:
-        FlamingSkullAnimationLayer(Context & t_context, const std::vector<sf::FloatRect> & t_rects);
-        virtual ~FlamingSkullAnimationLayer() override;
+        GhostBottleAnimationLayer(Context & t_context, const std::vector<sf::FloatRect> & t_rects);
+        virtual ~GhostBottleAnimationLayer() override;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const final;
@@ -81,24 +69,14 @@ namespace platformer
         void updateDrops(const float t_frameTimeSec);
         void updateSplashes(const float t_frameTimeSec);
 
-        [[nodiscard]] std::size_t frameCount(const sf::Texture & t_texture) const;
-
-        [[nodiscard]] sf::IntRect
-            textureRect(const sf::Texture & t_texture, const std::size_t t_frame) const;
-
-        [[nodiscard]] const sf::Texture & getTexture(const FlameDirection t_direction) const;
+        [[nodiscard]] std::size_t frameCount() const;
+        [[nodiscard]] sf::IntRect textureRect(const std::size_t t_frame) const;
 
       private:
-        float m_scale;
-        sf::Texture m_skullBlockTexture;
-        sf::Texture m_flamesUpTexture;
-        sf::Texture m_flamesDownTexture;
-        sf::Texture m_flamesLeftTexture;
-        sf::Texture m_flamesRightTexture;
-        std::vector<sf::Sprite> m_skullBlockSprites;
-        std::vector<FlamesAnim> m_anims;
+        sf::Texture m_texture;
+        std::vector<GhostBottleAnim> m_anims;
     };
 
 } // namespace platformer
 
-#endif // FLAMING_SKULL_ANIM_LAYER_HPP_INCLUDED
+#endif // ANIM_LAYER_GHOST_BOTTLE_HPP_INCLUDED

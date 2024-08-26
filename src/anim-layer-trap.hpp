@@ -1,7 +1,7 @@
-#ifndef TRAP_ANIM_LAYER_HPP_INCLUDED
-#define TRAP_ANIM_LAYER_HPP_INCLUDED
+#ifndef ANIM_LAYER_TRAP_HPP_INCLUDED
+#define ANIM_LAYER_TRAP_HPP_INCLUDED
 //
-// trap-anim-layer.hpp
+// anim-layer-trap.hpp
 //
 #include "harm-collision-manager.hpp"
 #include "tile-layer.hpp"
@@ -78,4 +78,4 @@ namespace platformer
 
 } // namespace platformer
 
-#endif // TRAP_ANIM_LAYER_HPP_INCLUDED
+#endif // ANIM_LAYER_TRAP_HPP_INCLUDED

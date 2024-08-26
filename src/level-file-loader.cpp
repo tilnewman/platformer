@@ -3,13 +3,15 @@
 #include "level-file-loader.hpp"
 
 #include "accents.hpp"
-#include "acid-anim-layer.hpp"
-#include "acid-spout-anim-layer.hpp"
+#include "anim-layer-acid-spout.hpp"
+#include "anim-layer-acid.hpp"
+#include "anim-layer-flaming-skull.hpp"
+#include "anim-layer-ghost-bottle.hpp"
+#include "anim-layer-lightning.hpp"
+#include "anim-layer-trap.hpp"
+#include "anim-layer-water.hpp"
 #include "background-images.hpp"
 #include "check-macros.hpp"
-#include "flaming-skull-anim-layer.hpp"
-#include "ghost-bottle-anim-layer.hpp"
-#include "lightning-anim-layer.hpp"
 #include "map-textures.hpp"
 #include "monster-baby-dragon.hpp"
 #include "monster-bear.hpp"
@@ -45,8 +47,6 @@
 #include "screen-layout.hpp"
 #include "settings.hpp"
 #include "sfml-util.hpp"
-#include "trap-anim-layer.hpp"
-#include "water-anim-layer.hpp"
 
 #include <exception>
 #include <filesystem>

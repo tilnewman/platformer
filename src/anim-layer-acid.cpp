@@ -1,9 +1,9 @@
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 //
-// acid-anim-layer.cpp
+// anim-layer-acid.cpp
 //
-#include "acid-anim-layer.hpp"
+#include "anim-layer-acid.hpp"
 
 #include "avatar.hpp"
 #include "context.hpp"

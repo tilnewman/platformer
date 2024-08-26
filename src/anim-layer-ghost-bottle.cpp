@@ -1,9 +1,9 @@
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 //
-// ghost-bottle-anim-layer.cpp
+// anim-layer-ghost-bottle.cpp
 //
-#include "ghost-bottle-anim-layer.hpp"
+#include "anim-layer-ghost-bottle.hpp"
 
 #include "avatar.hpp"
 #include "context.hpp"

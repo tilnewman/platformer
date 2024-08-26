@@ -1,9 +1,9 @@
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 //
-// flaming-skull-anim-layer.cpp
+// anim-layer-flaming-skull.cpp
 //
-#include "flaming-skull-anim-layer.hpp"
+#include "anim-layer-flaming-skull.hpp"
 
 #include "avatar.hpp"
 #include "context.hpp"

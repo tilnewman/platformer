@@ -1,7 +1,7 @@
-#ifndef ACIDANIMLAYER_HPP_INCLUDED
-#define ACIDANIMLAYER_HPP_INCLUDED
+#ifndef ANIM_LAYER_ACID_HPP_INCLUDED
+#define ANIM_LAYER_ACID_HPP_INCLUDED
 //
-// acid-anim-layer.hpp
+// anim-layer-acid.hpp
 //
 #include "harm-collision-manager.hpp"
 #include "tile-layer.hpp"
@@ -66,4 +66,4 @@ namespace platformer
 
 } // namespace platformer
 
-#endif // ACIDANIMLAYER_HPP_INCLUDED
+#endif // ANIM_LAYER_ACID_HPP_INCLUDED

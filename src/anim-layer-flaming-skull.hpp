@@ -1,7 +1,7 @@
-#ifndef ACID_SPOUT_ANIM_LAYER_HPP_INCLUDED
-#define ACID_SPOUT_ANIM_LAYER_HPP_INCLUDED
+#ifndef ANIM_LAYER_FLAMING_SKULL_HPP_INCLUDED
+#define ANIM_LAYER_FLAMING_SKULL_HPP_INCLUDED
 //
-// acid-spout-anim-layer.hpp
+// anim-layer-flaming-skull.hpp
 //
 #include "harm-collision-manager.hpp"
 #include "tile-layer.hpp"
@@ -25,47 +25,37 @@ namespace platformer
 
     //
 
-    struct AcidSplashAnim
+    enum class FlameDirection
     {
-        bool is_alive{ true };
-        float elapsed_time_sec{ 0.0f };
-        float time_between_frames_sec{ 0.1f };
-        std::size_t frame_index{ 0 };
-        sf::Sprite sprite{};
+        Up,
+        Down,
+        Left,
+        Right
     };
 
     //
 
-    struct AcidDropAnim
+    struct FlamesAnim
     {
-        bool is_alive{ true };
-        float velocity{ 0.0f };
-        sf::Sprite sprite{};
-        sf::FloatRect region{};
-    };
-
-    //
-
-    struct AcidSpoutAnim
-    {
-        bool is_dripping{ false };
+        bool is_alive{ false };
         float elapsed_time_sec{ 0.0f };
-        float time_between_drips{ 0.0f };
+        float time_between_flaming{ 0.0f };
         float time_between_frames_sec{ 0.15f };
         std::size_t frame_index{ 0 };
         sf::Sprite sprite{};
-        sf::FloatRect region{};
+        bool is_flaming{ false };
+        FlameDirection direction{ FlameDirection::Up }; // anything works here
     };
 
     //
 
-    class AcidSpoutAnimationLayer
+    class FlamingSkullAnimationLayer
         : public ITileLayer
         , public IHarmCollisionOwner
     {
       public:
-        AcidSpoutAnimationLayer(Context & t_context, const std::vector<sf::FloatRect> & t_rects);
-        virtual ~AcidSpoutAnimationLayer() override;
+        FlamingSkullAnimationLayer(Context & t_context, const std::vector<sf::FloatRect> & t_rects);
+        virtual ~FlamingSkullAnimationLayer() override;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const final;
@@ -96,18 +86,19 @@ namespace platformer
         [[nodiscard]] sf::IntRect
             textureRect(const sf::Texture & t_texture, const std::size_t t_frame) const;
 
-        [[nodiscard]] Harm makeHarm(const sf::FloatRect & t_rect) const noexcept;
+        [[nodiscard]] const sf::Texture & getTexture(const FlameDirection t_direction) const;
 
       private:
         float m_scale;
-        sf::Texture m_spoutTexture;
-        sf::Texture m_dropTexture;
-        sf::Texture m_splashTexture;
-        std::vector<AcidSpoutAnim> m_spoutAnims;
-        std::vector<AcidDropAnim> m_dropAnims;
-        std::vector<AcidSplashAnim> m_splashAnims;
+        sf::Texture m_skullBlockTexture;
+        sf::Texture m_flamesUpTexture;
+        sf::Texture m_flamesDownTexture;
+        sf::Texture m_flamesLeftTexture;
+        sf::Texture m_flamesRightTexture;
+        std::vector<sf::Sprite> m_skullBlockSprites;
+        std::vector<FlamesAnim> m_anims;
     };
 
 } // namespace platformer
 
-#endif // ACID_SPOUT_ANIM_LAYER_HPP_INCLUDED
+#endif // ANIM_LAYER_FLAMING_SKULL_HPP_INCLUDED

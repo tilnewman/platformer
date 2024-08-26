@@ -1,7 +1,7 @@
-#ifndef LIGHTNING_ANIM_LAYER_HPP_INCLUDED
-#define LIGHTNING_ANIM_LAYER_HPP_INCLUDED
+#ifndef ANIM_LAYER_LIGHTNING_HPP_INCLUDED
+#define ANIM_LAYER_LIGHTNING_HPP_INCLUDED
 //
-// lightning-anim-layer.hpp
+// anim-layer-lightning.hpp
 //
 #include "harm-collision-manager.hpp"
 #include "tile-layer.hpp"
@@ -77,4 +77,4 @@ namespace platformer
 
 } // namespace platformer
 
-#endif // LIGHTNING_ANIM_LAYER_HPP_INCLUDED
+#endif // ANIM_LAYER_LIGHTNING_HPP_INCLUDED

@@ -1,7 +1,7 @@
-#ifndef GHOST_BOTTLE_ANIM_LAYER_HPP_INCLUDED
-#define GHOST_BOTTLE_ANIM_LAYER_HPP_INCLUDED
+#ifndef ANIM_LAYER_ACID_SPOUT_HPP_INCLUDED
+#define ANIM_LAYER_ACID_SPOUT_HPP_INCLUDED
 //
-// ghost-bottle-anim-layer.hpp
+// anim-layer-acid-spout.hpp
 //
 #include "harm-collision-manager.hpp"
 #include "tile-layer.hpp"
@@ -25,25 +25,47 @@ namespace platformer
 
     //
 
-    struct GhostBottleAnim
+    struct AcidSplashAnim
     {
-        bool has_emerged{ false };
+        bool is_alive{ true };
         float elapsed_time_sec{ 0.0f };
-        float time_between_frames_sec{ 0.175f };
+        float time_between_frames_sec{ 0.1f };
         std::size_t frame_index{ 0 };
         sf::Sprite sprite{};
-        sf::FloatRect coll_rect{};
     };
 
     //
 
-    class GhostBottleAnimationLayer
+    struct AcidDropAnim
+    {
+        bool is_alive{ true };
+        float velocity{ 0.0f };
+        sf::Sprite sprite{};
+        sf::FloatRect region{};
+    };
+
+    //
+
+    struct AcidSpoutAnim
+    {
+        bool is_dripping{ false };
+        float elapsed_time_sec{ 0.0f };
+        float time_between_drips{ 0.0f };
+        float time_between_frames_sec{ 0.15f };
+        std::size_t frame_index{ 0 };
+        sf::Sprite sprite{};
+        sf::FloatRect region{};
+    };
+
+    //
+
+    class AcidSpoutAnimationLayer
         : public ITileLayer
         , public IHarmCollisionOwner
     {
       public:
-        GhostBottleAnimationLayer(Context & t_context, const std::vector<sf::FloatRect> & t_rects);
-        virtual ~GhostBottleAnimationLayer() override;
+        AcidSpoutAnimationLayer(Context & t_context, const std::vector<sf::FloatRect> & t_rects);
+        virtual ~AcidSpoutAnimationLayer() override;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const final;
@@ -69,14 +91,23 @@ namespace platformer
         void updateDrops(const float t_frameTimeSec);
         void updateSplashes(const float t_frameTimeSec);
 
-        [[nodiscard]] std::size_t frameCount() const;
-        [[nodiscard]] sf::IntRect textureRect(const std::size_t t_frame) const;
+        [[nodiscard]] std::size_t frameCount(const sf::Texture & t_texture) const;
+
+        [[nodiscard]] sf::IntRect
+            textureRect(const sf::Texture & t_texture, const std::size_t t_frame) const;
+
+        [[nodiscard]] Harm makeHarm(const sf::FloatRect & t_rect) const noexcept;
 
       private:
-        sf::Texture m_texture;
-        std::vector<GhostBottleAnim> m_anims;
+        float m_scale;
+        sf::Texture m_spoutTexture;
+        sf::Texture m_dropTexture;
+        sf::Texture m_splashTexture;
+        std::vector<AcidSpoutAnim> m_spoutAnims;
+        std::vector<AcidDropAnim> m_dropAnims;
+        std::vector<AcidSplashAnim> m_splashAnims;
     };
 
 } // namespace platformer
 
-#endif // GHOST_BOTTLE_ANIM_LAYER_HPP_INCLUDED
+#endif // ANIM_LAYER_ACID_SPOUT_HPP_INCLUDED
