@@ -3,39 +3,34 @@
 //
 // filesystem-util.hpp
 //
+#include <filesystem>
 #include <string>
 #include <vector>
-#include <filesystem>
 
 namespace util
 {
 
-    inline std::vector<std::filesystem::path> findFilesInDirectory(
-        const std::filesystem::path & dirPath, const std::string & extension)
+    inline std::vector<std::filesystem::path>
+        findFilesInDirectory(const std::filesystem::path & t_dirPath, const std::string & t_extension)
     {
         std::vector<std::filesystem::path> files;
-        
-        if (!std::filesystem::exists(dirPath) || !std::filesystem::is_directory(dirPath))
+
+        if (!std::filesystem::exists(t_dirPath) || !std::filesystem::is_directory(t_dirPath))
         {
             return files;
         }
 
-        files.reserve(256); // just a guess
+        files.reserve(64); // based on how many files I know are out there on disc
 
-        for (const auto & entry : std::filesystem::directory_iterator{ dirPath })
+        for (const auto & entry : std::filesystem::directory_iterator{ t_dirPath })
         {
-            if (entry.is_regular_file() && (entry.path().extension() == extension))
+            if (entry.is_regular_file() && (entry.path().extension() == t_extension))
             {
                 files.push_back(entry.path());
             }
         }
 
-        if (!files.empty())
-        {
-            std::sort(std::begin(files), std::end(files), [](const auto & lhs, const auto & rhs) {
-                return (lhs.filename().string() < rhs.filename().string());
-            });
-        }
+        std::ranges::sort(files);
 
         return files;
     }
