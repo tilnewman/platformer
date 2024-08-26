@@ -35,10 +35,10 @@ namespace platformer
         Count
     };
 
-    inline constexpr std::string_view toFilename(const Pickup pickup)
+    [[nodiscard]] inline constexpr std::string_view toFilename(const Pickup t_pickup) noexcept
     {
         // clang-format off
-        switch (pickup)
+        switch (t_pickup)
         {
             case Pickup::Arrow:     { return "arrow.png";    }
             case Pickup::Bottle:    { return "bottle.png";   }
@@ -57,10 +57,10 @@ namespace platformer
         // clang-format on
     }
 
-    inline Pickup stringToPickup(const std::string & name)
+    [[nodiscard]] inline constexpr Pickup stringToPickup(const std::string & name) noexcept
     {
         // clang-format off
-        if (name == "arrow")         return Pickup::Arrow;
+        if      (name == "arrow")    return Pickup::Arrow;
         else if (name == "bottle")   return Pickup::Bottle;
         else if (name == "coin1")    return Pickup::Coin1;
         else if (name == "coin2")    return Pickup::Coin2;
@@ -70,8 +70,7 @@ namespace platformer
         else if (name == "crystal4") return Pickup::Crystal4;
         else if (name == "heart")    return Pickup::Heart;
         else if (name == "plus")     return Pickup::Plus;
-        else if (name == "star")     return Pickup::Star;
-        else                         return Pickup::Count;
+        else                         return Pickup::Star;
         // clang-format on
     }
 
@@ -100,17 +99,23 @@ namespace platformer
       public:
         PickupAnimations();
 
-        void setup(const Settings & settings);
-        void add(const Context & context, const sf::FloatRect & rect, const std::string & name);
-        void update(Context & context, const float frameTimeSec);
-        void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const;
+        void setup(const Settings & t_settings);
+
+        void add(
+            const Context & t_context, const sf::FloatRect & t_rect, const std::string & t_name);
+
+        void update(Context & t_context, const float t_frameTimeSec);
+
+        void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
+            const;
+
         void move(const float amount);
-        inline void clear() { m_anims.clear(); }
-        void processCollisionWithAvatar(Context & context, const sf::FloatRect & avatarRect);
+        inline void clear() noexcept { m_anims.clear(); }
+        void processCollisionWithAvatar(Context & t_context, const sf::FloatRect & t_avatarRect);
 
       private:
-        std::size_t frameCount(const Pickup which) const;
-        const sf::IntRect textureRect(const Pickup which, const std::size_t frame) const;
+        [[nodiscard]] std::size_t frameCount(const Pickup which) const;
+        [[nodiscard]] sf::IntRect textureRect(const Pickup which, const std::size_t frame) const;
 
       private:
         std::vector<sf::Texture> m_textures;

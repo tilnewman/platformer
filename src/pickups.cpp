@@ -18,23 +18,24 @@ namespace platformer
 {
 
     PickupAnimations::PickupAnimations()
-        : m_textures()
-        , m_anims()
-        , m_flareAnims()
-        , m_elapsedTimeSec(0.0f)
-        , m_timePerFrameSec(0.0f)
-        , m_scale(0.0f, 0.0f)
+        : m_textures{}
+        , m_anims{}
+        , m_flareAnims{}
+        , m_elapsedTimeSec{ 0.0f }
+        , m_timePerFrameSec{ 0.0f }
+        , m_scale{}
     {
-        m_anims.reserve(256);
-        m_flareAnims.reserve(8);
+        // these are just harmless guesses about what is in the average map
+        m_anims.reserve(64);
+        m_flareAnims.reserve(16);
     }
 
-    void PickupAnimations::setup(const Settings & settings)
+    void PickupAnimations::setup(const Settings & t_settings)
     {
-        m_scale.x = settings.tile_scale;
-        m_scale.y = settings.tile_scale;
+        m_scale.x = t_settings.tile_scale;
+        m_scale.y = t_settings.tile_scale;
 
-        m_timePerFrameSec = settings.pickups_time_per_frame;
+        m_timePerFrameSec = t_settings.pickups_time_per_frame;
 
         m_textures.reserve(static_cast<std::size_t>(Pickup::Count));
 
@@ -45,7 +46,7 @@ namespace platformer
             sf::Texture & texture{ m_textures.emplace_back() };
 
             texture.loadFromFile(
-                (settings.media_path / "image/pickup-anim" / toFilename(pickup)).string());
+                (t_settings.media_path / "image/pickup-anim" / toFilename(pickup)).string());
 
             TextureStats::instance().process(texture);
 
@@ -89,23 +90,22 @@ namespace platformer
         }
     }
 
-    const sf::IntRect
-        PickupAnimations::textureRect(const Pickup which, const std::size_t frame) const
+    sf::IntRect PickupAnimations::textureRect(const Pickup t_which, const std::size_t t_frame) const
     {
-        const sf::Texture & texture{ m_textures.at(static_cast<std::size_t>(which)) };
+        const sf::Texture & texture{ m_textures.at(static_cast<std::size_t>(t_which)) };
 
         sf::IntRect rect;
         rect.width  = static_cast<int>(texture.getSize().y);
         rect.height = rect.width;
         rect.top    = 0;
-        rect.left   = (static_cast<int>(frame) * rect.width);
+        rect.left   = (static_cast<int>(t_frame) * rect.width);
 
         return rect;
     }
 
-    void PickupAnimations::update(Context &, const float frameTimeSec)
+    void PickupAnimations::update(Context &, const float t_frameTimeSec)
     {
-        m_elapsedTimeSec += frameTimeSec;
+        m_elapsedTimeSec += t_frameTimeSec;
         if (m_elapsedTimeSec > m_timePerFrameSec)
         {
             m_elapsedTimeSec -= m_timePerFrameSec;
@@ -148,50 +148,50 @@ namespace platformer
     }
 
     void PickupAnimations::draw(
-        const Context & context, sf::RenderTarget & target, sf::RenderStates states) const
+        const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
         for (const PickupAnim & anim : m_anims)
         {
-            if (context.layout.wholeRect().intersects(anim.sprite.getGlobalBounds()))
+            if (t_context.layout.wholeRect().intersects(anim.sprite.getGlobalBounds()))
             {
-                target.draw(anim.sprite, states);
+                t_target.draw(anim.sprite, t_states);
             }
         }
 
         for (const PickupFlareAnim & anim : m_flareAnims)
         {
-            if (context.layout.wholeRect().intersects(anim.sprite.getGlobalBounds()))
+            if (t_context.layout.wholeRect().intersects(anim.sprite.getGlobalBounds()))
             {
-                target.draw(anim.sprite, states);
+                t_target.draw(anim.sprite, t_states);
             }
         }
     }
 
-    void PickupAnimations::move(const float amount)
+    void PickupAnimations::move(const float t_amount)
     {
         for (PickupAnim & anim : m_anims)
         {
-            anim.sprite.move(amount, 0.0f);
+            anim.sprite.move(t_amount, 0.0f);
         }
 
         for (PickupFlareAnim & anim : m_flareAnims)
         {
-            anim.sprite.move(amount, 0.0f);
+            anim.sprite.move(t_amount, 0.0f);
         }
     }
 
     void PickupAnimations::processCollisionWithAvatar(
-        Context & context, const sf::FloatRect & avatarRect)
+        Context & t_context, const sf::FloatRect & t_avatarRect)
     {
         bool wereAnyPickedUp{ false };
         for (PickupAnim & anim : m_anims)
         {
-            if (!avatarRect.intersects(anim.sprite.getGlobalBounds()))
+            if (!t_avatarRect.intersects(anim.sprite.getGlobalBounds()))
             {
                 continue;
             }
 
-            context.sfx.play("pickup");
+            t_context.sfx.play("pickup");
 
             wereAnyPickedUp = true;
             anim.is_alive   = false;
