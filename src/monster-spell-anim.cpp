@@ -20,12 +20,13 @@ namespace platformer
 {
 
     MonsterSpellTextureManager::MonsterSpellTextureManager()
-        : m_textureSets()
+        : m_textureSets{}
     {
+        // one time size to avoid any reallocations
         m_textureSets.resize(static_cast<std::size_t>(MonsterSpell::Count));
     }
 
-    void MonsterSpellTextureManager::setup(const Settings & settings)
+    void MonsterSpellTextureManager::setup(const Settings & t_settings)
     {
         for (std::size_t spellIndex{ 0 };
              spellIndex < static_cast<std::size_t>(MonsterSpell::Count);
@@ -42,7 +43,7 @@ namespace platformer
             const MonsterSpell spell{ static_cast<MonsterSpell>(spellIndex) };
 
             const std::filesystem::path imageDirPath{
-                settings.media_path /
+                t_settings.media_path /
                 std::string("image/monster-spell-anim/").append(toString(spell))
             };
 
@@ -68,15 +69,15 @@ namespace platformer
     }
 
     void MonsterSpellTextureManager::set(
-        sf::Sprite & sprite, const MonsterSpell spell, const std::size_t frame) const
+        sf::Sprite & t_sprite, const MonsterSpell t_spell, const std::size_t t_frame) const
     {
         const std::vector<sf::Texture> & textures{
-            m_textureSets.at(static_cast<std::size_t>(spell)).textures
+            m_textureSets.at(static_cast<std::size_t>(t_spell)).textures
         };
 
-        if (frame < textures.size())
+        if (t_frame < textures.size())
         {
-            sprite.setTexture(textures.at(frame));
+            t_sprite.setTexture(textures.at(t_frame));
         }
     }
 
@@ -85,8 +86,8 @@ namespace platformer
     MonsterSpellTextureManager MonsterSpellAnimations::m_textureManager;
 
     MonsterSpellAnimations::MonsterSpellAnimations()
-        : m_anims()
-        , m_timePerFrameSec(0.1f)
+        : m_anims{}
+        , m_timePerFrameSec{ 0.1f }
     {}
 
     void MonsterSpellAnimations::setup(const Settings & settings)
@@ -95,28 +96,28 @@ namespace platformer
     }
 
     void MonsterSpellAnimations::add(
-        const sf::Vector2f & pos, const MonsterSpell spell, const bool isFacingRight)
+        const sf::Vector2f & t_pos, const MonsterSpell t_spell, const bool t_isFacingRight)
     {
         MonsterSpellAnim & anim{ m_anims.emplace_back() };
-        anim.is_moving_right = isFacingRight;
-        anim.spell           = spell;
-        m_textureManager.set(anim.sprite, spell, 0);
+        anim.is_moving_right = t_isFacingRight;
+        anim.spell           = t_spell;
+        m_textureManager.set(anim.sprite, t_spell, 0);
         util::setOriginToCenter(anim.sprite);
-        anim.sprite.setPosition(pos);
+        anim.sprite.setPosition(t_pos);
 
-        if (!isFacingRight)
+        if (!t_isFacingRight)
         {
             anim.sprite.scale(-1.0f, 1.0f);
         }
     }
 
-    void MonsterSpellAnimations::update(const float frameTimeSec)
+    void MonsterSpellAnimations::update(const float t_frameTimeSec)
     {
         bool didAnyFinish{ false };
 
         for (MonsterSpellAnim & anim : m_anims)
         {
-            anim.elapsed_time_sec += frameTimeSec;
+            anim.elapsed_time_sec += t_frameTimeSec;
             if (anim.elapsed_time_sec > m_timePerFrameSec)
             {
                 anim.elapsed_time_sec -= m_timePerFrameSec;
@@ -140,19 +141,19 @@ namespace platformer
         }
     }
 
-    void MonsterSpellAnimations::draw(sf::RenderTarget & target, sf::RenderStates states) const
+    void MonsterSpellAnimations::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
         for (const MonsterSpellAnim & anim : m_anims)
         {
-            target.draw(anim.sprite, states);
+            t_target.draw(anim.sprite, t_states);
         }
     }
 
-    void MonsterSpellAnimations::move(const float amount)
+    void MonsterSpellAnimations::move(const float t_amount)
     {
         for (MonsterSpellAnim & anim : m_anims)
         {
-            anim.sprite.move(amount, 0.0f);
+            anim.sprite.move(t_amount, 0.0f);
         }
     }
 

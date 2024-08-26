@@ -29,10 +29,10 @@ namespace platformer
         Count
     };
 
-    inline constexpr std::string_view toString(const MonsterSpell spell)
+    inline constexpr std::string_view toString(const MonsterSpell t_spell)
     {
         // clang-format off
-        switch (spell)
+        switch (t_spell)
         {
             case MonsterSpell::BossBlade:       { return "boss-blade";      }
             case MonsterSpell::BossFire:        { return "boss-fire";       }
@@ -58,10 +58,12 @@ namespace platformer
       public:
         MonsterSpellTextureManager();
 
-        void setup(const Settings & settings);
-        void set(sf::Sprite & sprite, const MonsterSpell spell, const std::size_t frame) const;
+        void setup(const Settings & t_settings);
 
-        inline std::size_t getFrameCount(const MonsterSpell spell) const
+        void
+            set(sf::Sprite & t_sprite, const MonsterSpell t_spell, const std::size_t t_frame) const;
+
+        [[nodiscard]] inline std::size_t getFrameCount(const MonsterSpell spell) const
         {
             return m_textureSets.at(static_cast<std::size_t>(spell)).textures.size();
         }
