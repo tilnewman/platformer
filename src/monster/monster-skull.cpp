@@ -5,23 +5,15 @@
 //
 #include "monster/monster-skull.hpp"
 
-#include "avatar/avatar.hpp"
 #include "subsystem/context.hpp"
-#include "subsystem/screen-layout.hpp"
-#include "bramblefore/settings.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
-
-#include <filesystem>
-
-#include <SFML/Graphics/RenderStates.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
 
 namespace platformer
 {
 
-    Skull::Skull(Context & context, const sf::FloatRect & region)
-        : Monster(context, { MonsterType::Skull, region, 0.85f })
+    Skull::Skull(Context & t_context, const sf::FloatRect & t_region)
+        : Monster{ t_context, { MonsterType::Skull, t_region, 0.85f } }
     {}
 
     const sf::FloatRect Skull::collisionRect() const
@@ -64,7 +56,7 @@ namespace platformer
 
         if ((MonsterAnim::Attack == m_anim) && avatarRect.intersects(attackCollisionRect()))
         {
-            harm.damage = 25;
+            harm.damage = attackDamage(m_type);
             harm.rect   = collisionRect();
             harm.sfx    = "hit-wood";
         }

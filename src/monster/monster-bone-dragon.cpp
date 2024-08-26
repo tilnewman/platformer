@@ -5,23 +5,15 @@
 //
 #include "monster/monster-bone-dragon.hpp"
 
-#include "avatar/avatar.hpp"
 #include "subsystem/context.hpp"
-#include "subsystem/screen-layout.hpp"
-#include "bramblefore/settings.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
-
-#include <filesystem>
-
-#include <SFML/Graphics/RenderStates.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
 
 namespace platformer
 {
 
-    BoneDragon::BoneDragon(Context & context, const sf::FloatRect & region)
-        : Monster(context, { MonsterType::BoneDragon, region, 0.87f })
+    BoneDragon::BoneDragon(Context & t_context, const sf::FloatRect & t_region)
+        : Monster{ t_context, { MonsterType::BoneDragon, t_region, 0.87f } }
     {}
 
     const sf::FloatRect BoneDragon::collisionRect() const
@@ -64,7 +56,7 @@ namespace platformer
 
         if ((MonsterAnim::Attack == m_anim) && avatarRect.intersects(attackCollisionRect()))
         {
-            harm.damage = 25;
+            harm.damage = attackDamage(m_type);
             harm.rect   = collisionRect();
             harm.sfx    = "hit-wood";
         }

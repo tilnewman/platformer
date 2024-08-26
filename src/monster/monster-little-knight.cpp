@@ -5,23 +5,15 @@
 //
 #include "monster/monster-little-knight.hpp"
 
-#include "avatar/avatar.hpp"
 #include "subsystem/context.hpp"
-#include "subsystem/screen-layout.hpp"
-#include "bramblefore/settings.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
-
-#include <filesystem>
-
-#include <SFML/Graphics/RenderStates.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
 
 namespace platformer
 {
 
-    LittleKnight::LittleKnight(Context & context, const sf::FloatRect & region)
-        : Monster(context, { MonsterType::LittleKnight, region, 0.85f })
+    LittleKnight::LittleKnight(Context & t_context, const sf::FloatRect & t_region)
+        : Monster{ t_context, { MonsterType::LittleKnight, t_region, 0.85f } }
     {}
 
     const sf::FloatRect LittleKnight::collisionRect() const
@@ -65,7 +57,7 @@ namespace platformer
 
         if ((MonsterAnim::Attack == m_anim) && avatarRect.intersects(attackCollisionRect()))
         {
-            harm.damage = 25;
+            harm.damage = attackDamage(m_type);
             harm.rect   = collisionRect();
             harm.sfx    = "hit-wood";
         }

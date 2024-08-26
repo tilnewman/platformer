@@ -5,23 +5,15 @@
 //
 #include "monster/monster-medusa.hpp"
 
-#include "avatar/avatar.hpp"
 #include "subsystem/context.hpp"
-#include "subsystem/screen-layout.hpp"
-#include "bramblefore/settings.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
-
-#include <filesystem>
-
-#include <SFML/Graphics/RenderStates.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
 
 namespace platformer
 {
 
-    Medusa::Medusa(Context & context, const sf::FloatRect & region)
-        : Monster(context, { MonsterType::Medusa, region, 0.75f, 1.1f})
+    Medusa::Medusa(Context & t_context, const sf::FloatRect & t_region)
+        : Monster{ t_context, { MonsterType::Medusa, t_region, 0.75f, 1.1f } }
     {}
 
     const sf::FloatRect Medusa::collisionRect() const
@@ -64,7 +56,7 @@ namespace platformer
 
         if ((MonsterAnim::Attack == m_anim) && avatarRect.intersects(attackCollisionRect()))
         {
-            harm.damage = 25;
+            harm.damage = attackDamage(m_type);
             harm.rect   = collisionRect();
             harm.sfx    = "hit-wood";
         }

@@ -5,23 +5,15 @@
 //
 #include "monster/monster-dwarf.hpp"
 
-#include "avatar/avatar.hpp"
 #include "subsystem/context.hpp"
-#include "subsystem/screen-layout.hpp"
-#include "bramblefore/settings.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
-
-#include <filesystem>
-
-#include <SFML/Graphics/RenderStates.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
 
 namespace platformer
 {
 
-    Dwarf::Dwarf(Context & context, const sf::FloatRect & region)
-        : Monster(context, { MonsterType::Dwarf, region, 0.8f })
+    Dwarf::Dwarf(Context & t_context, const sf::FloatRect & t_region)
+        : Monster{ t_context, { MonsterType::Dwarf, t_region, 0.8f } }
     {}
 
     const sf::FloatRect Dwarf::collisionRect() const
@@ -35,7 +27,7 @@ namespace platformer
             sf::FloatRect rect{ m_sprite.getGlobalBounds() };
             util::scaleRectInPlace(rect, { 0.4f, 0.3f });
             rect.left -= (rect.width * 0.2f);
-            //rect.top += (rect.height * 0.4f);
+            // rect.top += (rect.height * 0.4f);
 
             if (!m_isFacingRight)
             {
@@ -72,7 +64,7 @@ namespace platformer
 
         if ((MonsterAnim::Attack == m_anim) && avatarRect.intersects(attackCollisionRect()))
         {
-            harm.damage = 25;
+            harm.damage = attackDamage(m_type);
             harm.rect   = collisionRect();
             harm.sfx    = "hit-wood";
         }

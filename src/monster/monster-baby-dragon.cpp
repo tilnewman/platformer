@@ -5,15 +5,9 @@
 //
 #include "monster/monster-baby-dragon.hpp"
 
-#include "avatar/avatar.hpp"
-#include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
-#include "subsystem/screen-layout.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
-
-#include <SFML/Graphics/RenderStates.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
 
 namespace platformer
 {
@@ -62,7 +56,7 @@ namespace platformer
 
         if ((MonsterAnim::Attack == m_anim) && t_avatarRect.intersects(attackCollisionRect()))
         {
-            harm.damage = 25;
+            harm.damage = attackDamage(m_type);
             harm.rect   = collisionRect();
             harm.sfx    = "hit-wood";
         }

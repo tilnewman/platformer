@@ -182,6 +182,48 @@ namespace platformer
         // clang-format on
     }
 
+    //TODO need real values here
+    inline constexpr Health_t attackDamage(const MonsterType t_type) noexcept
+    {
+        // clang-format off
+        switch (t_type)
+        {
+            case MonsterType::BabyDragon:    { return 1; }
+            case MonsterType::Bear:          { return 1; }
+            case MonsterType::BigKnight:     { return 1; }
+            case MonsterType::BoneDragon:    { return 1; }
+            case MonsterType::Demon:         { return 1; }
+            case MonsterType::Dino:          { return 16; }
+            case MonsterType::Djinn:         { return 1; }
+            case MonsterType::Dragon:        { return 1; }
+            case MonsterType::Dwarf:         { return 1; }
+            case MonsterType::Ent:           { return 1; }
+            case MonsterType::FireImp:       { return 1; }
+            case MonsterType::FireKnight:    { return 1; }
+            case MonsterType::Ghost:         { return 1; }
+            case MonsterType::Goblin:        { return 8; }
+            case MonsterType::Hound:         { return 1; }
+            case MonsterType::Imp:           { return 1; }
+            case MonsterType::LittleKnight:  { return 1; }
+            case MonsterType::Lizard:        { return 1; }
+            case MonsterType::Medusa:        { return 1; }
+            case MonsterType::Orc:           { return 1; }
+            case MonsterType::Salamander:    { return 1; }
+            case MonsterType::Skeleton:      { return 1; }
+            case MonsterType::Skull:         { return 1; }
+            case MonsterType::Snake:         { return 16; }
+            case MonsterType::Spider:        { return 16; }
+            case MonsterType::Vampire:       { return 1; }
+            case MonsterType::Yeti:          { return 1; }
+            case MonsterType::BossTribal:    { return 1; }
+            case MonsterType::BossKnight:    { return 1; }
+            case MonsterType::BossWizard:    { return 1; }
+            case MonsterType::Count: //intentional fallthrough      
+            default:                         { return 0;  }
+        }
+        // clang-format on
+    }
+
     //
 
     enum class MonsterAnim : std::size_t

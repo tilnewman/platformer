@@ -5,23 +5,15 @@
 //
 #include "monster/monster-goblin.hpp"
 
-#include "avatar/avatar.hpp"
 #include "subsystem/context.hpp"
-#include "subsystem/screen-layout.hpp"
-#include "bramblefore/settings.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
-
-#include <filesystem>
-
-#include <SFML/Graphics/RenderStates.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
 
 namespace platformer
 {
 
-    Goblin::Goblin(Context & context, const sf::FloatRect & region)
-        : Monster(context, { MonsterType::Goblin, region, 0.8f })
+    Goblin::Goblin(Context & t_context, const sf::FloatRect & t_region)
+        : Monster{ t_context, { MonsterType::Goblin, t_region, 0.8f } }
     {}
 
     const sf::FloatRect Goblin::collisionRect() const
@@ -64,7 +56,7 @@ namespace platformer
 
         if ((MonsterAnim::Attack == m_anim) && avatarRect.intersects(attackCollisionRect()))
         {
-            harm.damage = 8;
+            harm.damage = attackDamage(m_type);
             harm.rect   = collisionRect();
             harm.sfx    = "hit-wood";
         }

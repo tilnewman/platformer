@@ -5,23 +5,15 @@
 //
 #include "monster/monster-vampire.hpp"
 
-#include "avatar/avatar.hpp"
 #include "subsystem/context.hpp"
-#include "subsystem/screen-layout.hpp"
-#include "bramblefore/settings.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
-
-#include <filesystem>
-
-#include <SFML/Graphics/RenderStates.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
 
 namespace platformer
 {
 
-    Vampire::Vampire(Context & context, const sf::FloatRect & region)
-        : Monster(context, { MonsterType::Vampire, region, 0.7f })
+    Vampire::Vampire(Context & t_context, const sf::FloatRect & t_region)
+        : Monster{ t_context, { MonsterType::Vampire, t_region, 0.7f } }
     {}
 
     const sf::FloatRect Vampire::collisionRect() const
@@ -74,7 +66,7 @@ namespace platformer
 
         if ((MonsterAnim::Attack == m_anim) && avatarRect.intersects(attackCollisionRect()))
         {
-            harm.damage = 25;
+            harm.damage = attackDamage(m_type);
             harm.rect   = collisionRect();
             harm.sfx    = "hit-wood";
         }
