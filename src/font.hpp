@@ -37,10 +37,10 @@ namespace platformer
     struct TextDetails
     {
         TextDetails()
-            : font(Font::Default)
-            , size(FontSize::Medium)
-            , color(sf::Color::White)
-            , style(sf::Text::Regular)
+            : font{ Font::Default }
+            , size{ FontSize::Medium }
+            , color{ sf::Color::White }
+            , style{ sf::Text::Regular }
         {}
 
         TextDetails(
@@ -48,10 +48,10 @@ namespace platformer
             const FontSize sze,
             const sf::Color & col     = sf::Color::White,
             const sf::Text::Style sty = sf::Text::Regular)
-            : font(fnt)
-            , size(sze)
-            , color(col)
-            , style(sty)
+            : font{ fnt }
+            , size{ sze }
+            , color{ col }
+            , style{ sty }
         {}
 
         Font font;
@@ -75,23 +75,31 @@ namespace platformer
       public:
         FontManager();
 
-        void setup(const Settings & settings);
+        void setup(const Settings & t_settings);
 
-        const sf::Font & get(const Font font = Font::Default) const;
+        [[nodiscard]] inline const sf::Font & get(const Font = Font::Default) const noexcept
+        {
+            return m_defaultFont;
+        }
 
-        sf::Text makeText(
-            const Font font,
-            const FontSize size,
-            const std::string & text,
-            const sf::Color & color     = sf::Color::White,
-            const sf::Text::Style style = sf::Text::Regular) const;
+        [[nodiscard]] sf::Text makeText(
+            const Font t_font,
+            const FontSize t_size,
+            const std::string & t_text,
+            const sf::Color & t_color     = sf::Color::White,
+            const sf::Text::Style t_style = sf::Text::Regular) const;
 
-        sf::Text makeText(const std::string & text, const TextDetails & details) const;
+        [[nodiscard]] inline sf::Text
+            makeText(const std::string & t_text, const TextDetails & t_details) const
+        {
+            return makeText(
+                t_details.font, t_details.size, t_text, t_details.color, t_details.style);
+        }
 
-        FontExtent extent(const FontSize size) const;
+        [[nodiscard]] FontExtent extent(const FontSize t_size) const noexcept;
 
       private:
-        void setupFontExtents(const Settings & settings);
+        void setupFontExtents(const Settings & t_settings);
 
       private:
         sf::Font m_defaultFont;

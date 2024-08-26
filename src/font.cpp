@@ -14,72 +14,60 @@ namespace platformer
 {
 
     FontManager::FontManager()
-        : m_defaultFont()
-        , m_fontExtentHuge()
-        , m_fontExtentLarge()
-        , m_fontExtentMedium()
-        , m_fontExtentSmall()
+        : m_defaultFont{}
+        , m_fontExtentHuge{}
+        , m_fontExtentLarge{}
+        , m_fontExtentMedium{}
+        , m_fontExtentSmall{}
     {}
 
-    void FontManager::setup(const Settings & settings)
+    void FontManager::setup(const Settings & t_settings)
     {
-        m_defaultFont.loadFromFile((settings.media_path / "font/mops-antiqua.ttf").string());
-        setupFontExtents(settings);
+        m_defaultFont.loadFromFile((t_settings.media_path / "font/mops-antiqua.ttf").string());
+        setupFontExtents(t_settings);
     }
 
-    const sf::Font & FontManager::get(const Font) const { return m_defaultFont; }
-
     sf::Text FontManager::makeText(
-        const Font font,
-        const FontSize size,
-        const std::string & string,
-        const sf::Color & color,
-        const sf::Text::Style style) const
+        const Font t_font,
+        const FontSize t_size,
+        const std::string & t_string,
+        const sf::Color & t_color,
+        const sf::Text::Style t_style) const
     {
-        sf::Text text(string, get(font), extent(size).char_size);
-        text.setFillColor(color);
-        text.setStyle(style);
+        sf::Text text(t_string, get(t_font), extent(t_size).char_size);
+        text.setFillColor(t_color);
+        text.setStyle(t_style);
         util::setOriginToPosition(text);
         return text;
     }
 
-    sf::Text FontManager::makeText(const std::string & text, const TextDetails & details) const
+    FontExtent FontManager::extent(const FontSize t_size) const noexcept
     {
-        return makeText(details.font, details.size, text, details.color, details.style);
-    }
-
-    FontExtent FontManager::extent(const FontSize size) const
-    {
-        if (size == FontSize::Small)
-        {
-            return m_fontExtentSmall;
-        }
-        else if (size == FontSize::Medium)
-        {
-            return m_fontExtentMedium;
-        }
-        else if (size == FontSize::Large)
-        {
-            return m_fontExtentLarge;
-        }
-        else if (size == FontSize::Huge)
+        if (FontSize::Huge == t_size)
         {
             return m_fontExtentHuge;
         }
+        else if (FontSize::Large == t_size)
+        {
+            return m_fontExtentLarge;
+        }
+        else if (FontSize::Medium == t_size)
+        {
+            return m_fontExtentMedium;
+        }
         else
         {
-            std::cout << "Error:  FontManager::extent() given an unknown FontSize. Using Medium.\n";
-            return m_fontExtentMedium;
+            return m_fontExtentSmall;
         }
     }
 
-    void FontManager::setupFontExtents(const Settings & settings)
+    void FontManager::setupFontExtents(const Settings & t_settings)
     {
         // all the magic numbers in this function are based on trial and error
         const float standardRes = std::sqrt(3840.f * 2400.0f);
 
-        const float currentRes =
-            std::sqrt(static_cast<float>(settings.video_mode.width * settings.video_mode.height));
+        const float currentRes = std::sqrt(
+            static_cast<float>(t_settings.video_mode.width * t_settings.video_mode.height));
 
         const float ratioRes = (currentRes / standardRes);
 
