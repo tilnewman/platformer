@@ -32,25 +32,24 @@ namespace platformer
 
         m_sprite.setTexture(m_texture);
 
-        sf::FloatRect rect{ t_context.layout.wholeRect() };
-        util::scaleRectInPlace(rect, 0.5f);
-        util::fitAndCenterInside(m_sprite, rect);
+        sf::FloatRect wholeScreenRect{ t_context.layout.wholeRect() };
+        util::scaleRectInPlace(wholeScreenRect, 0.4f);
+        util::fitAndCenterInside(m_sprite, wholeScreenRect);
 
         m_sprite.setPosition(
-            m_sprite.getPosition().x, (t_context.layout.wholeRect().height * 0.1f));
+            m_sprite.getPosition().x, (t_context.layout.wholeRect().height * 0.15f));
 
         m_text = t_context.font.makeText(
             Font::Default, FontSize::Huge, "Bramblefore", sf::Color(220, 220, 220));
 
         util::centerInside(m_text, t_context.layout.wholeRect());
-
-        m_text.move(0.0f, m_text.getGlobalBounds().height);
+        m_text.setPosition(m_text.getPosition().x, util::bottom(m_sprite));
     }
 
     void SplashState::update(Context & t_context, const float t_frameTimeSec)
     {
         m_elpasedTimeSec += t_frameTimeSec;
-        if (m_elpasedTimeSec > 3.0f)
+        if (m_elpasedTimeSec > 4.0f)
         {
             t_context.state.setChangePending(State::Play);
         }
