@@ -67,20 +67,21 @@ namespace platformer
         Harm avatarCollide(const sf::FloatRect & t_avatarRect) override;
 
       protected:
-        virtual bool animate(); // returns true if animation is finished
-        [[nodiscard]] virtual float timePerFrameSec(const MonsterAnim anim) const noexcept;
-        virtual void changeStateBeforeSeeingPlayer(Context & context);
-        virtual void changeStateAfterSeeingPlayer(Context & context);
-        virtual void handleWalking(Context & context, const float frameTimeSec);
+        bool animate(); // returns true if animation is finished
+        [[nodiscard]] float timePerFrameSec(const MonsterAnim t_anim) const noexcept;
+        void handleWalking(Context & context, const float t_frameTimeSec);
+
+        virtual void changeStateBeforeSeeingPlayer(Context & t_context);
+        virtual void changeStateAfterSeeingPlayer(Context & t_context);
         virtual void turnAround();
         virtual void startAttackAnimation(Context &) {}
 
         void resetAnimation();
 
         void initialSpriteSetup(
-            Context & context, const float imageHeightOffsetRatio, const float imageScale);
+            Context & t_context, const float t_imageHeightOffsetRatio, const float t_imageScale);
 
-        void turnToFacePlayer(Context & context);
+        void turnToFacePlayer(Context & t_context);
 
       protected:
         MonsterType m_type;
