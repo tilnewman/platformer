@@ -247,7 +247,7 @@ namespace platformer
         m_starBrown1Sprite.scale(1.5f, 1.5f);
 
         m_starBrown1Sprite.setPosition(
-            (m_fullFrameSprite.getPosition().x + 10.0f), util::bottom(m_halfFrameSprite));
+            (m_fullFrameSprite.getPosition().x + 10.0f), (util::bottom(m_halfFrameSprite) + 10.0f));
 
         m_starBrown2Sprite.setTexture(m_starBrownTexture);
         m_starBrown2Sprite.scale(m_starBrown1Sprite.getScale());
@@ -297,8 +297,6 @@ namespace platformer
         m_starYellow5Sprite.scale(m_starBrown1Sprite.getScale());
 
         setStarCount(0);
-        //setHealthBar(0.0f);
-        //setManaBar(0.0f);
     }
 
     void PlayerInfoDisplay::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
