@@ -34,6 +34,19 @@ namespace platformer
 
     void MonsterTextureManager::setup(const Settings &) {}
 
+    void MonsterTextureManager::teardown() 
+    { 
+        for (MonsterTextures & set : m_textureSets)
+        {
+            set.ref_count = 0;
+
+            for (sf::Texture & texture : set.textures)
+            {
+                texture = sf::Texture();
+            }
+        }
+    }
+
     void MonsterTextureManager::acquire(Context & context, const MonsterType type)
     {
         const std::size_t typeIndex{ static_cast<std::size_t>(type) };

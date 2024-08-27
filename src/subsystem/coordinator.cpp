@@ -95,6 +95,8 @@ namespace platformer
 
     void Coordinator::teardown()
     {
+        AvatarTextureManager::instance().teardown();
+        MonsterTextureManager::instance().teardown();
         m_window.close();
         TextureStats::instance().dumpInfo();
     }

@@ -26,6 +26,24 @@ namespace platformer
         return avatarTextureManager;
     }
 
+    void AvatarTextureManager::teardown()
+    {
+        for (AvatarTextureSet & set : m_textureSets)
+        {
+            set.ref_count = 0;
+            set.defalt    = sf::Texture();
+            set.icon      = sf::Texture();
+
+            for (AnimTextures & anim : set.anims)
+            {
+                for (sf::Texture & texture : anim.textures)
+                {
+                    texture = sf::Texture();
+                }
+            }
+        }
+    }
+
     void AvatarTextureManager::setup(const Settings & t_settings)
     {
         // size all vectors so that no re-allocations ever occur

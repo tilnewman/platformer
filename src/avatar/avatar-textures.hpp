@@ -114,6 +114,7 @@ namespace platformer
         static AvatarTextureManager & instance();
 
         void setup(const Settings & t_settings);
+        void teardown();
 
         void acquire(const Context & t_context, const AvatarType t_type);
         void release(const AvatarType t_type);

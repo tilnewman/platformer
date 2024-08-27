@@ -33,6 +33,7 @@ namespace platformer
         static MonsterTextureManager & instance();
 
         void setup(const Settings & settings);
+        void teardown();
 
         void acquire(Context & context, const MonsterType type);
         void release(const MonsterType type);
