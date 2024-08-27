@@ -14,7 +14,6 @@
 namespace platformer
 {
     struct Context;
-    struct Settings;
 
     //
 
