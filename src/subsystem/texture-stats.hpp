@@ -16,11 +16,7 @@ namespace platformer
     class TextureStats
     {
       public:
-        static TextureStats & instance()
-        {
-            static TextureStats signleton;
-            return signleton;
-        }
+        static TextureStats & instance();
 
         void process(const sf::Texture & texture);
         void dumpInfo();

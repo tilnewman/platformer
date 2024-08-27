@@ -18,6 +18,12 @@ namespace platformer
         , m_byteCount{ 0 }
     {}
 
+    TextureStats & TextureStats::instance()
+    {
+        static TextureStats signleton;
+        return signleton;
+    }
+
     void TextureStats::process(const sf::Texture & t_texture)
     {
         ++m_count;

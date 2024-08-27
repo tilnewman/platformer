@@ -69,6 +69,7 @@ namespace platformer
         DefaultTexture::instance().setup();
         AvatarTextureManager::instance().setup(m_settings);
         MonsterTextureManager::instance().setup(m_settings);
+        MapTextureManager::instance().setup();
 
         m_layout.setup(m_window.getSize());
         m_fonts.setup(m_settings);
@@ -96,7 +97,8 @@ namespace platformer
     }
 
     void Coordinator::teardown()
-    {
+    {        
+        MapTextureManager::instance().teardown();
         AvatarTextureManager::instance().teardown();
         MonsterTextureManager::instance().teardown();
         DefaultTexture::instance().teardown();

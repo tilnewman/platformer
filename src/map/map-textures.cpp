@@ -10,21 +10,28 @@
 #include "subsystem/texture-stats.hpp"
 #include "util/sfml-util.hpp"
 
+#include <exception>
+
 namespace platformer
 {
 
     MapTextureManager::MapTextureManager()
         : m_tileTextures{}
-    {
-        // size only this once to prevent any re-allocations
-        m_tileTextures.resize(static_cast<std::size_t>(TileImage::Count));
-    }
+    {}
 
     MapTextureManager & MapTextureManager::instance()
     {
         static MapTextureManager mapTextureManager;
         return mapTextureManager;
     }
+
+    void MapTextureManager::setup()
+    {
+        // size only this once to prevent any re-allocations
+        m_tileTextures.resize(static_cast<std::size_t>(TileImage::Count));
+    }
+
+    void MapTextureManager::teardown() { m_tileTextures.clear(); }
 
     void MapTextureManager::acquire(const Context & t_context, const TileImage t_image)
     {
@@ -76,8 +83,7 @@ namespace platformer
         const std::size_t imageIndex{ static_cast<std::size_t>(t_image) };
         if (imageIndex >= m_tileTextures.size())
         {
-            static TileTexture tileTexture;
-            return tileTexture;
+            throw std::runtime_error("MapTextureManager::get() given out of range TileImage.");
         }
         else
         {

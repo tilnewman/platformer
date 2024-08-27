@@ -34,6 +34,9 @@ namespace platformer
 
         static MapTextureManager & instance();
 
+        void setup();
+        void teardown();
+
         void acquire(const Context & t_context, const TileImage t_image);
         void release(const TileImage t_image);
 
