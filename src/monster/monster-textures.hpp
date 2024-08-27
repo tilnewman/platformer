@@ -7,8 +7,8 @@
 
 #include <vector>
 
-#include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Texture.hpp>
 
 namespace platformer
 {
@@ -44,11 +44,12 @@ namespace platformer
             const std::size_t frame) const;
 
         std::size_t frameCount(const MonsterType type, const MonsterAnim anim) const;
-       
-        private:
+
+      private:
         const sf::Texture & getTexture(const MonsterType type, const MonsterAnim anim) const;
-        sf::IntRect getTextureRect(const MonsterType type, const MonsterAnim anim, const std::size_t frame) const;
-        
+        sf::IntRect getTextureRect(
+            const MonsterType type, const MonsterAnim anim, const std::size_t frame) const;
+
       private:
         std::vector<MonsterTextures> m_textureSets;
     };

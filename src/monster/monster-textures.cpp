@@ -5,10 +5,10 @@
 //
 #include "monster/monster-textures.hpp"
 
-#include "subsystem/context.hpp"
 #include "bramblefore/settings.hpp"
-#include "util/sfml-util.hpp"
+#include "subsystem/context.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/sfml-util.hpp"
 
 #include <filesystem>
 
@@ -36,7 +36,13 @@ namespace platformer
 
     void MonsterTextureManager::acquire(Context & context, const MonsterType type)
     {
-        MonsterTextures & set{ m_textureSets.at(static_cast<std::size_t>(type)) };
+        const std::size_t typeIndex{ static_cast<std::size_t>(type) };
+        if (typeIndex >= m_textureSets.size())
+        {
+            return;
+        }
+
+        MonsterTextures & set{ m_textureSets.at(typeIndex) };
 
         if (0 == set.ref_count)
         {
@@ -62,7 +68,13 @@ namespace platformer
 
     void MonsterTextureManager::release(const MonsterType type)
     {
-        MonsterTextures & set{ m_textureSets.at(static_cast<std::size_t>(type)) };
+        const std::size_t typeIndex{ static_cast<std::size_t>(type) };
+        if (typeIndex >= m_textureSets.size())
+        {
+            return;
+        }
+
+        MonsterTextures & set{ m_textureSets.at(typeIndex) };
 
         if (set.ref_count >= 2)
         {
@@ -107,8 +119,23 @@ namespace platformer
     const sf::Texture &
         MonsterTextureManager::getTexture(const MonsterType type, const MonsterAnim anim) const
     {
-        return m_textureSets.at(static_cast<std::size_t>(type))
-            .textures.at(static_cast<std::size_t>(anim));
+        const std::size_t typeIndex{ static_cast<std::size_t>(type) };
+        if (typeIndex >= m_textureSets.size())
+        {
+            static sf::Texture texture;
+            return texture;
+        }
+
+        const MonsterTextures & set{ m_textureSets.at(typeIndex) };
+
+        const std::size_t animIndex{ static_cast<std::size_t>(anim) };
+        if (animIndex >= set.textures.size())
+        {
+            static sf::Texture texture;
+            return texture;
+        }
+
+        return m_textureSets.at(typeIndex).textures.at(animIndex);
     }
 
     sf::IntRect MonsterTextureManager::getTextureRect(
