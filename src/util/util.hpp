@@ -252,7 +252,7 @@ namespace util
     //
 
     template <typename T, typename U>
-    static constexpr bool isBitSet(const T bits, const U toCheck) noexcept
+    inline constexpr bool isBitSet(const T bits, const U toCheck) noexcept
     {
         static_assert(
             (std::is_unsigned_v<T>) ||
@@ -264,7 +264,7 @@ namespace util
     }
 
     template <typename T, typename U>
-    static constexpr void setBit(T & bits, const U toSet) noexcept
+    inline constexpr void setBit(T & bits, const U toSet) noexcept
     {
         static_assert(
             (std::is_unsigned_v<T>) ||
@@ -276,7 +276,7 @@ namespace util
     }
 
     template <typename T, typename U>
-    static constexpr T setBitCopy(const T & bits, const U toSet) noexcept
+    inline constexpr T setBitCopy(const T & bits, const U toSet) noexcept
     {
         T copy{ bits };
         setBit(copy, toSet);
