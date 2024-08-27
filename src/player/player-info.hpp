@@ -40,7 +40,7 @@ namespace platformer
             case AvatarType::Rogue:         { return "rogue";       }
             case AvatarType::Viking:        { return "viking";      }
             case AvatarType::Witch:         { return "witch";       }
-            case AvatarType::Count:         // intentional fallthrough
+            case AvatarType::Count: [[fallthrough]];
             default:           { return "error_AvatarType_unknown"; }
         }
         // clang-format on
@@ -110,7 +110,7 @@ namespace platformer
             case Spell::TeslaBall:  { return "Lightning Ball";  }
             case Spell::Tornado:    { return "Tornado";         }
             case Spell::Water:      { return "Water Lash";      }
-            case Spell::Count:      //intentional fallthrough
+            case Spell::Count: [[fallthrough]];
             default:            { return "Error_Spell_unknown"; }
         }
         // clang-format on
@@ -137,7 +137,7 @@ namespace platformer
             case Spell::TeslaBall:  { return "tesla-ball";  }
             case Spell::Tornado:    { return "tornado";     }
             case Spell::Water:      { return "water";       }
-            case Spell::Count:      //intentional fallthrough
+            case Spell::Count: [[fallthrough]];
             default:        { return "Error_Spell_unknown"; }
         }
         // clang-format on
@@ -165,7 +165,7 @@ namespace platformer
             case Spell::TeslaBall:  { return 10; }
             case Spell::Tornado:    { return 10; }
             case Spell::Water:      { return 10; }
-            case Spell::Count:      //intentional fallthrough
+            case Spell::Count: [[fallthrough]];
             default:                { return 0;  }
         }
         // clang-format on
@@ -193,7 +193,7 @@ namespace platformer
             case Spell::TeslaBall:  { return 10; }
             case Spell::Tornado:    { return 10; }
             case Spell::Water:      { return 10; }
-            case Spell::Count:      //intentional fallthrough
+            case Spell::Count: [[fallthrough]];
             default:                { return 0;  }
         }
         // clang-format on

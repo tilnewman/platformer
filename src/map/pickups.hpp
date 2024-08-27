@@ -51,7 +51,7 @@ namespace platformer
             case Pickup::Heart:     { return "heart.png";    }
             case Pickup::Plus:      { return "plus.png";     }
             case Pickup::Star:      { return "star.png";     }
-            case Pickup::Count:     //intentional fallthrough
+            case Pickup::Count:     [[fallthrough]];
             default:                { return "Error_Pickup_unknown"; }
         }
         // clang-format on

@@ -94,7 +94,7 @@ namespace platformer
             case MonsterType::BossTribal:    { return "boss-tribal";    }
             case MonsterType::BossKnight:    { return "boss-knight";    }
             case MonsterType::BossWizard:    { return "boss-wizard";    }
-            case MonsterType::Count:            //intentional fallthrough      
+            case MonsterType::Count:         [[fallthrough]];     
             default:              { return "Error_unknown_MonsterType"; }
         }
         // clang-format on
@@ -135,7 +135,7 @@ namespace platformer
             case MonsterType::BossTribal:    { return 200; }
             case MonsterType::BossKnight:    { return 200; }
             case MonsterType::BossWizard:    { return 200; }
-            case MonsterType::Count://intentional fallthrough      
+            case MonsterType::Count:         [[fallthrough]]; 
             default:                         { return 0;   }
         }
         // clang-format on
@@ -176,7 +176,7 @@ namespace platformer
             case MonsterType::BossTribal:    { return 75.0f; }
             case MonsterType::BossKnight:    { return 75.0f; }
             case MonsterType::BossWizard:    { return 75.0f; }
-            case MonsterType::Count: //intentional fallthrough      
+            case MonsterType::Count:         [[fallthrough]];    
             default:                         { return 0.0f;  }
         }
         // clang-format on
@@ -218,7 +218,7 @@ namespace platformer
             case MonsterType::BossTribal:    { return 1; }
             case MonsterType::BossKnight:    { return 1; }
             case MonsterType::BossWizard:    { return 1; }
-            case MonsterType::Count: //intentional fallthrough      
+            case MonsterType::Count:         [[fallthrough]];    
             default:                         { return 0;  }
         }
         // clang-format on
@@ -260,7 +260,7 @@ namespace platformer
             case MonsterType::BossTribal:    { return ""; }
             case MonsterType::BossKnight:    { return ""; }
             case MonsterType::BossWizard:    { return ""; }
-            case MonsterType::Count: //intentional fallthrough      
+            case MonsterType::Count:         [[fallthrough]];
             default:                         { return "";  }
         }
         // clang-format on
@@ -302,7 +302,7 @@ namespace platformer
             case MonsterType::BossTribal:    { return ""; }
             case MonsterType::BossKnight:    { return ""; }
             case MonsterType::BossWizard:    { return ""; }
-            case MonsterType::Count: //intentional fallthrough      
+            case MonsterType::Count:         [[fallthrough]];
             default:                         { return "";  }
         }
         // clang-format on
@@ -344,7 +344,7 @@ namespace platformer
             case MonsterType::BossTribal:    { return ""; }
             case MonsterType::BossKnight:    { return ""; }
             case MonsterType::BossWizard:    { return ""; }
-            case MonsterType::Count: //intentional fallthrough      
+            case MonsterType::Count:         [[fallthrough]];
             default:                         { return "";  }
         }
         // clang-format on
@@ -386,7 +386,7 @@ namespace platformer
             case MonsterType::BossTribal:    { return ""; }
             case MonsterType::BossKnight:    { return ""; }
             case MonsterType::BossWizard:    { return ""; }
-            case MonsterType::Count: //intentional fallthrough      
+            case MonsterType::Count:         [[fallthrough]];
             default:                         { return "";  }
         }
         // clang-format on
@@ -409,12 +409,12 @@ namespace platformer
         // clang-format off
         switch (t_anim)
         {
-            case MonsterAnim::Attack:      { return "attack"; }
-            case MonsterAnim::Death:       { return "death";  }
-            case MonsterAnim::Hurt:        { return "hurt";   }
-            case MonsterAnim::Idle:        { return "idle";   }
-            case MonsterAnim::Walk:        { return "walk";   }
-            case MonsterAnim::Count: // intentional fallthrough
+            case MonsterAnim::Attack: { return "attack"; }
+            case MonsterAnim::Death:  { return "death";  }
+            case MonsterAnim::Hurt:   { return "hurt";   }
+            case MonsterAnim::Idle:   { return "idle";   }
+            case MonsterAnim::Walk:   { return "walk";   }
+            case MonsterAnim::Count:  [[fallthrough]];
             default:  { return "error_MonsterAnin_not_found"; }
         }
         // clang-format on

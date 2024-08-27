@@ -34,12 +34,12 @@ namespace platformer
         // clang-format off
         switch (t_spell)
         {
-            case MonsterSpell::BossBlade:       { return "boss-blade";      }
-            case MonsterSpell::BossFire:        { return "boss-fire";       }
-            case MonsterSpell::BossLightning:   { return "boss-lightning";  }
-            case MonsterSpell::DragonFire:      { return "dragon-fire";     }
-            case MonsterSpell::Count:           //intentional fallthrough
-            default:                 { return "Error_unknown_MonsterSpell"; }
+            case MonsterSpell::BossBlade:     { return "boss-blade";      }
+            case MonsterSpell::BossFire:      { return "boss-fire";       }
+            case MonsterSpell::BossLightning: { return "boss-lightning";  }
+            case MonsterSpell::DragonFire:    { return "dragon-fire";     }
+            case MonsterSpell::Count:         [[fallthrough]];
+            default:               { return "Error_unknown_MonsterSpell"; }
         }
         // clang-format on
     }

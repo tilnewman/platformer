@@ -51,7 +51,7 @@ namespace platformer
             case AvatarAnim::Push:          { return "push";         }
             case AvatarAnim::Run:           { return "run";          }
             case AvatarAnim::Walk:          { return "walk";         }
-            case AvatarAnim::Count:         // intentional fallthrough
+            case AvatarAnim::Count:         [[fallthrough]];
             default:          { return "error_AvatarAnin_not_found"; }
         }
         // clang-format on
@@ -73,7 +73,7 @@ namespace platformer
             case AvatarAnim::Push:          { return 0.2f;  }
             case AvatarAnim::Run:           { return 0.1f;  }
             case AvatarAnim::Walk:          { return 0.1f;  }
-            case AvatarAnim::Count:// intentional fallthrough
+            case AvatarAnim::Count:         [[fallthrough]];
             default:                        { return 0.0f;  }
         }
         // clang-format on

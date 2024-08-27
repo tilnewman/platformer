@@ -38,7 +38,7 @@ namespace platformer
             case TileImage::ForestTrees:     { return "forest-trees";            }
             case TileImage::MountainsGround: { return "mountains-ground";        } 
             case TileImage::MountainsObject: { return "mountains-object";        }
-            case TileImage::Count:           // intentional fallthrough
+            case TileImage::Count:           [[fallthrough]];
             default:                         { return "Error_TileImage_unknown"; }
         }
         // clang-format on

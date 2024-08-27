@@ -61,7 +61,7 @@ namespace platformer
             case Accent::Vine1:             { return "vine1.png";               }
             case Accent::Vine2:             { return "vine2.png";               }
             case Accent::Vine3:             { return "vine3.png";               }
-            case Accent::Count:             //intentional fallthrough
+            case Accent::Count:             [[fallthrough]];
             default:                        { return "Error_Accent_unknown";    }
         }
         // clang-format on
