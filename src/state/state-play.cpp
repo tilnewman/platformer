@@ -91,6 +91,6 @@ namespace platformer
         t_context.level.load(t_context);
     }
 
-    void PlayState::onExit(Context &) {}
+    void PlayState::onExit(Context & t_context) { t_context.level.reset(); }
 
 } // namespace platformer

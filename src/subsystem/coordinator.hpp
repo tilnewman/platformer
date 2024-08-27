@@ -61,7 +61,7 @@ namespace platformer
         util::SoundPlayer m_sfx;
         StateManager m_states;
         FontManager m_fonts;
-        Avatar m_avatar;
+        std::unique_ptr<Avatar> m_avatarUPtr;
         ScreenLayout m_layout;
         LevelFileLoader m_levelLoader;
         Level m_level;

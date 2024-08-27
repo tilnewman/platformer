@@ -28,7 +28,7 @@ namespace platformer
         , m_sfx{ m_random }
         , m_states{}
         , m_fonts{}
-        , m_avatar{}
+        , m_avatarUPtr{ std::make_unique<Avatar>() }
         , m_layout{}
         , m_levelLoader{}
         , m_level{}
@@ -40,12 +40,12 @@ namespace platformer
         , m_levelInfo{ t_settings }
         , m_playerInfo{}
         , m_playerInfoDisplay{}
-        , m_context{ m_settings,  m_window,           m_random,
-                     m_sfx,       m_states,           m_fonts,
-                     m_avatar,    m_layout,           m_levelLoader,
-                     m_level,     m_backgroundImages, m_pickups,
-                     m_accents,   m_spells,           m_itemImages,
-                     m_levelInfo, m_playerInfo,       m_playerInfoDisplay }
+        , m_context{ m_settings,    m_window,           m_random,
+                     m_sfx,         m_states,           m_fonts,
+                     *m_avatarUPtr, m_layout,           m_levelLoader,
+                     m_level,       m_backgroundImages, m_pickups,
+                     m_accents,     m_spells,           m_itemImages,
+                     m_levelInfo,   m_playerInfo,       m_playerInfoDisplay }
         , m_fpsValues{}
         , m_oneSecondClock{}
         , m_elapsedTimeSec{ 0.0f }
@@ -97,7 +97,8 @@ namespace platformer
     }
 
     void Coordinator::teardown()
-    {        
+    {
+        m_avatarUPtr.reset();
         MapTextureManager::instance().teardown();
         AvatarTextureManager::instance().teardown();
         MonsterTextureManager::instance().teardown();
@@ -166,8 +167,8 @@ namespace platformer
 
         // TODO remove after testing
         m_avatarTypeText.setString(std::string(toString(m_context.player.avatarType())));
-        m_avatarAnimText.setString(std::string(toString(m_avatar.anim())));
-        m_avatarAnimIndexText.setString(std::to_string(m_avatar.animIndex()));
+        m_avatarAnimText.setString(std::string(toString(m_avatarUPtr->anim())));
+        m_avatarAnimIndexText.setString(std::to_string(m_avatarUPtr->animIndex()));
         m_window.draw(m_avatarTypeText, states);
         m_window.draw(m_avatarAnimText, states);
         m_window.draw(m_avatarAnimIndexText, states);
