@@ -38,17 +38,8 @@ namespace platformer
         void acquire(const Context & t_context, const TileImage t_image);
         void release(const TileImage t_image);
 
-        void setup(const Settings &) {}
-
-        [[nodiscard]] inline const TileTexture & get(const TileImage t_image) const
-        {
-            return m_tileTextures.at(static_cast<std::size_t>(t_image));
-        }
-
-        inline void setGid(const TileImage image, const int gid)
-        {
-            m_tileTextures.at(static_cast<std::size_t>(image)).gid = gid;
-        }
+        [[nodiscard]] const TileTexture & get(const TileImage t_image) const;
+        void setGid(const TileImage t_image, const int t_gid);
 
       private:
         std::vector<TileTexture> m_tileTextures;

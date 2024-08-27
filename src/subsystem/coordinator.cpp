@@ -67,7 +67,6 @@ namespace platformer
 
         AvatarTextureManager::instance().setup(m_settings);
         MonsterTextureManager::instance().setup(m_settings);
-        MapTextureManager::instance().setup(m_settings);
         GuiWindow::setup(m_settings);
 
         m_layout.setup(m_window.getSize());

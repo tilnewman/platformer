@@ -28,7 +28,13 @@ namespace platformer
 
     void MapTextureManager::acquire(const Context & t_context, const TileImage t_image)
     {
-        TileTexture & tileTexture{ m_tileTextures.at(static_cast<std::size_t>(t_image)) };
+        const std::size_t imageIndex{ static_cast<std::size_t>(t_image) };
+        if (imageIndex >= m_tileTextures.size())
+        {
+            return;
+        }
+
+        TileTexture & tileTexture{ m_tileTextures.at(imageIndex) };
 
         if (0 == tileTexture.ref_count)
         {
@@ -46,7 +52,13 @@ namespace platformer
 
     void MapTextureManager::release(const TileImage t_image)
     {
-        TileTexture & tileTexture{ m_tileTextures.at(static_cast<std::size_t>(t_image)) };
+        const std::size_t imageIndex{ static_cast<std::size_t>(t_image) };
+        if (imageIndex >= m_tileTextures.size())
+        {
+            return;
+        }
+
+        TileTexture & tileTexture{ m_tileTextures.at(imageIndex) };
 
         if (tileTexture.ref_count <= 1)
         {
@@ -57,6 +69,31 @@ namespace platformer
         {
             --tileTexture.ref_count;
         }
+    }
+
+    const TileTexture & MapTextureManager::get(const TileImage t_image) const
+    {
+        const std::size_t imageIndex{ static_cast<std::size_t>(t_image) };
+        if (imageIndex >= m_tileTextures.size())
+        {
+            static TileTexture tileTexture;
+            return tileTexture;
+        }
+        else
+        {
+            return m_tileTextures.at(imageIndex);
+        }
+    }
+
+    void MapTextureManager::setGid(const TileImage t_image, const int t_gid)
+    {
+        const std::size_t imageIndex{ static_cast<std::size_t>(t_image) };
+        if (imageIndex >= m_tileTextures.size())
+        {
+            return;
+        }
+
+        m_tileTextures.at(imageIndex).gid = t_gid;
     }
 
 } // namespace platformer
