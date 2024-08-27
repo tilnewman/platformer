@@ -103,6 +103,7 @@ namespace platformer
             return 0;
         }
     }
+
     //
 
     enum class Spell : std::size_t

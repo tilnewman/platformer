@@ -7,6 +7,7 @@
 
 #include "avatar/spells-anim.hpp"
 #include "subsystem/context.hpp"
+#include "subsystem/font.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
@@ -30,6 +31,7 @@ namespace platformer
         , m_selectionTarget{ 0 }
         , m_selectionRect{}
         , m_isMovingSelection{ false }
+        , m_nameText{}
     {}
 
     void SpellSelectMenu::setup(Context & t_context, const std::size_t t_selectionOrig)
@@ -40,6 +42,10 @@ namespace platformer
 
         m_isVisible      = true;
         m_elapsedTimeSec = 0.0f;
+
+        const std::vector<PlayerSpell> & playerSpells{ t_context.player.spells() };
+
+        m_nameText = t_context.font.makeText(Font::Default, FontSize::Small, "");
 
         const float iconSize{ t_context.layout.wholeSize().y * 0.1f };
 
@@ -57,8 +63,6 @@ namespace platformer
 
             m_windowFrame.create(t_context, makeGuiWindowInfo(m_selectionRect));
         }
-
-        const std::vector<PlayerSpell> & playerSpells{ t_context.player.spells() };
 
         //
 
@@ -114,6 +118,18 @@ namespace platformer
             pos.x += rect.width;
             pos.x += (rect.width * 0.5f);
         }
+
+        //
+
+        if (m_selectionTarget < playerSpells.size())
+        {
+            m_nameText.setString(std::string{ toName(playerSpells.at(m_selectionTarget).spell) });
+            util::setOriginToPosition(m_nameText);
+        }
+
+        m_nameText.setPosition(
+            (util::center(m_selectionRect).x - (m_nameText.getGlobalBounds().width * 0.5f)),
+            (util::bottom(m_selectionRect) + (m_selectionRect.height * 0.15f)));
     }
 
     void SpellSelectMenu::update(Context & t_context, const float t_frameTimeSec)
@@ -126,9 +142,20 @@ namespace platformer
 
         if (m_isMovingSelection)
         {
+            m_nameText.setFillColor(sf::Color::Transparent);
+
             m_selectionRect.left = m_slider.update(t_frameTimeSec);
             m_windowFrame.create(t_context, makeGuiWindowInfo(m_selectionRect));
             m_isMovingSelection = m_slider.isMoving();
+
+            if (!m_isMovingSelection)
+            {
+                m_nameText.setFillColor(sf::Color::White);
+
+                m_nameText.setPosition(
+                    (util::center(m_selectionRect).x - (m_nameText.getGlobalBounds().width * 0.5f)),
+                    (util::bottom(m_selectionRect) + (m_selectionRect.height * 0.15f)));
+            }
         }
     }
 
@@ -155,6 +182,8 @@ namespace platformer
         }
 
         m_windowFrame.draw(t_target, t_states);
+
+        t_target.draw(m_nameText, t_states);
     }
 
     GuiWindowInfo SpellSelectMenu::makeGuiWindowInfo(const sf::FloatRect & region) const
