@@ -66,7 +66,13 @@ namespace platformer
 
     void AvatarTextureManager::acquire(const Context & t_context, const AvatarType t_type)
     {
-        AvatarTextureSet & set{ m_textureSets.at(static_cast<std::size_t>(t_type)) };
+        const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
+        if (typeIndex >= m_textureSets.size())
+        {
+            return;
+        }
+
+        AvatarTextureSet & set{ m_textureSets.at(typeIndex) };
 
         if (0 == set.ref_count)
         {
@@ -108,7 +114,13 @@ namespace platformer
 
     void AvatarTextureManager::release(const AvatarType t_type)
     {
-        AvatarTextureSet & set{ m_textureSets.at(static_cast<std::size_t>(t_type)) };
+        const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
+        if (typeIndex >= m_textureSets.size())
+        {
+            return;
+        }
+
+        AvatarTextureSet & set{ m_textureSets.at(typeIndex) };
 
         if (set.ref_count <= 1)
         {
@@ -148,6 +160,54 @@ namespace platformer
         }
 
         t_sprite.setTexture(anims.textures.at(t_frame), true);
+    }
+
+    std::size_t
+        AvatarTextureManager::frameCount(const AvatarType t_type, const AvatarAnim t_anim) const
+    {
+        const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
+        if (typeIndex >= m_textureSets.size())
+        {
+            return 0;
+        }
+
+        const AvatarTextureSet & set{ m_textureSets.at(typeIndex) };
+
+        const std::size_t animIndex{ static_cast<std::size_t>(t_anim) };
+        if (animIndex >= set.anims.size())
+        {
+            return 0;
+        }
+
+        return set.anims.at(animIndex).textures.size();
+    }
+
+    const sf::Texture & AvatarTextureManager::getDefault(const AvatarType t_type) const
+    {
+        const std::size_t index{ static_cast<std::size_t>(t_type) };
+        if (index >= m_textureSets.size())
+        {
+            static sf::Texture texture;
+            return texture;
+        }
+        else
+        {
+            return m_textureSets.at(index).defalt;
+        }
+    }
+
+    const sf::Texture & AvatarTextureManager::getIcon(const AvatarType t_type) const
+    {
+        const std::size_t index{ static_cast<std::size_t>(t_type) };
+        if (index >= m_textureSets.size())
+        {
+            static sf::Texture texture;
+            return texture;
+        }
+        else
+        {
+            return m_textureSets.at(static_cast<std::size_t>(t_type)).icon;
+        }
     }
 
 } // namespace platformer

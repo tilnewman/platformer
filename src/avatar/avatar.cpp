@@ -12,6 +12,7 @@
 #include "map/level.hpp"
 #include "map/pickups.hpp"
 #include "monster/monster-manager.hpp"
+#include "player/player-info-display.hpp"
 #include "state/state-manager.hpp"
 #include "subsystem/background-images.hpp"
 #include "subsystem/context.hpp"
@@ -309,8 +310,7 @@ namespace platformer
         if (t_context.level.monsters.avatarAttack(t_context, attackInfo))
         {
             m_hasHitEnemy = true;
-            if ((AvatarType::Druid == m_type) || (AvatarType::Enchantress == m_type) ||
-                (AvatarType::Witch == m_type))
+            if (isSpellCaster(m_type))
             {
                 t_context.sfx.play("hit-staff");
             }
@@ -606,8 +606,8 @@ namespace platformer
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && m_hasLanded)
         {
             m_hasLanded = false;
-            // t_context.sfx.play("jump"); //TODO
             t_context.sfx.stop("walk");
+            // t_context.sfx.play("jump"); //TODO
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
             {
@@ -680,6 +680,9 @@ namespace platformer
         t_context.accent.clear();
         t_context.pickup.clear();
         t_context.spell.clear();
+
+        t_context.player.healthReset(t_context);
+        t_context.player.manaReset(t_context);
 
         t_context.level.load(t_context);
 
@@ -766,8 +769,13 @@ namespace platformer
             m_velocity.x = -recoilSpeed;
         }
 
-        // TODO subtract harm.damage from player health and check for death
-        t_context.sfx.play("hurt-avatar");
+        t_context.player.healthAdjust(t_context, -t_harm.damage);
+
+        if (t_context.player.health() == 0) { triggerDeath(t_context); }
+        else
+        {
+            t_context.sfx.play("hurt-avatar");
+        }
     }
 
 } // namespace platformer

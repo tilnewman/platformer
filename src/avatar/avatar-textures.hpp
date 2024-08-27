@@ -124,23 +124,11 @@ namespace platformer
                 const AvatarAnim t_anim,
                 const std::size_t t_frame) const;
 
-        [[nodiscard]] inline constexpr std::size_t
-            frameCount(const AvatarType t_type, const AvatarAnim t_anim) const
-        {
-            return m_textureSets.at(static_cast<std::size_t>(t_type))
-                .anims.at(static_cast<std::size_t>(t_anim))
-                .textures.size();
-        }
+        [[nodiscard]] std::size_t
+            frameCount(const AvatarType t_type, const AvatarAnim t_anim) const;
 
-        [[nodiscard]] inline constexpr const sf::Texture & getDefault(const AvatarType t_type) const
-        {
-            return m_textureSets.at(static_cast<std::size_t>(t_type)).defalt;
-        }
-
-        [[nodiscard]] inline constexpr const sf::Texture & getIcon(const AvatarType t_type) const
-        {
-            return m_textureSets.at(static_cast<std::size_t>(t_type)).icon;
-        }
+        [[nodiscard]] const sf::Texture & getDefault(const AvatarType t_type) const;
+        [[nodiscard]] const sf::Texture & getIcon(const AvatarType t_type) const;
 
       private:
         std::vector<AvatarTextureSet> m_textureSets;

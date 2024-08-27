@@ -71,7 +71,7 @@ namespace platformer
                 temp = 0;
             }
 
-            t_context.player.setup(static_cast<AvatarType>(temp));
+            t_context.player.setup(t_context, static_cast<AvatarType>(temp));
             t_context.avatar.changeType(t_context);
         }
         else if (
@@ -83,7 +83,12 @@ namespace platformer
         }
     }
 
-    void PlayState::onEnter(Context & t_context) { t_context.level.load(t_context); }
+    void PlayState::onEnter(Context & t_context)
+    {
+        t_context.avatar.setup(t_context);
+        t_context.player_display.setup(t_context);
+        t_context.level.load(t_context);
+    }
 
     void PlayState::onExit(Context &) {}
 

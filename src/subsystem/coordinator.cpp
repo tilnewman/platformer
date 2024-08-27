@@ -65,10 +65,6 @@ namespace platformer
         m_sfx.loadAll();
         m_sfx.willLoop("walk", true);
 
-        m_playerInfo.setup(AvatarType::Enchantress);
-        m_playerInfo.learnSpell(Spell::TeslaBall);
-        m_playerInfo.learnSpell(Spell::Spikes1);
-
         AvatarTextureManager::instance().setup(m_settings);
         MonsterTextureManager::instance().setup(m_settings);
         MapTextureManager::instance().setup(m_settings);
@@ -80,10 +76,11 @@ namespace platformer
         m_pickups.setup(m_settings);
         m_accents.setup(m_settings);
         m_spells.setup(m_settings);
-        m_avatar.setup(m_context);
-        m_playerInfoDisplay.setup(m_context);
-
-        m_states.setChangePending(State::Splash);
+        
+        // TODO find a better place for this eventually
+        m_playerInfo.setup(m_context, AvatarType::Enchantress);
+        m_playerInfo.learnSpell(Spell::TeslaBall);
+        m_playerInfo.learnSpell(Spell::Spikes1);
 
         // TODO remove after testing
         const sf::Color testColor{ 100, 100, 255 };
@@ -94,6 +91,8 @@ namespace platformer
         m_avatarTypeText.setPosition(0.0f, 500.0f);
         m_avatarAnimText.setPosition(0.0f, 550.0f);
         m_avatarAnimIndexText.setPosition(0.0f, 600.0f);
+
+        m_states.setChangePending(State::Splash);
     }
 
     void Coordinator::teardown()

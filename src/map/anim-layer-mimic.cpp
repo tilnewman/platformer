@@ -61,7 +61,6 @@ namespace platformer
             if (t_context.layout.wholeRect().intersects(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
-                util::drawRectangleShape(t_target, anim.coll_rect, false, sf::Color::Red);
             }
         }
     }

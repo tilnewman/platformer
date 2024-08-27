@@ -3,6 +3,8 @@
 //
 // player-info-display.hpp
 //
+#include "player/custom-types.hpp"
+
 #include <vector>
 
 #include <SFML/Graphics/Rect.hpp>
@@ -32,7 +34,7 @@ namespace platformer
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
         void setHealthBar(const float t_ratio);
         void setManaBar(const float t_ratio);
-        void setCoinCount(const int t_count);
+        void setCoinCount(const Coin_t t_count);
         void setStarCount(const int t_count);
 
       private:

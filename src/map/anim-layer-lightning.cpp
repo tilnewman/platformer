@@ -142,7 +142,7 @@ namespace platformer
             }
 
             harm.rect   = reducedBounds;
-            harm.damage = 50;
+            harm.damage = 25;
             harm.sfx    = "electricity";
             break;
         }

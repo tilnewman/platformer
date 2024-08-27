@@ -297,6 +297,8 @@ namespace platformer
         m_starYellow5Sprite.scale(m_starBrown1Sprite.getScale());
 
         setStarCount(0);
+        //setHealthBar(0.0f);
+        //setManaBar(0.0f);
     }
 
     void PlayerInfoDisplay::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
@@ -364,7 +366,7 @@ namespace platformer
         util::scaleAndCenterInside(m_manaBarMiddleSprite, m_manaBarRect);
     }
 
-    void PlayerInfoDisplay::setCoinCount(const int t_count)
+    void PlayerInfoDisplay::setCoinCount(const Coin_t t_count)
     {
         m_coinText.setString(std::to_string(t_count));
         util::setOriginToPosition(m_coinText);

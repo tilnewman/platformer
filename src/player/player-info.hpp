@@ -12,6 +12,10 @@
 namespace platformer
 {
 
+    struct Context;
+
+    //
+
     enum class AvatarType : std::size_t
     {
         Assassin = 0,
@@ -40,7 +44,7 @@ namespace platformer
             case AvatarType::Rogue:         { return "rogue";       }
             case AvatarType::Viking:        { return "viking";      }
             case AvatarType::Witch:         { return "witch";       }
-            case AvatarType::Count: [[fallthrough]];
+            case AvatarType::Count:         [[fallthrough]];
             default:           { return "error_AvatarType_unknown"; }
         }
         // clang-format on
@@ -60,6 +64,45 @@ namespace platformer
             (AvatarType::Witch == t_type));
     }
 
+    [[nodiscard]] inline constexpr Health_t startingHealth(const AvatarType t_type) noexcept
+    {
+        // clang-format off
+        switch (t_type)
+        {
+            case AvatarType::Assassin:      { return 86;  }
+            case AvatarType::BlueKnight:    { return 95;  }
+            case AvatarType::Druid:         { return 70;  }
+            case AvatarType::Enchantress:   { return 65;  }
+            case AvatarType::Ninja:         { return 84;  }
+            case AvatarType::RedKnight:     { return 90;  }
+            case AvatarType::Rogue:         { return 80;  }
+            case AvatarType::Viking:        { return 100; }
+            case AvatarType::Witch:         { return 60;  }
+            case AvatarType::Count:         [[fallthrough]];
+            default:                        { return 0;   }
+        }
+        // clang-format on
+    }
+
+    [[nodiscard]] inline constexpr Mana_t startingMana(const AvatarType t_type) noexcept
+    {
+        if (AvatarType::Witch == t_type)
+        {
+            return 100;
+        }
+        else if (AvatarType::Druid == t_type)
+        {
+            return 80;
+        }
+        else if (AvatarType::Enchantress == t_type)
+        {
+            return 90;
+        }
+        else
+        {
+            return 0;
+        }
+    }
     //
 
     enum class Spell : std::size_t
@@ -110,7 +153,7 @@ namespace platformer
             case Spell::TeslaBall:  { return "Lightning Ball";  }
             case Spell::Tornado:    { return "Tornado";         }
             case Spell::Water:      { return "Water Lash";      }
-            case Spell::Count: [[fallthrough]];
+            case Spell::Count:      [[fallthrough]];
             default:            { return "Error_Spell_unknown"; }
         }
         // clang-format on
@@ -137,7 +180,7 @@ namespace platformer
             case Spell::TeslaBall:  { return "tesla-ball";  }
             case Spell::Tornado:    { return "tornado";     }
             case Spell::Water:      { return "water";       }
-            case Spell::Count: [[fallthrough]];
+            case Spell::Count:      [[fallthrough]];
             default:        { return "Error_Spell_unknown"; }
         }
         // clang-format on
@@ -165,7 +208,7 @@ namespace platformer
             case Spell::TeslaBall:  { return 10; }
             case Spell::Tornado:    { return 10; }
             case Spell::Water:      { return 10; }
-            case Spell::Count: [[fallthrough]];
+            case Spell::Count:    [[fallthrough]];
             default:                { return 0;  }
         }
         // clang-format on
@@ -193,7 +236,7 @@ namespace platformer
             case Spell::TeslaBall:  { return 10; }
             case Spell::Tornado:    { return 10; }
             case Spell::Water:      { return 10; }
-            case Spell::Count: [[fallthrough]];
+            case Spell::Count:    [[fallthrough]];
             default:                { return 0;  }
         }
         // clang-format on
@@ -259,7 +302,7 @@ namespace platformer
       public:
         PlayerInfo();
 
-        void setup(const AvatarType t_type);
+        void setup(Context & t_context, const AvatarType t_type);
 
         [[nodiscard]] inline constexpr AvatarType avatarType() const noexcept
         {
@@ -268,33 +311,21 @@ namespace platformer
 
         [[nodiscard]] inline constexpr Health_t health() const noexcept { return m_health; }
 
-        constexpr Health_t healthAdjust(const Health_t t_adjustment) noexcept
-        {
-            m_health = std::clamp((m_health + t_adjustment), 0, m_healthMax);
-            return m_health;
-        }
+        [[nodiscard]] inline constexpr Health_t healthMax() const noexcept { return m_healthMax; }
+
+        Health_t healthAdjust(Context & t_context, const Health_t t_adjustment);
+        void healthReset(Context & t_context);
 
         [[nodiscard]] inline constexpr Mana_t mana() const noexcept { return m_mana; }
 
-        constexpr Mana_t manaAdjust(const Mana_t t_adjustment) noexcept
-        {
-            m_mana = std::clamp((m_mana + t_adjustment), 0, m_manaMax);
-            return m_mana;
-        }
+        [[nodiscard]] inline constexpr Mana_t manaMax() const noexcept { return m_manaMax; }
+
+        Mana_t manaAdjust(Context & t_context, const Mana_t t_adjustment);
+        void manaReset(Context & t_context);
 
         [[nodiscard]] inline constexpr Coin_t coins() const noexcept { return m_coins; }
 
-        constexpr Coin_t coinsAdjust(const Coin_t t_adjustment) noexcept
-        {
-            m_coins += t_adjustment;
-
-            if (m_coins < 0)
-            {
-                m_coins = 0;
-            }
-
-            return m_coins;
-        }
+        Coin_t coinsAdjust(Context & t_context, const Coin_t t_adjustment);
 
         [[nodiscard]] inline constexpr const std::vector<PlayerSpell> & spells() const noexcept
         {
