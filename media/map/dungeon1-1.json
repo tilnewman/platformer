@@ -797,40 +797,18 @@
         {
          "draworder":"topdown",
          "id":17,
-         "name":"bomb",
+         "name":"mimic",
          "objects":[
                 {
-                 "height":16,
+                 "height":32,
                  "id":107,
                  "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":16,
+                 "width":48,
                  "x":576,
-                 "y":1264
-                }, 
-                {
-                 "height":16,
-                 "id":108,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":608,
-                 "y":1264
-                }, 
-                {
-                 "height":16,
-                 "id":109,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":640,
-                 "y":1264
+                 "y":1248
                 }],
          "opacity":1,
          "type":"objectgroup",

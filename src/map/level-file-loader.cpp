@@ -13,6 +13,7 @@
 #include "bramblefore/settings.hpp"
 #include "map-textures.hpp"
 #include "map/accents.hpp"
+#include "map/anim-layer-mimic.hpp"
 #include "map/pickups.hpp"
 #include "monster/monster-baby-dragon.hpp"
 #include "monster/monster-bear.hpp"
@@ -289,6 +290,10 @@ namespace platformer
             else if (layerName == "bomb")
             {
                 parseLayerOfRects<BombAnimationLayer>(t_context, jsonLayer);
+            }
+            else if (layerName == "mimic")
+            {
+                parseLayerOfRects<MimicAnimationLayer>(t_context, jsonLayer);
             }
             else if (layerName == "monster")
             {

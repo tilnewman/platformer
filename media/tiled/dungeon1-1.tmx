@@ -330,10 +330,8 @@
   <object id="58" x="1792" y="992" width="160" height="32"/>
  </objectgroup>
  <objectgroup id="16" name="ghost-bottle"/>
- <objectgroup id="17" name="bomb">
-  <object id="107" x="576" y="1264" width="16" height="16"/>
-  <object id="108" x="608" y="1264" width="16" height="16"/>
-  <object id="109" x="640" y="1264" width="16" height="16"/>
+ <objectgroup id="17" name="mimic">
+  <object id="107" x="576" y="1248" width="48" height="32"/>
  </objectgroup>
  <objectgroup id="12" name="monster">
   <object id="60" name="goblin" x="848" y="1168" width="240" height="112"/>
