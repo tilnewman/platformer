@@ -8,6 +8,7 @@
 #include "avatar/avatar-textures.hpp"
 #include "map/map-textures.hpp"
 #include "monster/monster-textures.hpp"
+#include "subsystem/default-texture.hpp"
 #include "subsystem/texture-stats.hpp"
 #include "ui/gui-window.hpp"
 #include "util/sfml-util.hpp"
@@ -65,6 +66,7 @@ namespace platformer
         m_sfx.loadAll();
         m_sfx.willLoop("walk", true);
 
+        DefaultTexture::instance().setup();
         AvatarTextureManager::instance().setup(m_settings);
         MonsterTextureManager::instance().setup(m_settings);
 
@@ -74,7 +76,7 @@ namespace platformer
         m_pickups.setup(m_settings);
         m_accents.setup(m_settings);
         m_spells.setup(m_settings);
-        
+
         // TODO find a better place for this eventually
         m_playerInfo.setup(m_context, AvatarType::Enchantress);
         m_playerInfo.learnSpell(Spell::TeslaBall);
@@ -97,6 +99,7 @@ namespace platformer
     {
         AvatarTextureManager::instance().teardown();
         MonsterTextureManager::instance().teardown();
+        DefaultTexture::instance().teardown();
         m_window.close();
         TextureStats::instance().dumpInfo();
     }

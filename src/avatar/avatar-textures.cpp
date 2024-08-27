@@ -7,6 +7,7 @@
 
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
+#include "subsystem/default-texture.hpp"
 #include "subsystem/texture-stats.hpp"
 #include "util/filesystem-util.hpp"
 #include "util/sfml-util.hpp"
@@ -24,24 +25,6 @@ namespace platformer
     {
         static AvatarTextureManager avatarTextureManager;
         return avatarTextureManager;
-    }
-
-    void AvatarTextureManager::teardown()
-    {
-        for (AvatarTextureSet & set : m_textureSets)
-        {
-            set.ref_count = 0;
-            set.defalt    = sf::Texture();
-            set.icon      = sf::Texture();
-
-            for (AnimTextures & anim : set.anims)
-            {
-                for (sf::Texture & texture : anim.textures)
-                {
-                    texture = sf::Texture();
-                }
-            }
-        }
     }
 
     void AvatarTextureManager::setup(const Settings & t_settings)
@@ -81,6 +64,8 @@ namespace platformer
             }
         }
     }
+
+    void AvatarTextureManager::teardown() { m_textureSets.clear(); }
 
     void AvatarTextureManager::acquire(const Context & t_context, const AvatarType t_type)
     {
@@ -205,8 +190,7 @@ namespace platformer
         const std::size_t index{ static_cast<std::size_t>(t_type) };
         if (index >= m_textureSets.size())
         {
-            static sf::Texture texture;
-            return texture;
+            return DefaultTexture::instance().get();
         }
         else
         {
@@ -219,8 +203,7 @@ namespace platformer
         const std::size_t index{ static_cast<std::size_t>(t_type) };
         if (index >= m_textureSets.size())
         {
-            static sf::Texture texture;
-            return texture;
+            return DefaultTexture::instance().get();
         }
         else
         {

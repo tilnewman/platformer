@@ -7,6 +7,7 @@
 
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
+#include "subsystem/default-texture.hpp"
 #include "subsystem/texture-stats.hpp"
 #include "util/sfml-util.hpp"
 
@@ -17,6 +18,15 @@ namespace platformer
 
     MonsterTextureManager::MonsterTextureManager()
         : m_textureSets()
+    {}
+
+    MonsterTextureManager & MonsterTextureManager::instance()
+    {
+        static MonsterTextureManager monsterTextureManager;
+        return monsterTextureManager;
+    }
+
+    void MonsterTextureManager::setup(const Settings &)
     {
         // create all texture vectors of correct size so they are never re-allocated
         m_textureSets.resize(static_cast<std::size_t>(MonsterType::Count));
@@ -26,26 +36,7 @@ namespace platformer
         }
     }
 
-    MonsterTextureManager & MonsterTextureManager::instance()
-    {
-        static MonsterTextureManager monsterTextureManager;
-        return monsterTextureManager;
-    }
-
-    void MonsterTextureManager::setup(const Settings &) {}
-
-    void MonsterTextureManager::teardown() 
-    { 
-        for (MonsterTextures & set : m_textureSets)
-        {
-            set.ref_count = 0;
-
-            for (sf::Texture & texture : set.textures)
-            {
-                texture = sf::Texture();
-            }
-        }
-    }
+    void MonsterTextureManager::teardown() { m_textureSets.clear(); }
 
     void MonsterTextureManager::acquire(Context & context, const MonsterType type)
     {
@@ -135,8 +126,7 @@ namespace platformer
         const std::size_t typeIndex{ static_cast<std::size_t>(type) };
         if (typeIndex >= m_textureSets.size())
         {
-            static sf::Texture texture;
-            return texture;
+            return DefaultTexture::instance().get();
         }
 
         const MonsterTextures & set{ m_textureSets.at(typeIndex) };
@@ -144,8 +134,7 @@ namespace platformer
         const std::size_t animIndex{ static_cast<std::size_t>(anim) };
         if (animIndex >= set.textures.size())
         {
-            static sf::Texture texture;
-            return texture;
+            return DefaultTexture::instance().get();
         }
 
         return m_textureSets.at(typeIndex).textures.at(animIndex);
