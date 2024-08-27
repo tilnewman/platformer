@@ -85,6 +85,7 @@ namespace platformer
 
     void PlayState::onEnter(Context & t_context)
     {
+        m_spellSelectMenu.loadTextures(t_context.settings);
         t_context.avatar.setup(t_context);
         t_context.player_display.setup(t_context);
         t_context.level.load(t_context);

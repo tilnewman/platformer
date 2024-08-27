@@ -54,9 +54,9 @@ namespace platformer
       public:
         GuiWindow();
 
-        static void setup(const Settings & t_settings);
+        void loadTextures(const Settings & t_settings);
 
-        void create(Context & t_context, const GuiWindowInfo & t_info);
+        void arrange(Context & t_context, const GuiWindowInfo & t_info);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
         [[nodiscard]] inline sf::FloatRect innerRect() const noexcept { return m_innerRect; }
         [[nodiscard]] inline sf::FloatRect outerRect() const noexcept { return m_outerRect; }
@@ -66,36 +66,36 @@ namespace platformer
         sf::FloatRect m_innerRect;
         sf::FloatRect m_outerRect;
         //
-        static sf::Texture m_borderTopLeftTexture;
-        static sf::Texture m_borderTopRightTexture;
-        static sf::Texture m_borderBotLeftTexture;
-        static sf::Texture m_borderBotRightTexture;
-        static sf::Texture m_borderTopTexture;
-        static sf::Texture m_borderBotTexture;
-        static sf::Texture m_borderLeftTexture;
-        static sf::Texture m_borderRightTexture;
+        sf::Texture m_borderTopLeftTexture;
+        sf::Texture m_borderTopRightTexture;
+        sf::Texture m_borderBotLeftTexture;
+        sf::Texture m_borderBotRightTexture;
+        sf::Texture m_borderTopTexture;
+        sf::Texture m_borderBotTexture;
+        sf::Texture m_borderLeftTexture;
+        sf::Texture m_borderRightTexture;
         //
-        static sf::Texture m_smallBorderTopLeftTexture;
-        static sf::Texture m_smallBorderTopRightTexture;
-        static sf::Texture m_smallBorderBotLeftTexture;
-        static sf::Texture m_smallBorderBotRightTexture;
-        static sf::Texture m_smallBorderTopTexture;
-        static sf::Texture m_smallBorderBotTexture;
-        static sf::Texture m_smallBorderLeftTexture;
-        static sf::Texture m_smallBorderRightTexture;
+        sf::Texture m_smallBorderTopLeftTexture;
+        sf::Texture m_smallBorderTopRightTexture;
+        sf::Texture m_smallBorderBotLeftTexture;
+        sf::Texture m_smallBorderBotRightTexture;
+        sf::Texture m_smallBorderTopTexture;
+        sf::Texture m_smallBorderBotTexture;
+        sf::Texture m_smallBorderLeftTexture;
+        sf::Texture m_smallBorderRightTexture;
         //
-        static sf::Texture m_bgTopLeftTexture;
-        static sf::Texture m_bgTopRightTexture;
-        static sf::Texture m_bgBotLeftTexture;
-        static sf::Texture m_bgBotRightTexture;
-        static sf::Texture m_bgTopTexture;
-        static sf::Texture m_bgBotTexture;
-        static sf::Texture m_bgLeftTexture;
-        static sf::Texture m_bgRightTexture;
+        sf::Texture m_bgTopLeftTexture;
+        sf::Texture m_bgTopRightTexture;
+        sf::Texture m_bgBotLeftTexture;
+        sf::Texture m_bgBotRightTexture;
+        sf::Texture m_bgTopTexture;
+        sf::Texture m_bgBotTexture;
+        sf::Texture m_bgLeftTexture;
+        sf::Texture m_bgRightTexture;
         //
-        static sf::Texture m_tapeLeftTexture;
-        static sf::Texture m_tapeRightTexture;
-        static sf::Texture m_tapeMiddleTexture;
+        sf::Texture m_tapeLeftTexture;
+        sf::Texture m_tapeRightTexture;
+        sf::Texture m_tapeMiddleTexture;
 
         sf::Color m_bgColor;
         sf::FloatRect m_bgCenterRect;

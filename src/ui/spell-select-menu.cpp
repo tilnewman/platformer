@@ -6,6 +6,7 @@
 #include "ui/spell-select-menu.hpp"
 
 #include "avatar/spells-anim.hpp"
+#include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/font.hpp"
 #include "subsystem/screen-layout.hpp"
@@ -34,6 +35,11 @@ namespace platformer
         , m_nameText{}
     {}
 
+    void SpellSelectMenu::loadTextures(const Settings & t_settings)
+    {
+        m_windowFrame.loadTextures(t_settings);
+    }
+
     void SpellSelectMenu::setup(Context & t_context, const std::size_t t_selectionOrig)
     {
         m_fadeRects.clear();
@@ -61,7 +67,7 @@ namespace platformer
             m_selectionRect.width  = iconSize;
             m_selectionRect.height = iconSize;
 
-            m_windowFrame.create(t_context, makeGuiWindowInfo(m_selectionRect));
+            m_windowFrame.arrange(t_context, makeGuiWindowInfo(m_selectionRect));
         }
 
         //
@@ -145,7 +151,7 @@ namespace platformer
             m_nameText.setFillColor(sf::Color::Transparent);
 
             m_selectionRect.left = m_slider.update(t_frameTimeSec);
-            m_windowFrame.create(t_context, makeGuiWindowInfo(m_selectionRect));
+            m_windowFrame.arrange(t_context, makeGuiWindowInfo(m_selectionRect));
             m_isMovingSelection = m_slider.isMoving();
 
             if (!m_isMovingSelection)

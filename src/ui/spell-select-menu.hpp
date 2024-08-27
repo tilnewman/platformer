@@ -22,6 +22,7 @@ namespace platformer
 {
 
     struct Context;
+    struct Settings;
 
     //
 
@@ -29,6 +30,8 @@ namespace platformer
     {
       public:
         SpellSelectMenu();
+
+        void loadTextures(const Settings & t_settings);
 
         void setup(Context & t_context, const std::size_t t_selection);
 
