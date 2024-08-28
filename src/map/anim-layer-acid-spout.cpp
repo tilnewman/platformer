@@ -114,10 +114,10 @@ namespace bramblefore
         }
     }
 
-    void AcidSpoutAnimationLayer::update(Context &, const float t_frameTimeSec)
+    void AcidSpoutAnimationLayer::update(Context & t_context, const float t_frameTimeSec)
     {
         updateSpouts(t_frameTimeSec);
-        updateDrops(t_frameTimeSec);
+        updateDrops(t_context, t_frameTimeSec);
         updateSplashes(t_frameTimeSec);
     }
 
@@ -165,7 +165,7 @@ namespace bramblefore
         }
     }
 
-    void AcidSpoutAnimationLayer::updateDrops(const float t_frameTimeSec)
+    void AcidSpoutAnimationLayer::updateDrops(const Context & t_context, const float t_frameTimeSec)
     {
         bool didAnyDropsLand{ false };
         for (AcidDropAnim & anim : m_dropAnims)
@@ -181,6 +181,9 @@ namespace bramblefore
                 AcidSplashAnim & splash{ m_splashAnims.emplace_back() };
                 splash.sprite.setTexture(m_splashTexture);
                 splash.sprite.setTextureRect(textureRect(m_splashTexture, 0));
+
+                const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.0f) };
+                splash.sprite.scale(scale, scale);
 
                 splash.sprite.setPosition(
                     (util::center(anim.region).x - (splash.sprite.getGlobalBounds().width * 0.5f)),

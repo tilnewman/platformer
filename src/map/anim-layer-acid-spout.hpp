@@ -88,7 +88,7 @@ namespace bramblefore
 
       private:
         void updateSpouts(const float t_frameTimeSec);
-        void updateDrops(const float t_frameTimeSec);
+        void updateDrops(const Context & t_context, const float t_frameTimeSec);
         void updateSplashes(const float t_frameTimeSec);
 
         [[nodiscard]] std::size_t frameCount(const sf::Texture & t_texture) const;
