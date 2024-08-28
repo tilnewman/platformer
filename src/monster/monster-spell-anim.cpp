@@ -20,13 +20,13 @@ namespace platformer
 
     MonsterSpellTextureManager::MonsterSpellTextureManager()
         : m_textureSets{}
-    {
-        // one time size to avoid any reallocations
-        m_textureSets.resize(static_cast<std::size_t>(MonsterSpell::Count));
-    }
+    {}
 
     void MonsterSpellTextureManager::setup(const Settings & t_settings)
     {
+        // one time size to avoid any reallocations
+        m_textureSets.resize(static_cast<std::size_t>(MonsterSpell::Count));
+
         for (std::size_t spellIndex{ 0 };
              spellIndex < static_cast<std::size_t>(MonsterSpell::Count);
              ++spellIndex)
@@ -67,16 +67,40 @@ namespace platformer
         }
     }
 
+    void MonsterSpellTextureManager::teardown()
+    {
+        m_textureSets = std::vector<MonsterSpellTextures>();
+    }
+
     void MonsterSpellTextureManager::set(
         sf::Sprite & t_sprite, const MonsterSpell t_spell, const std::size_t t_frame) const
     {
-        const std::vector<sf::Texture> & textures{
-            m_textureSets.at(static_cast<std::size_t>(t_spell)).textures
-        };
-
-        if (t_frame < textures.size())
+        const std::size_t spellIndex{ static_cast<std::size_t>(t_spell) };
+        if (spellIndex >= m_textureSets.size())
         {
-            t_sprite.setTexture(textures.at(t_frame));
+            return;
+        }
+
+        const std::vector<sf::Texture> & textures{ m_textureSets.at(spellIndex).textures };
+
+        if (t_frame >= textures.size())
+        {
+            return;
+        }
+
+        t_sprite.setTexture(textures.at(t_frame));
+    }
+
+    std::size_t MonsterSpellTextureManager::frameCount(const MonsterSpell t_spell) const
+    {
+        const std::size_t spellIndex{ static_cast<std::size_t>(t_spell) };
+        if (spellIndex >= m_textureSets.size())
+        {
+            return 0;
+        }
+        else
+        {
+            return m_textureSets.at(spellIndex).textures.size();
         }
     }
 
@@ -93,6 +117,8 @@ namespace platformer
     {
         m_textureManager.setup(settings);
     }
+
+    void MonsterSpellAnimations::teardown() { m_textureManager.teardown(); }
 
     void MonsterSpellAnimations::add(
         const sf::Vector2f & t_pos, const MonsterSpell t_spell, const bool t_isFacingRight)
@@ -122,7 +148,7 @@ namespace platformer
                 anim.elapsed_time_sec -= m_timePerFrameSec;
 
                 ++anim.frame_index;
-                if (anim.frame_index < m_textureManager.getFrameCount(anim.spell))
+                if (anim.frame_index < m_textureManager.frameCount(anim.spell))
                 {
                     m_textureManager.set(anim.sprite, anim.spell, anim.frame_index);
                 }

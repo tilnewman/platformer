@@ -59,14 +59,12 @@ namespace platformer
         MonsterSpellTextureManager();
 
         void setup(const Settings & t_settings);
+        void teardown();
 
         void
             set(sf::Sprite & t_sprite, const MonsterSpell t_spell, const std::size_t t_frame) const;
 
-        [[nodiscard]] inline std::size_t getFrameCount(const MonsterSpell spell) const
-        {
-            return m_textureSets.at(static_cast<std::size_t>(spell)).textures.size();
-        }
+        [[nodiscard]] std::size_t frameCount(const MonsterSpell t_spell) const;
 
       private:
         std::vector<MonsterSpellTextures> m_textureSets;
@@ -92,6 +90,7 @@ namespace platformer
         MonsterSpellAnimations();
 
         void setup(const Settings & settings);
+        void teardown();
         void add(const sf::Vector2f & pos, const MonsterSpell spell, const bool isFacingRight);
         void update(const float frameTimeSec);
         void draw(sf::RenderTarget & targt, sf::RenderStates states) const;

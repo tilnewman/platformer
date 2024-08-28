@@ -40,7 +40,11 @@ namespace platformer
         initialSpriteSetup(t_context, t_setupInfo.image_height_ratio, t_setupInfo.image_scale);
     }
 
-    Monster::~Monster() { MonsterTextureManager::instance().release(m_type); }
+    Monster::~Monster()
+    {
+        m_animations.teardown();
+        MonsterTextureManager::instance().release(m_type);
+    }
 
     void Monster::update(Context & t_context, const float t_frameTimeSec)
     {
