@@ -56,12 +56,12 @@ namespace bramblefore
     }
 
     void PickupAnimations::add(
-        const Context & context, const sf::FloatRect & rect, const std::string & name)
+        const Context & t_context, const sf::FloatRect & t_rect, const std::string & t_name)
     {
-        const Pickup pickup{ stringToPickup(name) };
+        const Pickup pickup{ stringToPickup(t_name) };
         if (Pickup::Count == pickup)
         {
-            std::cout << "Error: PickupAnimations::add(\"" << name
+            std::cout << "Error: PickupAnimations::add(\"" << t_name
                       << "\") given an unknown name.\n";
 
             return;
@@ -69,12 +69,12 @@ namespace bramblefore
 
         PickupAnim & anim{ m_anims.emplace_back() };
         anim.which      = pickup;
-        anim.anim_index = context.random.zeroToOneLessThan(frameCount(anim.which));
+        anim.anim_index = t_context.random.zeroToOneLessThan(frameCount(anim.which));
         anim.sprite.setTexture(m_textures.at(static_cast<std::size_t>(pickup)), true);
         anim.sprite.setTextureRect(textureRect(pickup, 0));
         anim.sprite.setScale(m_scale);
         util::setOriginToCenter(anim.sprite);
-        anim.sprite.setPosition(util::center(rect));
+        anim.sprite.setPosition(util::center(t_rect));
     }
 
     std::size_t PickupAnimations::frameCount(const Pickup which) const
