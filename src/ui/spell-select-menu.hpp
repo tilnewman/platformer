@@ -18,7 +18,7 @@ namespace sf
     class RenderStates;
 } // namespace sf
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -57,6 +57,6 @@ namespace platformer
         sf::Text m_nameText;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // SPELL_SELECT_MENU_HPP_INCLUDED

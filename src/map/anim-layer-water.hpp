@@ -18,7 +18,7 @@ namespace sf
     class RenderStates;
 } // namespace sf
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -72,6 +72,6 @@ namespace platformer
         std::vector<WaterAnim> m_anims;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // WATER_ANIM_LAYER_HPP_INCLUDED

@@ -14,7 +14,7 @@
 #include <filesystem>
 #include <iostream>
 
-namespace platformer
+namespace bramblefore
 {
 
     MonsterTextureManager::MonsterTextureManager()
@@ -185,4 +185,4 @@ namespace platformer
         return rect;
     }
 
-} // namespace platformer
+} // namespace bramblefore

@@ -17,7 +17,7 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     TrapAnimationLayer::TrapAnimationLayer(
@@ -169,4 +169,4 @@ namespace platformer
         return harm;
     }
 
-} // namespace platformer
+} // namespace bramblefore

@@ -8,7 +8,7 @@
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     class LevelInfo
@@ -29,6 +29,6 @@ namespace platformer
         int m_playerLives;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // PLAYER_INFO_HPP_INCLUDED

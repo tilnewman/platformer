@@ -11,7 +11,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
-namespace platformer
+namespace bramblefore
 {
     struct Context;
 
@@ -47,6 +47,6 @@ namespace platformer
         std::vector<TileTexture> m_tileTextures;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // MAPTEXTURES_HPP_INCLUDED

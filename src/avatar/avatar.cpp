@@ -24,7 +24,7 @@
 
 #include <SFML/Window/Keyboard.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     Avatar::Avatar()
@@ -783,4 +783,4 @@ namespace platformer
         }
     }
 
-} // namespace platformer
+} // namespace bramblefore

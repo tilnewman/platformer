@@ -12,7 +12,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/Vector2.hpp>
 
-namespace platformer
+namespace bramblefore
 {
     struct Context;
     struct Settings;
@@ -163,6 +163,6 @@ namespace platformer
         sf::Vector2f m_scale;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // ACCENTS_HPP_INCLUDED

@@ -11,7 +11,7 @@ namespace util
     class SoundPlayer;
 } // namespace util
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Level;
@@ -95,6 +95,6 @@ namespace platformer
         FloatingText & float_text;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // CONTEXT_HPP_INCLUDED

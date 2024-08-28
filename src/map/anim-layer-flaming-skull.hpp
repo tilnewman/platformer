@@ -18,7 +18,7 @@ namespace sf
     class RenderStates;
 } // namespace sf
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -99,6 +99,6 @@ namespace platformer
         std::vector<FlamesAnim> m_anims;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // ANIM_LAYER_FLAMING_SKULL_HPP_INCLUDED

@@ -10,7 +10,7 @@
 #include "subsystem/texture-stats.hpp"
 #include "util/sfml-util.hpp"
 
-namespace platformer
+namespace bramblefore
 {
 
     ItemImages::ItemImages()
@@ -32,4 +32,4 @@ namespace platformer
         TextureStats::instance().process(m_backgroundTexture);
     }
 
-} // namespace platformer
+} // namespace bramblefore

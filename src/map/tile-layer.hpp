@@ -18,7 +18,7 @@ namespace sf
     class RenderStates;
 } // namespace sf
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -78,6 +78,6 @@ namespace platformer
         std::vector<sf::Vertex> m_visibleVerts;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // TILELAYER_HPP_INCLUDED

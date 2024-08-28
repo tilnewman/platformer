@@ -9,7 +9,7 @@
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
 
-namespace platformer
+namespace bramblefore
 {
 
     Djinn::Djinn(Context & t_context, const sf::FloatRect & t_region)
@@ -77,4 +77,4 @@ namespace platformer
         m_isFacingRight = !m_isFacingRight;
     }
 
-} // namespace platformer
+} // namespace bramblefore

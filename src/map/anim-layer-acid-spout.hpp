@@ -18,7 +18,7 @@ namespace sf
     class RenderStates;
 } // namespace sf
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -108,6 +108,6 @@ namespace platformer
         std::vector<AcidSplashAnim> m_splashAnims;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // ANIM_LAYER_ACID_SPOUT_HPP_INCLUDED

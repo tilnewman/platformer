@@ -6,7 +6,7 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Vertex.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     class ScreenLayout
@@ -24,6 +24,6 @@ namespace platformer
         sf::FloatRect m_wholeRect;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // SCREEN_LAYOUT_HPP_INCLUDED

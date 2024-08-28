@@ -15,7 +15,7 @@
 
 #include <iostream>
 
-namespace platformer
+namespace bramblefore
 {
 
     MonsterSpellTextureManager::MonsterSpellTextureManager()
@@ -211,4 +211,4 @@ namespace platformer
         }
     }
 
-} // namespace platformer
+} // namespace bramblefore

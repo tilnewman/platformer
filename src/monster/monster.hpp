@@ -17,7 +17,7 @@ namespace sf
     class RenderStates;
 } // namespace sf
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -99,6 +99,6 @@ namespace platformer
         MonsterSpellAnimations m_animations;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // MONSTER_HPP_INCLUDED

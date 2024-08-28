@@ -7,7 +7,7 @@
 
 #include <memory>
 
-namespace platformer
+namespace bramblefore
 {
 
     class DefaultTexture

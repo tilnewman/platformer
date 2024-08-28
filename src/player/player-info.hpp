@@ -9,7 +9,7 @@
 #include <string_view>
 #include <vector>
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -345,6 +345,6 @@ namespace platformer
         std::vector<PlayerSpell> m_spells;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // PLAYER_INFO_HPP_INCLUDED

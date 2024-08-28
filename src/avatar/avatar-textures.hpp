@@ -11,7 +11,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -135,6 +135,6 @@ namespace platformer
         std::vector<AvatarTextureSet> m_textureSets;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // AVATAR_TEXTURES_HPP_INCLUDED

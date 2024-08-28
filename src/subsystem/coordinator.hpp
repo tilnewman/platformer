@@ -33,7 +33,7 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/VideoMode.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     class Coordinator
@@ -90,6 +90,6 @@ namespace platformer
         sf::Text m_avatarAnimIndexText;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // COORDINATOR_HPP_INCLUDED

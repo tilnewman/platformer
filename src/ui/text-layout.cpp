@@ -15,7 +15,7 @@
 #include <iterator>
 #include <sstream>
 
-namespace platformer
+namespace bramblefore
 {
 
     TextLayout::TextLayout() {}
@@ -95,4 +95,4 @@ namespace platformer
         return words;
     }
 
-} // namespace platformer
+} // namespace bramblefore

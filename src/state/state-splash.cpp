@@ -15,7 +15,7 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Event.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     SplashState::SplashState()
@@ -71,4 +71,4 @@ namespace platformer
         t_context.state.setChangePending(State::Play);
     }
 
-} // namespace platformer
+} // namespace bramblefore

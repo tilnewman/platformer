@@ -7,7 +7,7 @@
 
 #include <SFML/Graphics/Rect.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -27,6 +27,6 @@ namespace platformer
         void startAttackAnimation(Context & t_context) final;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // MONSTER_DRAGON_HPP_INCLUDED

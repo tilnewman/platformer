@@ -13,7 +13,7 @@
 #include "ui/text-layout.hpp"
 #include "util/sfml-util.hpp"
 
-namespace platformer
+namespace bramblefore
 {
 
     GuiWindowPaper::GuiWindowPaper()
@@ -173,4 +173,4 @@ namespace platformer
         }
     }
 
-} // namespace platformer
+} // namespace bramblefore

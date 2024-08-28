@@ -13,7 +13,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/Vector2.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -109,6 +109,6 @@ namespace platformer
         float m_timePerFrameSec;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // MONSTER_SPELL_ANIM_HPP_INCLUDED

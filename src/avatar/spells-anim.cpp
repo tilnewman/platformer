@@ -15,7 +15,7 @@
 
 #include <iostream>
 
-namespace platformer
+namespace bramblefore
 {
 
     SpellAnimations::SpellAnimations()
@@ -154,4 +154,4 @@ namespace platformer
         }
     }
 
-} // namespace platformer
+} // namespace bramblefore

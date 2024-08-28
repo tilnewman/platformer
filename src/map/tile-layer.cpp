@@ -16,7 +16,7 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     TileLayer::TileLayer(
@@ -149,4 +149,4 @@ namespace platformer
         populateVisibleVerts(t_context.layout.wholeRect());
     }
 
-} // namespace platformer
+} // namespace bramblefore

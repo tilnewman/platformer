@@ -10,7 +10,7 @@
 
 #include <SFML/Graphics/Texture.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     TextureStats::TextureStats()
@@ -38,4 +38,4 @@ namespace platformer
         std::cout << ss.str() << '\n';
     }
 
-} // namespace platformer
+} // namespace bramblefore

@@ -14,7 +14,7 @@
 
 #include <SFML/Graphics/Rect.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     class LevelFileLoader
@@ -62,6 +62,6 @@ namespace platformer
         std::string m_pathStr;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // LEVEL_FILE_LOADER_HPP_INCLUDED

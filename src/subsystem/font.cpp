@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-namespace platformer
+namespace bramblefore
 {
 
     FontManager::FontManager()
@@ -100,4 +100,4 @@ namespace platformer
         m_fontExtentSmall.letter_size.y = text.getGlobalBounds().height;
     }
 
-} // namespace platformer
+} // namespace bramblefore

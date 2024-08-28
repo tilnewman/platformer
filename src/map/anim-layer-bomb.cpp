@@ -17,7 +17,7 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     BombAnimationLayer::BombAnimationLayer(
@@ -142,4 +142,4 @@ namespace platformer
         return harm;
     }
 
-} // namespace platformer
+} // namespace bramblefore

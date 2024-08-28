@@ -15,7 +15,7 @@ namespace sf
     class RenderStates;
 } // namespace sf
 
-namespace platformer
+namespace bramblefore
 {
 
     class GlowRect
@@ -44,6 +44,6 @@ namespace platformer
         std::vector<sf::Vertex> m_verts;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // GLOW_RECT_HPP_INCLUDED

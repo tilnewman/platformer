@@ -9,7 +9,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -39,6 +39,6 @@ namespace platformer
         float m_elpasedTimeSec;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // STATE_SPLASH_HPP_INCLUDED

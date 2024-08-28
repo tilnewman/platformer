@@ -8,7 +8,7 @@
 #include <memory>
 #include <optional>
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -40,6 +40,6 @@ namespace platformer
         std::optional<State> m_changePendingOpt;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // STATE_MANAGER_HPP_INCLUDED

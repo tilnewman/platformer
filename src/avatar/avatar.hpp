@@ -21,7 +21,7 @@ namespace sf
     class RenderStates;
 } // namespace sf
 
-namespace platformer
+namespace bramblefore
 {
     struct Context;
     struct Settings;
@@ -123,6 +123,6 @@ namespace platformer
         AvatarSpellAnimations m_spellAnim;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // AVATAR_HPP_INCLUDED

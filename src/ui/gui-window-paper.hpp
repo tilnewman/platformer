@@ -21,7 +21,7 @@ namespace sf
     class RenderStates;
 } // namespace sf
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -61,6 +61,6 @@ namespace platformer
         std::vector<sf::Vertex> m_bgFadeVerts;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // GUI_WINDOW_PAPER_HPP_INCLUDED

@@ -19,7 +19,7 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/Sleep.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     Coordinator::Coordinator(const Settings & t_settings)
@@ -259,4 +259,4 @@ namespace platformer
         }
     }
 
-} // namespace platformer
+} // namespace bramblefore

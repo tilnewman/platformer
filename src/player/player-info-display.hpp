@@ -19,7 +19,7 @@ namespace sf
     class RenderStates;
 } // namespace sf
 
-namespace platformer
+namespace bramblefore
 {
     struct Context;
 
@@ -95,6 +95,6 @@ namespace platformer
         sf::Sprite m_starYellow5Sprite;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // PLAYER_INFO_DISPLAY_HPP_INCLUDED

@@ -18,7 +18,7 @@ namespace sf
     class RenderStates;
 } // namespace sf
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -73,6 +73,6 @@ namespace platformer
         std::vector<GhostBottleAnim> m_anims;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // ANIM_LAYER_GHOST_BOTTLE_HPP_INCLUDED

@@ -4,7 +4,7 @@
 // custom-types.hpp
 //
 
-namespace platformer
+namespace bramblefore
 {
     
     // keep these types signed
@@ -12,6 +12,6 @@ namespace platformer
     using Coin_t = int;
     using Mana_t = int;
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // CUSTOM_TYPES_HPP_INCLUDED

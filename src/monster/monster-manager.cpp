@@ -10,7 +10,7 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     MonsterManager::MonsterManager()
@@ -77,4 +77,4 @@ namespace platformer
         return false;
     }
 
-} // namespace platformer
+} // namespace bramblefore

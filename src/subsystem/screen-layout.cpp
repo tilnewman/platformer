@@ -8,7 +8,7 @@
 #include "bramblefore/settings.hpp"
 #include "util/sfml-util.hpp"
 
-namespace platformer
+namespace bramblefore
 {
 
     ScreenLayout::ScreenLayout()
@@ -22,4 +22,4 @@ namespace platformer
         m_wholeRect = { { 0.0f, 0.0f }, m_wholeSize };
     }
 
-} // namespace platformer
+} // namespace bramblefore

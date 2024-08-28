@@ -16,7 +16,7 @@ namespace sf
     class RenderStates;
 } // namespace sf
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -453,6 +453,6 @@ namespace platformer
         virtual bool avatarAttack(Context & t_context, const AttackInfo & t_attackInfo)      = 0;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // IMONSTER_HPP_INCLUDED

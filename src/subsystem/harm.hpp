@@ -9,7 +9,7 @@
 
 #include <SFML/Graphics/Rect.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Harm
@@ -33,6 +33,6 @@ namespace platformer
         sf::FloatRect rect;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // HARM_HPP_INCLUDED

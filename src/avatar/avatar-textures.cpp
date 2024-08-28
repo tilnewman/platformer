@@ -14,7 +14,7 @@
 
 #include <iostream>
 
-namespace platformer
+namespace bramblefore
 {
 
     AvatarTextureManager::AvatarTextureManager()
@@ -232,4 +232,4 @@ namespace platformer
         }
     }
 
-} // namespace platformer
+} // namespace bramblefore

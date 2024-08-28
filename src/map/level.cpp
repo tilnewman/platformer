@@ -15,7 +15,7 @@
 
 #include <iostream>
 
-namespace platformer
+namespace bramblefore
 {
 
     Level::Level()
@@ -148,4 +148,4 @@ namespace platformer
         monsters.update(t_context, t_frameTimeSec);
     }
 
-} // namespace platformer
+} // namespace bramblefore

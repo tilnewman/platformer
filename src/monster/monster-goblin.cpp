@@ -9,7 +9,7 @@
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
 
-namespace platformer
+namespace bramblefore
 {
 
     Goblin::Goblin(Context & t_context, const sf::FloatRect & t_region)
@@ -50,4 +50,4 @@ namespace platformer
         return rect;
     }
 
-} // namespace platformer
+} // namespace bramblefore

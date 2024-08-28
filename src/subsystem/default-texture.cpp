@@ -7,7 +7,7 @@
 
 #include <SFML/Graphics/Image.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     DefaultTexture::DefaultTexture()
@@ -29,4 +29,4 @@ namespace platformer
 
     void DefaultTexture::teardown() { m_textureUPtr.reset(); }
 
-} // namespace platformer
+} // namespace bramblefore

@@ -7,7 +7,7 @@
 
 #include <SFML/Window/VideoMode.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Settings
@@ -43,6 +43,6 @@ namespace platformer
         float high_jump_acc      = 850.0f;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // SETTINGS_HPP_INCLUDED

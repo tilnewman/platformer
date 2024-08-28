@@ -13,7 +13,7 @@ namespace sf
     class Event;
 } // namespace sf
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -88,6 +88,6 @@ namespace platformer
         void onExit(Context &) final {}
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // STATES_HPP_INCLUDED

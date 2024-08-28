@@ -9,7 +9,7 @@
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
 
-namespace platformer
+namespace bramblefore
 {
 
     HarmCollisionManager::HarmCollisionManager()
@@ -50,4 +50,4 @@ namespace platformer
         return Harm{};
     }
 
-} // namespace platformer
+} // namespace bramblefore

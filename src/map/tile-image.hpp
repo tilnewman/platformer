@@ -7,7 +7,7 @@
 #include <string>
 #include <string_view>
 
-namespace platformer
+namespace bramblefore
 {
 
     enum class TileImage : std::size_t
@@ -64,6 +64,6 @@ namespace platformer
         return filename;
     }
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // TILEIMAGE_HPP_INCLUDED

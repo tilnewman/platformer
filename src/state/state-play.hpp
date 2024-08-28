@@ -15,7 +15,7 @@ namespace sf
     class Event;
 } // namespace sf
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -42,6 +42,6 @@ namespace platformer
         SpellSelectMenu m_spellSelectMenu;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // STATE_PLAY_HPP_INCLUDED

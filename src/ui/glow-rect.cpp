@@ -10,7 +10,7 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     GlowRect::GlowRect()
@@ -136,4 +136,4 @@ namespace platformer
         t_target.draw(&m_verts[0], m_verts.size(), sf::Quads);
     }
 
-} // namespace platformer
+} // namespace bramblefore

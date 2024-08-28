@@ -9,7 +9,7 @@
 
 #include <SFML/Graphics/Rect.hpp>
 
-namespace platformer
+namespace bramblefore
 {
     struct Context;
     struct Settings;
@@ -41,6 +41,6 @@ namespace platformer
         std::vector<std::reference_wrapper<IHarmCollisionOwner>> m_owners;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // HARM_COLLISION_MANAGER_HPP_INCLUDED

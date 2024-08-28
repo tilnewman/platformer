@@ -12,7 +12,7 @@
 
 #include <exception>
 
-namespace platformer
+namespace bramblefore
 {
 
     StateManager::StateManager()
@@ -60,4 +60,4 @@ namespace platformer
         // clang-format on
     }
 
-} // namespace platformer
+} // namespace bramblefore

@@ -18,7 +18,7 @@ namespace sf
     class RenderStates;
 } // namespace sf
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -64,6 +64,6 @@ namespace platformer
         std::size_t m_frameIndex;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // ANIM_LAYER_ACID_HPP_INCLUDED

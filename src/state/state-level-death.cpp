@@ -15,7 +15,7 @@
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     LevelDeathState::LevelDeathState()
@@ -66,4 +66,4 @@ namespace platformer
         t_target.draw(m_text, t_states);
     }
 
-} // namespace platformer
+} // namespace bramblefore

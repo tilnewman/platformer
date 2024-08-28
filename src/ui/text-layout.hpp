@@ -10,7 +10,7 @@
 
 #include <SFML/Graphics/Text.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -32,6 +32,6 @@ namespace platformer
         [[nodiscard]] static std::vector<std::string> splitIntoWords(const std::string & t_text);
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // TEXT_LAYOUT_HPP_INCLUDED

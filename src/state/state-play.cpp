@@ -21,7 +21,7 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Event.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     PlayState::PlayState()
@@ -96,4 +96,4 @@ namespace platformer
 
     void PlayState::onExit(Context & t_context) { t_context.level.reset(); }
 
-} // namespace platformer
+} // namespace bramblefore

@@ -17,7 +17,7 @@ namespace sf
     class RenderStates;
 } // namespace sf
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -50,6 +50,6 @@ namespace platformer
         std::vector<std::unique_ptr<IMonster>> m_monsters;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // MONSTER_MANAGER_HPP_INCLUDED

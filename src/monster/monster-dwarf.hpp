@@ -7,7 +7,7 @@
 
 #include <SFML/Graphics/Rect.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -27,6 +27,6 @@ namespace platformer
         void turnAround() final;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // MONSTER_BEAR_HPP_INCLUDED

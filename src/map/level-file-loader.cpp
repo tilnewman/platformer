@@ -55,7 +55,7 @@
 #include <fstream>
 #include <sstream>
 
-namespace platformer
+namespace bramblefore
 {
 
     LevelFileLoader::LevelFileLoader()
@@ -544,4 +544,4 @@ namespace platformer
         }
     }
 
-} // namespace platformer
+} // namespace bramblefore

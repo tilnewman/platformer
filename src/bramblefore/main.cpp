@@ -1,7 +1,7 @@
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
-#include "util/check-macros.hpp"
 #include "subsystem/coordinator.hpp"
+#include "util/check-macros.hpp"
 
 #include <filesystem>
 #include <iostream>
@@ -11,7 +11,7 @@ int main(const int argc, const char * const argv[])
 {
     try
     {
-        platformer::Settings settings;
+        bramblefore::Settings settings;
         if (argc > 1)
         {
             settings.media_path =
@@ -30,7 +30,7 @@ int main(const int argc, const char * const argv[])
 
         settings.media_path = std::filesystem::canonical(settings.media_path);
 
-        platformer::Coordinator coordinator(settings);
+        bramblefore::Coordinator coordinator(settings);
         coordinator.play();
     }
     catch (const std::exception & ex)

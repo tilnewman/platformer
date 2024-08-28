@@ -9,7 +9,7 @@
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
 
-namespace platformer
+namespace bramblefore
 {
 
     Dragon::Dragon(Context & t_context, const sf::FloatRect & t_region)
@@ -81,4 +81,4 @@ namespace platformer
         m_animations.add(pos, m_spell, m_isFacingRight);
     }
 
-} // namespace platformer
+} // namespace bramblefore

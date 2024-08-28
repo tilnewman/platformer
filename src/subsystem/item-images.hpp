@@ -10,7 +10,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/Vector2.hpp>
 
-namespace platformer
+namespace bramblefore
 {
     struct Context;
     struct Settings;
@@ -260,6 +260,6 @@ namespace platformer
         sf::Texture m_backgroundTexture;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // ITEM_IMAGES_HPP_INCLUDED

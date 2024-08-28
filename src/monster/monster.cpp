@@ -18,7 +18,7 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     Monster::Monster(Context & t_context, const MonsterSetupInfo & t_setupInfo)
@@ -398,4 +398,4 @@ namespace platformer
         m_isFacingRight = !m_isFacingRight;
     }
 
-} // namespace platformer
+} // namespace bramblefore

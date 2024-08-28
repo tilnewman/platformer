@@ -9,7 +9,7 @@
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
 
-namespace platformer
+namespace bramblefore
 {
 
     Hound::Hound(Context & t_context, const sf::FloatRect & t_region)
@@ -51,4 +51,4 @@ namespace platformer
         return rect;
     }
 
-} // namespace platformer
+} // namespace bramblefore

@@ -7,7 +7,7 @@
 
 #include <SFML/Graphics/Rect.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -25,6 +25,6 @@ namespace platformer
         sf::FloatRect attackCollisionRect() const final;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // MONSTER_IMP_HPP_INCLUDED

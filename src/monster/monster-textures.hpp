@@ -10,7 +10,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
-namespace platformer
+namespace bramblefore
 {
     struct Context;
     struct Settings;
@@ -55,6 +55,6 @@ namespace platformer
         std::vector<MonsterTextures> m_textureSets;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // MONSTER_TEXTURES_HPP_INCLUDED

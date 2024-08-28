@@ -10,7 +10,7 @@ namespace sf
     class Texture;
 }
 
-namespace platformer
+namespace bramblefore
 {
 
     class TextureStats
@@ -29,6 +29,6 @@ namespace platformer
         std::size_t m_byteCount;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // TEXTURE_STATS_HPP_INCLUDED

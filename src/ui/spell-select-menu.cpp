@@ -18,7 +18,7 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     SpellSelectMenu::SpellSelectMenu()
@@ -200,4 +200,4 @@ namespace platformer
         return info;
     }
 
-} // namespace platformer
+} // namespace bramblefore

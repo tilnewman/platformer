@@ -18,7 +18,7 @@ namespace sf
     class RenderStates;
 } // namespace sf
 
-namespace platformer
+namespace bramblefore
 {
     struct Context;
     struct Settings;
@@ -69,6 +69,6 @@ namespace platformer
         sf::Vector2f m_scale;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // SPELLS_ANIM_HPP_INCLUDED

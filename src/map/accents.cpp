@@ -14,7 +14,7 @@
 
 #include <iostream>
 
-namespace platformer
+namespace bramblefore
 {
 
     AccentAnimations::AccentAnimations()
@@ -183,4 +183,4 @@ namespace platformer
         }
     }
 
-} // namespace platformer
+} // namespace bramblefore

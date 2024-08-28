@@ -13,7 +13,7 @@
 #include <exception>
 #include <iostream>
 
-namespace platformer
+namespace bramblefore
 {
 
     MapTextureManager::MapTextureManager()
@@ -125,4 +125,4 @@ namespace platformer
         m_tileTextures.at(imageIndex).gid = t_gid;
     }
 
-} // namespace platformer
+} // namespace bramblefore

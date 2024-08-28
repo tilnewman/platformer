@@ -11,7 +11,7 @@
 #include <algorithm>
 #include <iostream>
 
-namespace platformer
+namespace bramblefore
 {
 
     PlayerInfo::PlayerInfo()
@@ -117,4 +117,4 @@ namespace platformer
         }
     }
 
-} // namespace platformer
+} // namespace bramblefore

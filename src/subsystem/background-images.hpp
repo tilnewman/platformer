@@ -17,7 +17,7 @@ namespace sf
     class RenderStates;
 } // namespace sf
 
-namespace platformer
+namespace bramblefore
 {
     struct Context;
 
@@ -98,6 +98,6 @@ namespace platformer
         std::vector<sf::Vertex> m_fadeQuads;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // BACKGROUNDIMAGES_HPP_INCLUDED

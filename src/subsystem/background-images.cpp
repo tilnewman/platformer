@@ -12,7 +12,7 @@
 #include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
 
-namespace platformer
+namespace bramblefore
 {
 
     BackgroundImages::BackgroundImages()
@@ -283,4 +283,4 @@ namespace platformer
         }
     }
 
-} // namespace platformer
+} // namespace bramblefore

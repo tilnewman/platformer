@@ -10,7 +10,7 @@
 
 #include <SFML/Graphics/Rect.hpp>
 
-namespace platformer
+namespace bramblefore
 {
     struct Context;
     struct TileTexture;
@@ -51,6 +51,6 @@ namespace platformer
         float findFarthestHorizMapPixel() const;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // LEVEL_HPP_INCLUDED

@@ -9,7 +9,7 @@
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
 
-namespace platformer
+namespace bramblefore
 {
 
     struct Context;
@@ -109,6 +109,6 @@ namespace platformer
         FontExtent m_fontExtentSmall;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // FONT_HPP_INCLUDED

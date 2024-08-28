@@ -15,7 +15,7 @@
 
 #include <iostream>
 
-namespace platformer
+namespace bramblefore
 {
 
     PickupAnimations::PickupAnimations()
@@ -209,4 +209,4 @@ namespace platformer
         }
     }
 
-} // namespace platformer
+} // namespace bramblefore
