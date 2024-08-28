@@ -89,9 +89,9 @@ namespace bramblefore
         m_layout.setup(m_window.getSize());
         m_fonts.setup(m_settings);
         m_itemImages.setup(m_settings);
-        m_pickups.setup(m_settings);
-        m_accents.setup(m_settings);
-        m_spells.setup(m_settings);
+        m_pickups.setup(m_context);
+        m_accents.setup(m_context);
+        m_spells.setup(m_context);
 
         // TODO find a better place for this eventually
         m_playerInfo.setup(m_context, AvatarType::Enchantress);

@@ -133,7 +133,7 @@ namespace bramblefore
       public:
         AccentAnimations();
 
-        void setup(const Settings & t_settings);
+        void setup(const Context & t_context);
 
         void add(
             const Context & t_context, const sf::FloatRect & t_rect, const std::string & t_name);

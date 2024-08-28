@@ -48,7 +48,7 @@ namespace bramblefore
 
     void Avatar::setup(const Context & t_context)
     {
-        m_spellAnim.setup(t_context.settings);
+        m_spellAnim.setup(t_context);
 
         m_type  = t_context.player.avatarType();
         m_anim  = AvatarAnim::Walk;
@@ -57,7 +57,11 @@ namespace bramblefore
         AvatarTextureManager & textureManager{ AvatarTextureManager::instance() };
         textureManager.acquire(t_context, m_type);
         textureManager.set(m_sprite, m_type, m_anim, 0);
-        m_sprite.setScale(t_context.settings.avatar_scale, t_context.settings.avatar_scale);
+
+        const float scale{ t_context.layout.calScaleBasedOnResolution(
+            t_context, t_context.settings.avatar_scale) };
+
+        m_sprite.setScale(scale, scale);
     }
 
     void Avatar::update(Context & t_context, const float t_frameTimeSec)

@@ -32,12 +32,15 @@ namespace bramblefore
         m_flareAnims.reserve(16);
     }
 
-    void PickupAnimations::setup(const Settings & t_settings)
+    void PickupAnimations::setup(const Context & t_context)
     {
-        m_scale.x = t_settings.tile_scale;
-        m_scale.y = t_settings.tile_scale;
+        const float scale{ t_context.layout.calScaleBasedOnResolution(
+            t_context, t_context.settings.tile_scale) };
 
-        m_timePerFrameSec = t_settings.pickups_time_per_frame;
+        m_scale.x = scale;
+        m_scale.y = scale;
+
+        m_timePerFrameSec = t_context.settings.pickups_time_per_frame;
 
         m_textures.reserve(static_cast<std::size_t>(Pickup::Count));
 
@@ -48,7 +51,8 @@ namespace bramblefore
             sf::Texture & texture{ m_textures.emplace_back() };
 
             texture.loadFromFile(
-                (t_settings.media_path / "image/pickup-anim" / toFilename(pickup)).string());
+                (t_context.settings.media_path / "image/pickup-anim" / toFilename(pickup))
+                    .string());
 
             TextureStats::instance().process(texture);
 
@@ -61,9 +65,7 @@ namespace bramblefore
     {
         const Pickup pickup{ stringToPickup(t_name) };
 
-        M_CHECK(
-            (Pickup::Count != pickup),
-            "t_name=\"" << t_name << "\" which is an unknown name.");
+        M_CHECK((Pickup::Count != pickup), "t_name=\"" << t_name << "\" which is an unknown name.");
 
         PickupAnim & anim{ m_anims.emplace_back() };
         anim.which      = pickup;

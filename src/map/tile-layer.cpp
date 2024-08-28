@@ -37,7 +37,11 @@ namespace bramblefore
         const Context &, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
         t_states.texture = &MapTextureManager::instance().get(m_image).texture;
-        t_target.draw(&m_visibleVerts[0], m_visibleVerts.size(), sf::Quads, t_states);
+
+        if (!m_visibleVerts.empty())
+        {
+            t_target.draw(&m_visibleVerts[0], m_visibleVerts.size(), sf::Quads, t_states);
+        }
     }
 
     void TileLayer::move(const Context & t_context, const float t_move)

@@ -31,10 +31,13 @@ namespace bramblefore
         m_anims.reserve(8);
     }
 
-    void SpellAnimations::setup(const Settings & t_settings)
+    void SpellAnimations::setup(const Context & t_context)
     {
-        m_scale.x = t_settings.spell_scale;
-        m_scale.y = t_settings.spell_scale;
+        const float scale{ t_context.layout.calScaleBasedOnResolution(
+            t_context, t_context.settings.spell_scale) };
+
+        m_scale.x = scale;
+        m_scale.y = scale;
 
         for (std::size_t spellIndex(0); spellIndex < static_cast<std::size_t>(Spell::Count);
              ++spellIndex)
@@ -44,7 +47,7 @@ namespace bramblefore
             SpellTextures & set{ m_textureSets.at(spellIndex) };
 
             const std::filesystem::path iconPath{
-                t_settings.media_path / "image/spell-anim" /
+                t_context.settings.media_path / "image/spell-anim" /
                 std::string(toFilesystemName(spell)).append("-icon.png")
             };
 
@@ -52,7 +55,7 @@ namespace bramblefore
             TextureStats::instance().process(set.icon_texture);
             set.icon_texture.setSmooth(true);
 
-            const std::filesystem::path path{ t_settings.media_path / "image/spell-anim" /
+            const std::filesystem::path path{ t_context.settings.media_path / "image/spell-anim" /
                                               toFilesystemName(spell) };
 
             const std::vector<std::filesystem::path> files{ util::findFilesInDirectory(

@@ -52,7 +52,7 @@ namespace bramblefore
       public:
         AvatarSpellAnimations();
 
-        void setup(const Settings & t_settings);
+        void setup(const Context & context);
 
         void
             add(const sf::Vector2f & t_pos,

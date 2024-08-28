@@ -370,7 +370,12 @@ namespace bramblefore
         Context & t_context, const float t_imageHeightOffsetRatio, const float t_imageScale)
     {
         MonsterTextureManager::instance().setTexture(m_sprite, m_type, m_anim, m_animFrame);
-        m_sprite.setScale(t_context.settings.monster_scale, t_context.settings.monster_scale);
+
+        const float scale{ t_context.layout.calScaleBasedOnResolution(
+            t_context, t_context.settings.monster_scale) };
+
+        m_sprite.setScale(scale, scale);
+
         m_sprite.scale(t_imageScale, t_imageScale);
         util::setOriginToCenter(m_sprite);
 

@@ -6,6 +6,7 @@
 #include "subsystem/screen-layout.hpp"
 
 #include "bramblefore/settings.hpp"
+#include "subsystem/context.hpp"
 #include "util/sfml-util.hpp"
 
 namespace bramblefore
@@ -20,6 +21,17 @@ namespace bramblefore
     {
         m_wholeSize = { static_cast<float>(windowSize.x), static_cast<float>(windowSize.y) };
         m_wholeRect = { { 0.0f, 0.0f }, m_wholeSize };
+    }
+
+    float ScreenLayout::calScaleBasedOnResolution(
+        const Context & context, const float originalScale) const
+    {
+        const float originalResProduct{ std::sqrt(2056.0f * 1329.0f) };
+
+        const float currentResProduct{ std::sqrt(static_cast<float>(
+            context.settings.video_mode.width * context.settings.video_mode.height)) };
+
+        return ((originalScale * currentResProduct) / originalResProduct);
     }
 
 } // namespace bramblefore

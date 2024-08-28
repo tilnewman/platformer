@@ -9,6 +9,10 @@
 namespace bramblefore
 {
 
+    struct Context;
+
+    //
+
     class ScreenLayout
     {
       public:
@@ -18,6 +22,9 @@ namespace bramblefore
 
         [[nodiscard]] inline sf::Vector2f wholeSize() const noexcept { return m_wholeSize; }
         [[nodiscard]] inline sf::FloatRect wholeRect() const noexcept { return m_wholeRect; }
+
+        [[nodiscard]] float
+            calScaleBasedOnResolution(const Context & t_context, const float t_originalScale) const;
 
       private:
         sf::Vector2f m_wholeSize;

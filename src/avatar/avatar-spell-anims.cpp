@@ -31,27 +31,35 @@ namespace bramblefore
         m_anims.reserve(8);
     }
 
-    void AvatarSpellAnimations::setup(const Settings & t_settings)
+    void AvatarSpellAnimations::setup(const Context & t_context)
     {
-        m_scale.x = t_settings.avatar_scale;
-        m_scale.y = t_settings.avatar_scale;
+        const float scale{ t_context.layout.calScaleBasedOnResolution(
+            t_context, t_context.settings.avatar_scale) };
 
-        loadTextures(m_druidTextures.first, (t_settings.media_path / "image/avatar/druid/fire"));
-
-        loadTextures(
-            m_druidTextures.second, (t_settings.media_path / "image/avatar/druid/fire_extra"));
+        m_scale.x = scale;
+        m_scale.y = scale;
 
         loadTextures(
-            m_enchantressTextures.first, (t_settings.media_path / "image/avatar/enchantress/fire"));
+            m_druidTextures.first, (t_context.settings.media_path / "image/avatar/druid/fire"));
+
+        loadTextures(
+            m_druidTextures.second,
+            (t_context.settings.media_path / "image/avatar/druid/fire_extra"));
+
+        loadTextures(
+            m_enchantressTextures.first,
+            (t_context.settings.media_path / "image/avatar/enchantress/fire"));
 
         loadTextures(
             m_enchantressTextures.second,
-            (t_settings.media_path / "image/avatar/enchantress/fire_extra"));
-
-        loadTextures(m_witchTextures.first, (t_settings.media_path / "image/avatar/witch/fire"));
+            (t_context.settings.media_path / "image/avatar/enchantress/fire_extra"));
 
         loadTextures(
-            m_witchTextures.second, (t_settings.media_path / "image/avatar/witch/fire_extra"));
+            m_witchTextures.first, (t_context.settings.media_path / "image/avatar/witch/fire"));
+
+        loadTextures(
+            m_witchTextures.second,
+            (t_context.settings.media_path / "image/avatar/witch/fire_extra"));
     }
 
     void AvatarSpellAnimations::add(

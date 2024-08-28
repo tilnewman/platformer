@@ -50,7 +50,7 @@ namespace bramblefore
       public:
         SpellAnimations();
 
-        void setup(const Settings & t_settings);
+        void setup(const Context & t_context);
         void add(const sf::Vector2f & t_pos, const Spell t_spell);
         void update(Context & t_context, const float t_frameTimeSec);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;

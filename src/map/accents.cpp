@@ -28,13 +28,16 @@ namespace bramblefore
         m_anims.reserve(32); // just a harmless guess
     }
 
-    void AccentAnimations::setup(const Settings & t_settings)
+    void AccentAnimations::setup(const Context & t_context)
     {
-        m_scale.x = t_settings.tile_scale;
-        m_scale.y = t_settings.tile_scale;
+        const float scale{ t_context.layout.calScaleBasedOnResolution(
+            t_context, t_context.settings.tile_scale) };
 
-        m_timePerFireFrameSec = t_settings.accent_fire_time_per_frame;
-        m_timePerVineFrameSec = t_settings.accent_vine_time_per_frame;
+        m_scale.x = scale;
+        m_scale.y = scale;
+
+        m_timePerFireFrameSec = t_context.settings.accent_fire_time_per_frame;
+        m_timePerVineFrameSec = t_context.settings.accent_vine_time_per_frame;
 
         m_textures.reserve(static_cast<std::size_t>(Accent::Count));
 
@@ -46,7 +49,8 @@ namespace bramblefore
             sf::Texture & texture{ m_textures.emplace_back() };
 
             texture.loadFromFile(
-                (t_settings.media_path / "image/accent-anim" / toFilename(accent)).string());
+                (t_context.settings.media_path / "image/accent-anim" / toFilename(accent))
+                    .string());
 
             texture.setSmooth(true);
 

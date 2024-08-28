@@ -98,8 +98,10 @@ namespace bramblefore
 
         t_context.level.tile_size_texture = sf::Vector2f{ t_context.level.tile_size };
 
-        t_context.level.tile_size_screen =
-            (sf::Vector2f{ t_context.level.tile_size } * t_context.settings.tile_scale);
+        const float scale{ t_context.layout.calScaleBasedOnResolution(
+            t_context, t_context.settings.tile_scale) };
+
+        t_context.level.tile_size_screen = (sf::Vector2f{ t_context.level.tile_size } * scale);
 
         t_context.level.tile_size_screen.x = floorf(t_context.level.tile_size_screen.x);
         t_context.level.tile_size_screen.y = floorf(t_context.level.tile_size_screen.y);
@@ -338,12 +340,15 @@ namespace bramblefore
         mapRect.width  = t_json["width"];
         mapRect.height = t_json["height"];
 
+        const float scale{ t_context.layout.calScaleBasedOnResolution(
+            t_context, t_context.settings.tile_scale) };
+
         // convert from map to screen coordinates
         sf::FloatRect screenRect{ mapRect };
-        screenRect.left *= t_context.settings.tile_scale;
-        screenRect.top *= t_context.settings.tile_scale;
-        screenRect.width *= t_context.settings.tile_scale;
-        screenRect.height *= t_context.settings.tile_scale;
+        screenRect.left *= scale;
+        screenRect.top *= scale;
+        screenRect.width *= scale;
+        screenRect.height *= scale;
         //
         screenRect.left += t_context.level.map_position_offset.x;
         screenRect.top += t_context.level.map_position_offset.y;
