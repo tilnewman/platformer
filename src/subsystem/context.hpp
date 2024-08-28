@@ -4,11 +4,6 @@
 // context.hpp
 //
 
-namespace sf
-{
-    class Window;
-}
-
 namespace util
 {
     class Random;
@@ -43,7 +38,6 @@ namespace platformer
     {
         Context(
             const Settings & set,
-            sf::Window & win,
             util::Random & ran,
             util::SoundPlayer & spl,
             StateManager & sma,
@@ -62,7 +56,6 @@ namespace platformer
             PlayerInfoDisplay & pid,
             FloatingText & flt)
             : settings(set)
-            , window(win)
             , random(ran)
             , sfx(spl)
             , state(sma)
@@ -83,7 +76,6 @@ namespace platformer
         {}
 
         const Settings & settings;
-        sf::Window & window;
         util::Random & random;
         util::SoundPlayer & sfx;
         StateManager & state;

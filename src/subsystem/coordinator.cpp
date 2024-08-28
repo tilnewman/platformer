@@ -42,12 +42,23 @@ namespace platformer
         , m_playerInfo{}
         , m_playerInfoDisplay{}
         , m_floatText{}
-        , m_context{ m_settings,    m_window,           m_random,
-                     m_sfx,         m_states,           m_fonts,
-                     *m_avatarUPtr, m_layout,           m_levelLoader,
-                     m_level,       m_backgroundImages, m_pickups,
-                     m_accents,     m_spells,           m_itemImages,
-                     m_levelInfo,   m_playerInfo,       m_playerInfoDisplay,
+        , m_context{ m_settings,
+                     m_random,
+                     m_sfx,
+                     m_states,
+                     m_fonts,
+                     *m_avatarUPtr,
+                     m_layout,
+                     m_levelLoader,
+                     m_level,
+                     m_backgroundImages,
+                     m_pickups,
+                     m_accents,
+                     m_spells,
+                     m_itemImages,
+                     m_levelInfo,
+                     m_playerInfo,
+                     m_playerInfoDisplay,
                      m_floatText }
         , m_fpsValues{}
         , m_oneSecondClock{}
