@@ -9,10 +9,9 @@
 #include "subsystem/context.hpp"
 #include "subsystem/default-texture.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
 #include "util/filesystem-util.hpp"
 #include "util/sfml-util.hpp"
-
-#include <iostream>
 
 namespace bramblefore
 {
@@ -72,13 +71,10 @@ namespace bramblefore
         {
             const AvatarTextureSet & set{ m_textureSets.at(typeIndex) };
 
-            if (set.ref_count != 0)
-            {
-                const AvatarType type{ static_cast<AvatarType>(typeIndex) };
-
-                std::cout << "AvatarTextureManager::teardown() but " << toString(type)
-                          << "'s ref_count=" << set.ref_count << '\n';
-            }
+            M_CHECK(
+                (0 == set.ref_count),
+                toString(static_cast<AvatarType>(typeIndex))
+                    << "'s ref_count was " << set.ref_count);
         }
 
         m_textureSets.clear();
@@ -110,14 +106,10 @@ namespace bramblefore
                 const std::vector<std::filesystem::path> files{ util::findFilesInDirectory(
                     animPath, ".png") };
 
-                if (anims.textures.size() != files.size())
-                {
-                    std::cout << "Error:  Initial parse of " << animPath << " found "
-                              << anims.textures.size() << " PNG files but now there are "
-                              << files.size() << '\n';
-
-                    continue;
-                }
+                M_CHECK(
+                    (anims.textures.size() == files.size()),
+                    "Initial parse of " << animPath << " found " << anims.textures.size()
+                                        << " PNG files but now there are " << files.size());
 
                 for (std::size_t frameIndex{ 0 }; frameIndex < files.size(); ++frameIndex)
                 {
@@ -142,14 +134,8 @@ namespace bramblefore
 
         AvatarTextureSet & set{ m_textureSets.at(typeIndex) };
 
-        if (0 == set.ref_count)
-        {
-            std::cout << "Error:  AvatarTextureManager::release(" << toString(t_type)
-                      << ") but the ref_count was already zero.\n";
+        M_CHECK((0 != set.ref_count), toString(t_type) << "'s ref_count was already zero.");
 
-            return;
-        }
-        
         if (1 == set.ref_count)
         {
             for (AnimTextures & anim : set.anims)
@@ -173,37 +159,18 @@ namespace bramblefore
         const AvatarTextureSet & set{ m_textureSets.at(static_cast<std::size_t>(t_type)) };
         const AnimTextures & anims{ set.anims.at(static_cast<std::size_t>(t_anim)) };
 
-        if (t_frame >= anims.textures.size())
+        if (t_frame < anims.textures.size())
         {
-            std::cout << "Error: AvatarTextureManager::set(" << toString(t_type) << ", "
-                      << toString(t_anim) << ", frameIndex=" << t_frame
-                      << ") but that frameIndex is >= to the max of " << anims.textures.size()
-                      << '\n';
-
-            return;
+            t_sprite.setTexture(anims.textures.at(t_frame), true);
         }
-
-        t_sprite.setTexture(anims.textures.at(t_frame), true);
     }
 
     std::size_t
         AvatarTextureManager::frameCount(const AvatarType t_type, const AvatarAnim t_anim) const
     {
-        const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
-        if (typeIndex >= m_textureSets.size())
-        {
-            return 0;
-        }
-
-        const AvatarTextureSet & set{ m_textureSets.at(typeIndex) };
-
-        const std::size_t animIndex{ static_cast<std::size_t>(t_anim) };
-        if (animIndex >= set.anims.size())
-        {
-            return 0;
-        }
-
-        return set.anims.at(animIndex).textures.size();
+        const AvatarTextureSet & set{ m_textureSets.at(static_cast<std::size_t>(t_type)) };
+        const AnimTextures & anims{ set.anims.at(static_cast<std::size_t>(t_anim)) };
+        return anims.textures.size();
     }
 
     const sf::Texture & AvatarTextureManager::getDefault(const AvatarType t_type) const

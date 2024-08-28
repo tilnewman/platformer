@@ -9,6 +9,7 @@
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
 #include "util/filesystem-util.hpp"
 #include "util/random.hpp"
 #include "util/sfml-util.hpp"
@@ -144,13 +145,7 @@ namespace bramblefore
         const std::vector<std::filesystem::path> files{ util::findFilesInDirectory(
             t_path, ".png") };
 
-        if (files.empty())
-        {
-            std::cout << "Error:  AvatarSpellAnimations::loadTextures(" << t_path
-                      << ") found no files.\n";
-
-            return;
-        }
+        M_CHECK(!files.empty(), "Found no files in: " << t_path);
 
         t_textures.resize(files.size());
 

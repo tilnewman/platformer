@@ -223,7 +223,7 @@ namespace bramblefore
             if (m_settings.will_display_fps)
             {
                 const auto stats = util::makeStats(m_fpsValues);
-                std::cout << "FPS " << stats << '\n';
+                std::clog << "\tFPS " << stats << '\n';
             }
 
             std::ranges::sort(m_fpsValues);
@@ -237,7 +237,7 @@ namespace bramblefore
 
     void Coordinator::setupRenderWindow(sf::VideoMode & t_videoMode)
     {
-        std::cout << "Attempting video mode " << t_videoMode << "...";
+        std::clog << "Attempting video mode " << t_videoMode << "...";
         m_window.create(t_videoMode, "Platformer", sf::Style::Fullscreen);
 
         // sometimes the resolution of the window created does not match what was specified
@@ -245,17 +245,17 @@ namespace bramblefore
         const unsigned actualHeight{ m_window.getSize().y };
         if ((t_videoMode.width == actualWidth) && (t_videoMode.height == actualHeight))
         {
-            std::cout << "Success.\n";
+            std::clog << "Success.\n";
         }
         else
         {
-            std::cout << "Failed"
+            std::clog << "Failed"
                       << ".  ";
 
             t_videoMode.width  = actualWidth;
             t_videoMode.height = actualHeight;
 
-            std::cout << "SFML switched to " << t_videoMode << " instead.\n";
+            std::clog << "SFML switched to " << t_videoMode << " instead.\n";
         }
     }
 

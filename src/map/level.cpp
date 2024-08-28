@@ -117,14 +117,14 @@ namespace bramblefore
 
     void Level::dumpInfo() const
     {
-        std::cout << "Map Graphics Layer Info:\n";
+        std::clog << "Map Graphics Layer Info:\n";
 
         for (const auto & layerUPtr : tile_layers)
         {
             layerUPtr->dumpInfo();
         }
 
-        std::cout << '\n';
+        std::clog << '\n';
     }
 
     void Level::draw(

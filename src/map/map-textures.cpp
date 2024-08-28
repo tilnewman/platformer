@@ -8,10 +8,8 @@
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
-
-#include <exception>
-#include <iostream>
 
 namespace bramblefore
 {
@@ -32,23 +30,20 @@ namespace bramblefore
         m_tileTextures.resize(static_cast<std::size_t>(TileImage::Count));
     }
 
-    void MapTextureManager::teardown() 
-    { 
+    void MapTextureManager::teardown()
+    {
         for (std::size_t imageIndex(0); imageIndex < static_cast<std::size_t>(TileImage::Count);
              ++imageIndex)
         {
             const TileTexture & tileTexture{ m_tileTextures.at(imageIndex) };
 
-            if (tileTexture.ref_count != 0)
-            {
-                const TileImage image{ static_cast<TileImage>(imageIndex) };
-
-                std::cout << "MapTextureManager::teardown() but " << toString(image)
-                          << "'s ref_count=" << tileTexture.ref_count << '\n';
-            }
+            M_CHECK(
+                (0 == tileTexture.ref_count),
+                toString(static_cast<TileImage>(imageIndex))
+                    << "'s ref_count=" << tileTexture.ref_count);
         }
 
-        m_tileTextures.clear(); 
+        m_tileTextures = std::vector<TileTexture>();
     }
 
     void MapTextureManager::acquire(const Context & t_context, const TileImage t_image)
@@ -85,13 +80,8 @@ namespace bramblefore
 
         TileTexture & tileTexture{ m_tileTextures.at(imageIndex) };
 
-        if (0 == tileTexture.ref_count)
-        {
-            std::cout << "Error:  MapTextureManager::release(" << toString(t_image)
-                      << ") but the ref_count was already zero.\n";
-
-            return;
-        }
+        M_CHECK(
+            (0 != tileTexture.ref_count), toString(t_image) << "'s ref_count was already zero.");
 
         if (1 == tileTexture.ref_count)
         {
@@ -104,25 +94,13 @@ namespace bramblefore
     const TileTexture & MapTextureManager::get(const TileImage t_image) const
     {
         const std::size_t imageIndex{ static_cast<std::size_t>(t_image) };
-        if (imageIndex >= m_tileTextures.size())
-        {
-            throw std::runtime_error("MapTextureManager::get() given out of range TileImage.");
-        }
-        else
-        {
-            return m_tileTextures.at(imageIndex);
-        }
+        M_CHECK((imageIndex < m_tileTextures.size()), "Out of range TileImage.");
+        return m_tileTextures.at(imageIndex);
     }
 
     void MapTextureManager::setGid(const TileImage t_image, const int t_gid)
     {
-        const std::size_t imageIndex{ static_cast<std::size_t>(t_image) };
-        if (imageIndex >= m_tileTextures.size())
-        {
-            return;
-        }
-
-        m_tileTextures.at(imageIndex).gid = t_gid;
+        m_tileTextures.at(static_cast<std::size_t>(t_image)).gid = t_gid;
     }
 
 } // namespace bramblefore

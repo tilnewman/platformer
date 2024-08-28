@@ -50,10 +50,8 @@
 #include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
 
-#include <exception>
 #include <filesystem>
 #include <fstream>
-#include <sstream>
 
 namespace bramblefore
 {
@@ -165,9 +163,8 @@ namespace bramblefore
             }
             else
             {
-                std::cout << "Warning: While parsing \"" << m_pathStr
-                          << "\": Ignored tileset named \"" << filename << "\", with gid=" << gid
-                          << "\n";
+                util::log() << "While parsing \"" << m_pathStr << "\": Ignored tileset named \""
+                            << filename << "\", with gid=" << gid << "\n";
             }
         }
     }
@@ -186,16 +183,16 @@ namespace bramblefore
             }
             else
             {
-                std::cout << "Warning: While parsing \"" << m_pathStr
-                          << "\": Ignored custom property named \"" << propName << "\"\n";
+                util::log() << "While parsing \"" << m_pathStr
+                            << "\": Ignored custom property named \"" << propName << "\"\n";
             }
         }
 
         if (backgroundImageName.empty())
         {
-            std::cout << "Error: While parsing \"" << m_pathStr
-                      << "\": This map file is missing the custom int property named "
-                         "\"background\", there will be no background on this map.\n";
+            util::log() << "Error: While parsing \"" << m_pathStr
+                        << "\": This map file is missing the custom int property named "
+                           "\"background\", there will be no background on this map.\n";
         }
 
         t_context.bg_image.setup(t_context, backgroundImageName);
@@ -301,8 +298,8 @@ namespace bramblefore
             }
             else
             {
-                std::cout << "WARNING:  While parsing level file \"" << m_pathStr
-                          << "\".  Ignored unknown layer named \"" << layerName << "\".\n";
+                util::log() << "While parsing level file \"" << m_pathStr
+                            << "\".  Ignored unknown layer named \"" << layerName << "\".\n";
             }
         }
     }
@@ -374,8 +371,8 @@ namespace bramblefore
             }
             else
             {
-                std::cout << "WARNING:  While parsing level file \"" << m_pathStr
-                          << "\".  Ignored unknown spawn rect named \"" << name << "\".\n";
+                util::log() << "While parsing level file \"" << m_pathStr
+                            << "\".  Ignored unknown spawn rect named \"" << name << "\".\n";
             }
         }
 
@@ -537,9 +534,9 @@ namespace bramblefore
             }
             else
             {
-                std::cout << "WARNING:  While parsing level file \"" << m_pathStr
-                          << "\".  Ignored unknown monster layer object named \"" << name
-                          << "\".\n";
+                util::log() << "While parsing level file \"" << m_pathStr
+                            << "\".  Ignored unknown monster layer object named \"" << name
+                            << "\".\n";
             }
         }
     }

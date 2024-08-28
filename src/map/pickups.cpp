@@ -9,6 +9,7 @@
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
 #include "util/random.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
@@ -59,13 +60,10 @@ namespace bramblefore
         const Context & t_context, const sf::FloatRect & t_rect, const std::string & t_name)
     {
         const Pickup pickup{ stringToPickup(t_name) };
-        if (Pickup::Count == pickup)
-        {
-            std::cout << "Error: PickupAnimations::add(\"" << t_name
-                      << "\") given an unknown name.\n";
 
-            return;
-        }
+        M_CHECK(
+            (Pickup::Count != pickup),
+            "t_name=\"" << t_name << "\" which is an unknown name.");
 
         PickupAnim & anim{ m_anims.emplace_back() };
         anim.which      = pickup;

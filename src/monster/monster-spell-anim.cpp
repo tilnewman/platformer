@@ -9,11 +9,10 @@
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
 #include "util/filesystem-util.hpp"
 #include "util/random.hpp"
 #include "util/sfml-util.hpp"
-
-#include <iostream>
 
 namespace bramblefore
 {
@@ -34,10 +33,7 @@ namespace bramblefore
         m_textureSets.resize(static_cast<std::size_t>(MonsterSpell::Count));
     }
 
-    void MonsterSpellTextureManager::teardown()
-    {
-        m_textureSets = std::vector<MonsterSpellTextures>();
-    }
+    void MonsterSpellTextureManager::teardown() { m_textureSets.clear(); }
 
     void MonsterSpellTextureManager::acquire(Context & t_context, const MonsterSpell t_spell)
     {
@@ -59,13 +55,7 @@ namespace bramblefore
             const std::vector<std::filesystem::path> files{ util::findFilesInDirectory(
                 imageDirPath, ".png") };
 
-            if (files.empty())
-            {
-                std::cout << "Error:  MonsterSpellTextureManager::acquire() found no png files in "
-                          << imageDirPath << '\n';
-
-                return;
-            }
+            M_CHECK(!files.empty(), "Found no png files in " << imageDirPath);
 
             set.textures.resize(files.size());
             for (std::size_t frameIndex{ 0 }; frameIndex < files.size(); ++frameIndex)
@@ -89,13 +79,7 @@ namespace bramblefore
 
         MonsterSpellTextures & set{ m_textureSets.at(spellIndex) };
 
-        if (0 == set.ref_count)
-        {
-            std::cout << "MonsterSpellTextureManager::release(" << toString(t_spell)
-                      << ") but the ref_count is already zero.\n";
-
-            return;
-        }
+        M_CHECK((0 != set.ref_count), toString(t_spell) << "'s ref_count is already zero.");
 
         if (1 == set.ref_count)
         {

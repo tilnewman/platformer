@@ -7,9 +7,9 @@
 
 #include "player/player-info-display.hpp"
 #include "subsystem/context.hpp"
+#include "util/check-macros.hpp"
 
 #include <algorithm>
-#include <iostream>
 
 namespace bramblefore
 {
@@ -101,20 +101,14 @@ namespace bramblefore
 
     void PlayerInfo::learnSpell(const Spell t_spell)
     {
-        const auto iter{ std::find_if(
-            std::begin(m_spells), std::end(m_spells), [&](const PlayerSpell & ps) {
-                return (ps.spell == t_spell);
-            }) };
+        const auto iter{ std::ranges::find_if(
+            m_spells, [&](const PlayerSpell & ps) { return (ps.spell == t_spell); }) };
 
-        if (iter == std::end(m_spells))
-        {
-            std::cout << "Error:  PlayerInfo::learnSpell(" << toName(t_spell) << ") failed for "
-                      << toString(m_avatarType) << ".\n";
-        }
-        else
-        {
-            iter->is_learned = true;
-        }
+        M_CHECK(
+            (iter != std::end(m_spells)),
+            toName(t_spell) << " spell was not found for " << toString(m_avatarType));
+
+        iter->is_learned = true;
     }
 
 } // namespace bramblefore

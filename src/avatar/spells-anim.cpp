@@ -9,6 +9,7 @@
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
 #include "util/filesystem-util.hpp"
 #include "util/random.hpp"
 #include "util/sfml-util.hpp"
@@ -57,13 +58,7 @@ namespace bramblefore
             const std::vector<std::filesystem::path> files{ util::findFilesInDirectory(
                 path, ".png") };
 
-            if (files.empty())
-            {
-                std::cout << "Error:  SpellAnimations::setup() failed to find any spells in "
-                          << path << '\n';
-
-                continue;
-            }
+            M_CHECK(!files.empty(), "Failed to find png files in " << path);
 
             set.textures.resize(files.size());
 
@@ -79,12 +74,6 @@ namespace bramblefore
 
     void SpellAnimations::add(const sf::Vector2f & t_pos, const Spell t_spell)
     {
-        if (Spell::Count == t_spell)
-        {
-            std::cout << "Error:  SpellAnimations::add() given an unknown spell.\n";
-            return;
-        }
-
         const std::vector<sf::Texture> & textures{
             m_textureSets.at(static_cast<std::size_t>(t_spell)).textures
         };

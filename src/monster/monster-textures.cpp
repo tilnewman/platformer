@@ -9,10 +9,10 @@
 #include "subsystem/context.hpp"
 #include "subsystem/default-texture.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
 
 #include <filesystem>
-#include <iostream>
 
 namespace bramblefore
 {
@@ -44,13 +44,9 @@ namespace bramblefore
         {
             const MonsterTextures & set{ m_textureSets.at(typeIndex) };
 
-            if (set.ref_count != 0)
-            {
-                const MonsterType type{ static_cast<MonsterType>(typeIndex) };
-
-                std::cout << "MonsterTextureManager::teardown() but " << toString(type)
-                          << "'s ref_count=" << set.ref_count << '\n';
-            }
+            M_CHECK(
+                (0 == set.ref_count),
+                toString(static_cast<MonsterType>(typeIndex)) << "'s ref_count=" << set.ref_count);
         }
 
         m_textureSets.clear();
@@ -98,13 +94,7 @@ namespace bramblefore
 
         MonsterTextures & set{ m_textureSets.at(typeIndex) };
 
-        if (0 == set.ref_count)
-        {
-            std::cout << "Error:  MonsterTextureManager::release(" << toString(t_type)
-                      << ") but the ref_count was already zero.\n";
-
-            return;
-        }
+        M_CHECK((0 != set.ref_count), toString(t_type) << "'s ref_count was already zero.");
 
         if (1 == set.ref_count)
         {

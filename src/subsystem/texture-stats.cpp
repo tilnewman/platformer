@@ -35,7 +35,7 @@ namespace bramblefore
         std::ostringstream ss;
         ss.imbue(std::locale("")); // this is only to put commas in the big numbers
         ss << m_count << " textures loaded for a total of " << m_byteCount << "bytes.";
-        std::cout << ss.str() << '\n';
+        std::clog << ss.str() << '\n';
     }
 
 } // namespace bramblefore

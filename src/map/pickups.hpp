@@ -70,7 +70,8 @@ namespace bramblefore
         else if (name == "crystal4") return Pickup::Crystal4;
         else if (name == "heart")    return Pickup::Heart;
         else if (name == "plus")     return Pickup::Plus;
-        else                         return Pickup::Star;
+        else if (name == "star")     return Pickup::Star;
+        else                         return Pickup::Count;
         // clang-format on
     }
 

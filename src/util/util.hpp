@@ -6,13 +6,14 @@
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
+#include <exception>
 #include <iomanip>
+#include <iostream>
 #include <numbers>
+#include <source_location>
 #include <sstream>
 #include <string>
 
-//
-//
 //
 
 constexpr std::size_t operator"" _st(unsigned long long number)
@@ -25,8 +26,41 @@ constexpr std::ptrdiff_t operator"" _pd(unsigned long long number)
     return static_cast<std::ptrdiff_t>(number);
 }
 
+//
+
 namespace util
 {
+
+    inline std::ostream & log(const std::source_location location = std::source_location::current())
+    {
+        std::clog << location.file_name() << "  ";
+
+#ifdef __APPLE__
+        std::clog << __PRETTY_FUNCTION__;
+#else
+        std::clog << location.function_name();
+#endif
+
+        std::clog << "  Line:" << location.line() << "  ";
+
+        return std::clog;
+    }
+
+    inline std::ostream & logIf(
+        const bool willLog, const std::source_location location = std::source_location::current())
+    {
+        if (!willLog)
+        {
+            static std::ostringstream oss;
+            oss.str("");
+            return oss;
+        }
+        else
+        {
+            return log(location);
+        }
+    }
+
     //
     // abs(), min(a,b,c), max(a,b,c), makeEven()
     //

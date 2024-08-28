@@ -276,8 +276,8 @@ namespace bramblefore
         }
         else
         {
-            std::cout << "Error: BackgroundImages::infoFactory(\"" << t_name
-                      << "\") given unknown name.  No background will be shown on this map.\n";
+            util::log() << "\"" << t_name
+                        << "\" is an unknown name.  No background will be shown on this map.\n";
 
             return BackgroundImagesInfo{ 0, {}, {}, {} };
         }

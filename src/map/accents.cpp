@@ -9,10 +9,9 @@
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
 #include "util/random.hpp"
 #include "util/sfml-util.hpp"
-
-#include <iostream>
 
 namespace bramblefore
 {
@@ -59,13 +58,7 @@ namespace bramblefore
         const Context & t_context, const sf::FloatRect & t_rect, const std::string & t_name)
     {
         const Accent accent{ stringToAccent(t_name) };
-        if (Accent::Count == accent)
-        {
-            std::cout << "Error: AccentAnimations::add(\"" << t_name
-                      << "\") given an unknown name.\n";
-
-            return;
-        }
+        M_CHECK((Accent::Count != accent), "\"" << t_name << "\" is an unknown name");
 
         AccentAnim & anim{ m_anims.emplace_back() };
         anim.which      = accent;
