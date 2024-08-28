@@ -807,8 +807,8 @@
                  "type":"",
                  "visible":true,
                  "width":48,
-                 "x":576,
-                 "y":1248
+                 "x":1792,
+                 "y":960
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -831,6 +831,17 @@
                  "width":240,
                  "x":848,
                  "y":1168
+                }, 
+                {
+                 "height":128,
+                 "id":110,
+                 "name":"dragon",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":256,
+                 "x":432,
+                 "y":1152
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1037,7 +1048,7 @@
          "y":0
         }],
  "nextlayerid":18,
- "nextobjectid":110,
+ "nextobjectid":111,
  "orientation":"orthogonal",
  "properties":[
         {

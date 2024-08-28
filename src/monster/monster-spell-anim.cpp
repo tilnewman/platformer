@@ -22,28 +22,38 @@ namespace platformer
         : m_textureSets{}
     {}
 
-    void MonsterSpellTextureManager::setup(const Settings & t_settings)
+    MonsterSpellTextureManager & MonsterSpellTextureManager::instance()
+    {
+        static MonsterSpellTextureManager monsterSpellTextureManager;
+        return monsterSpellTextureManager;
+    }
+
+    void MonsterSpellTextureManager::setup(const Settings &)
     {
         // one time size to avoid any reallocations
         m_textureSets.resize(static_cast<std::size_t>(MonsterSpell::Count));
+    }
 
-        for (std::size_t spellIndex{ 0 };
-             spellIndex < static_cast<std::size_t>(MonsterSpell::Count);
-             ++spellIndex)
+    void MonsterSpellTextureManager::teardown()
+    {
+        m_textureSets = std::vector<MonsterSpellTextures>();
+    }
+
+    void MonsterSpellTextureManager::acquire(Context & t_context, const MonsterSpell t_spell)
+    {
+        const std::size_t spellIndex{ static_cast<std::size_t>(t_spell) };
+        if (spellIndex >= m_textureSets.size())
         {
-            std::vector<sf::Texture> & textures{ m_textureSets.at(spellIndex).textures };
+            return;
+        }
 
-            // bail if the textures have already been loaded
-            if (!textures.empty())
-            {
-                return;
-            }
+        MonsterSpellTextures & set{ m_textureSets.at(spellIndex) };
 
-            const MonsterSpell spell{ static_cast<MonsterSpell>(spellIndex) };
-
+        if (0 == set.ref_count)
+        {
             const std::filesystem::path imageDirPath{
-                t_settings.media_path /
-                std::string("image/monster-spell-anim/").append(toString(spell))
+                t_context.settings.media_path /
+                std::string("image/monster-spell-anim/").append(toString(t_spell))
             };
 
             const std::vector<std::filesystem::path> files{ util::findFilesInDirectory(
@@ -51,25 +61,51 @@ namespace platformer
 
             if (files.empty())
             {
-                std::cout << "Error:  MonsterSpellTextureManager::setup() found no png files in "
+                std::cout << "Error:  MonsterSpellTextureManager::acquire() found no png files in "
                           << imageDirPath << '\n';
 
-                continue;
+                return;
             }
 
-            textures.resize(files.size());
+            set.textures.resize(files.size());
             for (std::size_t frameIndex{ 0 }; frameIndex < files.size(); ++frameIndex)
             {
-                sf::Texture & texture{ textures.at(frameIndex) };
+                sf::Texture & texture{ set.textures.at(frameIndex) };
                 texture.loadFromFile(files.at(frameIndex).string());
                 TextureStats::instance().process(texture);
             }
         }
+
+        ++set.ref_count;
     }
 
-    void MonsterSpellTextureManager::teardown()
+    void MonsterSpellTextureManager::release(const MonsterSpell t_spell)
     {
-        m_textureSets = std::vector<MonsterSpellTextures>();
+        const std::size_t spellIndex{ static_cast<std::size_t>(t_spell) };
+        if (spellIndex >= m_textureSets.size())
+        {
+            return;
+        }
+
+        MonsterSpellTextures & set{ m_textureSets.at(spellIndex) };
+
+        if (0 == set.ref_count)
+        {
+            std::cout << "MonsterSpellTextureManager::release(" << toString(t_spell)
+                      << ") but the ref_count is already zero.\n";
+
+            return;
+        }
+
+        if (1 == set.ref_count)
+        {
+            for (sf::Texture & texture : set.textures)
+            {
+                texture = sf::Texture();
+            }
+        }
+
+        --set.ref_count;
     }
 
     void MonsterSpellTextureManager::set(
@@ -106,19 +142,10 @@ namespace platformer
 
     //
 
-    MonsterSpellTextureManager MonsterSpellAnimations::m_textureManager;
-
     MonsterSpellAnimations::MonsterSpellAnimations()
         : m_anims{}
         , m_timePerFrameSec{ 0.1f }
     {}
-
-    void MonsterSpellAnimations::setup(const Settings & settings)
-    {
-        m_textureManager.setup(settings);
-    }
-
-    void MonsterSpellAnimations::teardown() { m_textureManager.teardown(); }
 
     void MonsterSpellAnimations::add(
         const sf::Vector2f & t_pos, const MonsterSpell t_spell, const bool t_isFacingRight)
@@ -126,7 +153,7 @@ namespace platformer
         MonsterSpellAnim & anim{ m_anims.emplace_back() };
         anim.is_moving_right = t_isFacingRight;
         anim.spell           = t_spell;
-        m_textureManager.set(anim.sprite, t_spell, 0);
+        MonsterSpellTextureManager::instance().set(anim.sprite, t_spell, 0);
         util::setOriginToCenter(anim.sprite);
         anim.sprite.setPosition(t_pos);
 
@@ -148,9 +175,11 @@ namespace platformer
                 anim.elapsed_time_sec -= m_timePerFrameSec;
 
                 ++anim.frame_index;
-                if (anim.frame_index < m_textureManager.frameCount(anim.spell))
+                if (anim.frame_index <
+                    MonsterSpellTextureManager::instance().frameCount(anim.spell))
                 {
-                    m_textureManager.set(anim.sprite, anim.spell, anim.frame_index);
+                    MonsterSpellTextureManager::instance().set(
+                        anim.sprite, anim.spell, anim.frame_index);
                 }
                 else
                 {

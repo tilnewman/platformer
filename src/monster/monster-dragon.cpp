@@ -13,7 +13,8 @@ namespace platformer
 {
 
     Dragon::Dragon(Context & t_context, const sf::FloatRect & t_region)
-        : Monster{ t_context, { MonsterType::Dragon, t_region, 0.75f } }
+        : Monster{ t_context,
+                   { MonsterType::Dragon, t_region, 0.75f, 1.0f, MonsterSpell::DragonFire } }
     {}
 
     sf::FloatRect Dragon::collisionRect() const
@@ -77,7 +78,7 @@ namespace platformer
             pos.x = collRect.left;
         }
 
-        m_animations.add(pos, MonsterSpell::DragonFire, m_isFacingRight);
+        m_animations.add(pos, m_spell, m_isFacingRight);
     }
 
 } // namespace platformer

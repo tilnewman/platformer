@@ -8,10 +8,6 @@
 #include "player/custom-types.hpp"
 #include "subsystem/harm.hpp"
 
-#include <filesystem>
-#include <string>
-#include <vector>
-
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
@@ -34,17 +30,20 @@ namespace platformer
             const MonsterType t_monsterType,
             const sf::FloatRect & t_roamRegion,
             const float t_imageHeightRatio,
-            const float t_imageScale = 1.0f)
+            const float t_imageScale = 1.0f,
+            const MonsterSpell t_spell = MonsterSpell::Count)
             : type(t_monsterType)
             , region(t_roamRegion)
             , image_height_ratio(t_imageHeightRatio)
             , image_scale(t_imageScale)
+            , spell(t_spell)
         {}
 
         MonsterType type;
         sf::FloatRect region;
         float image_height_ratio;
         float image_scale;
+        MonsterSpell spell;
     };
 
     //
@@ -85,6 +84,7 @@ namespace platformer
 
       protected:
         MonsterType m_type;
+        MonsterSpell m_spell;
         sf::FloatRect m_region;
         MonsterAnim m_anim;
         std::size_t m_animFrame;

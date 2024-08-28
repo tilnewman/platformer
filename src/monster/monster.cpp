@@ -22,6 +22,7 @@ namespace platformer
 
     Monster::Monster(Context & t_context, const MonsterSetupInfo & t_setupInfo)
         : m_type{ t_setupInfo.type }
+        , m_spell{ t_setupInfo.spell }
         , m_region{ t_setupInfo.region }
         , m_anim{ MonsterAnim::Idle }
         , m_animFrame{ 0 }
@@ -36,13 +37,13 @@ namespace platformer
         , m_animations{}
     {
         MonsterTextureManager::instance().acquire(t_context, m_type);
-        m_animations.setup(t_context.settings);
+        MonsterSpellTextureManager::instance().acquire(t_context, m_spell);
         initialSpriteSetup(t_context, t_setupInfo.image_height_ratio, t_setupInfo.image_scale);
     }
 
     Monster::~Monster()
     {
-        m_animations.teardown();
+        MonsterSpellTextureManager::instance().release(m_spell);
         MonsterTextureManager::instance().release(m_type);
     }
 
@@ -296,7 +297,10 @@ namespace platformer
                 t_context.sfx.play(attackSfxName);
             }
 
-            startAttackAnimation(t_context);
+            if (MonsterSpell::Count != m_spell)
+            {
+                startAttackAnimation(t_context);
+            }
         }
     }
 

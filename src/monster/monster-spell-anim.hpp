@@ -15,6 +15,7 @@
 
 namespace platformer
 {
+
     struct Context;
     struct Settings;
 
@@ -48,6 +49,7 @@ namespace platformer
 
     struct MonsterSpellTextures
     {
+        std::size_t ref_count{ 0 };
         std::vector<sf::Texture> textures{};
     };
 
@@ -58,8 +60,13 @@ namespace platformer
       public:
         MonsterSpellTextureManager();
 
+        static MonsterSpellTextureManager & instance();
+
         void setup(const Settings & t_settings);
         void teardown();
+
+        void acquire(Context & t_context, const MonsterSpell t_spell);
+        void release(const MonsterSpell t_spell);
 
         void
             set(sf::Sprite & t_sprite, const MonsterSpell t_spell, const std::size_t t_frame) const;
@@ -89,18 +96,17 @@ namespace platformer
       public:
         MonsterSpellAnimations();
 
-        void setup(const Settings & settings);
-        void teardown();
-        void add(const sf::Vector2f & pos, const MonsterSpell spell, const bool isFacingRight);
-        void update(const float frameTimeSec);
-        void draw(sf::RenderTarget & targt, sf::RenderStates states) const;
-        void move(const float amount);
-        inline void clear() { m_anims.clear(); }
+        void
+            add(const sf::Vector2f & t_pos, const MonsterSpell t_spell, const bool t_isFacingRight);
+
+        void update(const float t_frameTimeSec);
+        void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
+        void move(const float t_amount);
+        inline void clear() noexcept { m_anims.clear(); }
 
       private:
         std::vector<MonsterSpellAnim> m_anims;
         float m_timePerFrameSec;
-        static MonsterSpellTextureManager m_textureManager;
     };
 
 } // namespace platformer

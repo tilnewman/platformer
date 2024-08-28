@@ -7,6 +7,7 @@
 
 #include "avatar/avatar-textures.hpp"
 #include "map/map-textures.hpp"
+#include "monster/monster-spell-anim.hpp"
 #include "monster/monster-textures.hpp"
 #include "subsystem/default-texture.hpp"
 #include "subsystem/texture-stats.hpp"
@@ -70,6 +71,7 @@ namespace platformer
         AvatarTextureManager::instance().setup(m_settings);
         MonsterTextureManager::instance().setup(m_settings);
         MapTextureManager::instance().setup();
+        MonsterSpellTextureManager::instance().setup(m_settings);
 
         m_layout.setup(m_window.getSize());
         m_fonts.setup(m_settings);
@@ -99,6 +101,7 @@ namespace platformer
     void Coordinator::teardown()
     {
         m_avatarUPtr.reset();
+        MonsterSpellTextureManager::instance().teardown();
         MapTextureManager::instance().teardown();
         AvatarTextureManager::instance().teardown();
         MonsterTextureManager::instance().teardown();
