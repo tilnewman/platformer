@@ -47,7 +47,7 @@ namespace bramblefore
             }
             else
             {
-                alpha -= 5;
+                alpha -= 3;
             }
 
             sf::Color color{ anim.text.getFillColor() };
