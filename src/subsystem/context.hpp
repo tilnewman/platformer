@@ -29,6 +29,7 @@ namespace platformer
     class FontManager;
     class ScreenLayout;
     class StateManager;
+    class FloatingText;
     class SpellAnimations;
     class LevelFileLoader;
     class BackgroundImages;
@@ -58,7 +59,8 @@ namespace platformer
             ItemImages & ima,
             LevelInfo & lin,
             PlayerInfo & pin,
-            PlayerInfoDisplay & pid)
+            PlayerInfoDisplay & pid,
+            FloatingText & flt)
             : settings(set)
             , window(win)
             , random(ran)
@@ -77,6 +79,7 @@ namespace platformer
             , level_info(lin)
             , player(pin)
             , player_display(pid)
+            , float_text(flt)
         {}
 
         const Settings & settings;
@@ -97,6 +100,7 @@ namespace platformer
         LevelInfo & level_info;
         PlayerInfo & player;
         PlayerInfoDisplay & player_display;
+        FloatingText & float_text;
     };
 
 } // namespace platformer

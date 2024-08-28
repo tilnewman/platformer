@@ -16,6 +16,7 @@
 #include "state/state-manager.hpp"
 #include "subsystem/background-images.hpp"
 #include "subsystem/context.hpp"
+#include "subsystem/floating-text.hpp"
 #include "subsystem/harm-collision-manager.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "util/sfml-util.hpp"
@@ -341,15 +342,14 @@ namespace platformer
             return;
         }
 
-        const sf::Vector2f move{ moveX, 0.0f };
-        m_sprite.move(move);
-
+        m_sprite.move(moveX, 0.0f);
         t_context.accent.move(moveX);
         t_context.pickup.move(moveX);
         t_context.level.move(t_context, moveX);
         t_context.pickup.move(moveX);
         t_context.bg_image.move(moveX);
         t_context.spell.move(moveX);
+        t_context.float_text.move(moveX);
     }
 
     void Avatar::killIfOutOfBounds(Context & t_context)
@@ -680,9 +680,11 @@ namespace platformer
         t_context.accent.clear();
         t_context.pickup.clear();
         t_context.spell.clear();
+        t_context.float_text.clear();
 
         t_context.player.healthReset(t_context);
         t_context.player.manaReset(t_context);
+        // TODO reset stars as well?
 
         t_context.level.load(t_context);
 
@@ -771,7 +773,10 @@ namespace platformer
 
         t_context.player.healthAdjust(t_context, -t_harm.damage);
 
-        if (t_context.player.health() == 0) { triggerDeath(t_context); }
+        if (t_context.player.health() == 0)
+        {
+            triggerDeath(t_context);
+        }
         else
         {
             t_context.sfx.play("hurt-avatar");

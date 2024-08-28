@@ -9,6 +9,7 @@
 #include "bramblefore/settings.hpp"
 #include "monster/monster-textures.hpp"
 #include "subsystem/context.hpp"
+#include "subsystem/floating-text.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "util/random.hpp"
 #include "util/sfml-util.hpp"
@@ -94,6 +95,14 @@ namespace platformer
             {
                 m_isAlive = false;
 
+                std::string message{ "+" };
+                message += std::to_string(startingHealth(m_type));
+                message += "xp";
+                //
+                const sf::Vector2f messagePos{ util::center(m_sprite).x, m_sprite.getPosition().y };
+                //
+                t_context.float_text.add(t_context, message, sf::Color(200, 200, 200), messagePos);
+
                 auto & manager{ MonsterTextureManager::instance() };
 
                 manager.setTexture(
@@ -165,7 +174,7 @@ namespace platformer
         {
             m_anim = MonsterAnim::Death;
             resetAnimation();
-            
+
             const std::string deathSfxName{ hurtSfx(m_type) };
             if (!deathSfxName.empty())
             {

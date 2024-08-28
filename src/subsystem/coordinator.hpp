@@ -17,6 +17,7 @@
 #include "state/state-manager.hpp"
 #include "subsystem/background-images.hpp"
 #include "subsystem/context.hpp"
+#include "subsystem/floating-text.hpp"
 #include "subsystem/font.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "util/random.hpp"
@@ -73,6 +74,7 @@ namespace platformer
         LevelInfo m_levelInfo;
         PlayerInfo m_playerInfo;
         PlayerInfoDisplay m_playerInfoDisplay;
+        FloatingText m_floatText;
 
         Context m_context;
 

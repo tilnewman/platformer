@@ -335,7 +335,6 @@
  </objectgroup>
  <objectgroup id="12" name="monster">
   <object id="60" name="goblin" x="848" y="1168" width="240" height="112"/>
-  <object id="110" name="dragon" x="432" y="1152" width="256" height="128"/>
  </objectgroup>
  <objectgroup id="13" name="acid-spout">
   <object id="98" x="1824" y="1024" width="32" height="144"/>

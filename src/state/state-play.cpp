@@ -15,6 +15,7 @@
 #include "state/state-manager.hpp"
 #include "subsystem/background-images.hpp"
 #include "subsystem/context.hpp"
+#include "subsystem/floating-text.hpp"
 #include "util/sfml-keys.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -37,6 +38,7 @@ namespace platformer
             t_context.pickup.update(t_context, t_frameTimeSec);
             t_context.accent.update(t_context, t_frameTimeSec);
             t_context.spell.update(t_context, t_frameTimeSec);
+            t_context.float_text.update(t_context, t_frameTimeSec);
             m_spellSelectMenu.update(t_context, t_frameTimeSec);
         }
     }
@@ -50,6 +52,7 @@ namespace platformer
         t_context.accent.draw(t_context, target, states);
         t_context.avatar.draw(target, states);
         t_context.spell.draw(target, states);
+        t_context.float_text.draw(target, states);
         t_context.player_display.draw(target, states);
         m_spellSelectMenu.draw(target, states);
     }

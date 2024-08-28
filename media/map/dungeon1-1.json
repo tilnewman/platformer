@@ -831,17 +831,6 @@
                  "width":240,
                  "x":848,
                  "y":1168
-                }, 
-                {
-                 "height":128,
-                 "id":110,
-                 "name":"dragon",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":256,
-                 "x":432,
-                 "y":1152
                 }],
          "opacity":1,
          "type":"objectgroup",
