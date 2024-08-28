@@ -11,6 +11,7 @@
 #include "util/sfml-util.hpp"
 
 #include <exception>
+#include <iostream>
 
 namespace platformer
 {
@@ -31,7 +32,24 @@ namespace platformer
         m_tileTextures.resize(static_cast<std::size_t>(TileImage::Count));
     }
 
-    void MapTextureManager::teardown() { m_tileTextures.clear(); }
+    void MapTextureManager::teardown() 
+    { 
+        for (std::size_t imageIndex(0); imageIndex < static_cast<std::size_t>(TileImage::Count);
+             ++imageIndex)
+        {
+            const TileTexture & tileTexture{ m_tileTextures.at(imageIndex) };
+
+            if (tileTexture.ref_count != 0)
+            {
+                const TileImage image{ static_cast<TileImage>(imageIndex) };
+
+                std::cout << "MapTextureManager::teardown() but " << toString(image)
+                          << "'s ref_count=" << tileTexture.ref_count << '\n';
+            }
+        }
+
+        m_tileTextures.clear(); 
+    }
 
     void MapTextureManager::acquire(const Context & t_context, const TileImage t_image)
     {
@@ -67,15 +85,20 @@ namespace platformer
 
         TileTexture & tileTexture{ m_tileTextures.at(imageIndex) };
 
-        if (tileTexture.ref_count <= 1)
+        if (0 == tileTexture.ref_count)
         {
-            tileTexture.ref_count = 0;
-            tileTexture.texture   = sf::Texture();
+            std::cout << "Error:  MapTextureManager::release(" << toString(t_image)
+                      << ") but the ref_count was already zero.\n";
+
+            return;
         }
-        else
+
+        if (1 == tileTexture.ref_count)
         {
-            --tileTexture.ref_count;
+            tileTexture.texture = sf::Texture();
         }
+
+        --tileTexture.ref_count;
     }
 
     const TileTexture & MapTextureManager::get(const TileImage t_image) const

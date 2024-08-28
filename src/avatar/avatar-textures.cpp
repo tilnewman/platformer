@@ -65,7 +65,24 @@ namespace platformer
         }
     }
 
-    void AvatarTextureManager::teardown() { m_textureSets.clear(); }
+    void AvatarTextureManager::teardown()
+    {
+        for (std::size_t typeIndex(0); typeIndex < static_cast<std::size_t>(AvatarType::Count);
+             ++typeIndex)
+        {
+            const AvatarTextureSet & set{ m_textureSets.at(typeIndex) };
+
+            if (set.ref_count != 0)
+            {
+                const AvatarType type{ static_cast<AvatarType>(typeIndex) };
+
+                std::cout << "AvatarTextureManager::teardown() but " << toString(type)
+                          << "'s ref_count=" << set.ref_count << '\n';
+            }
+        }
+
+        m_textureSets.clear();
+    }
 
     void AvatarTextureManager::acquire(const Context & t_context, const AvatarType t_type)
     {
@@ -125,10 +142,16 @@ namespace platformer
 
         AvatarTextureSet & set{ m_textureSets.at(typeIndex) };
 
-        if (set.ref_count <= 1)
+        if (0 == set.ref_count)
         {
-            set.ref_count = 0;
+            std::cout << "Error:  AvatarTextureManager::release(" << toString(t_type)
+                      << ") but the ref_count was already zero.\n";
 
+            return;
+        }
+        
+        if (1 == set.ref_count)
+        {
             for (AnimTextures & anim : set.anims)
             {
                 for (sf::Texture & texture : anim.textures)
@@ -137,10 +160,8 @@ namespace platformer
                 }
             }
         }
-        else
-        {
-            --set.ref_count;
-        }
+
+        --set.ref_count;
     }
 
     void AvatarTextureManager::set(

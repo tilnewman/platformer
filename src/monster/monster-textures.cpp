@@ -12,12 +12,13 @@
 #include "util/sfml-util.hpp"
 
 #include <filesystem>
+#include <iostream>
 
 namespace platformer
 {
 
     MonsterTextureManager::MonsterTextureManager()
-        : m_textureSets()
+        : m_textureSets{}
     {}
 
     MonsterTextureManager & MonsterTextureManager::instance()
@@ -36,11 +37,28 @@ namespace platformer
         }
     }
 
-    void MonsterTextureManager::teardown() { m_textureSets.clear(); }
-
-    void MonsterTextureManager::acquire(Context & context, const MonsterType type)
+    void MonsterTextureManager::teardown()
     {
-        const std::size_t typeIndex{ static_cast<std::size_t>(type) };
+        for (std::size_t typeIndex(0); typeIndex < static_cast<std::size_t>(MonsterType::Count);
+             ++typeIndex)
+        {
+            const MonsterTextures & set{ m_textureSets.at(typeIndex) };
+
+            if (set.ref_count != 0)
+            {
+                const MonsterType type{ static_cast<MonsterType>(typeIndex) };
+
+                std::cout << "MonsterTextureManager::teardown() but " << toString(type)
+                          << "'s ref_count=" << set.ref_count << '\n';
+            }
+        }
+
+        m_textureSets.clear();
+    }
+
+    void MonsterTextureManager::acquire(Context & t_context, const MonsterType t_type)
+    {
+        const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
         if (typeIndex >= m_textureSets.size())
         {
             return;
@@ -57,8 +75,8 @@ namespace platformer
                 const MonsterAnim anim{ static_cast<MonsterAnim>(animIndex) };
                 sf::Texture & texture{ set.textures.at(animIndex) };
 
-                const std::filesystem::path path{ context.settings.media_path / "image/monster/" /
-                                                  std::string(toString(type)) /
+                const std::filesystem::path path{ t_context.settings.media_path / "image/monster/" /
+                                                  std::string(toString(t_type)) /
                                                   std::string(toString(anim)).append(".png") };
 
                 texture.loadFromFile(path.string());
@@ -70,9 +88,9 @@ namespace platformer
         ++set.ref_count;
     }
 
-    void MonsterTextureManager::release(const MonsterType type)
+    void MonsterTextureManager::release(const MonsterType t_type)
     {
-        const std::size_t typeIndex{ static_cast<std::size_t>(type) };
+        const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
         if (typeIndex >= m_textureSets.size())
         {
             return;
@@ -80,35 +98,39 @@ namespace platformer
 
         MonsterTextures & set{ m_textureSets.at(typeIndex) };
 
-        if (set.ref_count >= 2)
+        if (0 == set.ref_count)
         {
-            --set.ref_count;
-        }
-        else
-        {
-            set.ref_count = 0;
+            std::cout << "Error:  MonsterTextureManager::release(" << toString(t_type)
+                      << ") but the ref_count was already zero.\n";
 
+            return;
+        }
+
+        if (1 == set.ref_count)
+        {
             for (sf::Texture & texture : set.textures)
             {
                 texture = sf::Texture();
             }
         }
+
+        --set.ref_count;
     }
 
     void MonsterTextureManager::setTexture(
-        sf::Sprite & sprite,
-        const MonsterType type,
-        const MonsterAnim anim,
-        const std::size_t frame) const
+        sf::Sprite & t_sprite,
+        const MonsterType t_type,
+        const MonsterAnim t_anim,
+        const std::size_t t_frame) const
     {
-        sprite.setTexture(getTexture(type, anim));
-        sprite.setTextureRect(getTextureRect(type, anim, frame));
+        t_sprite.setTexture(getTexture(t_type, t_anim));
+        t_sprite.setTextureRect(getTextureRect(t_type, t_anim, t_frame));
     }
 
     std::size_t
-        MonsterTextureManager::frameCount(const MonsterType type, const MonsterAnim anim) const
+        MonsterTextureManager::frameCount(const MonsterType t_type, const MonsterAnim t_anim) const
     {
-        const sf::Texture & texture{ getTexture(type, anim) };
+        const sf::Texture & texture{ getTexture(t_type, t_anim) };
 
         if (texture.getSize().y > 0)
         {
@@ -121,9 +143,9 @@ namespace platformer
     }
 
     const sf::Texture &
-        MonsterTextureManager::getTexture(const MonsterType type, const MonsterAnim anim) const
+        MonsterTextureManager::getTexture(const MonsterType t_type, const MonsterAnim t_anim) const
     {
-        const std::size_t typeIndex{ static_cast<std::size_t>(type) };
+        const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
         if (typeIndex >= m_textureSets.size())
         {
             return DefaultTexture::instance().get();
@@ -131,7 +153,7 @@ namespace platformer
 
         const MonsterTextures & set{ m_textureSets.at(typeIndex) };
 
-        const std::size_t animIndex{ static_cast<std::size_t>(anim) };
+        const std::size_t animIndex{ static_cast<std::size_t>(t_anim) };
         if (animIndex >= set.textures.size())
         {
             return DefaultTexture::instance().get();
@@ -141,19 +163,19 @@ namespace platformer
     }
 
     sf::IntRect MonsterTextureManager::getTextureRect(
-        const MonsterType type, const MonsterAnim anim, const std::size_t frame) const
+        const MonsterType t_type, const MonsterAnim t_anim, const std::size_t t_frame) const
     {
-        const sf::Texture & texture{ getTexture(type, anim) };
+        const sf::Texture & texture{ getTexture(t_type, t_anim) };
 
         sf::IntRect rect;
 
-        if (frame >= frameCount(type, anim))
+        if (t_frame >= frameCount(t_type, t_anim))
         {
             rect.left = 0;
         }
         else
         {
-            rect.left = static_cast<int>(static_cast<std::size_t>(texture.getSize().y) * frame);
+            rect.left = static_cast<int>(static_cast<std::size_t>(texture.getSize().y) * t_frame);
         }
 
         rect.top    = 0;
