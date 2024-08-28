@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="400" height="88" tilewidth="16" tileheight="16" infinite="0" nextlayerid="18" nextobjectid="111">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="400" height="88" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="112">
  <editorsettings>
   <export target="../map/dungeon1-1.json" format="json"/>
  </editorsettings>
@@ -335,6 +335,9 @@
  </objectgroup>
  <objectgroup id="12" name="monster">
   <object id="60" name="goblin" x="848" y="1168" width="240" height="112"/>
+ </objectgroup>
+ <objectgroup id="18" name="bomb">
+  <object id="111" x="576" y="1264" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="13" name="acid-spout">
   <object id="98" x="1824" y="1024" width="32" height="144"/>

@@ -38,7 +38,9 @@ namespace bramblefore
             anim.time_between_springs_sec = 2.0f;
             anim.sprite.setTexture(m_texture);
             anim.sprite.setTextureRect(textureRect(0));
-            anim.sprite.scale(2.0f, 2.0f);
+
+            const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.8f) };
+            anim.sprite.scale(scale, scale);
 
             anim.sprite.setPosition(
                 (util::center(rect).x - (anim.sprite.getGlobalBounds().width * 0.5f)),
@@ -107,14 +109,14 @@ namespace bramblefore
                     anim.sprite.setTextureRect(textureRect(anim.frame_index));
                 }
             }
-            //else
+            // else
             //{
-            //    if (t_context.avatar.collisionRect().intersects(anim.coll_rect))
-            //    {
-            //        t_context.sfx.play("mimic");
-            //        anim.is_springing = true;
-            //    }
-            //}
+            //     if (t_context.avatar.collisionRect().intersects(anim.coll_rect))
+            //     {
+            //         t_context.sfx.play("mimic");
+            //         anim.is_springing = true;
+            //     }
+            // }
         }
     }
 

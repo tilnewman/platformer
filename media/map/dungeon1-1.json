@@ -840,6 +840,28 @@
         }, 
         {
          "draworder":"topdown",
+         "id":18,
+         "name":"bomb",
+         "objects":[
+                {
+                 "height":16,
+                 "id":111,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":576,
+                 "y":1264
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":13,
          "name":"acid-spout",
          "objects":[
@@ -1036,8 +1058,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":18,
- "nextobjectid":111,
+ "nextlayerid":19,
+ "nextobjectid":112,
  "orientation":"orthogonal",
  "properties":[
         {

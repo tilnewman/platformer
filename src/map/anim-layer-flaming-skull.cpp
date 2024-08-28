@@ -22,7 +22,7 @@ namespace bramblefore
 
     FlamingSkullAnimationLayer::FlamingSkullAnimationLayer(
         Context & t_context, const std::vector<sf::FloatRect> & t_rects)
-        : m_scale{ 1.5f }
+        : m_scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.8f) }
         , m_skullBlockTexture{}
         , m_flamesUpTexture{}
         , m_flamesDownTexture{}
@@ -62,7 +62,7 @@ namespace bramblefore
         {
             sf::Sprite & blockSprite{ m_skullBlockSprites.emplace_back() };
             blockSprite.setTexture(m_skullBlockTexture);
-            blockSprite.scale(2.0f, 2.0f);
+            blockSprite.scale(m_scale, m_scale);
 
             blockSprite.setPosition(
                 (util::center(rect).x - (blockSprite.getGlobalBounds().width * 0.5f)),
@@ -73,7 +73,7 @@ namespace bramblefore
             upAnim.time_between_flaming = t_context.random.fromTo(1.5f, 4.0f);
             upAnim.sprite.setTexture(getTexture(upAnim.direction));
             upAnim.sprite.setTextureRect(textureRect(getTexture(upAnim.direction), 0));
-            upAnim.sprite.setScale(1.5f, 1.5f);
+            upAnim.sprite.setScale(m_scale, m_scale);
 
             upAnim.sprite.setPosition(
                 (util::center(rect).x - (upAnim.sprite.getGlobalBounds().width * 0.5f)),
@@ -84,7 +84,7 @@ namespace bramblefore
             downAnim.time_between_flaming = t_context.random.fromTo(1.5f, 4.0f);
             downAnim.sprite.setTexture(getTexture(downAnim.direction));
             downAnim.sprite.setTextureRect(textureRect(getTexture(downAnim.direction), 0));
-            downAnim.sprite.setScale(1.5f, 1.5f);
+            downAnim.sprite.setScale(m_scale, m_scale);
 
             downAnim.sprite.setPosition(
                 (util::center(rect).x - (downAnim.sprite.getGlobalBounds().width * 0.5f)),
@@ -95,7 +95,7 @@ namespace bramblefore
             leftAnim.time_between_flaming = t_context.random.fromTo(1.5f, 4.0f);
             leftAnim.sprite.setTexture(getTexture(leftAnim.direction));
             leftAnim.sprite.setTextureRect(textureRect(getTexture(leftAnim.direction), 0));
-            leftAnim.sprite.setScale(1.5f, 1.5f);
+            leftAnim.sprite.setScale(m_scale, m_scale);
 
             leftAnim.sprite.setPosition(
                 (rect.left - (leftAnim.sprite.getGlobalBounds().width * 0.8f)),
@@ -106,7 +106,7 @@ namespace bramblefore
             rightAnim.time_between_flaming = t_context.random.fromTo(1.5f, 4.0f);
             rightAnim.sprite.setTexture(getTexture(rightAnim.direction));
             rightAnim.sprite.setTextureRect(textureRect(getTexture(rightAnim.direction), 0));
-            rightAnim.sprite.setScale(1.5f, 1.5f);
+            rightAnim.sprite.setScale(m_scale, m_scale);
 
             rightAnim.sprite.setPosition(
                 (util::right(rect) - (rightAnim.sprite.getGlobalBounds().width * 0.2f)),

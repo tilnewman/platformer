@@ -38,7 +38,9 @@ namespace bramblefore
             anim.time_between_springs_sec = 2.0f;
             anim.sprite.setTexture(m_texture);
             anim.sprite.setTextureRect(textureRect(0));
-            anim.sprite.scale(1.5f, 1.5f);
+
+            const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.5f) };
+            anim.sprite.scale(scale, scale);
 
             anim.sprite.setPosition(
                 (util::center(rect).x - (anim.sprite.getGlobalBounds().width * 0.5f)),

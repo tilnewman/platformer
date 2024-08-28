@@ -42,6 +42,9 @@ namespace bramblefore
             anim.sprite.setTexture(m_texture);
             anim.sprite.setTextureRect(textureRect(0));
 
+            const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.0f) };
+            anim.sprite.scale(scale, scale);
+
             anim.sprite.setPosition(
                 (util::center(rect).x - anim.sprite.getGlobalBounds().width),
                 (util::bottom(rect) - anim.sprite.getGlobalBounds().height));

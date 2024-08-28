@@ -22,7 +22,7 @@ namespace bramblefore
 
     AcidSpoutAnimationLayer::AcidSpoutAnimationLayer(
         Context & t_context, const std::vector<sf::FloatRect> & t_rects)
-        : m_scale{ 1.5f }
+        : m_scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.5f) }
         , m_spoutTexture{}
         , m_dropTexture{}
         , m_splashTexture{}
