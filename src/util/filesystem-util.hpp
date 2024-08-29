@@ -21,16 +21,18 @@ namespace util
             return files;
         }
 
-        files.reserve(64); // based on how many files I know are in the media folders
-        const auto dirIter{ std::filesystem::directory_iterator{ t_dirPath } };
+        // based on how many files I know are in the media folders
+        files.reserve(64); 
 
-        auto regularFilesWithExtension =
+        const std::filesystem::directory_iterator dirIter{ t_dirPath };
+
+        auto regularFilesWithExtensionView =
             dirIter |
             std::views::filter([](const auto & entry) { return entry.is_regular_file(); }) |
             std::views::filter(
                 [&](const auto & entry) { return (entry.path().extension() == t_extension); });
 
-        std::ranges::copy(regularFilesWithExtension, std::back_inserter(files));
+        std::ranges::copy(regularFilesWithExtensionView, std::back_inserter(files));
         std::ranges::sort(files);
         return files;
     }
