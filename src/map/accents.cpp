@@ -21,8 +21,8 @@ namespace bramblefore
         , m_anims{}
         , m_elapsedFireTimeSec{ 0.0f }
         , m_elapsedVineTimeSec{ 0.0f }
-        , m_timePerFireFrameSec{ 0.0f }
-        , m_timePerVineFrameSec{ 0.0f }
+        , m_timePerFireFrameSec{ 0.15f }
+        , m_timePerVineFrameSec{ 0.75f }
         , m_scale{}
     {
         m_anims.reserve(32); // just a harmless guess
@@ -35,9 +35,6 @@ namespace bramblefore
 
         m_scale.x = scale;
         m_scale.y = scale;
-
-        m_timePerFireFrameSec = t_context.settings.accent_fire_time_per_frame;
-        m_timePerVineFrameSec = t_context.settings.accent_vine_time_per_frame;
 
         m_textures.reserve(static_cast<std::size_t>(Accent::Count));
 

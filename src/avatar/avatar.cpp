@@ -80,7 +80,7 @@ namespace bramblefore
         sideToSideMotion(t_context, t_frameTimeSec);
         jumping(t_context, t_frameTimeSec);
 
-        m_velocity += (t_context.settings.gravity_acc * t_frameTimeSec);
+        m_velocity.y += (t_context.settings.gravity_acc * t_frameTimeSec);
         m_sprite.move(m_velocity);
 
         // moveMap() and collisions should be called AFTER m_sprite.move() above

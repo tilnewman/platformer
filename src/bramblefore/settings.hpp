@@ -29,18 +29,13 @@ namespace bramblefore
         float avatar_scale  = 1.5f;
         float monster_scale = 1.5f;
 
-        float pickups_time_per_frame     = 0.1f;
-        float accent_fire_time_per_frame = 0.15f;
-        float accent_vine_time_per_frame = 0.75f;
-        float spell_time_per_frame       = 0.1f;
-
-        sf::Vector2f gravity_acc = { 0.0f, 25.0f };
-        float walk_speed_limit   = 3.0f;
-        float run_speed_limit    = 5.0f;
-        float walk_acceleration  = 15.0f;
-        float run_acceleration   = 25.0f;
-        float jump_acc           = 650.0f;
-        float high_jump_acc      = 850.0f;
+        float gravity_acc       = 25.0f;
+        float walk_speed_limit  = 3.0f;
+        float run_speed_limit   = 5.0f;
+        float walk_acceleration = 15.0f;
+        float run_acceleration  = 25.0f;
+        float jump_acc          = 650.0f;
+        float high_jump_acc     = 850.0f;
     };
 
 } // namespace bramblefore

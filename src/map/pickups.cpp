@@ -24,7 +24,7 @@ namespace bramblefore
         , m_anims{}
         , m_flareAnims{}
         , m_elapsedTimeSec{ 0.0f }
-        , m_timePerFrameSec{ 0.0f }
+        , m_timePerFrameSec{ 0.1f }
         , m_scale{}
     {
         // these are just harmless guesses about what is in the average map
@@ -39,8 +39,6 @@ namespace bramblefore
 
         m_scale.x = scale;
         m_scale.y = scale;
-
-        m_timePerFrameSec = t_context.settings.pickups_time_per_frame;
 
         m_textures.reserve(static_cast<std::size_t>(Pickup::Count));
 
