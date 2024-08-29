@@ -46,7 +46,7 @@ namespace bramblefore
         , m_manaBarRightSprite{}
         , m_healthColor{ 255, 50, 50 }
         , m_manaColor{ 50, 50, 255 }
-        , m_barFillMax{ 226.0f }
+        , m_barFillMax{ 0.0f }
         , m_willDrawHealthBarRight{ true }
         , m_willDrawHealthBarLeft{ true }
         , m_willDrawManaBarRight{ true }
@@ -70,6 +70,8 @@ namespace bramblefore
 
     void PlayerInfoDisplay::setup(const Context & t_context)
     {
+        m_barFillMax = t_context.layout.calScaleBasedOnResolution(t_context, 226.0f);
+
         const float frameScale{ t_context.layout.calScaleBasedOnResolution(t_context, 2.0f) };
 
         m_halfFrameTexture.loadFromFile(
@@ -142,8 +144,12 @@ namespace bramblefore
         m_healthBarLeftSprite.scale(frameScale, frameScale);
         m_healthBarLeftSprite.setColor(m_healthColor);
 
-        m_healthBarLeftSprite.setPosition(
-            m_healthBarFrameSprite.getPosition() + sf::Vector2f(6.0f, 8.0f));
+        const sf::Vector2f barPosOffset{
+            t_context.layout.calScaleBasedOnResolution(t_context, 6.0f),
+            t_context.layout.calScaleBasedOnResolution(t_context, 8.0f)
+        };
+
+        m_healthBarLeftSprite.setPosition(m_healthBarFrameSprite.getPosition() + barPosOffset);
 
         //
 
@@ -171,7 +177,7 @@ namespace bramblefore
         TextureStats::instance().process(m_barFillRightTexture);
 
         m_healthBarRightSprite.setTexture(m_barFillRightTexture);
-        m_healthBarRightSprite.scale(2.0f, 2.0f);
+        m_healthBarRightSprite.scale(frameScale, frameScale);
         m_healthBarRightSprite.setColor(m_healthColor);
 
         m_healthBarRightSprite.setPosition(
@@ -183,8 +189,7 @@ namespace bramblefore
         m_manaBarLeftSprite.scale(frameScale, frameScale);
         m_manaBarLeftSprite.setColor(m_manaColor);
 
-        m_manaBarLeftSprite.setPosition(
-            m_manaBarFrameSprite.getPosition() + sf::Vector2f(6.0f, 8.0f));
+        m_manaBarLeftSprite.setPosition(m_manaBarFrameSprite.getPosition() + barPosOffset);
 
         //
 
