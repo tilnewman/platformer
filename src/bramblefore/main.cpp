@@ -5,13 +5,16 @@
 
 #include <filesystem>
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 
 int main(const int argc, const char * const argv[])
 {
     try
     {
-        bramblefore::Settings settings;
+        using namespace bramblefore;
+
+        Settings settings;
         if (argc > 1)
         {
             settings.media_path =
@@ -30,8 +33,10 @@ int main(const int argc, const char * const argv[])
 
         settings.media_path = std::filesystem::canonical(settings.media_path);
 
-        bramblefore::Coordinator coordinator(settings);
-        coordinator.play();
+        // make this a pointer only because it uses too much stack
+        std::unique_ptr<Coordinator> coordinatorUPtr{ std::make_unique<Coordinator>(settings) };
+
+        coordinatorUPtr->play();
     }
     catch (const std::exception & ex)
     {
