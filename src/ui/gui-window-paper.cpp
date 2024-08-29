@@ -64,15 +64,15 @@ namespace bramblefore
 
         m_info = t_info;
 
+        const sf::Vector2f wholeSize{ t_context.layout.wholeSize() };
+
         if (t_useBigPaper)
         {
             m_paperSprite.setTexture(m_paper2Texture);
 
             m_paperSprite.setPosition(
-                ((t_context.layout.wholeSize().x * 0.5f) -
-                 (m_paperSprite.getGlobalBounds().width * 0.5f)),
-                ((t_context.layout.wholeSize().y * 0.5f) -
-                 (m_paperSprite.getGlobalBounds().height * 0.5f)));
+                ((wholeSize.x * 0.5f) - (m_paperSprite.getGlobalBounds().width * 0.5f)),
+                ((wholeSize.y * 0.5f) - (m_paperSprite.getGlobalBounds().height * 0.5f)));
 
             m_innerRect.left   = (m_paperSprite.getPosition().x + 32.0f);
             m_innerRect.top    = (m_paperSprite.getPosition().y + 32.0f);
@@ -84,10 +84,8 @@ namespace bramblefore
             m_paperSprite.setTexture(m_paper1Texture);
 
             m_paperSprite.setPosition(
-                ((t_context.layout.wholeSize().x * 0.5f) -
-                 (m_paperSprite.getGlobalBounds().width * 0.5f)),
-                ((t_context.layout.wholeSize().y * 0.5f) -
-                 (m_paperSprite.getGlobalBounds().height * 0.5f)));
+                ((wholeSize.x * 0.5f) - (m_paperSprite.getGlobalBounds().width * 0.5f)),
+                ((wholeSize.y * 0.5f) - (m_paperSprite.getGlobalBounds().height * 0.5f)));
 
             m_innerRect.left   = (m_paperSprite.getPosition().x + 48.0f);
             m_innerRect.top    = (m_paperSprite.getPosition().y + 48.0f);
@@ -102,18 +100,17 @@ namespace bramblefore
             m_tapeLeftSprite.setTexture(m_tapeLeftTexture);
 
             m_tapeLeftSprite.setPosition(
-                ((t_context.layout.wholeSize().x * 0.5f) -
-                 m_tapeLeftSprite.getGlobalBounds().width),
+                ((wholeSize.x * 0.5f) - m_tapeLeftSprite.getGlobalBounds().width),
                 (m_outerRect.top - (m_tapeLeftSprite.getGlobalBounds().height * 0.65f)));
 
             m_tapeRightSprite.setTexture(m_tapeRightTexture);
 
             m_tapeRightSprite.setPosition(
-                (t_context.layout.wholeSize().x * 0.5f),
+                (wholeSize.x * 0.5f),
                 (m_outerRect.top - (m_tapeRightSprite.getGlobalBounds().height * 0.65f)));
 
             sf::FloatRect titleRect;
-            titleRect.left   = ((t_context.layout.wholeSize().x * 0.5f) - 100.0f);
+            titleRect.left   = ((wholeSize.x * 0.5f) - 100.0f);
             titleRect.top    = (m_tapeLeftSprite.getPosition().y + 14.0f);
             titleRect.width  = 200.0f;
             titleRect.height = 37.0f;
@@ -160,7 +157,11 @@ namespace bramblefore
 
     void GuiWindowPaper::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
-        t_target.draw(&m_bgFadeVerts[0], m_bgFadeVerts.size(), sf::Quads, t_states);
+        if (!m_bgFadeVerts.empty())
+        {
+            t_target.draw(&m_bgFadeVerts[0], m_bgFadeVerts.size(), sf::Quads, t_states);
+        }
+
         t_target.draw(m_paperSprite, t_states);
         t_target.draw(m_tapeLeftSprite, t_states);
         t_target.draw(m_tapeRightSprite, t_states);
