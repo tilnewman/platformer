@@ -80,7 +80,7 @@ namespace bramblefore
     struct PickupAnim
     {
         bool is_alive{ true };
-        Pickup which{ Pickup::Arrow }; // any pickup works here
+        Pickup which{ Pickup::Arrow }; // anything works here
         std::size_t anim_index{ 0 };
         sf::Sprite sprite{};
     };

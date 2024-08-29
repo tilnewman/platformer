@@ -324,9 +324,23 @@ namespace bramblefore
         Mana_t manaAdjust(Context & t_context, const Mana_t t_adjustment);
         void manaReset(Context & t_context);
 
-        [[nodiscard]] inline constexpr Coin_t coins() const noexcept { return m_coins; }
+        [[nodiscard]] inline constexpr Coin_t coin() const noexcept { return m_coins; }
 
-        Coin_t coinsAdjust(Context & t_context, const Coin_t t_adjustment);
+        Coin_t coinAdjust(Context & t_context, const Coin_t t_adjustment);
+
+        [[nodiscard]] inline constexpr Experience_t experience() const noexcept
+        {
+            return m_experience;
+        }
+
+        Experience_t experienceAdjust(const Experience_t adjustment);
+
+        [[nodiscard]] inline constexpr int mapStarCount() const noexcept
+        {
+            return m_mapStarCount;
+        }
+
+        void mapStarCollect(Context & t_context);
 
         [[nodiscard]] inline constexpr const std::vector<PlayerSpell> & spells() const noexcept
         {
@@ -342,6 +356,8 @@ namespace bramblefore
         Mana_t m_mana;
         Mana_t m_manaMax;
         Coin_t m_coins;
+        Experience_t m_experience;
+        int m_mapStarCount;
         std::vector<PlayerSpell> m_spells;
     };
 

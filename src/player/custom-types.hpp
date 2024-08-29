@@ -11,6 +11,7 @@ namespace bramblefore
     using Health_t = int;
     using Coin_t = int;
     using Mana_t = int;
+    using Experience_t = int;
 
 } // namespace bramblefore
 

@@ -6,6 +6,7 @@
 #include "map/pickups.hpp"
 
 #include "bramblefore/settings.hpp"
+#include "player/player-info.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
@@ -199,6 +200,33 @@ namespace bramblefore
             flare.is_alive = true;
             flare.sprite   = anim.sprite;
             flare.sprite.setTextureRect(textureRect(anim.which, 0));
+
+            if (Pickup::Bottle == anim.which)
+            {
+                t_context.player.manaAdjust(t_context, 50);
+            }
+            else if (Pickup::Coin1 == anim.which)
+            {
+                t_context.player.coinAdjust(t_context, 1);
+            }
+            else if (Pickup::Coin2 == anim.which)
+            {
+                t_context.player.coinAdjust(t_context, 10);
+            }
+            else if (Pickup::Heart == anim.which)
+            {
+                t_context.player.healthAdjust(t_context, 50);
+            }
+            else if (Pickup::Plus == anim.which)
+            {
+                t_context.player.manaAdjust(t_context, 50);
+                t_context.player.healthAdjust(t_context, 50);                
+            }
+            else if (Pickup::Star == anim.which)
+            {
+                t_context.player.mapStarCollect(t_context);
+            }
+            //TODO implement a purpose for the crystals
         }
 
         if (wereAnyPickedUp)

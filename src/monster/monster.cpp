@@ -113,13 +113,17 @@ namespace bramblefore
     {
         m_isAlive = false;
 
+        const Experience_t xpBonus{ startingHealth(m_type) };
+
         std::string message{ "+" };
-        message += std::to_string(startingHealth(m_type));
+        message += std::to_string(xpBonus);
         message += "xp";
         
         const sf::Vector2f messagePos{ util::center(m_sprite).x, m_sprite.getPosition().y };
         
         t_context.float_text.add(t_context, message, sf::Color(200, 200, 200), messagePos);
+
+        t_context.player.experienceAdjust(xpBonus);
 
         auto & manager{ MonsterTextureManager::instance() };
 

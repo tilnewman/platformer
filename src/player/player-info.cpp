@@ -21,6 +21,8 @@ namespace bramblefore
         , m_mana{ 0 }
         , m_manaMax{ 0 }
         , m_coins{ 0 }
+        , m_experience{ 0 }
+        , m_mapStarCount{ 0 }
         , m_spells{}
     {}
 
@@ -71,7 +73,7 @@ namespace bramblefore
 
         if (m_manaMax > 0)
         {
-            t_context.player_display.setHealthBar(
+            t_context.player_display.setManaBar(
                 static_cast<float>(t_context.player.mana()) /
                 static_cast<float>(t_context.player.manaMax()));
         }
@@ -85,7 +87,7 @@ namespace bramblefore
         manaAdjust(t_context, m_manaMax);
     }
 
-    Coin_t PlayerInfo::coinsAdjust(Context & t_context, const Coin_t t_adjustment)
+    Coin_t PlayerInfo::coinAdjust(Context & t_context, const Coin_t t_adjustment)
     {
         m_coins += t_adjustment;
 
@@ -97,6 +99,24 @@ namespace bramblefore
         t_context.player_display.setCoinCount(m_coins);
 
         return m_coins;
+    }
+
+    Experience_t PlayerInfo::experienceAdjust(const Experience_t adjustment)
+    {
+        m_experience += adjustment;
+
+        if (m_experience < 0)
+        {
+            m_experience = 0;
+        }
+
+        return m_experience;
+    }
+
+    void PlayerInfo::mapStarCollect(Context & t_context)
+    {
+        ++m_mapStarCount;
+        t_context.player_display.setStarCount(m_mapStarCount);
     }
 
     void PlayerInfo::learnSpell(const Spell t_spell)
