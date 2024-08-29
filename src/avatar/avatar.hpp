@@ -5,20 +5,20 @@
 //
 #include "avatar/avatar-spell-anims.hpp"
 #include "avatar/avatar-textures.hpp"
-#include "subsystem/harm.hpp"
 #include "player/player-info.hpp"
+#include "subsystem/harm.hpp"
 
 #include <string_view>
 #include <vector>
 
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
 namespace sf
 {
     class RenderTarget;
-    class RenderStates;
 } // namespace sf
 
 namespace bramblefore

@@ -15,8 +15,6 @@
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
 
-#include <iostream>
-
 namespace bramblefore
 {
 
@@ -220,13 +218,13 @@ namespace bramblefore
             else if (Pickup::Plus == anim.which)
             {
                 t_context.player.manaAdjust(t_context, 50);
-                t_context.player.healthAdjust(t_context, 50);                
+                t_context.player.healthAdjust(t_context, 50);
             }
             else if (Pickup::Star == anim.which)
             {
                 t_context.player.mapStarCollect(t_context);
             }
-            //TODO implement a purpose for the crystals
+            // TODO implement a purpose for the crystals
         }
 
         if (wereAnyPickedUp)

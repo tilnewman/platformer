@@ -22,6 +22,7 @@
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
 
+#include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Keyboard.hpp>
 
 namespace bramblefore
@@ -472,7 +473,6 @@ namespace bramblefore
 
         const float runAcceleration{ t_context.layout.calScaleBasedOnResolution(
             t_context, t_context.settings.run_acceleration) };
-
 
         if ((AvatarState::Jump == m_state) || (AvatarState::JumpHigh == m_state))
         {

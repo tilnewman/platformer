@@ -17,7 +17,6 @@
 #include <filesystem>
 #include <string>
 
-#include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
 namespace bramblefore

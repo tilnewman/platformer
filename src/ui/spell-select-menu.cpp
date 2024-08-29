@@ -15,7 +15,6 @@
 
 #include <limits>
 
-#include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
 namespace bramblefore

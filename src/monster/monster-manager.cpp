@@ -7,7 +7,6 @@
 
 #include "subsystem/context.hpp"
 
-#include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
 namespace bramblefore

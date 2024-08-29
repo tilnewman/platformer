@@ -14,7 +14,7 @@
 #include "util/random.hpp"
 #include "util/sfml-util.hpp"
 
-#include <iostream>
+#include <SFML/Graphics/RenderTarget.hpp>
 
 namespace bramblefore
 {

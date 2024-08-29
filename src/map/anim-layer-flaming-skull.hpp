@@ -9,13 +9,13 @@
 #include <vector>
 
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
 namespace sf
 {
     class RenderTarget;
-    class RenderStates;
 } // namespace sf
 
 namespace bramblefore
@@ -77,10 +77,6 @@ namespace bramblefore
         Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
 
       private:
-        void updateSpouts(const float t_frameTimeSec);
-        void updateDrops(const float t_frameTimeSec);
-        void updateSplashes(const float t_frameTimeSec);
-
         [[nodiscard]] std::size_t frameCount(const sf::Texture & t_texture) const;
 
         [[nodiscard]] sf::IntRect

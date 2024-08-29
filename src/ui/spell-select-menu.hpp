@@ -10,12 +10,12 @@
 
 #include <vector>
 
+#include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
 namespace sf
 {
     class RenderTarget;
-    class RenderStates;
 } // namespace sf
 
 namespace bramblefore

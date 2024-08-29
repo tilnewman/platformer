@@ -9,11 +9,11 @@
 #include <string>
 
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
 
 namespace sf
 {
     class RenderTarget;
-    class RenderStates;
 } // namespace sf
 
 namespace bramblefore

@@ -9,12 +9,12 @@
 #include "subsystem/harm.hpp"
 
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
 namespace sf
 {
     class RenderTarget;
-    class RenderStates;
 } // namespace sf
 
 namespace bramblefore
@@ -30,7 +30,7 @@ namespace bramblefore
             const MonsterType t_monsterType,
             const sf::FloatRect & t_roamRegion,
             const float t_imageHeightRatio,
-            const float t_imageScale = 1.0f,
+            const float t_imageScale   = 1.0f,
             const MonsterSpell t_spell = MonsterSpell::Count)
             : type(t_monsterType)
             , region(t_roamRegion)
