@@ -93,23 +93,7 @@ namespace bramblefore
         {
             if (MonsterAnim::Death == m_anim)
             {
-                m_isAlive = false;
-
-                std::string message{ "+" };
-                message += std::to_string(startingHealth(m_type));
-                message += "xp";
-                //
-                const sf::Vector2f messagePos{ util::center(m_sprite).x, m_sprite.getPosition().y };
-                //
-                t_context.float_text.add(t_context, message, sf::Color(200, 200, 200), messagePos);
-
-                auto & manager{ MonsterTextureManager::instance() };
-
-                manager.setTexture(
-                    m_sprite,
-                    m_type,
-                    MonsterAnim::Death,
-                    (manager.frameCount(m_type, MonsterAnim::Death) - 1));
+                handleDying(t_context);
             }
             else
             {
@@ -123,6 +107,27 @@ namespace bramblefore
                 }
             }
         }
+    }
+
+    void Monster::handleDying(Context & t_context)
+    {
+        m_isAlive = false;
+
+        std::string message{ "+" };
+        message += std::to_string(startingHealth(m_type));
+        message += "xp";
+        
+        const sf::Vector2f messagePos{ util::center(m_sprite).x, m_sprite.getPosition().y };
+        
+        t_context.float_text.add(t_context, message, sf::Color(200, 200, 200), messagePos);
+
+        auto & manager{ MonsterTextureManager::instance() };
+
+        manager.setTexture(
+            m_sprite,
+            m_type,
+            MonsterAnim::Death,
+            (manager.frameCount(m_type, MonsterAnim::Death) - 1));
     }
 
     void Monster::draw(

@@ -68,7 +68,8 @@ namespace bramblefore
       protected:
         bool animate(); // returns true if animation is finished
         [[nodiscard]] float timePerFrameSec(const MonsterAnim t_anim) const noexcept;
-        void handleWalking(Context & context, const float t_frameTimeSec);
+        void handleWalking(Context & t_context, const float t_frameTimeSec);
+        void handleDying(Context & t_context);
 
         virtual void changeStateBeforeSeeingPlayer(Context & t_context);
         virtual void changeStateAfterSeeingPlayer(Context & t_context);
