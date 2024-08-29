@@ -119,6 +119,12 @@ namespace bramblefore
         t_context.player_display.setStarCount(m_mapStarCount);
     }
 
+    void PlayerInfo::mapStarReset(Context & t_context)
+    {
+        m_mapStarCount = 0;
+        t_context.player_display.setStarCount(m_mapStarCount);
+    }
+
     void PlayerInfo::learnSpell(const Spell t_spell)
     {
         const auto iter{ std::ranges::find_if(

@@ -338,6 +338,7 @@ namespace bramblefore
         [[nodiscard]] inline constexpr int mapStarCount() const noexcept { return m_mapStarCount; }
 
         void mapStarCollect(Context & t_context);
+        void mapStarReset(Context & t_context);
 
         [[nodiscard]] inline const std::vector<PlayerSpell> & spells() const noexcept
         {

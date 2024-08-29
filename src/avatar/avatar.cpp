@@ -695,7 +695,7 @@ namespace bramblefore
 
         t_context.player.healthReset(t_context);
         t_context.player.manaReset(t_context);
-        // TODO reset stars as well?
+        t_context.player.mapStarReset(t_context);
 
         t_context.level.load(t_context);
 
