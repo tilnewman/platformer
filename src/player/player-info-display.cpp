@@ -70,12 +70,14 @@ namespace bramblefore
 
     void PlayerInfoDisplay::setup(const Context & t_context)
     {
+        const float frameScale{ t_context.layout.calScaleBasedOnResolution(t_context, 2.0f) };
+
         m_halfFrameTexture.loadFromFile(
             (t_context.settings.media_path / "image/ui/half-frame.png").string());
 
         TextureStats::instance().process(m_halfFrameTexture);
         m_halfFrameSprite.setTexture(m_halfFrameTexture);
-        m_halfFrameSprite.scale(2.0f, 2.0f);
+        m_halfFrameSprite.scale(frameScale, frameScale);
 
         const float posDimm{ t_context.layout.wholeSize().y * 0.1f };
         m_halfFrameSprite.setPosition(posDimm, posDimm);
@@ -87,7 +89,7 @@ namespace bramblefore
 
         TextureStats::instance().process(m_fullFrameTexture);
         m_fullFrameSprite.setTexture(m_fullFrameTexture);
-        m_fullFrameSprite.scale(2.0f, 2.0f);
+        m_fullFrameSprite.scale(frameScale, frameScale);
 
         m_fullFrameSprite.setPosition(m_halfFrameSprite.getPosition() + sf::Vector2f(8.0f, 8.0f));
 
@@ -113,7 +115,7 @@ namespace bramblefore
         TextureStats::instance().process(m_barFrameTexture);
 
         m_healthBarFrameSprite.setTexture(m_barFrameTexture);
-        m_healthBarFrameSprite.scale(2.0f, 2.0f);
+        m_healthBarFrameSprite.scale(frameScale, frameScale);
 
         m_healthBarFrameSprite.setPosition(
             (util::right(m_fullFrameSprite) - 2.0f),
@@ -123,7 +125,7 @@ namespace bramblefore
         //
 
         m_manaBarFrameSprite.setTexture(m_barFrameTexture);
-        m_manaBarFrameSprite.scale(2.0f, 2.0f);
+        m_manaBarFrameSprite.scale(frameScale, frameScale);
 
         m_manaBarFrameSprite.setPosition(
             (util::right(m_fullFrameSprite) - 2.0f),
@@ -137,7 +139,7 @@ namespace bramblefore
         TextureStats::instance().process(m_barFillLeftTexture);
 
         m_healthBarLeftSprite.setTexture(m_barFillLeftTexture);
-        m_healthBarLeftSprite.scale(2.0f, 2.0f);
+        m_healthBarLeftSprite.scale(frameScale, frameScale);
         m_healthBarLeftSprite.setColor(m_healthColor);
 
         m_healthBarLeftSprite.setPosition(
@@ -151,7 +153,7 @@ namespace bramblefore
         TextureStats::instance().process(m_barFillMiddleTexture);
 
         m_healthBarMiddleSprite.setTexture(m_barFillMiddleTexture);
-        m_healthBarMiddleSprite.scale(2.0f, 2.0f);
+        m_healthBarMiddleSprite.scale(frameScale, frameScale);
         m_healthBarMiddleSprite.setColor(m_healthColor);
 
         m_healthBarRect.left   = util::right(m_healthBarLeftSprite);
@@ -178,7 +180,7 @@ namespace bramblefore
         //
 
         m_manaBarLeftSprite.setTexture(m_barFillLeftTexture);
-        m_manaBarLeftSprite.scale(2.0f, 2.0f);
+        m_manaBarLeftSprite.scale(frameScale, frameScale);
         m_manaBarLeftSprite.setColor(m_manaColor);
 
         m_manaBarLeftSprite.setPosition(
@@ -187,7 +189,7 @@ namespace bramblefore
         //
 
         m_manaBarMiddleSprite.setTexture(m_barFillMiddleTexture);
-        m_manaBarMiddleSprite.scale(2.0f, 2.0f);
+        m_manaBarMiddleSprite.scale(frameScale, frameScale);
         m_manaBarMiddleSprite.setColor(m_manaColor);
 
         m_manaBarRect.left   = util::right(m_manaBarLeftSprite);
@@ -200,7 +202,7 @@ namespace bramblefore
         //
 
         m_manaBarRightSprite.setTexture(m_barFillRightTexture);
-        m_manaBarRightSprite.scale(2.0f, 2.0f);
+        m_manaBarRightSprite.scale(frameScale, frameScale);
         m_manaBarRightSprite.setColor(m_manaColor);
 
         m_manaBarRightSprite.setPosition(
@@ -218,7 +220,9 @@ namespace bramblefore
         TextureStats::instance().process(m_coinTexture);
         m_coinTexture.setSmooth(true);
         m_coinSprite.setTexture(m_coinTexture);
-        m_coinSprite.scale(1.7f, 1.7f);
+
+        const float coinScale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.7f) };
+        m_coinSprite.scale(coinScale, coinScale);
 
         m_coinSprite.setPosition(
             util::right(m_fullFrameSprite),
@@ -244,7 +248,9 @@ namespace bramblefore
         m_starBrownTexture.setSmooth(true);
 
         m_starBrown1Sprite.setTexture(m_starBrownTexture);
-        m_starBrown1Sprite.scale(1.5f, 1.5f);
+
+        const float starScale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.5f) };
+        m_starBrown1Sprite.scale(starScale, starScale);
 
         m_starBrown1Sprite.setPosition(
             (m_fullFrameSprite.getPosition().x + 10.0f), (util::bottom(m_halfFrameSprite) + 10.0f));
@@ -377,11 +383,11 @@ namespace bramblefore
 
     void PlayerInfoDisplay::setStarCount(const int t_count)
     {
-        m_starYellow1Sprite.setPosition(-100.0f, -100.0f);
-        m_starYellow2Sprite.setPosition(-100.0f, -100.0f);
-        m_starYellow3Sprite.setPosition(-100.0f, -100.0f);
-        m_starYellow4Sprite.setPosition(-100.0f, -100.0f);
-        m_starYellow5Sprite.setPosition(-100.0f, -100.0f);
+        m_starYellow1Sprite.setPosition(-1000.0f, -1000.0f);
+        m_starYellow2Sprite.setPosition(-1000.0f, -1000.0f);
+        m_starYellow3Sprite.setPosition(-1000.0f, -1000.0f);
+        m_starYellow4Sprite.setPosition(-1000.0f, -1000.0f);
+        m_starYellow5Sprite.setPosition(-1000.0f, -1000.0f);
 
         if (0 == t_count)
         {
