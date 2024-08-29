@@ -261,7 +261,7 @@ namespace bramblefore
         }
     }
 
-    [[nodiscard]] inline constexpr std::vector<Spell> makeSpellSet(const AvatarType t_type) noexcept
+    [[nodiscard]] inline std::vector<Spell> makeSpellSet(const AvatarType t_type) noexcept
     {
         if (AvatarType::Witch == t_type)
         {
@@ -335,14 +335,11 @@ namespace bramblefore
 
         Experience_t experienceAdjust(const Experience_t adjustment);
 
-        [[nodiscard]] inline constexpr int mapStarCount() const noexcept
-        {
-            return m_mapStarCount;
-        }
+        [[nodiscard]] inline constexpr int mapStarCount() const noexcept { return m_mapStarCount; }
 
         void mapStarCollect(Context & t_context);
 
-        [[nodiscard]] inline constexpr const std::vector<PlayerSpell> & spells() const noexcept
+        [[nodiscard]] inline const std::vector<PlayerSpell> & spells() const noexcept
         {
             return m_spells;
         }

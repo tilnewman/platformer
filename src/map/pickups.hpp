@@ -61,7 +61,7 @@ namespace bramblefore
         // clang-format on
     }
 
-    [[nodiscard]] inline constexpr Pickup stringToPickup(const std::string & name) noexcept
+    [[nodiscard]] inline constexpr Pickup stringToPickup(const std::string_view name) noexcept
     {
         // clang-format off
         if      (name == "arrow")    return Pickup::Arrow;
