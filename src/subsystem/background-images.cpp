@@ -78,6 +78,7 @@ namespace bramblefore
         if (infoPack.fade_alpha > 0)
         {
             m_fadeQuads.clear();
+
             util::appendQuadVerts(
                 t_context.layout.wholeRect(), m_fadeQuads, sf::Color(0, 0, 0, infoPack.fade_alpha));
         }
@@ -95,7 +96,10 @@ namespace bramblefore
 
         t_target.draw(m_overlaySprite, t_states);
 
-        t_target.draw(&m_fadeQuads[0], m_fadeQuads.size(), sf::Quads, t_states);
+        if (!m_fadeQuads.empty())
+        {
+            t_target.draw(&m_fadeQuads[0], m_fadeQuads.size(), sf::Quads, t_states);
+        }
     }
 
     void BackgroundImages::move(const float t_amount)

@@ -541,14 +541,21 @@ namespace bramblefore
 
     void GuiWindow::draw(sf::RenderTarget & target, sf::RenderStates states) const
     {
-        target.draw(&m_bgFadeVerts[0], m_bgFadeVerts.size(), sf::Quads, states);
+        if (!m_bgFadeVerts.empty())
+        {
+            target.draw(&m_bgFadeVerts[0], m_bgFadeVerts.size(), sf::Quads, states);
+        }
 
         for (const sf::Sprite & sprite : m_sprites)
         {
             target.draw(sprite, states);
         }
 
-        target.draw(&m_bgCenterVerts[0], m_bgCenterVerts.size(), sf::Quads, states);
+        if (!m_bgCenterVerts.empty())
+        {
+            target.draw(&m_bgCenterVerts[0], m_bgCenterVerts.size(), sf::Quads, states);
+        }
+
         target.draw(m_titleText, states);
 
         for (const sf::Text & text : m_contentTexts)

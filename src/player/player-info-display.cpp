@@ -302,7 +302,12 @@ namespace bramblefore
     void PlayerInfoDisplay::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
         t_target.draw(m_halfFrameSprite, t_states);
-        t_target.draw(&m_bgFadeVerts[0], m_bgFadeVerts.size(), sf::Quads, t_states);
+
+        if (!m_bgFadeVerts.empty())
+        {
+            t_target.draw(&m_bgFadeVerts[0], m_bgFadeVerts.size(), sf::Quads, t_states);
+        }
+
         t_target.draw(m_avatarIconSprite, t_states);
         t_target.draw(m_fullFrameSprite, t_states);
 

@@ -133,7 +133,10 @@ namespace bramblefore
 
     void GlowRect::draw(sf::RenderTarget & t_target) const
     {
-        t_target.draw(&m_verts[0], m_verts.size(), sf::Quads);
+        if (!m_verts.empty())
+        {
+            t_target.draw(&m_verts[0], m_verts.size(), sf::Quads);
+        }
     }
 
 } // namespace bramblefore
