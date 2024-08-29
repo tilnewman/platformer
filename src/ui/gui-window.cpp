@@ -185,6 +185,7 @@ namespace bramblefore
 
         betweenCornerSize.y =
             (m_info.region.height - (2.0f * bgTopLeftSprite.getGlobalBounds().height));
+
         if (betweenCornerSize.y < 0.0f)
         {
             betweenCornerSize.y = 0.0f;
