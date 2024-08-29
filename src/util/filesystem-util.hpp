@@ -22,24 +22,15 @@ namespace util
         }
 
         files.reserve(64); // based on how many files I know are in the media folders
+        const auto dirIter{ std::filesystem::directory_iterator{ t_dirPath } };
 
-        // GCC wasn't able to compile the ranges correctly -zTn 2024-8-29
-        //auto regularFilesWithExtension =
-        //    std::filesystem::directory_iterator{ t_dirPath } |
-        //    std::views::filter([](const auto & entry) { return entry.is_regular_file(); }) |
-        //    std::views::filter(
-        //        [&](const auto & entry) { return (entry.path().extension() == t_extension); });
-        //
-        //std::ranges::copy(regularFilesWithExtension, std::back_inserter(files));
+        auto regularFilesWithExtension =
+            dirIter |
+            std::views::filter([](const auto & entry) { return entry.is_regular_file(); }) |
+            std::views::filter(
+                [&](const auto & entry) { return (entry.path().extension() == t_extension); });
 
-        for (const auto & entry : std::filesystem::directory_iterator{ t_dirPath })
-        {
-            if (entry.is_regular_file() && (entry.path().extension() == t_extension))
-            {
-                files.push_back(entry.path());
-            }
-        }
-
+        std::ranges::copy(regularFilesWithExtension, std::back_inserter(files));
         std::ranges::sort(files);
         return files;
     }
