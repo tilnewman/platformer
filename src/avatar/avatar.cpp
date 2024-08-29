@@ -324,10 +324,6 @@ namespace bramblefore
                 t_context.sfx.play("hit-metal");
             }
         }
-        else
-        {
-            m_hasHitEnemy = false;
-        }
     }
 
     void Avatar::moveMap(Context & t_context)
