@@ -25,7 +25,6 @@ namespace bramblefore
 
     enum class MonsterType : std::size_t
     {
-
         BabyDragon = 0,
         Bear,
         BigKnight,
@@ -153,7 +152,7 @@ namespace bramblefore
             case MonsterType::Demon:         { return 45.0f; }
             case MonsterType::Dino:          { return 30.0f; }
             case MonsterType::Djinn:         { return 40.0f; }
-            case MonsterType::Dragon:        { return 50.0f; }
+            case MonsterType::Dragon:        { return 99.0f; }
             case MonsterType::Dwarf:         { return 40.0f; }
             case MonsterType::Ent:           { return 30.0f; }
             case MonsterType::FireImp:       { return 30.0f; }
@@ -279,7 +278,7 @@ namespace bramblefore
             case MonsterType::Demon:         { return ""; }
             case MonsterType::Dino:          { return "attack-dino"; }
             case MonsterType::Djinn:         { return ""; }
-            case MonsterType::Dragon:        { return ""; }
+            case MonsterType::Dragon:        { return "attack-dragon"; }
             case MonsterType::Dwarf:         { return ""; }
             case MonsterType::Ent:           { return "attack-ent"; }
             case MonsterType::FireImp:       { return ""; }
@@ -321,7 +320,7 @@ namespace bramblefore
             case MonsterType::Demon:         { return ""; }
             case MonsterType::Dino:          { return "hurt-dino"; }
             case MonsterType::Djinn:         { return ""; }
-            case MonsterType::Dragon:        { return ""; }
+            case MonsterType::Dragon:        { return "hurt-dragon"; }
             case MonsterType::Dwarf:         { return ""; }
             case MonsterType::Ent:           { return "hurt-ent"; }
             case MonsterType::FireImp:       { return ""; }
@@ -363,7 +362,7 @@ namespace bramblefore
             case MonsterType::Demon:         { return ""; }
             case MonsterType::Dino:          { return "death-dino"; }
             case MonsterType::Djinn:         { return ""; }
-            case MonsterType::Dragon:        { return ""; }
+            case MonsterType::Dragon:        { return "death-dragon"; }
             case MonsterType::Dwarf:         { return ""; }
             case MonsterType::Ent:           { return "death-ent"; }
             case MonsterType::FireImp:       { return ""; }

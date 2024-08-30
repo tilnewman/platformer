@@ -183,7 +183,7 @@ namespace bramblefore
             m_anim = MonsterAnim::Death;
             resetAnimation();
 
-            const std::string deathSfxName{ hurtSfx(m_type) };
+            const std::string deathSfxName{ deathSfx(m_type) };
             if (!deathSfxName.empty())
             {
                 t_context.sfx.play(deathSfxName);
