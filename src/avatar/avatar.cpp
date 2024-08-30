@@ -294,14 +294,13 @@ namespace bramblefore
                 t_context.sfx.play("swipe", 0.5f);
                 m_state = AvatarState::AttackExtra;
                 m_anim  = AvatarAnim::AttackExtra;
-                m_spellAnim.add(spellAnimPos, m_type, false, m_isFacingRight);
+                t_context.spell.add(spellAnimPos, t_context.player.currentSpell());
             }
             else
             {
                 t_context.sfx.play("swipe");
                 m_state = AvatarState::Attack;
                 m_anim  = AvatarAnim::Attack;
-                m_spellAnim.add(spellAnimPos, m_type, true, m_isFacingRight);
             }
 
             restartAnim();

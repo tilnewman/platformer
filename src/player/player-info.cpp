@@ -23,6 +23,7 @@ namespace bramblefore
         , m_coins{ 0 }
         , m_experience{ 0 }
         , m_mapStarCount{ 0 }
+        , m_currentSpell{ 0 }
         , m_spells{}
     {}
 
@@ -31,6 +32,7 @@ namespace bramblefore
         m_avatarType = t_type;
 
         m_spells.clear();
+
         for (const Spell spell : makeSpellSet(t_type))
         {
             PlayerSpell & playerSpell{ m_spells.emplace_back() };
@@ -39,6 +41,8 @@ namespace bramblefore
             playerSpell.is_learned = false;
             playerSpell.spell      = spell;
         }
+
+        m_spells.front().is_learned = true;
 
         m_healthMax = startingHealth(t_type);
         healthReset(t_context);
@@ -123,6 +127,38 @@ namespace bramblefore
     {
         m_mapStarCount = 0;
         t_context.player_display.setStarCount(m_mapStarCount);
+    }
+
+    void PlayerInfo::setCurentSpellIndex(const std::size_t newSpellIndex)
+    {
+        M_CHECK(
+            (m_currentSpell < m_spells.size()),
+            "newSpellIndex=" << newSpellIndex << " but spell list size=" << m_spells.size());
+
+        const PlayerSpell & spell{ m_spells.at(newSpellIndex) };
+
+        M_CHECK(
+            spell.is_learned,
+            "newSpellIndex=" << newSpellIndex << " but that spell \"" << toName(spell.spell)
+                             << "\" is not learned");
+
+        m_currentSpell = newSpellIndex;
+    }
+
+    Spell PlayerInfo::currentSpell() const
+    {
+        M_CHECK(
+            (m_currentSpell < m_spells.size()),
+            "m_currentSpell=" << m_currentSpell << " but spell list size=" << m_spells.size());
+
+        const PlayerSpell & spell{ m_spells.at(m_currentSpell) };
+
+        M_CHECK(
+            spell.is_learned,
+            "m_currentSpell=" << m_currentSpell << " but that spell \"" << toName(spell.spell)
+                              << "\" is not learned");
+
+        return spell.spell;
     }
 
     void PlayerInfo::learnSpell(const Spell t_spell)

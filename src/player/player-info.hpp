@@ -340,6 +340,15 @@ namespace bramblefore
         void mapStarCollect(Context & t_context);
         void mapStarReset(Context & t_context);
 
+        [[nodiscard]] inline constexpr std::size_t currentSpellIndex() const noexcept
+        {
+            return m_currentSpell;
+        }
+
+        void setCurentSpellIndex(const std::size_t newSpellIndex);
+
+        [[nodiscard]] Spell currentSpell() const;
+
         [[nodiscard]] inline const std::vector<PlayerSpell> & spells() const noexcept
         {
             return m_spells;
@@ -356,6 +365,7 @@ namespace bramblefore
         Coin_t m_coins;
         Experience_t m_experience;
         int m_mapStarCount;
+        std::size_t m_currentSpell;
         std::vector<PlayerSpell> m_spells;
     };
 
