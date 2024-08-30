@@ -227,33 +227,41 @@ namespace bramblefore
 
                 m_velocity.x = 0.0f;
                 m_velocity.y = 0.0f;
-            }
 
-            return;
+                return;
+            }
         }
 
         // all other frames
         if ((AvatarState::Climb == m_state))
         {
-            const float ladderMoveSpeed{ 60.0f };
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-            {
-                m_sprite.move(0.0f, -(ladderMoveSpeed * t_frameTimeSec));
-            }
+            const std::optional<sf::FloatRect> ladderRectOpt{ t_context.level.ladderCollisionRect(
+                collisionRect()) };
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+            if (ladderRectOpt.has_value())
             {
-                m_sprite.move(0.0f, (ladderMoveSpeed * t_frameTimeSec));
-            }
+                const float ladderMoveSpeed{ t_context.layout.calScaleBasedOnResolution(
+                    t_context, 60.0f) };
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            {
-                m_sprite.move(-(ladderMoveSpeed * t_frameTimeSec), 0.0f);
-            }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+                {
+                    m_sprite.move(0.0f, -(ladderMoveSpeed * t_frameTimeSec));
+                }
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            {
-                m_sprite.move((ladderMoveSpeed * t_frameTimeSec), 0.0f);
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+                {
+                    m_sprite.move(0.0f, (ladderMoveSpeed * t_frameTimeSec));
+                }
+
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+                {
+                    m_sprite.move(-(ladderMoveSpeed * t_frameTimeSec), 0.0f);
+                }
+
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+                {
+                    m_sprite.move((ladderMoveSpeed * t_frameTimeSec), 0.0f);
+                }
             }
         }
     }

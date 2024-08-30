@@ -83,7 +83,7 @@ namespace bramblefore
         void triggerDeath(Context & t_context);
 
         // TODO remove after testing
-        void changeType(Context & t_context);
+        void changeType(Context & t_context);   
 
       private:
         void animate(Context & t_context, const float t_frameTimeSec);
