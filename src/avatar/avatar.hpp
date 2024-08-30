@@ -89,6 +89,7 @@ namespace bramblefore
 
       private:
         void animate(Context & t_context, const float t_frameTimeSec);
+        void handleClimbing(Context & t_context, const float t_frameTimeSec);
         void handleAttackState(Context & t_context);
         void handleAttackingEnemies(Context & t_context);
         void moveMap(Context & t_context);

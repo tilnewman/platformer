@@ -6,6 +6,7 @@
 #include "map/tile-layer.hpp"
 #include "monster/monster-manager.hpp"
 
+#include <optional>
 #include <vector>
 
 #include <SFML/Graphics/Rect.hpp>
@@ -33,10 +34,13 @@ namespace bramblefore
 
         void update(Context & t_context, const float t_frameTimeSec);
 
+        std::optional<sf::FloatRect> ladderCollisionRect(const sf::FloatRect & avatarRect) const;
+
         sf::Vector2f map_position_offset;
         sf::Vector2f tile_size_screen;
         sf::Vector2f tile_size_texture;
         std::vector<sf::FloatRect> collisions;
+        std::vector<sf::FloatRect> ladders;
         sf::FloatRect enter_rect;
         sf::FloatRect exit_rect;
         std::string name;

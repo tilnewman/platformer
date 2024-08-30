@@ -28,6 +28,7 @@ namespace bramblefore
         , tile_size_screen{}
         , tile_size_texture{}
         , collisions{}
+        , ladders{}
         , enter_rect{}
         , exit_rect{}
         , name{}
@@ -38,6 +39,7 @@ namespace bramblefore
         , farthest_horiz_traveled{ 0.0f }
         , farthest_horiz_map_pixel{ 0.0f }
     {
+        // harmless guesses based on what I know is in map files
         tile_layers.reserve(32);
         collisions.reserve(1024);
     }
@@ -46,6 +48,7 @@ namespace bramblefore
     {
         tile_layers.clear();
         collisions.clear();
+        ladders.clear();
         monsters.clear();
         farthest_horiz_traveled  = 0.0f;
         farthest_horiz_map_pixel = 0.0f;
@@ -86,6 +89,11 @@ namespace bramblefore
             rect.left += t_amount;
         }
 
+        for (sf::FloatRect & rect : ladders)
+        {
+            rect.left += t_amount;
+        }
+
         for (auto & layerUPtr : tile_layers)
         {
             layerUPtr->move(t_context, t_amount);
@@ -98,6 +106,7 @@ namespace bramblefore
         t_context.bg_image.move(t_amount);
         t_context.spell.move(t_amount);
         t_context.float_text.move(t_amount);
+        
 
         return true;
     }
@@ -158,6 +167,19 @@ namespace bramblefore
         }
 
         monsters.update(t_context, t_frameTimeSec);
+    }
+
+    std::optional<sf::FloatRect> Level::ladderCollisionRect(const sf::FloatRect & avatarRect) const
+    {
+        for (const sf::FloatRect & ladderRect : ladders)
+        {
+            if (avatarRect.intersects(ladderRect))
+            {
+                return { ladderRect };
+            }
+        }
+
+        return {};
     }
 
 } // namespace bramblefore

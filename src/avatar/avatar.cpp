@@ -81,9 +81,13 @@ namespace bramblefore
         handleAttackingEnemies(t_context);
         sideToSideMotion(t_context, t_frameTimeSec);
         jumping(t_context, t_frameTimeSec);
+        handleClimbing(t_context, t_frameTimeSec);
 
-        m_velocity.y += (t_context.settings.gravity_acc * t_frameTimeSec);
-        m_sprite.move(m_velocity);
+        if (AvatarState::Climb != m_state)
+        {
+            m_velocity.y += (t_context.settings.gravity_acc * t_frameTimeSec);
+            m_sprite.move(m_velocity);
+        }
 
         // moveMap() and collisions should be called AFTER m_sprite.move() above
         moveMap(t_context);
@@ -205,6 +209,55 @@ namespace bramblefore
         }
     }
 
+    void Avatar::handleClimbing(Context & t_context, const float t_frameTimeSec)
+    {
+        // first frame
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && (AvatarState::Attack != m_state) &&
+            (AvatarState::AttackExtra != m_state) && (AvatarState::Climb != m_state) &&
+            (AvatarState::Hurt != m_state) && (AvatarState::Death != m_state))
+        {
+            const std::optional<sf::FloatRect> ladderRectOpt{ t_context.level.ladderCollisionRect(
+                collisionRect()) };
+
+            if (ladderRectOpt.has_value())
+            {
+                m_state = AvatarState::Climb;
+                m_anim  = AvatarAnim::Climb;
+                restartAnim();
+
+                m_velocity.x = 0.0f;
+                m_velocity.y = 0.0f;
+            }
+
+            return;
+        }
+
+        // all other frames
+        if ((AvatarState::Climb == m_state))
+        {
+            const float ladderMoveSpeed{ 60.0f };
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+            {
+                m_sprite.move(0.0f, -(ladderMoveSpeed * t_frameTimeSec));
+            }
+
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+            {
+                m_sprite.move(0.0f, (ladderMoveSpeed * t_frameTimeSec));
+            }
+
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            {
+                m_sprite.move(-(ladderMoveSpeed * t_frameTimeSec), 0.0f);
+            }
+
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            {
+                m_sprite.move((ladderMoveSpeed * t_frameTimeSec), 0.0f);
+            }
+        }
+    }
+
     void Avatar::handleAttackState(Context & t_context)
     {
         // first frame
@@ -212,7 +265,6 @@ namespace bramblefore
             (AvatarState::AttackExtra != m_state) && (AvatarState::Climb != m_state) &&
             (AvatarState::Hurt != m_state) && (AvatarState::Death != m_state))
         {
-
             const sf::Vector2f spellAnimPos = [&]() {
                 const sf::FloatRect collRect{ collisionRect() };
                 sf::Vector2f pos{ util::center(collRect) };
@@ -449,7 +501,7 @@ namespace bramblefore
     void Avatar::sideToSideMotion(Context & t_context, const float t_frameTimeSec)
     {
         if ((AvatarState::Hurt == m_state) || (AvatarState::Attack == m_state) ||
-            (AvatarState::AttackExtra == m_state))
+            (AvatarState::AttackExtra == m_state) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
             return;
         }
@@ -610,7 +662,7 @@ namespace bramblefore
         {
             m_hasLanded = false;
             t_context.sfx.stop("walk");
-            
+
             if (isMale(m_type))
             {
                 t_context.sfx.play("jump-male");
@@ -647,7 +699,7 @@ namespace bramblefore
         m_state = AvatarState::Death;
         m_anim  = AvatarAnim::Death;
         restartAnim();
-        
+
         m_velocity = { 0.0f, 0.0f };
 
         t_context.sfx.stop("walk");
@@ -677,7 +729,6 @@ namespace bramblefore
             else
             {
                 t_context.map_coord.deathAfterDelay(t_context);
-
             }
         }
 
