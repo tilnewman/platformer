@@ -610,7 +610,15 @@ namespace bramblefore
         {
             m_hasLanded = false;
             t_context.sfx.stop("walk");
-            // t_context.sfx.play("jump"); //TODO
+            
+            if (isMale(m_type))
+            {
+                t_context.sfx.play("jump-male");
+            }
+            else
+            {
+                t_context.sfx.play("jump-female");
+            }
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
             {
