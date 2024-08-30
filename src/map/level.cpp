@@ -6,10 +6,15 @@
 #include "map/level.hpp"
 
 #include "avatar/avatar.hpp"
+#include "avatar/spells-anim.hpp"
 #include "bramblefore/settings.hpp"
 #include "map-textures.hpp"
+#include "map/accents.hpp"
 #include "map/level-file-loader.hpp"
+#include "map/pickups.hpp"
+#include "subsystem/background-images.hpp"
 #include "subsystem/context.hpp"
+#include "subsystem/floating-text.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "util/sfml-util.hpp"
 
@@ -87,6 +92,13 @@ namespace bramblefore
         }
 
         monsters.move(t_amount);
+        t_context.accent.move(t_amount);
+        t_context.pickup.move(t_amount);
+        t_context.pickup.move(t_amount);
+        t_context.bg_image.move(t_amount);
+        t_context.spell.move(t_amount);
+        t_context.float_text.move(t_amount);
+
         return true;
     }
 

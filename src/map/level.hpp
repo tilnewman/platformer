@@ -24,6 +24,8 @@ namespace bramblefore
 
         bool load(Context & t_context);
         void reset();
+
+        // returns true if the map was moved
         bool move(const Context & t_context, const float t_move);
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)

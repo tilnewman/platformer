@@ -25,6 +25,7 @@ namespace bramblefore
     class ScreenLayout;
     class StateManager;
     class FloatingText;
+    class MapCoordinator;
     class SpellAnimations;
     class LevelFileLoader;
     class BackgroundImages;
@@ -54,7 +55,8 @@ namespace bramblefore
             LevelInfo & lin,
             PlayerInfo & pin,
             PlayerInfoDisplay & pid,
-            FloatingText & flt)
+            FloatingText & flt,
+            MapCoordinator & mco)
             : settings(set)
             , random(ran)
             , sfx(spl)
@@ -73,6 +75,7 @@ namespace bramblefore
             , player(pin)
             , player_display(pid)
             , float_text(flt)
+            , map_coord(mco)
         {}
 
         const Settings & settings;
@@ -93,6 +96,7 @@ namespace bramblefore
         PlayerInfo & player;
         PlayerInfoDisplay & player_display;
         FloatingText & float_text;
+        MapCoordinator & map_coord;
     };
 
 } // namespace bramblefore

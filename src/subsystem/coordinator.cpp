@@ -42,6 +42,7 @@ namespace bramblefore
         , m_playerInfo{}
         , m_playerInfoDisplay{}
         , m_floatText{}
+        , m_mapCoord{}
         , m_context{ m_settings,
                      m_random,
                      m_sfx,
@@ -59,7 +60,8 @@ namespace bramblefore
                      m_levelInfo,
                      m_playerInfo,
                      m_playerInfoDisplay,
-                     m_floatText }
+                     m_floatText,
+                     m_mapCoord }
         , m_fpsValues{}
         , m_oneSecondClock{}
         , m_elapsedTimeSec{ 0.0f }

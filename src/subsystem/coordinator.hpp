@@ -19,6 +19,7 @@
 #include "subsystem/context.hpp"
 #include "subsystem/floating-text.hpp"
 #include "subsystem/font.hpp"
+#include "subsystem/map-coordinator.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "util/random.hpp"
 #include "util/sound-player.hpp"
@@ -75,6 +76,7 @@ namespace bramblefore
         PlayerInfo m_playerInfo;
         PlayerInfoDisplay m_playerInfoDisplay;
         FloatingText m_floatText;
+        MapCoordinator m_mapCoord;
 
         Context m_context;
 

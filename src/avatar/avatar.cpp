@@ -18,6 +18,7 @@
 #include "subsystem/context.hpp"
 #include "subsystem/floating-text.hpp"
 #include "subsystem/harm-collision-manager.hpp"
+#include "subsystem/map-coordinator.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
@@ -230,7 +231,7 @@ namespace bramblefore
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
             {
-                t_context.sfx.play("swipe", 0.6f);
+                t_context.sfx.play("swipe", 0.5f);
                 m_state = AvatarState::AttackExtra;
                 m_anim  = AvatarAnim::AttackExtra;
                 m_spellAnim.add(spellAnimPos, m_type, false, m_isFacingRight);
@@ -338,19 +339,10 @@ namespace bramblefore
         }
 
         const float moveX = (screenMiddle - posXAfter);
-        if (!t_context.level.move(t_context, moveX))
+        if (t_context.level.move(t_context, moveX))
         {
-            return;
+            m_sprite.move(moveX, 0.0f);
         }
-
-        m_sprite.move(moveX, 0.0f);
-        t_context.accent.move(moveX);
-        t_context.pickup.move(moveX);
-        t_context.level.move(t_context, moveX);
-        t_context.pickup.move(moveX);
-        t_context.bg_image.move(moveX);
-        t_context.spell.move(moveX);
-        t_context.float_text.move(moveX);
     }
 
     void Avatar::killIfOutOfBounds(Context & t_context)
@@ -647,13 +639,11 @@ namespace bramblefore
         m_state = AvatarState::Death;
         m_anim  = AvatarAnim::Death;
         restartAnim();
-        t_context.sfx.stop("walk");
-        t_context.sfx.play("death-avatar");
+        
         m_velocity = { 0.0f, 0.0f };
 
-        // t_context.stats.has_player_died = true;
-        // t_context.stats.enemy_killed    = 0;
-        // t_context.stats.coin_collected  = 0;
+        t_context.sfx.stop("walk");
+        t_context.map_coord.deathBeforeDelay(t_context);
     }
 
     bool Avatar::handleDeath(Context & t_context, const float t_frameTimeSec)
@@ -678,7 +668,8 @@ namespace bramblefore
             }
             else
             {
-                t_context.state.setChangePending(State::LevelDeath);
+                t_context.map_coord.deathAfterDelay(t_context);
+
             }
         }
 
@@ -688,16 +679,6 @@ namespace bramblefore
 
     void Avatar::respawn(Context & t_context)
     {
-        t_context.accent.clear();
-        t_context.pickup.clear();
-        t_context.spell.clear();
-        t_context.float_text.clear();
-
-        t_context.player.healthReset(t_context);
-        t_context.player.manaReset(t_context);
-        t_context.player.mapStarReset(t_context);
-
-        t_context.level.load(t_context);
 
         m_state = AvatarState::Still;
         m_anim  = AvatarAnim::Walk;
@@ -710,7 +691,7 @@ namespace bramblefore
             turnRight();
         }
 
-        t_context.sfx.play("spawn");
+        t_context.map_coord.respawn(t_context);
     }
 
     void Avatar::turnRight()
