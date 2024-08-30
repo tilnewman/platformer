@@ -5,9 +5,11 @@
 //
 #include "player/player-info.hpp"
 
+#include "avatar/spells-anim.hpp"
 #include "player/player-info-display.hpp"
 #include "subsystem/context.hpp"
 #include "util/check-macros.hpp"
+#include "util/sound-player.hpp"
 
 #include <algorithm>
 
@@ -25,6 +27,7 @@ namespace bramblefore
         , m_mapStarCount{ 0 }
         , m_currentSpell{ 0 }
         , m_spells{}
+        , m_elapsedTimeSec{ 0.0f }
     {}
 
     void PlayerInfo::setup(Context & t_context, const AvatarType t_type)
@@ -49,6 +52,16 @@ namespace bramblefore
 
         m_manaMax = startingMana(t_type);
         manaReset(t_context);
+    }
+
+    void PlayerInfo::update(Context & t_context, const float t_frameTimeSec)
+    {
+        m_elapsedTimeSec += t_frameTimeSec;
+        if (m_elapsedTimeSec > 1.0f)
+        {
+            m_elapsedTimeSec -= 1.0f;
+            manaAdjust(t_context, 1);
+        }
     }
 
     Health_t PlayerInfo::healthAdjust(Context & t_context, const Health_t t_adjustment)
@@ -171,6 +184,22 @@ namespace bramblefore
             toName(t_spell) << " spell was not found for " << toString(m_avatarType));
 
         iter->is_learned = true;
+    }
+
+    void PlayerInfo::castCurrentSpell(Context & t_context, const sf::Vector2f & pos)
+    {
+        const Spell spell{ t_context.player.currentSpell() };
+        const int manaCost{ toManaCost(spell) };
+
+        if (m_mana >= manaCost)
+        {
+            t_context.spell.add(pos, spell);
+            manaAdjust(t_context, -manaCost);
+        }
+        else
+        {
+            t_context.sfx.play("ui-reject-3");
+        }
     }
 
 } // namespace bramblefore

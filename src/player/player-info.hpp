@@ -9,6 +9,8 @@
 #include <string_view>
 #include <vector>
 
+#include <SFML/System/Vector2.hpp>
+
 namespace bramblefore
 {
 
@@ -305,6 +307,8 @@ namespace bramblefore
 
         void setup(Context & t_context, const AvatarType t_type);
 
+        void update(Context & t_context, const float frameTimeSec);
+
         [[nodiscard]] inline constexpr AvatarType avatarType() const noexcept
         {
             return m_avatarType;
@@ -356,6 +360,8 @@ namespace bramblefore
 
         void learnSpell(const Spell t_spell);
 
+        void castCurrentSpell(Context & t_context, const sf::Vector2f & pos);
+
       private:
         AvatarType m_avatarType;
         Health_t m_health;
@@ -367,6 +373,7 @@ namespace bramblefore
         int m_mapStarCount;
         std::size_t m_currentSpell;
         std::vector<PlayerSpell> m_spells;
+        float m_elapsedTimeSec;
     };
 
 } // namespace bramblefore

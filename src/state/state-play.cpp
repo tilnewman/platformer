@@ -34,6 +34,7 @@ namespace bramblefore
 
         if (!t_context.state.isChangePending())
         {
+            t_context.player.update(t_context, t_frameTimeSec);
             t_context.level.update(t_context, t_frameTimeSec);
             t_context.pickup.update(t_context, t_frameTimeSec);
             t_context.accent.update(t_context, t_frameTimeSec);

@@ -5,7 +5,6 @@
 //
 #include "avatar/avatar.hpp"
 
-#include "avatar/spells-anim.hpp"
 #include "bramblefore/settings.hpp"
 #include "map/accents.hpp"
 #include "map/level-info.hpp"
@@ -273,28 +272,35 @@ namespace bramblefore
             (AvatarState::AttackExtra != m_state) && (AvatarState::Climb != m_state) &&
             (AvatarState::Hurt != m_state) && (AvatarState::Death != m_state))
         {
-            const sf::Vector2f spellAnimPos = [&]() {
-                const sf::FloatRect collRect{ collisionRect() };
-                sf::Vector2f pos{ util::center(collRect) };
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+            {
+                m_state = AvatarState::AttackExtra;
+                m_anim  = AvatarAnim::AttackExtra;
 
-                if (m_isFacingRight)
+                if (isSpellCaster(m_type))
                 {
-                    pos.x += (collRect.width * 1.5f);
+                    const sf::Vector2f spellAnimPos = [&]() {
+                        const sf::FloatRect collRect{ collisionRect() };
+                        sf::Vector2f pos{ util::center(collRect) };
+
+                        if (m_isFacingRight)
+                        {
+                            pos.x += (collRect.width * 1.5f);
+                        }
+                        else
+                        {
+                            pos.x -= (collRect.width * 1.5f);
+                        }
+
+                        return pos;
+                    }();
+
+                    t_context.player.castCurrentSpell(t_context, spellAnimPos);
                 }
                 else
                 {
-                    pos.x -= (collRect.width * 1.5f);
+                    t_context.sfx.play("swipe", 0.5f);
                 }
-
-                return pos;
-            }();
-
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
-            {
-                t_context.sfx.play("swipe", 0.5f);
-                m_state = AvatarState::AttackExtra;
-                m_anim  = AvatarAnim::AttackExtra;
-                t_context.spell.add(spellAnimPos, t_context.player.currentSpell());
             }
             else
             {
