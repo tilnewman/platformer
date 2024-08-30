@@ -85,11 +85,6 @@ namespace bramblefore
         sf::Clock m_oneSecondClock;
         float m_elapsedTimeSec;
         std::unique_ptr<util::GraphDisplay<std::size_t>> m_statsDisplayUPtr;
-
-        // avatar testing stuff
-        sf::Text m_avatarTypeText;
-        sf::Text m_avatarAnimText;
-        sf::Text m_avatarAnimIndexText;
     };
 
 } // namespace bramblefore

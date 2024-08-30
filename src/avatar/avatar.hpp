@@ -84,8 +84,6 @@ namespace bramblefore
 
         // TODO remove after testing
         void changeType(Context & t_context);
-        [[nodiscard]] inline AvatarAnim anim() const noexcept { return m_anim; }
-        [[nodiscard]] inline std::size_t animIndex() const noexcept { return m_animIndex; }
 
       private:
         void animate(Context & t_context, const float t_frameTimeSec);

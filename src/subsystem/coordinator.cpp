@@ -66,9 +66,6 @@ namespace bramblefore
         , m_oneSecondClock{}
         , m_elapsedTimeSec{ 0.0f }
         , m_statsDisplayUPtr{}
-        , m_avatarTypeText{}
-        , m_avatarAnimText{}
-        , m_avatarAnimIndexText{}
     {
         m_fpsValues.reserve(128);
     }
@@ -99,16 +96,6 @@ namespace bramblefore
         m_playerInfo.setup(m_context, AvatarType::Enchantress);
         m_playerInfo.learnSpell(Spell::TeslaBall);
         m_playerInfo.learnSpell(Spell::Spikes1);
-
-        // TODO remove after testing
-        const sf::Color testColor{ 100, 100, 255 };
-        m_avatarTypeText      = m_fonts.makeText(Font::Default, FontSize::Large, "", testColor);
-        m_avatarAnimText      = m_fonts.makeText(Font::Default, FontSize::Large, "", testColor);
-        m_avatarAnimIndexText = m_fonts.makeText(Font::Default, FontSize::Large, "", testColor);
-        //
-        m_avatarTypeText.setPosition(0.0f, 500.0f);
-        m_avatarAnimText.setPosition(0.0f, 550.0f);
-        m_avatarAnimIndexText.setPosition(0.0f, 600.0f);
 
         m_states.setChangePending(State::Splash);
     }
@@ -182,14 +169,6 @@ namespace bramblefore
         {
             m_statsDisplayUPtr->draw(m_window, states);
         }
-
-        // TODO remove after testing
-        m_avatarTypeText.setString(std::string(toString(m_context.player.avatarType())));
-        m_avatarAnimText.setString(std::string(toString(m_avatarUPtr->anim())));
-        m_avatarAnimIndexText.setString(std::to_string(m_avatarUPtr->animIndex()));
-        m_window.draw(m_avatarTypeText, states);
-        m_window.draw(m_avatarAnimText, states);
-        m_window.draw(m_avatarAnimIndexText, states);
 
         m_window.display();
     }
