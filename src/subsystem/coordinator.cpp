@@ -78,7 +78,7 @@ namespace bramblefore
         setupRenderWindow(m_settings.video_mode);
         m_window.setMouseCursorVisible(false);
 
-        m_sfx.mediaPath(m_settings.media_path / "sounds");
+        m_sfx.mediaPath(m_settings.media_path / "sound");
         m_sfx.loadAll();
         m_sfx.willLoop("walk", true);
 
