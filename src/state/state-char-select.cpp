@@ -65,6 +65,7 @@ namespace bramblefore
 
         if (t_event.key.code == sf::Keyboard::Enter)
         {
+            t_context.player.setup(t_context, m_avatarType);
             t_context.state.setChangePending(State::Play);
         }
         else if (t_event.key.code == sf::Keyboard::Left)

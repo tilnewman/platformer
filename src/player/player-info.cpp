@@ -45,7 +45,11 @@ namespace bramblefore
             playerSpell.spell      = spell;
         }
 
-        m_spells.front().is_learned = true;
+        //spellcasters always have the first spell learned when the game begins
+        if (!m_spells.empty())
+        {
+            m_spells.front().is_learned = true;
+        }
 
         m_healthMax = startingHealth(t_type);
         healthReset(t_context);

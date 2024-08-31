@@ -92,11 +92,6 @@ namespace bramblefore
         m_accents.setup(m_context);
         m_spells.setup(m_context);
 
-        // TODO find a better place for this eventually
-        m_playerInfo.setup(m_context, AvatarType::Enchantress);
-        m_playerInfo.learnSpell(Spell::TeslaBall);
-        m_playerInfo.learnSpell(Spell::Spikes1);
-
         m_states.setChangePending(State::Splash);
     }
 
