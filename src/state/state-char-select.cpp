@@ -31,6 +31,8 @@ namespace bramblefore
         , m_paperInnerRect{ 90, 64, 368, 384 }
         , m_avatarTypeText{}
         , m_descriptionTexts{}
+        , m_avatarClassText{}
+        , m_classDescriptionTexts{}
         , m_avatarPoseSprites{}
     {}
 
@@ -53,6 +55,13 @@ namespace bramblefore
         for (const sf::Sprite & poseSprite : m_avatarPoseSprites)
         {
             t_target.draw(poseSprite, t_states);
+        }
+
+        t_target.draw(m_avatarClassText, t_states);
+
+        for (const sf::Text & text : m_classDescriptionTexts)
+        {
+            t_target.draw(text, t_states);
         }
     }
 
@@ -192,6 +201,42 @@ namespace bramblefore
 
         //
 
+        const std::string classNameString = [&]() {
+            if (isWizard(m_avatarType))
+            {
+                return "Wizard";
+            }
+            else if (isRaider(m_avatarType))
+            {
+                return "Raider";
+            }
+            else
+            {
+                return "Warrior";
+            }
+        }();
+
+        m_avatarClassText = t_context.font.makeText(
+            Font::Default, FontSize::Medium, classNameString, sf::Color(0, 0, 0, 200));
+
+        m_avatarClassText.setPosition(
+            (util::center(m_paperInnerRect).x - (m_avatarClassText.getGlobalBounds().width * 0.5f)),
+            (util::bottom(m_descriptionTexts.back()) + m_avatarTypeText.getGlobalBounds().height));
+
+        //
+
+        descriptionRect.top =
+            (util::bottom(m_avatarClassText) + m_avatarClassText.getGlobalBounds().height);
+
+        m_classDescriptionTexts = TextLayout::layout(
+            t_context,
+            avatarClassDescription(m_avatarType),
+            descriptionRect,
+            descriptionTextDeatils);
+
+        //
+
+        const sf::Color poseColor{ 255, 255, 255, 200 };
         const float poseScale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.0f) };
 
         m_avatarPoseSprites.clear();
@@ -200,6 +245,7 @@ namespace bramblefore
         sf::Sprite & poseSprite1{ m_avatarPoseSprites.emplace_back() };
         AvatarTextureManager::instance().set(poseSprite1, m_avatarType, AvatarAnim::Attack, 3);
         poseSprite1.setScale(poseScale, poseScale);
+        poseSprite1.setColor(poseColor);
 
         poseSprite1.setPosition(
             m_paperInnerRect.left,
@@ -210,6 +256,7 @@ namespace bramblefore
         sf::Sprite & poseSprite2{ m_avatarPoseSprites.emplace_back() };
         AvatarTextureManager::instance().set(poseSprite2, m_avatarType, AvatarAnim::Death, 2);
         poseSprite2.setScale(poseScale, poseScale);
+        poseSprite2.setColor(poseColor);
 
         poseSprite2.setPosition(
             (util::right(poseSprite1) + poseSpriteHorizPad), poseSprite1.getPosition().y);
@@ -217,6 +264,7 @@ namespace bramblefore
         sf::Sprite & poseSprite3{ m_avatarPoseSprites.emplace_back() };
         AvatarTextureManager::instance().set(poseSprite3, m_avatarType, AvatarAnim::Jump, 1);
         poseSprite3.setScale(poseScale, poseScale);
+        poseSprite3.setColor(poseColor);
 
         poseSprite3.setPosition(
             (util::right(poseSprite2) + poseSpriteHorizPad), poseSprite1.getPosition().y);
@@ -224,6 +272,7 @@ namespace bramblefore
         sf::Sprite & poseSprite4{ m_avatarPoseSprites.emplace_back() };
         AvatarTextureManager::instance().set(poseSprite4, m_avatarType, AvatarAnim::Jump, 3);
         poseSprite4.setScale(poseScale, poseScale);
+        poseSprite4.setColor(poseColor);
 
         poseSprite4.setPosition(
             (util::right(poseSprite3) + poseSpriteHorizPad), poseSprite1.getPosition().y);
@@ -269,6 +318,34 @@ namespace bramblefore
         else
         {
             return "Witches...";
+        }
+    }
+
+    std::string CharacterSelectState::avatarClassDescription(const AvatarType type) const
+    {
+        if (isWizard(type))
+        {
+            return "Being a wizard is all about casting exotic and powerful spells. Wizards do "
+                   "have a melee attack they can use, but that is more of a last resort when their "
+                   "mana is exhausted. While adventuring you will find mana potions to help keep "
+                   "your mana high. You will only have one spell available when your journey "
+                   "begins, but don't worry, there are a variety of ways to learn new spells. Each "
+                   "of the three types of Wizards has a unique book of spells they can learn.";
+        }
+        else if (isRaider(type))
+        {
+            return "The Raiders are a class of adventurer that are sneaky and obsessed with "
+                   "treasure. They are the only class that can pilfer gold coins from the enemies "
+                   "they kill. They gain experience from vanquishing monsters just like all other "
+                   "classes, but Raiders will have more weapons and armor to choose from that can "
+                   "be bought from the extra gold coins they will collect.";
+        }
+        else
+        {
+            return "Warriors are a simple breed that focus on close quarters combat. Their attacks "
+                   "with mighty swords reach farther and do more damage than Raiders or Wizards. "
+                   "They cannot cast spells or steal coins, but they will have the best weapons "
+                   "and armor to choose from.";
         }
     }
 

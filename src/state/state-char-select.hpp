@@ -42,9 +42,10 @@ namespace bramblefore
         void onEnter(Context & t_context) final;
         void onExit(Context & t_context) final;
 
-        private:
+      private:
         void setup(Context & t_context);
-        std::string avatarDescription(const AvatarType type)const;
+        std::string avatarDescription(const AvatarType type) const;
+        std::string avatarClassDescription(const AvatarType type) const;
 
       private:
         sf::Text m_titleText;
@@ -56,6 +57,8 @@ namespace bramblefore
         sf::FloatRect m_paperInnerRect;
         sf::Text m_avatarTypeText;
         std::vector<sf::Text> m_descriptionTexts;
+        sf::Text m_avatarClassText;
+        std::vector<sf::Text> m_classDescriptionTexts;
         std::vector<sf::Sprite> m_avatarPoseSprites;
     };
 
