@@ -45,17 +45,17 @@ namespace bramblefore
     }
 
     void PlayState::draw(
-        Context & t_context, sf::RenderTarget & target, sf::RenderStates states) const
+        Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
-        t_context.bg_image.draw(target, states);
-        t_context.level.draw(t_context, target, states);
-        t_context.pickup.draw(t_context, target, states);
-        t_context.accent.draw(t_context, target, states);
-        t_context.avatar.draw(target, states);
-        t_context.spell.draw(target, states);
-        t_context.float_text.draw(target, states);
-        t_context.player_display.draw(target, states);
-        m_spellSelectMenu.draw(target, states);
+        t_context.bg_image.draw(t_target, t_states);
+        t_context.level.draw(t_context, t_target, t_states);
+        t_context.pickup.draw(t_context, t_target, t_states);
+        t_context.accent.draw(t_context, t_target, t_states);
+        t_context.avatar.draw(t_target, t_states);
+        t_context.spell.draw(t_target, t_states);
+        t_context.float_text.draw(t_target, t_states);
+        t_context.player_display.draw(t_target, t_states);
+        m_spellSelectMenu.draw(t_target, t_states);
     }
 
     void PlayState::handleEvent(Context & t_context, const sf::Event & t_event)

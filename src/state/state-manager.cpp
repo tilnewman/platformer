@@ -9,6 +9,7 @@
 #include "state/state-level-death.hpp"
 #include "state/state-play.hpp"
 #include "state/state-splash.hpp"
+#include "state/state-char-select.hpp"
 
 #include <exception>
 
@@ -45,12 +46,13 @@ namespace bramblefore
         // clang-format off
         switch (state)
         {
-            case State::Startup:        { return std::make_unique<StartupState>();       }
-            case State::Splash:         { return std::make_unique<SplashState>();        }
-            case State::Play:           { return std::make_unique<PlayState>();          }
-            case State::LevelComplete:  { return std::make_unique<LevelCompleteState>(); }
-            case State::LevelDeath:     { return std::make_unique<LevelDeathState>();    }
-            case State::Shutdown:       { return std::make_unique<ShutdownState>();      }
+            case State::Startup:        { return std::make_unique<StartupState>();         }
+            case State::CharacterSelect:{ return std::make_unique<CharacterSelectState>(); }
+            case State::Splash:         { return std::make_unique<SplashState>();          }
+            case State::Play:           { return std::make_unique<PlayState>();            }
+            case State::LevelComplete:  { return std::make_unique<LevelCompleteState>();   }
+            case State::LevelDeath:     { return std::make_unique<LevelDeathState>();      }
+            case State::Shutdown:       { return std::make_unique<ShutdownState>();        }
             default:                    
             { 
                 throw std::runtime_error("StateManager::factory() given an unknown State.");

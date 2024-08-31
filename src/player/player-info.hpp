@@ -52,6 +52,26 @@ namespace bramblefore
         // clang-format on
     }
 
+     [[nodiscard]] inline constexpr std::string_view toName(const AvatarType t_type) noexcept
+    {
+        // clang-format off
+        switch (t_type)
+        {
+            case AvatarType::Assassin:      { return "Assassin";        }
+            case AvatarType::BlueKnight:    { return "Bluehorn Knight"; }
+            case AvatarType::Druid:         { return "Druid";           }
+            case AvatarType::Enchantress:   { return "Enchantress";     }
+            case AvatarType::Ninja:         { return "Ninja";           }
+            case AvatarType::RedKnight:     { return "Crimson Knight";  }
+            case AvatarType::Rogue:         { return "Rogue";           }
+            case AvatarType::Viking:        { return "Viking";          }
+            case AvatarType::Witch:         { return "Witch";           }
+            case AvatarType::Count:         [[fallthrough]];
+            default:               { return "error_AvatarType_unknown"; }
+        }
+        // clang-format on
+    }
+
     [[nodiscard]] inline constexpr bool isMale(const AvatarType t_type) noexcept
     {
         return (

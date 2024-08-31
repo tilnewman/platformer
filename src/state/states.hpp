@@ -23,6 +23,7 @@ namespace bramblefore
     enum class State
     {
         Startup,
+        CharacterSelect,
         Splash,
         Play,
         LevelComplete,
@@ -35,13 +36,14 @@ namespace bramblefore
         // clang-format off
         switch (state)
         {
-            case State::Startup:        { return "Startup";       }
-            case State::Splash:         { return "Splash";        }
-            case State::Play:           { return "Play";          }
-            case State::LevelComplete:  { return "LevelComplete"; }
-            case State::LevelDeath:     { return "LevelDeath";    }
-            case State::Shutdown:       { return "Shutdown";      }
-            default:   { return "Error_toString()_unknown_State"; }
+            case State::Startup:        { return "Startup";         }
+            case State::CharacterSelect:{ return "CharacterSelect"; }
+            case State::Splash:         { return "Splash";          }
+            case State::Play:           { return "Play";            }
+            case State::LevelComplete:  { return "LevelComplete";   }
+            case State::LevelDeath:     { return "LevelDeath";      }
+            case State::Shutdown:       { return "Shutdown";        }
+            default:     { return "Error_toString()_unknown_State"; }
         }
         // clang-format on
     }

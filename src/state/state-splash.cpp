@@ -51,7 +51,7 @@ namespace bramblefore
         m_elpasedTimeSec += t_frameTimeSec;
         if (m_elpasedTimeSec > 4.0f)
         {
-            t_context.state.setChangePending(State::Play);
+            t_context.state.setChangePending(State::CharacterSelect);
         }
     }
 
@@ -68,7 +68,7 @@ namespace bramblefore
             return;
         }
 
-        t_context.state.setChangePending(State::Play);
+        t_context.state.setChangePending(State::CharacterSelect);
     }
 
 } // namespace bramblefore
