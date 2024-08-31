@@ -79,11 +79,25 @@ namespace bramblefore
             (AvatarType::Witch != t_type));
     }
 
-    [[nodiscard]] inline constexpr bool isSpellCaster(const AvatarType t_type) noexcept
+    [[nodiscard]] inline constexpr bool isWizard(const AvatarType t_type) noexcept
     {
         return (
             (AvatarType::Druid == t_type) || (AvatarType::Enchantress == t_type) ||
             (AvatarType::Witch == t_type));
+    }
+
+    [[nodiscard]] inline constexpr bool isWarrior(const AvatarType t_type) noexcept
+    {
+        return (
+            (AvatarType::BlueKnight == t_type) || (AvatarType::RedKnight == t_type) ||
+            (AvatarType::Viking == t_type));
+    }
+
+    [[nodiscard]] inline constexpr bool isRaider(const AvatarType t_type) noexcept
+    {
+        return (
+            (AvatarType::Rogue == t_type) || (AvatarType::Assassin == t_type) ||
+            (AvatarType::Ninja == t_type));
     }
 
     [[nodiscard]] inline constexpr Health_t startingHealth(const AvatarType t_type) noexcept

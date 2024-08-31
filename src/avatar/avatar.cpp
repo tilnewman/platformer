@@ -277,7 +277,7 @@ namespace bramblefore
                 m_state = AvatarState::AttackExtra;
                 m_anim  = AvatarAnim::AttackExtra;
 
-                if (isSpellCaster(m_type))
+                if (isWizard(m_type))
                 {
                     const sf::Vector2f spellAnimPos = [&]() {
                         const sf::FloatRect collRect{ collisionRect() };
@@ -382,7 +382,7 @@ namespace bramblefore
         if (t_context.level.monsters.avatarAttack(t_context, attackInfo))
         {
             m_hasHitEnemy = true;
-            if (isSpellCaster(m_type))
+            if (isWizard(m_type))
             {
                 t_context.sfx.play("hit-staff");
             }

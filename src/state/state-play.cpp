@@ -79,8 +79,7 @@ namespace bramblefore
             t_context.avatar.changeType(t_context);
         }
         else if (
-            isSpellCaster(t_context.player.avatarType()) &&
-            util::keys::isNumberKey(t_event.key.code))
+            isWizard(t_context.player.avatarType()) && util::keys::isNumberKey(t_event.key.code))
         {
             m_spellSelectMenu.setup(
                 t_context, util::keys::toNumberOpt<std::size_t>(t_event.key.code).value());

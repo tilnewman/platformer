@@ -13,6 +13,7 @@
 #include "subsystem/screen-layout.hpp"
 #include "ui/text-layout.hpp"
 #include "util/sfml-util.hpp"
+#include "util/sound-player.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Event.hpp>
@@ -60,8 +61,43 @@ namespace bramblefore
 
         if (t_event.key.code == sf::Keyboard::Enter)
         {
-            AvatarTextureManager::instance().release(m_avatarType);
             t_context.state.setChangePending(State::Play);
+        }
+        else if (t_event.key.code == sf::Keyboard::Left)
+        {
+            AvatarTextureManager::instance().release(m_avatarType);
+
+            std::size_t typeIndex{ static_cast<std::size_t>(m_avatarType) };
+            if (0 == typeIndex)
+            {
+                typeIndex = (static_cast<std::size_t>(AvatarType::Count) - 1_st);
+            }
+            else
+            {
+                --typeIndex;
+            }
+
+            m_avatarType = static_cast<AvatarType>(typeIndex);
+            t_context.sfx.play("ui-select-thock-slide");
+            setup(t_context);
+        }
+        else if (t_event.key.code == sf::Keyboard::Right)
+        {
+            AvatarTextureManager::instance().release(m_avatarType);
+
+            std::size_t typeIndex{ static_cast<std::size_t>(m_avatarType) };
+            if (typeIndex < (static_cast<std::size_t>(AvatarType::Count) - 1_st))
+            {
+                ++typeIndex;
+            }
+            else
+            {
+                typeIndex = 0;
+            }
+
+            m_avatarType = static_cast<AvatarType>(typeIndex);
+            t_context.sfx.play("ui-select-thock-slide");
+            setup(t_context);
         }
     }
 
@@ -83,14 +119,22 @@ namespace bramblefore
         m_paperInnerRect.width *= paperScale;
         m_paperInnerRect.height *= paperScale;
 
-        //
+        setup(t_context);
+    }
 
+    void CharacterSelectState::onExit(Context & t_context)
+    {
+        AvatarTextureManager::instance().release(m_avatarType);
+    }
+
+    void CharacterSelectState::setup(Context & t_context)
+    {
         AvatarTextureManager::instance().acquire(t_context, m_avatarType);
 
         m_avatarSprite.setTexture(AvatarTextureManager::instance().getDefault(m_avatarType));
 
         const float avatarScale{ t_context.layout.calScaleBasedOnResolution(t_context, 3.0f) };
-        m_avatarSprite.scale(avatarScale, avatarScale);
+        m_avatarSprite.setScale(avatarScale, avatarScale);
         m_avatarSprite.setColor(sf::Color(255, 255, 255, 75));
         util::centerInside(m_avatarSprite, m_paperInnerRect);
 
@@ -125,6 +169,7 @@ namespace bramblefore
 
         const float poseScale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.0f) };
 
+        m_avatarPoseSprites.clear();
         m_avatarPoseSprites.reserve(8);
 
         sf::Sprite & poseSprite1{ m_avatarPoseSprites.emplace_back() };
@@ -158,8 +203,6 @@ namespace bramblefore
         poseSprite4.setPosition(
             (util::right(poseSprite3) + poseSpriteHorizPad), poseSprite1.getPosition().y);
     }
-
-    void CharacterSelectState::onExit(Context & t_context) {}
 
     std::string CharacterSelectState::avatarDescription(const AvatarType type) const
     {

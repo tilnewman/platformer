@@ -68,7 +68,7 @@ namespace bramblefore
         const bool t_isFirstAttack,
         const bool t_isFacingRight)
     {
-        if (!isSpellCaster(t_type))
+        if (!isWizard(t_type))
         {
             return;
         }

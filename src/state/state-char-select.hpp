@@ -43,6 +43,7 @@ namespace bramblefore
         void onExit(Context & t_context) final;
 
         private:
+        void setup(Context & t_context);
         std::string avatarDescription(const AvatarType type)const;
 
       private:
