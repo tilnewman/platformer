@@ -47,6 +47,8 @@ namespace bramblefore
         std::string avatarDescription(const AvatarType type)const;
 
       private:
+        sf::Text m_titleText;
+        sf::Text m_instructionsText;
         sf::Texture m_paperTexture;
         sf::Sprite m_paperSprite;
         AvatarType m_avatarType;

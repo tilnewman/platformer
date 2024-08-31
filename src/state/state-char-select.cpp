@@ -22,7 +22,9 @@ namespace bramblefore
 {
 
     CharacterSelectState::CharacterSelectState()
-        : m_paperTexture{}
+        : m_titleText{}
+        , m_instructionsText{}
+        , m_paperTexture{}
         , m_paperSprite{}
         , m_avatarType{ AvatarType::BlueKnight }
         , m_avatarSprite{}
@@ -32,11 +34,13 @@ namespace bramblefore
         , m_avatarPoseSprites{}
     {}
 
-    void CharacterSelectState::update(Context & t_context, const float t_frameTimeSec) {}
+    void CharacterSelectState::update(Context &, const float) {}
 
     void CharacterSelectState::draw(
-        Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
+        Context &, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
+        t_target.draw(m_titleText, t_states);
+        t_target.draw(m_instructionsText, t_states);
         t_target.draw(m_paperSprite, t_states);
         t_target.draw(m_avatarSprite, t_states);
         t_target.draw(m_avatarTypeText, t_states);
@@ -103,6 +107,26 @@ namespace bramblefore
 
     void CharacterSelectState::onEnter(Context & t_context)
     {
+        m_titleText = t_context.font.makeText(
+            Font::Default, FontSize::Huge, "Character Selection", sf::Color(220, 220, 220));
+
+        m_titleText.setPosition(
+            (util::center(t_context.layout.wholeRect()).x -
+             (m_titleText.getGlobalBounds().width * 0.5f)),
+            (m_titleText.getGlobalBounds().height * 0.75f));
+
+        m_instructionsText = t_context.font.makeText(
+            Font::Default,
+            FontSize::Small,
+            "(Use left and right arrow keys to select a character, then press enter.)",
+            sf::Color(160, 160, 160),
+            sf::Text::Italic);
+
+        m_instructionsText.setPosition(
+            (util::center(t_context.layout.wholeRect()).x -
+             (m_instructionsText.getGlobalBounds().width * 0.5f)),
+            (util::bottom(m_titleText) + (m_instructionsText.getGlobalBounds().height * 0.5f)));
+
         m_paperTexture.loadFromFile(
             (t_context.settings.media_path / "image/ui/paper-runes.png").string());
 
@@ -122,7 +146,7 @@ namespace bramblefore
         setup(t_context);
     }
 
-    void CharacterSelectState::onExit(Context & t_context)
+    void CharacterSelectState::onExit(Context &)
     {
         AvatarTextureManager::instance().release(m_avatarType);
     }
