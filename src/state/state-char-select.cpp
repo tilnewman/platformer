@@ -345,7 +345,7 @@ namespace bramblefore
             return "Warriors are a simple breed that focus on close quarters combat. Their attacks "
                    "with mighty swords reach farther and do more damage than Raiders or Wizards. "
                    "They cannot cast spells or steal coins, but they will have the best weapons "
-                   "and armor to choose from.";
+                   "and armor to choose from. Warriors are the slowest with the lowest jumps.";
         }
     }
 
