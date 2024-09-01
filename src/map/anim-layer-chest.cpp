@@ -116,7 +116,7 @@ namespace bramblefore
         // this one reserve call needs to prevent all reallocations
         m_textureSets.reserve(static_cast<std::size_t>(Chest::Count));
 
-        for (std::size_t chestIndex{ 0 }; chestIndex < static_cast<std::size_t>(Chest::Count);
+        for (std::size_t chestIndex{ 1 }; chestIndex <= static_cast<std::size_t>(Chest::Count);
              ++chestIndex)
         {
             ChestTextures & textures{ m_textureSets.emplace_back() };
