@@ -13,6 +13,7 @@
 #include "bramblefore/settings.hpp"
 #include "map-textures.hpp"
 #include "map/accents.hpp"
+#include "map/anim-layer-chest.hpp"
 #include "map/anim-layer-mimic.hpp"
 #include "map/pickups.hpp"
 #include "monster/monster-baby-dragon.hpp"
@@ -262,6 +263,10 @@ namespace bramblefore
             {
                 parseAccentAnimLayer(t_context, jsonLayer);
             }
+            else if (layerName == "chest")
+            {
+                parseChestAnimLayer(t_context, jsonLayer);
+            }
             else if (layerName == "acid-anim")
             {
                 parseLayerOfRects<AcidAnimationLayer>(t_context, jsonLayer);
@@ -412,6 +417,20 @@ namespace bramblefore
             const sf::FloatRect rect = parseAndConvertRect(t_context, accentJson);
             t_context.accent.add(t_context, rect, name);
         }
+    }
+
+    void LevelFileLoader::parseChestAnimLayer(Context & t_context, const nlohmann::json & t_json) 
+    {
+        auto chestAnimLayerUPtr{ std::make_unique<ChestAnimationLayer>(t_context) };
+
+        for (const nlohmann::json & accentJson : t_json["objects"])
+        {
+            const std::string name   = accentJson["name"];
+            const sf::FloatRect rect = parseAndConvertRect(t_context, accentJson);
+            chestAnimLayerUPtr->add(t_context, name, rect);
+        }
+
+        t_context.level.tile_layers.push_back(std::move(chestAnimLayerUPtr));
     }
 
     void LevelFileLoader::parseMonsterLayer(Context & t_context, const nlohmann::json & t_json)

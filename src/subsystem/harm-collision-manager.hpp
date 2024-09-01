@@ -19,6 +19,7 @@ namespace bramblefore
     struct IHarmCollisionOwner
     {
         virtual ~IHarmCollisionOwner() = default;
+
         [[nodiscard]] virtual Harm
             avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) = 0;
     };
