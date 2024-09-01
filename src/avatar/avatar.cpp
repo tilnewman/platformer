@@ -43,6 +43,7 @@ namespace bramblefore
         , m_isAnimating{ false }
         , m_hasHitEnemy{ false }
         , m_spellAnim{}
+        , m_movement{}
     {}
 
     Avatar::~Avatar() { AvatarTextureManager::instance().release(m_type); }
@@ -63,6 +64,8 @@ namespace bramblefore
             t_context, t_context.settings.avatar_scale) };
 
         m_sprite.setScale(scale, scale);
+
+        m_movement = calculateMovementDetails(t_context);
     }
 
     void Avatar::update(Context & t_context, const float t_frameTimeSec)
@@ -138,6 +141,7 @@ namespace bramblefore
         AvatarTextureManager::instance().release(m_type);
         m_type = t_context.player.avatarType();
         AvatarTextureManager::instance().acquire(t_context, m_type);
+        m_movement = calculateMovementDetails(t_context);
     }
 
     sf::FloatRect Avatar::attackRect() const
@@ -511,6 +515,25 @@ namespace bramblefore
         }
     }
 
+    MovementDetails Avatar::calculateMovementDetails(const Context & t_context) const
+    {
+        MovementDetails details;
+
+        details.walk_speed_limit = t_context.layout.calScaleBasedOnResolution(
+            t_context, t_context.settings.walk_speed_limit);
+
+        details.walk_acceleration = t_context.layout.calScaleBasedOnResolution(
+            t_context, t_context.settings.walk_acceleration);
+
+        details.run_speed_limit = t_context.layout.calScaleBasedOnResolution(
+            t_context, t_context.settings.run_speed_limit);
+
+        details.run_acceleration = t_context.layout.calScaleBasedOnResolution(
+            t_context, t_context.settings.run_acceleration);
+
+        return details;
+    }
+
     void Avatar::sideToSideMotion(Context & t_context, const float t_frameTimeSec)
     {
         if ((AvatarState::Hurt == m_state) || (AvatarState::Attack == m_state) ||
@@ -518,18 +541,6 @@ namespace bramblefore
         {
             return;
         }
-
-        const float walkSpeedLimit{ t_context.layout.calScaleBasedOnResolution(
-            t_context, t_context.settings.walk_speed_limit) };
-
-        const float walkAcceleration{ t_context.layout.calScaleBasedOnResolution(
-            t_context, t_context.settings.walk_acceleration) };
-
-        const float runSpeedLimit{ t_context.layout.calScaleBasedOnResolution(
-            t_context, t_context.settings.run_speed_limit) };
-
-        const float runAcceleration{ t_context.layout.calScaleBasedOnResolution(
-            t_context, t_context.settings.run_acceleration) };
 
         if ((AvatarState::Jump == m_state) || (AvatarState::JumpHigh == m_state))
         {
@@ -540,21 +551,21 @@ namespace bramblefore
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
             {
-                m_velocity.x += ((walkAcceleration / jumpMoveDivisor) * t_frameTimeSec);
+                m_velocity.x += ((m_movement.walk_acceleration / jumpMoveDivisor) * t_frameTimeSec);
 
-                if (m_velocity.x > walkSpeedLimit)
+                if (m_velocity.x > m_movement.walk_speed_limit)
                 {
-                    m_velocity.x = walkSpeedLimit;
+                    m_velocity.x = m_movement.walk_speed_limit;
                 }
             }
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             {
-                m_velocity.x -= ((walkAcceleration / jumpMoveDivisor) * t_frameTimeSec);
+                m_velocity.x -= ((m_movement.walk_acceleration / jumpMoveDivisor) * t_frameTimeSec);
 
-                if (m_velocity.x < -walkSpeedLimit)
+                if (m_velocity.x < -m_movement.walk_speed_limit)
                 {
-                    m_velocity.x = -walkSpeedLimit;
+                    m_velocity.x = -m_movement.walk_speed_limit;
                 }
             }
 
@@ -565,10 +576,10 @@ namespace bramblefore
         {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
             {
-                m_velocity.x += (runAcceleration * t_frameTimeSec);
-                if (m_velocity.x > runSpeedLimit)
+                m_velocity.x += (m_movement.run_acceleration * t_frameTimeSec);
+                if (m_velocity.x > m_movement.run_speed_limit)
                 {
-                    m_velocity.x = runSpeedLimit;
+                    m_velocity.x = m_movement.run_speed_limit;
                 }
 
                 if (AvatarState::Run != m_state)
@@ -582,10 +593,10 @@ namespace bramblefore
             }
             else
             {
-                m_velocity.x += (walkAcceleration * t_frameTimeSec);
-                if (m_velocity.x > walkSpeedLimit)
+                m_velocity.x += (m_movement.walk_acceleration * t_frameTimeSec);
+                if (m_velocity.x > m_movement.walk_speed_limit)
                 {
-                    m_velocity.x = walkSpeedLimit;
+                    m_velocity.x = m_movement.walk_speed_limit;
                 }
 
                 if (AvatarState::Walk != m_state)
@@ -607,10 +618,10 @@ namespace bramblefore
         {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
             {
-                m_velocity.x -= (runAcceleration * t_frameTimeSec);
-                if (m_velocity.x < -runSpeedLimit)
+                m_velocity.x -= (m_movement.run_acceleration * t_frameTimeSec);
+                if (m_velocity.x < -m_movement.run_speed_limit)
                 {
-                    m_velocity.x = -runSpeedLimit;
+                    m_velocity.x = -m_movement.run_speed_limit;
                 }
 
                 if (AvatarState::Run != m_state)
@@ -624,10 +635,10 @@ namespace bramblefore
             }
             else
             {
-                m_velocity.x -= (walkAcceleration * t_frameTimeSec);
-                if (m_velocity.x < -walkSpeedLimit)
+                m_velocity.x -= (m_movement.walk_acceleration * t_frameTimeSec);
+                if (m_velocity.x < -m_movement.walk_speed_limit)
                 {
-                    m_velocity.x = -walkSpeedLimit;
+                    m_velocity.x = -m_movement.walk_speed_limit;
                 }
 
                 if (AvatarState::Walk != m_state)

@@ -67,6 +67,16 @@ namespace bramblefore
     }
 
     //
+    
+    struct MovementDetails
+    {
+        float walk_speed_limit{ 0.0f };
+        float run_speed_limit{ 0.0f };
+        float walk_acceleration{0.0f};
+        float run_acceleration{ 0.0f };
+    };
+
+    //
 
     class Avatar
     {
@@ -104,6 +114,7 @@ namespace bramblefore
         void exitCollisions(Context & t_context) const;
         void hurtCollisions(Context & t_context);
         void harm(Context & t_context, const Harm & t_harm);
+        MovementDetails calculateMovementDetails(const Context & t_context) const;
 
       private:
         sf::Sprite m_sprite;
@@ -120,6 +131,7 @@ namespace bramblefore
         bool m_isAnimating;
         bool m_hasHitEnemy;
         AvatarSpellAnimations m_spellAnim;
+        MovementDetails m_movement;
     };
 
 } // namespace bramblefore
