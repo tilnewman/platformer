@@ -106,7 +106,6 @@ namespace bramblefore
         t_context.bg_image.move(t_amount);
         t_context.spell.move(t_amount);
         t_context.float_text.move(t_amount);
-        
 
         return true;
     }

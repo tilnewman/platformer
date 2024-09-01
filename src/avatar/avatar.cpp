@@ -97,7 +97,7 @@ namespace bramblefore
         collisions(t_context);
         exitCollisions(t_context);
         hurtCollisions(t_context);
-        // t_context.managers.collideAllWithAvatar(t_context, collisionRect());
+        
         t_context.pickup.processCollisionWithAvatar(t_context, collisionRect());
 
         // these two must happen last
