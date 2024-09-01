@@ -243,27 +243,24 @@ namespace bramblefore
 
             if (ladderRectOpt.has_value())
             {
-                const float ladderMoveSpeed{ t_context.layout.calScaleBasedOnResolution(
-                    t_context, 60.0f) };
-
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
                 {
-                    m_sprite.move(0.0f, -(ladderMoveSpeed * t_frameTimeSec));
+                    m_sprite.move(0.0f, -(m_movement.ladder_speed * t_frameTimeSec));
                 }
 
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
                 {
-                    m_sprite.move(0.0f, (ladderMoveSpeed * t_frameTimeSec));
+                    m_sprite.move(0.0f, (m_movement.ladder_speed * t_frameTimeSec));
                 }
 
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
                 {
-                    m_sprite.move(-(ladderMoveSpeed * t_frameTimeSec), 0.0f);
+                    m_sprite.move(-(m_movement.ladder_speed * t_frameTimeSec), 0.0f);
                 }
 
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
                 {
-                    m_sprite.move((ladderMoveSpeed * t_frameTimeSec), 0.0f);
+                    m_sprite.move((m_movement.ladder_speed * t_frameTimeSec), 0.0f);
                 }
             }
         }
@@ -531,6 +528,13 @@ namespace bramblefore
         details.run_acceleration = t_context.layout.calScaleBasedOnResolution(
             t_context, t_context.settings.run_acceleration);
 
+        details.ladder_speed =
+            t_context.layout.calScaleBasedOnResolution(t_context, t_context.settings.ladder_speed);
+
+        details.jump_acceleration = t_context.settings.jump_acc;
+
+        details.high_jump_acceleration = t_context.settings.high_jump_acc;
+
         return details;
     }
 
@@ -700,13 +704,13 @@ namespace bramblefore
             {
                 m_state = AvatarState::JumpHigh;
                 m_anim  = AvatarAnim::JumpHigh;
-                m_velocity.y -= (t_context.settings.high_jump_acc * t_frameTimeSec);
+                m_velocity.y -= (m_movement.high_jump_acceleration * t_frameTimeSec);
             }
             else
             {
                 m_state = AvatarState::Jump;
                 m_anim  = AvatarAnim::Jump;
-                m_velocity.y -= (t_context.settings.jump_acc * t_frameTimeSec);
+                m_velocity.y -= (m_movement.jump_acceleration * t_frameTimeSec);
             }
 
             restartAnim();

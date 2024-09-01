@@ -36,6 +36,7 @@ namespace bramblefore
         float run_acceleration  = 25.0f;
         float jump_acc          = 650.0f;
         float high_jump_acc     = 850.0f;
+        float ladder_speed      = 60.0f;
     };
 
 } // namespace bramblefore
