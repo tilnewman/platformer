@@ -14,6 +14,7 @@
 #include "subsystem/floating-text.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "util/sfml-util.hpp"
+#include "subsystem/texture-stats.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Event.hpp>
@@ -34,6 +35,7 @@ namespace bramblefore
         , description{}
     {
         texture.loadFromFile(t_imageFilePath);
+        TextureStats::instance().process(texture);
 
         sprite.setTexture(texture);
 
