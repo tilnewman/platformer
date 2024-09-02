@@ -5,11 +5,12 @@
 //
 #include "state/state-manager.hpp"
 
+#include "state/state-char-select.hpp"
+#include "state/state-credits.hpp"
 #include "state/state-level-complete.hpp"
 #include "state/state-level-death.hpp"
 #include "state/state-play.hpp"
 #include "state/state-splash.hpp"
-#include "state/state-char-select.hpp"
 
 #include <exception>
 
@@ -52,6 +53,7 @@ namespace bramblefore
             case State::Play:           { return std::make_unique<PlayState>();            }
             case State::LevelComplete:  { return std::make_unique<LevelCompleteState>();   }
             case State::LevelDeath:     { return std::make_unique<LevelDeathState>();      }
+            case State::Credits:        { return std::make_unique<CreditsState>();         }
             case State::Shutdown:       { return std::make_unique<ShutdownState>();        }
             default:                    
             { 

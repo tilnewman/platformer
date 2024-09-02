@@ -55,7 +55,7 @@ namespace bramblefore
         m_elapsedTimeSec += t_frameTimeSec;
         if (m_elapsedTimeSec > 4.0f)
         {
-            t_context.state.setChangePending(State::Shutdown);
+            t_context.state.setChangePending(State::Credits);
         }
     }
 
