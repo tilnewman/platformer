@@ -30,12 +30,12 @@ namespace bramblefore
         float monster_scale = 1.5f;
 
         float gravity_acc       = 25.0f;
-        float walk_speed_limit  = 3.0f;
-        float run_speed_limit   = 5.0f;
-        float walk_acceleration = 15.0f;
-        float run_acceleration  = 25.0f;
-        float jump_acc          = 650.0f;
-        float high_jump_acc     = 850.0f;
+        float walk_speed_limit  = 2.5f;
+        float run_speed_limit   = 3.5f;
+        float walk_acceleration = 12.0f;
+        float run_acceleration  = 18.0f;
+        float jump_acc          = 600.0f;
+        float high_jump_acc     = 750.0f;
         float ladder_speed      = 60.0f;
     };
 

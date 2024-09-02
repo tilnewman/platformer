@@ -535,6 +535,29 @@ namespace bramblefore
 
         details.high_jump_acceleration = t_context.settings.high_jump_acc;
 
+        if (isWizard(m_type))
+        {
+            const float wizardSpeedRatio{1.35f};
+            details.walk_speed_limit *= wizardSpeedRatio;
+            details.walk_acceleration *= wizardSpeedRatio;
+            details.run_speed_limit *= wizardSpeedRatio;
+            details.run_acceleration *= wizardSpeedRatio;
+
+            details.jump_acceleration += 50.0f;
+            details.high_jump_acceleration += 50.0f;
+        }
+        else if (isRaider(m_type))
+        {
+            const float raiderSpeedRatio{ 2.0f };
+            details.walk_speed_limit *= raiderSpeedRatio;
+            details.walk_acceleration *= raiderSpeedRatio;
+            details.run_speed_limit *= raiderSpeedRatio;
+            details.run_acceleration *= raiderSpeedRatio;
+
+            details.jump_acceleration += 100.0f;
+            details.high_jump_acceleration += 100.0f;
+        }
+
         return details;
     }
 
