@@ -97,7 +97,7 @@ namespace bramblefore
         collisions(t_context);
         exitCollisions(t_context);
         hurtCollisions(t_context);
-        
+
         t_context.pickup.processCollisionWithAvatar(t_context, collisionRect());
 
         // these two must happen last
@@ -339,46 +339,8 @@ namespace bramblefore
             return;
         }
 
-        AttackInfo attackInfo;
-        attackInfo.rect = attackRect();
-
-        // TODO this needs to be done differently
-        if ((AvatarType::Assassin == m_type) || (AvatarType::Ninja == m_type) ||
-            (AvatarType::Rogue == m_type))
-        {
-            if (AvatarState::Attack == m_state)
-            {
-                attackInfo.damage = 8;
-            }
-            else
-            {
-                attackInfo.damage = 12;
-            }
-        }
-        else if (
-            (AvatarType::Druid == m_type) || (AvatarType::Enchantress == m_type) ||
-            (AvatarType::Witch == m_type))
-        {
-            if (AvatarState::Attack == m_state)
-            {
-                attackInfo.damage = 6;
-            }
-            else
-            {
-                attackInfo.damage = 12;
-            }
-        }
-        else // BlueKnight, RedKnight, Viking
-        {
-            if (AvatarState::Attack == m_state)
-            {
-                attackInfo.damage = 10;
-            }
-            else
-            {
-                attackInfo.damage = 16;
-            }
-        }
+        const AttackInfo attackInfo(
+            startingAttackDamage(m_type, (AvatarState::AttackExtra == m_state)), attackRect());
 
         if (t_context.level.monsters.avatarAttack(t_context, attackInfo))
         {
@@ -537,7 +499,7 @@ namespace bramblefore
 
         if (isWizard(m_type))
         {
-            const float wizardSpeedRatio{1.35f};
+            const float wizardSpeedRatio{ 1.35f };
             details.walk_speed_limit *= wizardSpeedRatio;
             details.walk_acceleration *= wizardSpeedRatio;
             details.run_speed_limit *= wizardSpeedRatio;

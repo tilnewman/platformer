@@ -52,7 +52,7 @@ namespace bramblefore
         // clang-format on
     }
 
-     [[nodiscard]] inline constexpr std::string_view toName(const AvatarType t_type) noexcept
+    [[nodiscard]] inline constexpr std::string_view toName(const AvatarType t_type) noexcept
     {
         // clang-format off
         switch (t_type)
@@ -137,6 +137,44 @@ namespace bramblefore
         else
         {
             return 0;
+        }
+    }
+
+    [[nodiscard]] inline constexpr Health_t
+        startingAttackDamage(const AvatarType t_type, const bool t_isExtraAttack) noexcept
+    {
+        if (isRaider(t_type))
+        {
+            if (t_isExtraAttack)
+            {
+                return 12;
+            }
+            else
+            {
+                return 8;
+            }
+        }
+        else if (isWizard(t_type))
+        {
+            if (t_isExtraAttack)
+            {
+                return 12;
+            }
+            else
+            {
+               return 6;
+            }
+        }
+        else // isWarrior(t_type)
+        {
+            if (t_isExtraAttack)
+            {
+                return 16;
+            }
+            else
+            {
+                return 10;
+            }
         }
     }
 
