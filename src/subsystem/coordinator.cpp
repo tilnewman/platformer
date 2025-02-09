@@ -214,7 +214,7 @@ namespace bramblefore
     void Coordinator::setupRenderWindow(sf::VideoMode & t_videoMode)
     {
         std::clog << "Attempting video mode " << t_videoMode << "...";
-        m_window.create(t_videoMode, "Platformer", sf::Style::Fullscreen);
+        m_window.create(t_videoMode, "Bramblefore", sf::Style::Fullscreen);
 
         // sometimes the resolution of the window created does not match what was specified
         const unsigned actualWidth{ m_window.getSize().x };
