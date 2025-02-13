@@ -51,6 +51,7 @@ namespace bramblefore
         const std::size_t imageIndex{ static_cast<std::size_t>(t_image) };
         if (imageIndex >= m_tileTextures.size())
         {
+            // TODO log an error here
             return;
         }
 
@@ -75,6 +76,7 @@ namespace bramblefore
         const std::size_t imageIndex{ static_cast<std::size_t>(t_image) };
         if (imageIndex >= m_tileTextures.size())
         {
+            // TODO log an error here
             return;
         }
 

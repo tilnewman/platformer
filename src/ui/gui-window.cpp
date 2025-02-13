@@ -37,6 +37,7 @@ namespace bramblefore
 
     void GuiWindow::loadTextures(const Settings & t_settings)
     {
+        // bail if these textures have already been loaded
         if (m_borderTopLeftTexture.getSize().y > 0)
         {
             return;

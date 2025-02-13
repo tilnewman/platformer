@@ -32,6 +32,8 @@ namespace bramblefore
         float time_between_frames_sec{ 0.175f };
         std::size_t frame_index{ 0 };
         sf::Sprite sprite{};
+
+        // the rect drawn on the map is the collision rect
         sf::FloatRect coll_rect{};
     };
 

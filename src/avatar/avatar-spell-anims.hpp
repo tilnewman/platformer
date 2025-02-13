@@ -41,6 +41,7 @@ namespace bramblefore
 
     struct AvatarSpellTextures
     {
+        // all spell casters have a normal (first) and extra (second) spell attack
         std::vector<sf::Texture> first{};
         std::vector<sf::Texture> second{};
     };
@@ -54,6 +55,7 @@ namespace bramblefore
 
         void setup(const Context & context);
 
+        // add() with no remove() because they remove themselves once finished
         void
             add(const sf::Vector2f & t_pos,
                 const AvatarType t_type,

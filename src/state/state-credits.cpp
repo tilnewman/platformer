@@ -13,8 +13,8 @@
 #include "subsystem/context.hpp"
 #include "subsystem/floating-text.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "util/sfml-util.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/sfml-util.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Event.hpp>
@@ -49,6 +49,7 @@ namespace bramblefore
 
         //
 
+        // this is the vertical empty space between images and lines of text
         const float vertPad{ screenRect.height * 0.025f };
 
         name = t_context.font.makeText(
@@ -131,7 +132,7 @@ namespace bramblefore
             (t_context.settings.media_path / "image/credits/cpp.png").string(),
             0.25f,
             "Ziesche Til Newman",
-            "Software, C++, SFML",
+            "Software, C++, SFML, CMAKE",
             screenRect.height);
 
         m_credits.emplace_back(

@@ -22,6 +22,7 @@ namespace bramblefore
 
     void DefaultTexture::setup()
     {
+        // SFML uses an all white texture for error cases so we use a different color
         sf::Image image;
         image.create(64, 64, sf::Color::Magenta);
         m_textureUPtr->loadFromImage(image);

@@ -65,10 +65,10 @@ namespace bramblefore
 
             set.textures.resize(files.size());
 
-            for (std::size_t frameIndex{ 0 }; frameIndex < files.size(); ++frameIndex)
+            for (std::size_t fileIndex{ 0 }; fileIndex < files.size(); ++fileIndex)
             {
-                sf::Texture & texture{ set.textures.at(frameIndex) };
-                texture.loadFromFile(files.at(frameIndex).string());
+                sf::Texture & texture{ set.textures.at(fileIndex) };
+                texture.loadFromFile(files.at(fileIndex).string());
                 texture.setSmooth(true);
                 TextureStats::instance().process(texture);
             }

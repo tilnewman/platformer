@@ -48,6 +48,7 @@ namespace bramblefore
 
       private:
         const sf::Texture & getTexture(const MonsterType type, const MonsterAnim anim) const;
+
         sf::IntRect getTextureRect(
             const MonsterType type, const MonsterAnim anim, const std::size_t frame) const;
 

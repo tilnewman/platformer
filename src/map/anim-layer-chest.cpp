@@ -39,6 +39,7 @@ namespace bramblefore
         const Chest chest{ chestFromName(t_name) };
         if (Chest::Count == chest)
         {
+            // TODO put in a log warning here so the map makers know they got the number wrong
             return;
         }
 
@@ -94,7 +95,9 @@ namespace bramblefore
 
                 anim.sprite.setTexture(texture);
 
+                // calculating coin count will have to become more complicated later
                 const Coin_t coinCount{ t_context.random.fromTo(20, 40) };
+
                 std::string coinString{ "+" };
                 coinString += std::to_string(coinCount);
                 coinString += " coins";
@@ -103,7 +106,6 @@ namespace bramblefore
                     t_context, coinString, sf::Color(255, 215, 0), util::center(anim.sprite));
 
                 t_context.player.coinAdjust(t_context, coinCount);
-
                 break;
             }
         }
@@ -113,7 +115,7 @@ namespace bramblefore
 
     void ChestAnimationLayer::loadTextures(Context & t_context)
     {
-        // this one reserve call needs to prevent all reallocations
+        // this reserve call needed to prevent reallocations
         m_textureSets.reserve(static_cast<std::size_t>(Chest::Count));
 
         for (std::size_t chestIndex{ 1 }; chestIndex <= static_cast<std::size_t>(Chest::Count);

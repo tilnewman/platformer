@@ -40,6 +40,8 @@ namespace bramblefore
 
     void GuiWindowPaper::setup(const Settings & t_settings)
     {
+        // um...should we always be reloading these big textures?
+
         m_paper1Texture.loadFromFile((t_settings.media_path / "image/ui/paper1.png").string());
         m_paper2Texture.loadFromFile((t_settings.media_path / "image/ui/paper2.png").string());
 

@@ -48,6 +48,7 @@ namespace bramblefore
             anim.coll_rect =
                 util::scaleRectInPlaceCopy(anim.sprite.getGlobalBounds(), { 0.7f, 0.2f });
 
+            // make the spring rect bigger so players can walk to and trigger it without harm
             anim.spring_rect =
                 util::scaleRectInPlaceCopy(anim.sprite.getGlobalBounds(), { 1.0f, 0.5f });
         }

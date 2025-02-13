@@ -64,6 +64,7 @@ namespace bramblefore
     void FontManager::setupFontExtents(const Settings & t_settings)
     {
         // all the magic numbers in this function are based on trial and error
+        // there was nothing magical about it...
         const float standardRes = std::sqrt(3840.f * 2400.0f);
 
         const float currentRes = std::sqrt(
@@ -72,6 +73,7 @@ namespace bramblefore
         const float ratioRes = (currentRes / standardRes);
 
         sf::Text text;
+
         const std::string widthStr{ "M" };
         const std::string heightStr{ "|g" };
 

@@ -10,6 +10,7 @@
 namespace bramblefore
 {
 
+    // when you have to have a texture but an error occurs, use this one instead of crashing
     class DefaultTexture
     {
       public:
@@ -23,9 +24,10 @@ namespace bramblefore
         inline const sf::Texture & get() const { return *m_textureUPtr; }
 
       private:
+        // um...why is there a pointer to this texture?
         std::unique_ptr<sf::Texture> m_textureUPtr;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // DEFAULT_TEXTURE_HPP_INCLUDED

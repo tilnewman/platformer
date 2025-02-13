@@ -46,6 +46,10 @@ namespace bramblefore
             m_backgroundSprite.setTexture(m_backgroundTexture);
             util::scaleAndCenterInside(m_backgroundSprite, t_context.layout.wholeRect());
         }
+        else
+        {
+            // why not reset the m_backgroundSprite's texture here or prevent it from drawing?
+        }
 
         // there won't always be a static overlay image
         if (!infoPack.overlay_path.empty())
@@ -55,10 +59,13 @@ namespace bramblefore
             m_overlaySprite.setTexture(m_overlayTexture);
             util::scaleAndCenterInside(m_overlaySprite, t_context.layout.wholeRect());
         }
+        else
+        {
+            // why not reset the m_overlaySprite's texture here or prevent it from drawing?
+        }
 
-        // doubt there will ever be more than eight of these
         m_slidingImages.clear();
-        m_slidingImages.reserve(16);
+        m_slidingImages.reserve(16); // prevents reallocation
 
         for (const SlidingImageInfo & info : infoPack.sliding_images)
         {
@@ -88,6 +95,7 @@ namespace bramblefore
 
     void BackgroundImages::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
+        // um...why aren't we checking if this exists before drawing it?
         t_target.draw(m_backgroundSprite, t_states);
 
         for (const SlidingImage & image : m_slidingImages)
@@ -96,6 +104,7 @@ namespace bramblefore
             t_target.draw(image.sprite_right, t_states);
         }
 
+        // um...why aren't we checking if this exists before drawing it?
         t_target.draw(m_overlaySprite, t_states);
 
         if (!m_fadeQuads.empty())
@@ -124,6 +133,7 @@ namespace bramblefore
     BackgroundImagesInfo
         BackgroundImages::infoFactory(const Context & t_context, const std::string & t_name)
     {
+        // behold the magic number that looked best on screen after many tests
         const sf::Uint8 fadeAlpha{ 64 };
 
         if (t_name == "forest")

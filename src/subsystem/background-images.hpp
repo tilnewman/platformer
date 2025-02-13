@@ -95,6 +95,7 @@ namespace bramblefore
 
         std::vector<SlidingImage> m_slidingImages;
 
+        // the whole background is covered in faded black to tone it down
         std::vector<sf::Vertex> m_fadeQuads;
     };
 

@@ -28,7 +28,7 @@ namespace bramblefore
         , m_timePerVineFrameSec{ 0.75f }
         , m_scale{}
     {
-        m_anims.reserve(32); // just a harmless guess
+        m_anims.reserve(32); // just a harmless guess based on knowledge of maps
     }
 
     void AccentAnimations::setup(const Context & t_context)
@@ -39,6 +39,7 @@ namespace bramblefore
         m_scale.x = scale;
         m_scale.y = scale;
 
+        // prevent reallocations
         m_textures.reserve(static_cast<std::size_t>(Accent::Count));
 
         for (std::size_t accentIndex(0); accentIndex < static_cast<std::size_t>(Accent::Count);
@@ -62,7 +63,7 @@ namespace bramblefore
         const Context & t_context, const sf::FloatRect & t_rect, const std::string & t_name)
     {
         const Accent accent{ stringToAccent(t_name) };
-        M_CHECK((Accent::Count != accent), "\"" << t_name << "\" is an unknown name");
+        M_CHECK((Accent::Count != accent), "\"" << t_name << "\" is an unknown Accent name");
 
         AccentAnim & anim{ m_anims.emplace_back() };
         anim.which      = accent;

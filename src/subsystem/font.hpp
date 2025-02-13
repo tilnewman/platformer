@@ -24,6 +24,7 @@ namespace bramblefore
 
     //
 
+    // restricting fonts to a subset of sizes saves vram and runtime
     enum class FontSize
     {
         Huge,
@@ -44,14 +45,14 @@ namespace bramblefore
         {}
 
         TextDetails(
-            const Font fnt,
-            const FontSize sze,
-            const sf::Color & col     = sf::Color::White,
-            const sf::Text::Style sty = sf::Text::Regular)
-            : font{ fnt }
-            , size{ sze }
-            , color{ col }
-            , style{ sty }
+            const Font t_font,
+            const FontSize t_size,
+            const sf::Color & t_color     = sf::Color::White,
+            const sf::Text::Style t_style = sf::Text::Regular)
+            : font{ t_font }
+            , size{ t_size }
+            , color{ t_color }
+            , style{ t_style }
         {}
 
         Font font;

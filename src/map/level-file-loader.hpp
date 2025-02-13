@@ -49,7 +49,7 @@ namespace bramblefore
         void parseLayerOfRects(Context & t_context, const nlohmann::json & t_json)
         {
             std::vector<sf::FloatRect> rects;
-            rects.reserve(128);
+            rects.reserve(128); //harmless guess based on knowledge of maps in the game
 
             for (const nlohmann::json & subJson : t_json["objects"])
             {

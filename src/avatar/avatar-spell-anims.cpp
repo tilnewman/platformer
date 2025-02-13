@@ -85,6 +85,7 @@ namespace bramblefore
         if (!t_isFacingRight)
         {
             anim.sprite.scale(-1.0f, 1.0f);
+            //TODO need to slide the images horiz to correct when facing/moving left
         }
     }
 
@@ -157,10 +158,10 @@ namespace bramblefore
 
         t_textures.resize(files.size());
 
-        for (std::size_t frameCounter(0); frameCounter < files.size(); ++frameCounter)
+        for (std::size_t fileIndex(0); fileIndex < files.size(); ++fileIndex)
         {
-            sf::Texture & texture{ t_textures.at(frameCounter) };
-            texture.loadFromFile(files.at(frameCounter).string());
+            sf::Texture & texture{ t_textures.at(fileIndex) };
+            texture.loadFromFile(files.at(fileIndex).string());
             TextureStats::instance().process(texture);
         }
     }

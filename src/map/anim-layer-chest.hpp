@@ -66,6 +66,8 @@ namespace bramblefore
 
     //
 
+    // this class inherits from IHarmCollisionOwner even though chests don't harm the player
+    // the harm mechanic is just being used as a trigger to know when to open the chests
     class ChestAnimationLayer
         : public ITileLayer
         , public IHarmCollisionOwner
@@ -95,7 +97,7 @@ namespace bramblefore
 
         Harm avatarCollide(Context &, const sf::FloatRect & t_avatarRect) override;
 
-        private:
+      private:
         void loadTextures(Context & t_context);
 
       private:

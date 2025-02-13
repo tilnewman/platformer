@@ -117,9 +117,9 @@ namespace bramblefore
         std::string message{ "+" };
         message += std::to_string(xpBonus);
         message += "xp";
-        
+
         const sf::Vector2f messagePos{ util::center(m_sprite).x, m_sprite.getPosition().y };
-        
+
         t_context.float_text.add(t_context, message, sf::Color(200, 200, 200), messagePos);
 
         t_context.player.experienceAdjust(xpBonus);
@@ -139,6 +139,8 @@ namespace bramblefore
         if (t_context.layout.wholeRect().intersects(m_sprite.getGlobalBounds()))
         {
             t_target.draw(m_sprite, t_states);
+
+            // these are very useful when adding new monsters and fine tuning the collision rects
             // util::drawRectangleShape(target, collisionRect(), false, sf::Color::Green);
             // util::drawRectangleShape(target, attackCollisionRect(), false, sf::Color::Red);
 

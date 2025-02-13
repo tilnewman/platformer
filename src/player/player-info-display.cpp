@@ -356,6 +356,7 @@ namespace bramblefore
         t_target.draw(m_starBrown4Sprite, t_states);
         t_target.draw(m_starBrown5Sprite, t_states);
 
+        // always draw stars because when not used they are positioned off screen
         t_target.draw(m_starYellow1Sprite, t_states);
         t_target.draw(m_starYellow2Sprite, t_states);
         t_target.draw(m_starYellow3Sprite, t_states);
@@ -387,6 +388,7 @@ namespace bramblefore
 
     void PlayerInfoDisplay::setStarCount(const int t_count)
     {
+        // just keep stars offscreen until needed
         m_starYellow1Sprite.setPosition(-1000.0f, -1000.0f);
         m_starYellow2Sprite.setPosition(-1000.0f, -1000.0f);
         m_starYellow3Sprite.setPosition(-1000.0f, -1000.0f);

@@ -135,7 +135,7 @@ namespace util
         return min(first, min(allOthers...));
     }
 
-    // this lib is for simple/innaccurate/games, so a multiple of epsilon works fine
+    // this lib is for simple/innaccurate/game apps, so a multiple of epsilon works fine
     template <typename T>
     constexpr T float_compare_epsilon = (std::numeric_limits<T>::epsilon() * T(100));
 

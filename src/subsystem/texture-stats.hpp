@@ -13,6 +13,8 @@ namespace sf
 namespace bramblefore
 {
 
+    // Texture loading is performed many times during the initial setup,
+    // so this class cannot be passed around in Context and must be a singleton.
     class TextureStats
     {
       public:

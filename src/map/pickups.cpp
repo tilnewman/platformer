@@ -224,7 +224,7 @@ namespace bramblefore
             {
                 t_context.player.mapStarCollect(t_context);
             }
-            // TODO implement a purpose for the crystals
+            // TODO implement a purpose for the crystals...um...
         }
 
         if (wereAnyPickedUp)

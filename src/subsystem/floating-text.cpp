@@ -16,7 +16,10 @@ namespace bramblefore
 
     FloatingText::FloatingText()
         : m_animations()
-    {}
+    {
+        // just a harmless guess based on knowledge of maps and play
+        m_animations.reserve(16);
+    }
 
     void FloatingText::add(
         Context & t_context,
@@ -32,17 +35,17 @@ namespace bramblefore
             (t_pos.y - (anim.text.getGlobalBounds().height * 0.5f)));
     }
 
-    void FloatingText::update(Context &, const float t_frameTimeSec) 
+    void FloatingText::update(Context &, const float t_frameTimeSec)
     {
         bool areAnyAnimationsFinished{ false };
         for (FloatingTextAnim & anim : m_animations)
         {
             anim.text.move(0.0f, -(t_frameTimeSec * 60.0f));
 
-            sf::Uint8 alpha{ anim.text.getFillColor().a};
+            sf::Uint8 alpha{ anim.text.getFillColor().a };
             if (alpha < 5)
             {
-                anim.is_alive = false;
+                anim.is_alive            = false;
                 areAnyAnimationsFinished = true;
             }
             else
@@ -66,6 +69,7 @@ namespace bramblefore
     {
         for (const FloatingTextAnim & anim : m_animations)
         {
+            // these finish animating very quickly so assume always on screen
             t_target.draw(anim.text, t_states);
         }
     }
@@ -78,4 +82,4 @@ namespace bramblefore
         }
     }
 
-} // namespace platformer
+} // namespace bramblefore

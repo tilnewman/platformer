@@ -139,6 +139,7 @@ namespace bramblefore
 
         void setup(const Context & t_context);
 
+        //add() with no remove() because lamps and vines never leave the map
         void add(
             const Context & t_context, const sf::FloatRect & t_rect, const std::string & t_name);
 

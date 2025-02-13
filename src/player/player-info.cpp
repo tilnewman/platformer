@@ -114,6 +114,7 @@ namespace bramblefore
 
         if (m_coins < 0)
         {
+            //TODO log an error here
             m_coins = 0;
         }
 
@@ -128,6 +129,7 @@ namespace bramblefore
 
         if (m_experience < 0)
         {
+            // TODO log an error here
             m_experience = 0;
         }
 

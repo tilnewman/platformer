@@ -57,6 +57,7 @@ namespace bramblefore
         const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
         if (typeIndex >= m_textureSets.size())
         {
+            // TODO log an error here
             return;
         }
 
@@ -89,6 +90,7 @@ namespace bramblefore
         const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
         if (typeIndex >= m_textureSets.size())
         {
+            // TODO log an error here
             return;
         }
 

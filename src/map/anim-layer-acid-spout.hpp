@@ -41,6 +41,8 @@ namespace bramblefore
         bool is_alive{ true };
         float velocity{ 0.0f };
         sf::Sprite sprite{};
+
+        // the rect drawn on the map that includes the vert distance this drop will travel
         sf::FloatRect region{};
     };
 
@@ -54,6 +56,9 @@ namespace bramblefore
         float time_between_frames_sec{ 0.15f };
         std::size_t frame_index{ 0 };
         sf::Sprite sprite{};
+
+        // the rect drawn on the map that includes the vert distance the drops will travel
+        // given to drops so they know how far to fall, see above
         sf::FloatRect region{};
     };
 
