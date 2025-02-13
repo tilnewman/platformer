@@ -22,7 +22,7 @@ namespace bramblefore
         LevelDeathState();
         virtual ~LevelDeathState() override = default;
 
-        [[nodiscard]] State which() const final { return State::LevelComplete; }
+        [[nodiscard]] State which() const final { return State::LevelDeath; }
         void update(Context & t_context, const float t_frameTimeSec) final;
 
         void draw(Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
