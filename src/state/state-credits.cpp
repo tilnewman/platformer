@@ -35,6 +35,7 @@ namespace bramblefore
         , description{}
     {
         texture.loadFromFile(t_imageFilePath);
+        texture.setSmooth(true);
         TextureStats::instance().process(texture);
 
         sprite.setTexture(texture);
