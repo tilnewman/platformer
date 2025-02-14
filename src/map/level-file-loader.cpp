@@ -63,8 +63,8 @@ namespace bramblefore
 
     bool LevelFileLoader::load(Context & t_context)
     {
-        // TODO fix to be more general
-        const std::filesystem::path path = (t_context.settings.media_path / "map/mountains-1.json");
+        // TODO fix to be more general so each level can be tested per run of the game
+        const std::filesystem::path path = (t_context.settings.media_path / "map/dungeon1-1.json");
         if (!std::filesystem::exists(path))
         {
             return false;

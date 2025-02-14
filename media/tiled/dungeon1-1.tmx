@@ -344,7 +344,7 @@
   <object id="99" x="1872" y="1024" width="32" height="144"/>
  </objectgroup>
  <objectgroup id="14" name="fire-skull">
-  <object id="102" x="752" y="1120" width="32" height="32"/>
+  <object id="102" x="752" y="1152" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="5" name="spawn">
   <object id="6" name="enter" x="160" y="1024" width="32" height="32"/>
