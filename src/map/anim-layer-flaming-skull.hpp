@@ -37,7 +37,6 @@ namespace bramblefore
 
     struct FlamesAnim
     {
-        bool is_alive{ false };
         float elapsed_time_sec{ 0.0f };
         float time_between_flaming{ 0.0f };
         float time_between_frames_sec{ 0.15f };
@@ -45,6 +44,7 @@ namespace bramblefore
         sf::Sprite sprite{};
         bool is_flaming{ false };
         FlameDirection direction{ FlameDirection::Up }; // anything works here
+        sf::FloatRect coll_rect{};
     };
 
     //

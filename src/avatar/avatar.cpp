@@ -108,6 +108,7 @@ namespace bramblefore
     void Avatar::draw(sf::RenderTarget & t_target, sf::RenderStates t_states)
     {
         t_target.draw(m_sprite, t_states);
+        // util::drawRectangleShape(t_target, collisionRect(), false, sf::Color::Red);
         m_spellAnim.draw(t_target, t_states);
     }
 
@@ -153,7 +154,7 @@ namespace bramblefore
 
         sf::FloatRect rect{ collisionRect() };
 
-        // make the attack rect slightly bigger vertically so players can attack up and down
+        // make the attack rect 2 pixels bigger vertically so players can attack up and down
         rect.height += 4.0f;
         rect.top -= 2.0f;
 
