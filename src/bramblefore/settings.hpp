@@ -20,9 +20,9 @@ namespace bramblefore
         float death_delay_sec = 4.0f;
 
         sf::VideoMode video_mode    = { 1920, 1080, 32 };
-        float frame_rate            = 60;
-        bool will_display_fps       = false;
-        bool will_display_fps_graph = false;
+        float frame_rate            = 60; // change at your own risk
+        bool will_log_fps           = true;
+        bool will_display_fps_graph = true;
 
         float tile_scale    = 1.75f;
         float spell_scale   = 1.0f;

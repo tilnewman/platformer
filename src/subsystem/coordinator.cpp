@@ -196,16 +196,19 @@ namespace bramblefore
         {
             m_elapsedTimeSec -= 1.0f;
 
-            if (m_settings.will_display_fps)
+            if (m_settings.will_log_fps)
             {
                 const auto stats = util::makeStats(m_fpsValues);
                 std::clog << "\tFPS " << stats << '\n';
             }
 
-            std::ranges::sort(m_fpsValues);
+            if (m_settings.will_display_fps_graph)
+            {
+                std::ranges::sort(m_fpsValues);
 
-            m_statsDisplayUPtr = std::make_unique<util::GraphDisplay<std::size_t>>(
-                m_fpsValues, sf::Vector2u{ 500, 200 });
+                m_statsDisplayUPtr = std::make_unique<util::GraphDisplay<std::size_t>>(
+                    m_fpsValues, sf::Vector2u{ 500, 200 }, 64);
+            }
 
             m_fpsValues.clear();
         }

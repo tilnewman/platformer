@@ -18,9 +18,12 @@ namespace util
     {
       public:
         explicit GraphDisplay(
-            const std::vector<data_t> & t_data, const sf::Vector2u & t_size = { 1000, 500 })
+            const std::vector<data_t> & t_data,
+            const sf::Vector2u & t_size = { 1000, 500 },
+            const sf::Uint8 t_alpha     = 255)
             : m_size{ t_size }
             , m_data{ t_data }
+            , m_alpha{ t_alpha }
             , m_renderTexture()
             , m_backgroundColor{ 22, 25, 28 }
             , m_dataBarColor{ 38, 120, 254 }
@@ -73,6 +76,10 @@ namespace util
         {
             sf::Sprite sprite(m_renderTexture.getTexture());
             util::scale(sprite, sf::Vector2f{ m_size });
+
+            const sf::Color color{ 255, 255, 255, m_alpha };
+            sprite.setColor(color);
+
             t_renderTarget.draw(sprite, t_states);
         }
 
@@ -84,6 +91,10 @@ namespace util
             sf::Sprite sprite(m_renderTexture.getTexture());
             util::scale(sprite, sf::Vector2f{ m_size });
             sprite.setPosition(t_position);
+
+            const sf::Color color{ 255, 255, 255, m_alpha };
+            sprite.setColor(color);
+
             t_renderTarget.draw(sprite, t_states);
         }
 
@@ -248,6 +259,7 @@ namespace util
       private:
         sf::Vector2u m_size;
         std::vector<data_t> m_data;
+        sf::Uint8 m_alpha;
         sf::RenderTexture m_renderTexture;
         sf::Color m_backgroundColor;
         sf::Color m_dataBarColor;
