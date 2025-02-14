@@ -481,43 +481,43 @@ namespace bramblefore
         details.walk_speed_limit = t_context.layout.calScaleBasedOnResolution(
             t_context, t_context.settings.walk_speed_limit);
 
-        details.walk_acceleration = t_context.layout.calScaleBasedOnResolution(
-            t_context, t_context.settings.walk_acceleration);
+        details.walk_acc =
+            t_context.layout.calScaleBasedOnResolution(t_context, t_context.settings.walk_acc);
 
         details.run_speed_limit = t_context.layout.calScaleBasedOnResolution(
             t_context, t_context.settings.run_speed_limit);
 
-        details.run_acceleration = t_context.layout.calScaleBasedOnResolution(
-            t_context, t_context.settings.run_acceleration);
+        details.run_acc =
+            t_context.layout.calScaleBasedOnResolution(t_context, t_context.settings.run_acc);
 
         details.ladder_speed =
             t_context.layout.calScaleBasedOnResolution(t_context, t_context.settings.ladder_speed);
 
-        details.jump_acceleration = t_context.settings.jump_acc;
+        details.jump_acc = t_context.settings.jump_acc;
 
-        details.high_jump_acceleration = t_context.settings.high_jump_acc;
+        details.high_jump_acc = t_context.settings.high_jump_acc;
 
         if (isWizard(m_type))
         {
             const float wizardSpeedRatio{ 1.35f };
             details.walk_speed_limit *= wizardSpeedRatio;
-            details.walk_acceleration *= wizardSpeedRatio;
+            details.walk_acc *= wizardSpeedRatio;
             details.run_speed_limit *= wizardSpeedRatio;
-            details.run_acceleration *= wizardSpeedRatio;
+            details.run_acc *= wizardSpeedRatio;
 
-            details.jump_acceleration += 50.0f;
-            details.high_jump_acceleration += 50.0f;
+            details.jump_acc += 50.0f;
+            details.high_jump_acc += 50.0f;
         }
         else if (isRaider(m_type))
         {
             const float raiderSpeedRatio{ 2.0f };
             details.walk_speed_limit *= raiderSpeedRatio;
-            details.walk_acceleration *= raiderSpeedRatio;
+            details.walk_acc *= raiderSpeedRatio;
             details.run_speed_limit *= raiderSpeedRatio;
-            details.run_acceleration *= raiderSpeedRatio;
+            details.run_acc *= raiderSpeedRatio;
 
-            details.jump_acceleration += 100.0f;
-            details.high_jump_acceleration += 100.0f;
+            details.jump_acc += 100.0f;
+            details.high_jump_acc += 100.0f;
         }
 
         return details;
@@ -540,7 +540,7 @@ namespace bramblefore
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
             {
-                m_velocity.x += ((m_movement.walk_acceleration / jumpMoveDivisor) * t_frameTimeSec);
+                m_velocity.x += ((m_movement.walk_acc / jumpMoveDivisor) * t_frameTimeSec);
 
                 if (m_velocity.x > m_movement.walk_speed_limit)
                 {
@@ -550,7 +550,7 @@ namespace bramblefore
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             {
-                m_velocity.x -= ((m_movement.walk_acceleration / jumpMoveDivisor) * t_frameTimeSec);
+                m_velocity.x -= ((m_movement.walk_acc / jumpMoveDivisor) * t_frameTimeSec);
 
                 if (m_velocity.x < -m_movement.walk_speed_limit)
                 {
@@ -565,7 +565,7 @@ namespace bramblefore
         {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
             {
-                m_velocity.x += (m_movement.run_acceleration * t_frameTimeSec);
+                m_velocity.x += (m_movement.run_acc * t_frameTimeSec);
                 if (m_velocity.x > m_movement.run_speed_limit)
                 {
                     m_velocity.x = m_movement.run_speed_limit;
@@ -582,7 +582,7 @@ namespace bramblefore
             }
             else
             {
-                m_velocity.x += (m_movement.walk_acceleration * t_frameTimeSec);
+                m_velocity.x += (m_movement.walk_acc * t_frameTimeSec);
                 if (m_velocity.x > m_movement.walk_speed_limit)
                 {
                     m_velocity.x = m_movement.walk_speed_limit;
@@ -607,7 +607,7 @@ namespace bramblefore
         {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
             {
-                m_velocity.x -= (m_movement.run_acceleration * t_frameTimeSec);
+                m_velocity.x -= (m_movement.run_acc * t_frameTimeSec);
                 if (m_velocity.x < -m_movement.run_speed_limit)
                 {
                     m_velocity.x = -m_movement.run_speed_limit;
@@ -624,7 +624,7 @@ namespace bramblefore
             }
             else
             {
-                m_velocity.x -= (m_movement.walk_acceleration * t_frameTimeSec);
+                m_velocity.x -= (m_movement.walk_acc * t_frameTimeSec);
                 if (m_velocity.x < -m_movement.walk_speed_limit)
                 {
                     m_velocity.x = -m_movement.walk_speed_limit;
@@ -689,13 +689,13 @@ namespace bramblefore
             {
                 m_state = AvatarState::JumpHigh;
                 m_anim  = AvatarAnim::JumpHigh;
-                m_velocity.y -= (m_movement.high_jump_acceleration * t_frameTimeSec);
+                m_velocity.y -= (m_movement.high_jump_acc * t_frameTimeSec);
             }
             else
             {
                 m_state = AvatarState::Jump;
                 m_anim  = AvatarAnim::Jump;
-                m_velocity.y -= (m_movement.jump_acceleration * t_frameTimeSec);
+                m_velocity.y -= (m_movement.jump_acc * t_frameTimeSec);
             }
 
             restartAnim();

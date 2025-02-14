@@ -67,16 +67,16 @@ namespace bramblefore
     }
 
     //
-    
+
     struct MovementDetails
     {
         float walk_speed_limit{ 0.0f };
         float run_speed_limit{ 0.0f };
-        float walk_acceleration{0.0f};
-        float run_acceleration{ 0.0f };
+        float walk_acc{ 0.0f };
+        float run_acc{ 0.0f };
         float ladder_speed{ 0.0f };
-        float jump_acceleration{ 0.0f };
-        float high_jump_acceleration{0.0f};
+        float jump_acc{ 0.0f };
+        float high_jump_acc{ 0.0f };
     };
 
     //

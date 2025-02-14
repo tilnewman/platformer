@@ -21,7 +21,7 @@ namespace bramblefore
 
         sf::VideoMode video_mode    = { 1920, 1080, 32 };
         float frame_rate            = 60; // change at your own risk
-        bool will_log_fps           = true;
+        bool will_log_fps           = false;
         bool will_display_fps_graph = true;
 
         float tile_scale    = 1.75f;
@@ -29,14 +29,14 @@ namespace bramblefore
         float avatar_scale  = 1.5f;
         float monster_scale = 1.5f;
 
-        float gravity_acc       = 25.0f;
-        float walk_speed_limit  = 2.5f;
-        float run_speed_limit   = 3.5f;
-        float walk_acceleration = 12.0f;
-        float run_acceleration  = 18.0f;
-        float jump_acc          = 600.0f;
-        float high_jump_acc     = 750.0f;
-        float ladder_speed      = 60.0f;
+        float gravity_acc      = 25.0f;
+        float walk_speed_limit = 2.5f;
+        float run_speed_limit  = 3.5f;
+        float walk_acc         = 12.0f;
+        float run_acc          = 18.0f;
+        float jump_acc         = 600.0f;
+        float high_jump_acc    = 750.0f;
+        float ladder_speed     = 60.0f;
     };
 
 } // namespace bramblefore

@@ -54,7 +54,7 @@ namespace util
                           << dataWidth << "x" << m_size.y
                           << ". So the graph will show solid magenta.  The color of pure evil.\n";
 
-                m_renderTexture.create(32, 32); // this won't fail...probably
+                m_renderTexture.create(32, 32); // this probably won't fail...
                 m_renderTexture.clear(sf::Color::Magenta);
                 m_renderTexture.display();
             }
@@ -328,7 +328,7 @@ namespace util
                 std::cout << "StatDisplay's sf::RenderTexture::create failed for size=" << fullSizeU
                           << ". So the graph will show solid magenta.  The color of pure evil.\n";
 
-                m_renderTexture.create(32, 32); // this won't fail...probably
+                m_renderTexture.create(32, 32); // this probably won't fail...
                 m_renderTexture.clear(sf::Color::Magenta);
                 m_renderTexture.display();
                 return;
