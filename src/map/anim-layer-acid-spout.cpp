@@ -187,6 +187,11 @@ namespace bramblefore
                 splash.sprite.setPosition(
                     (util::center(anim.region).x - (splash.sprite.getGlobalBounds().width * 0.5f)),
                     (util::bottom(anim.region) - (splash.sprite.getGlobalBounds().height * 0.7f)));
+
+                if (t_context.layout.wholeRect().intersects(splash.sprite.getGlobalBounds()))
+                {
+                    t_context.sfx.play("splat");
+                }
             }
         }
 
