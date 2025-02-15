@@ -175,7 +175,7 @@ namespace bramblefore
         }
     }
 
-    void FlamingSkullAnimationLayer::update(Context &, const float t_frameTimeSec)
+    void FlamingSkullAnimationLayer::update(Context & t_context, const float t_frameTimeSec)
     {
         for (FlamesAnim & anim : m_anims)
         {
@@ -206,6 +206,11 @@ namespace bramblefore
                 {
                     anim.elapsed_time_sec = 0.0f;
                     anim.is_flaming       = true;
+
+                    if (t_context.layout.wholeRect().intersects(anim.coll_rect))
+                    {
+                        t_context.sfx.play("fire-puff");
+                    }
                 }
             }
         }
