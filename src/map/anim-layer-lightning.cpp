@@ -90,7 +90,7 @@ namespace bramblefore
         return rect;
     }
 
-    void LightningAnimationLayer::update(Context &, const float t_frameTimeSec)
+    void LightningAnimationLayer::update(Context & t_context, const float t_frameTimeSec)
     {
         for (LightningAnim & anim : m_anims)
         {
@@ -119,6 +119,11 @@ namespace bramblefore
                 {
                     anim.elapsed_time_sec = 0.0f;
                     anim.is_animating     = true;
+
+                    if (t_context.layout.wholeRect().intersects(anim.sprite.getGlobalBounds()))
+                    {
+                        t_context.sfx.play("electricity");
+                    }
                 }
             }
         }
@@ -145,7 +150,7 @@ namespace bramblefore
 
             harm.rect   = reducedBounds;
             harm.damage = 25;
-            harm.sfx    = "electricity";
+            harm.sfx    = "";
             break;
         }
 
