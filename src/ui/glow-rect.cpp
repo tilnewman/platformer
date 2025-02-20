@@ -38,19 +38,21 @@ namespace bramblefore
         const sf::FloatRect & t_innerRect)
     {
         const auto setTransparentTopLeft = [&]() {
-            m_verts.at(m_verts.size() - 4).color = sf::Color::Transparent;
+            m_verts.at(m_verts.size() - 6).color = sf::Color::Transparent;
         };
 
         const auto setTransparentTopRight = [&]() {
-            m_verts.at(m_verts.size() - 3).color = sf::Color::Transparent;
+            m_verts.at(m_verts.size() - 2).color = sf::Color::Transparent;
+            m_verts.at(m_verts.size() - 5).color = sf::Color::Transparent;
         };
 
         const auto setTransparentBotRight = [&]() {
-            m_verts.at(m_verts.size() - 2).color = sf::Color::Transparent;
+            m_verts.at(m_verts.size() - 1).color = sf::Color::Transparent;
         };
 
         const auto setTransparentBotLeft = [&]() {
-            m_verts.at(m_verts.size() - 1).color = sf::Color::Transparent;
+            m_verts.at(m_verts.size() - 3).color = sf::Color::Transparent;
+            m_verts.at(m_verts.size() - 4).color = sf::Color::Transparent;
         };
 
         m_verts.clear();
@@ -130,13 +132,12 @@ namespace bramblefore
         setTransparentTopRight();
     }
 
-    void GlowRect::draw(sf::RenderTarget &) const
+    void GlowRect::draw(sf::RenderTarget & t_target) const
     {
-        // TODO fix and uncomment
-        //  if (!m_verts.empty())
-        //  {
-        //      t_target.draw(&m_verts[0], m_verts.size(), sf::Quads);
-        //  }
+        if (!m_verts.empty())
+        {
+            t_target.draw(&m_verts[0], m_verts.size(), sf::Triangles);
+        }
     }
 
 } // namespace bramblefore
