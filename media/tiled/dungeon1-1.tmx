@@ -334,7 +334,7 @@
   <object id="107" x="1792" y="960" width="48" height="32"/>
  </objectgroup>
  <objectgroup id="12" name="monster">
-  <object id="60" name="goblin" x="848" y="1168" width="240" height="112"/>
+  <object id="60" name="goblin" x="1088" y="1216" width="192" height="64"/>
  </objectgroup>
  <objectgroup id="18" name="bomb">
   <object id="111" x="576" y="1264" width="16" height="16"/>
@@ -356,7 +356,7 @@
   <object id="65" name="bottle" x="704" y="1248" width="16" height="16"/>
   <object id="66" name="arrow" x="736" y="1248" width="16" height="16"/>
   <object id="67" name="plus" x="768" y="1248" width="16" height="16"/>
-  <object id="69" name="star" x="832" y="1248" width="16" height="16"/>
+  <object id="69" name="star" x="1664" y="1104" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="7" name="accent-anim"/>
  <objectgroup id="11" name="lightning-anim">
