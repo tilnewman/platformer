@@ -46,7 +46,7 @@ namespace bramblefore
 
         sf::Sprite m_avatarIconSprite;
 
-        std::vector<sf::Vertex> m_bgFadeVerts;
+        std::vector<sf::Vertex> m_bgAvatarBgVerts;
 
         sf::Texture m_barFrameTexture;
         sf::Sprite m_healthBarFrameSprite;

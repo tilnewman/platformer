@@ -28,7 +28,7 @@ namespace bramblefore
         , m_fullFrameTexture{}
         , m_fullFrameSprite{}
         , m_avatarIconSprite{}
-        , m_bgFadeVerts{}
+        , m_bgAvatarBgVerts{}
         , m_barFrameTexture{}
         , m_healthBarFrameSprite{}
         , m_manaBarFrameSprite{}
@@ -97,9 +97,11 @@ namespace bramblefore
         //
 
         const sf::FloatRect m_bgRect = m_fullFrameSprite.getGlobalBounds();
-        // util::appendQuadVerts(m_bgRect, m_bgFadeVerts, sf::Color::Black);
-        // m_bgFadeVerts.at(0).color = sf::Color(64, 64, 64);
-        // m_bgFadeVerts.at(1).color = m_bgFadeVerts.at(0).color;
+        util::appendTriangleVerts(m_bgRect, m_bgAvatarBgVerts, sf::Color::Black);
+        const sf::Color avatarBgColor{ 64, 64, 64 };
+        m_bgAvatarBgVerts.at(0).color = avatarBgColor;
+        m_bgAvatarBgVerts.at(1).color = avatarBgColor;
+        m_bgAvatarBgVerts.at(4).color = avatarBgColor;
 
         //
 
@@ -313,10 +315,10 @@ namespace bramblefore
     {
         t_target.draw(m_halfFrameSprite, t_states);
 
-        // if (!m_bgFadeVerts.empty())
-        // {
-        //     t_target.draw(&m_bgFadeVerts[0], m_bgFadeVerts.size(), sf::Quads, t_states);
-        // }
+        if (!m_bgAvatarBgVerts.empty())
+        {
+            t_target.draw(&m_bgAvatarBgVerts[0], m_bgAvatarBgVerts.size(), sf::Triangles, t_states);
+        }
 
         t_target.draw(m_avatarIconSprite, t_states);
         t_target.draw(m_fullFrameSprite, t_states);
