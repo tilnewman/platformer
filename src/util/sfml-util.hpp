@@ -26,7 +26,7 @@ namespace sf
 namespace util
 {
 
-    constexpr std::size_t verts_per_quad{ 4 };
+    constexpr std::size_t verts_per_quad{ 6 };
 
     [[nodiscard]] inline std::string colorToString(const sf::Color & C)
     {
@@ -182,9 +182,9 @@ namespace util
     template <typename T>
     void floor(sf::Rect<T> & rect)
     {
-        rect.left = std::floor(rect.left);
-        rect.top = std::floor(rect.top);
-        rect.width = std::floor(rect.width);
+        rect.left   = std::floor(rect.left);
+        rect.top    = std::floor(rect.top);
+        rect.width  = std::floor(rect.width);
         rect.height = std::floor(rect.height);
     }
 
@@ -607,11 +607,12 @@ namespace util
         grow(thing, rect);
         centerInside(thing, rect);
     }
-    // quad making and appending
+
+    // quad triangle vert making and appending
 
     // colors not changed if color given is transparent
     template <typename Container_t>
-    void setupQuadVerts(
+    void setupTriangleVerts(
         const sf::Vector2f & pos,
         const sf::Vector2f & size,
         const std::size_t index,
@@ -621,8 +622,10 @@ namespace util
         // clang-format off
         verts[index + 0].position = pos;
         verts[index + 1].position = sf::Vector2f((pos.x + size.x),  pos.y          );
-        verts[index + 2].position = sf::Vector2f((pos.x + size.x), (pos.y + size.y));
+        verts[index + 2].position = sf::Vector2f( pos.x,           (pos.y + size.y));
         verts[index + 3].position = sf::Vector2f( pos.x          , (pos.y + size.y));
+        verts[index + 4].position = sf::Vector2f((pos.x + size.x),  pos.y          );
+        verts[index + 5].position = sf::Vector2f((pos.x + size.x), (pos.y + size.y));
         // clang-format on
 
         if (color != sf::Color::Transparent)
@@ -631,23 +634,25 @@ namespace util
             verts[index + 1].color = color;
             verts[index + 2].color = color;
             verts[index + 3].color = color;
+            verts[index + 4].color = color;
+            verts[index + 5].color = color;
         }
     }
 
     // colors not changed if color given is transparent
     template <typename Container_t>
-    void setupQuadVerts(
+    void setupTriangleVerts(
         const sf::FloatRect & rect,
         const std::size_t index,
         Container_t & verts,
         const sf::Color & color = sf::Color::Transparent)
     {
-        setupQuadVerts(position(rect), size(rect), index, verts, color);
+        setupTriangleVerts(position(rect), size(rect), index, verts, color);
     }
 
     // colors not changed if color given is transparent
     template <typename Container_t>
-    void appendQuadVerts(
+    void appendTriangleVerts(
         const sf::Vector2f & pos,
         const sf::Vector2f & size,
         Container_t & verts,
@@ -665,24 +670,24 @@ namespace util
 
         verts.resize(origSize + verts_per_quad);
 
-        setupQuadVerts(pos, size, origSize, verts, color);
+        setupTriangleVerts(pos, size, origSize, verts, color);
     }
 
     // colors not changed if color given is transparent
     template <typename Container_t>
-    void appendQuadVerts(
+    void appendTriangleVerts(
         const sf::FloatRect & rect,
         Container_t & verts,
         const sf::Color & color = sf::Color::Transparent)
     {
-        appendQuadVerts(position(rect), size(rect), verts, color);
+        appendTriangleVerts(position(rect), size(rect), verts, color);
     }
 
     template <typename Container_t>
-    void appendQuadVerts(
+    void appendTriangleVerts(
         const sf::FloatRect & rect, const sf::IntRect & textureCoordinates, Container_t & verts)
     {
-        appendQuadVerts(rect, verts);
+        appendTriangleVerts(rect, verts);
 
         std::size_t index{ 0 };
         if constexpr (std::is_same_v<std::remove_cv_t<Container_t>, sf::VertexArray>)
@@ -702,15 +707,17 @@ namespace util
         // clang-format off
         verts[index + 0].texCoords = pos;
         verts[index + 1].texCoords = sf::Vector2f((pos.x + size.x),  pos.y          );
-        verts[index + 2].texCoords = sf::Vector2f((pos.x + size.x), (pos.y + size.y));
+        verts[index + 2].texCoords = sf::Vector2f( pos.x          , (pos.y + size.y));
         verts[index + 3].texCoords = sf::Vector2f( pos.x          , (pos.y + size.y));
+        verts[index + 4].texCoords = sf::Vector2f((pos.x + size.x),  pos.y          );
+        verts[index + 5].texCoords = sf::Vector2f((pos.x + size.x), (pos.y + size.y));
         // clang-format on
     }
 
     template <typename Container_t>
-    void appendQuadVerts(const sf::Sprite & sprite, Container_t & verts)
+    void appendTriangleVerts(const sf::Sprite & sprite, Container_t & verts)
     {
-        appendQuadVerts(sprite.getGlobalBounds(), sprite.getTextureRect(), verts);
+        appendTriangleVerts(sprite.getGlobalBounds(), sprite.getTextureRect(), verts);
     }
 
     inline void appendLineVerts(
@@ -736,8 +743,8 @@ namespace util
     [[nodiscard]] inline const sf::VertexArray
         makeRectangleVerts(const sf::FloatRect & rect, const sf::Color & color = sf::Color::White)
     {
-        sf::VertexArray verts(sf::Quads, verts_per_quad);
-        setupQuadVerts(position(rect), size(rect), 0, verts, color);
+        sf::VertexArray verts(sf::Triangles, verts_per_quad);
+        setupTriangleVerts(position(rect), size(rect), 0, verts, color);
         return verts;
     }
 
@@ -752,7 +759,7 @@ namespace util
     [[nodiscard]] inline sf::RectangleShape makeRectangleShape(
         const sf::FloatRect & rect,
         const bool willColorFill = false,
-        const sf::Color & color = sf::Color::White)
+        const sf::Color & color  = sf::Color::White)
     {
         sf::RectangleShape rs;
 
@@ -777,7 +784,7 @@ namespace util
         sf::RenderTarget & target,
         const sf::FloatRect & rect,
         const bool willColorFill = false,
-        const sf::Color & color = sf::Color::White)
+        const sf::Color & color  = sf::Color::White)
     {
         target.draw(makeRectangleShape(rect, willColorFill, color));
     }
@@ -785,7 +792,7 @@ namespace util
     [[nodiscard]] inline const sf::CircleShape makeCircleShape(
         const sf::Vector2f & position,
         const float radius,
-        const sf::Color & color = sf::Color::White,
+        const sf::Color & color      = sf::Color::White,
         const std::size_t pointCount = 32)
     {
         sf::CircleShape cs;
@@ -801,7 +808,7 @@ namespace util
         sf::RenderTarget & target,
         const sf::Vector2f & position,
         const float radius,
-        const sf::Color & color = sf::Color::White,
+        const sf::Color & color      = sf::Color::White,
         const std::size_t pointCount = 32)
     {
         target.draw(makeCircleShape(position, radius, color, pointCount));
@@ -809,7 +816,7 @@ namespace util
 
     [[nodiscard]] inline const sf::CircleShape makeCircleShape(
         const sf::FloatRect & rect,
-        const sf::Color & color = sf::Color::White,
+        const sf::Color & color      = sf::Color::White,
         const std::size_t pointCount = 32)
     {
         return makeCircleShape(

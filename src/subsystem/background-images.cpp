@@ -24,7 +24,7 @@ namespace bramblefore
         , m_backgroundSprite{}
         , m_overlaySprite{}
         , m_slidingImages{}
-        , m_fadeQuads{}
+        , m_fadeVerts{}
     {}
 
     void BackgroundImages::setup(const Context & t_context, const std::string & t_name)
@@ -86,10 +86,10 @@ namespace bramblefore
 
         if (infoPack.fade_alpha > 0)
         {
-            m_fadeQuads.clear();
+            m_fadeVerts.clear();
 
-            util::appendQuadVerts(
-                t_context.layout.wholeRect(), m_fadeQuads, sf::Color(0, 0, 0, infoPack.fade_alpha));
+            util::appendTriangleVerts(
+                t_context.layout.wholeRect(), m_fadeVerts, sf::Color(0, 0, 0, infoPack.fade_alpha));
         }
     }
 
@@ -107,9 +107,9 @@ namespace bramblefore
         // um...why aren't we checking if this exists before drawing it?
         t_target.draw(m_overlaySprite, t_states);
 
-        if (!m_fadeQuads.empty())
+        if (!m_fadeVerts.empty())
         {
-            t_target.draw(&m_fadeQuads[0], m_fadeQuads.size(), sf::Quads, t_states);
+            t_target.draw(&m_fadeVerts[0], m_fadeVerts.size(), sf::Triangles, t_states);
         }
     }
 

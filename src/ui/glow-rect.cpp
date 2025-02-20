@@ -55,14 +55,14 @@ namespace bramblefore
 
         m_verts.clear();
 
-        util::appendQuadVerts(t_innerRect, m_verts, t_color);
+        util::appendTriangleVerts(t_innerRect, m_verts, t_color);
 
         const sf::FloatRect topLeftRect{ t_outerRect.left,
                                          t_outerRect.top,
                                          (t_innerRect.left - t_outerRect.left),
                                          (t_innerRect.top - t_outerRect.top) };
 
-        util::appendQuadVerts(topLeftRect, m_verts, t_color);
+        util::appendTriangleVerts(topLeftRect, m_verts, t_color);
         setTransparentBotLeft();
         setTransparentTopLeft();
         setTransparentTopRight();
@@ -71,7 +71,7 @@ namespace bramblefore
             t_innerRect.left, t_outerRect.top, t_innerRect.width, topLeftRect.height
         };
 
-        util::appendQuadVerts(topRect, m_verts, t_color);
+        util::appendTriangleVerts(topRect, m_verts, t_color);
         setTransparentTopLeft();
         setTransparentTopRight();
 
@@ -79,7 +79,7 @@ namespace bramblefore
             util::right(topRect), topRect.top, topLeftRect.width, topLeftRect.height
         };
 
-        util::appendQuadVerts(topRightRect, m_verts, t_color);
+        util::appendTriangleVerts(topRightRect, m_verts, t_color);
         setTransparentTopLeft();
         setTransparentTopRight();
         setTransparentBotRight();
@@ -88,7 +88,7 @@ namespace bramblefore
             t_outerRect.left, t_innerRect.top, topLeftRect.width, t_innerRect.height
         };
 
-        util::appendQuadVerts(leftRect, m_verts, t_color);
+        util::appendTriangleVerts(leftRect, m_verts, t_color);
         setTransparentTopLeft();
         setTransparentBotLeft();
 
@@ -97,7 +97,7 @@ namespace bramblefore
 
         };
 
-        util::appendQuadVerts(rightRect, m_verts, t_color);
+        util::appendTriangleVerts(rightRect, m_verts, t_color);
         setTransparentTopRight();
         setTransparentBotRight();
 
@@ -105,7 +105,7 @@ namespace bramblefore
             t_outerRect.left, util::bottom(t_innerRect), leftRect.width, topLeftRect.height
         };
 
-        util::appendQuadVerts(botLeftRect, m_verts, t_color);
+        util::appendTriangleVerts(botLeftRect, m_verts, t_color);
         setTransparentTopLeft();
         setTransparentBotLeft();
         setTransparentBotRight();
@@ -115,7 +115,7 @@ namespace bramblefore
 
         };
 
-        util::appendQuadVerts(botRect, m_verts, t_color);
+        util::appendTriangleVerts(botRect, m_verts, t_color);
         setTransparentBotLeft();
         setTransparentBotRight();
 
@@ -124,18 +124,19 @@ namespace bramblefore
                                           topRightRect.width,
                                           topRightRect.height };
 
-        util::appendQuadVerts(botRightRect, m_verts, t_color);
+        util::appendTriangleVerts(botRightRect, m_verts, t_color);
         setTransparentBotLeft();
         setTransparentBotRight();
         setTransparentTopRight();
     }
 
-    void GlowRect::draw(sf::RenderTarget & t_target) const
+    void GlowRect::draw(sf::RenderTarget &) const
     {
-        if (!m_verts.empty())
-        {
-            t_target.draw(&m_verts[0], m_verts.size(), sf::Quads);
-        }
+        // TODO fix and uncomment
+        //  if (!m_verts.empty())
+        //  {
+        //      t_target.draw(&m_verts[0], m_verts.size(), sf::Quads);
+        //  }
     }
 
 } // namespace bramblefore

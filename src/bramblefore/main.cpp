@@ -33,7 +33,7 @@ int main(const int argc, const char * const argv[])
 
         settings.media_path = std::filesystem::canonical(settings.media_path);
 
-        // make this a pointer only because it uses too much stack
+        // make this a pointer only because it uses too much stack otherwise
         std::unique_ptr<Coordinator> coordinatorUPtr{ std::make_unique<Coordinator>(settings) };
 
         coordinatorUPtr->play();

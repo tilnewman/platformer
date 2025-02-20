@@ -39,7 +39,7 @@ namespace bramblefore
 
         if (!m_visibleVerts.empty())
         {
-            t_target.draw(&m_visibleVerts[0], m_visibleVerts.size(), sf::Quads, t_states);
+            t_target.draw(&m_visibleVerts[0], m_visibleVerts.size(), sf::Triangles, t_states);
         }
     }
 
@@ -81,11 +81,14 @@ namespace bramblefore
         std::size_t vertIndex = 0;
         while (vertIndex < m_verts.size())
         {
-            const sf::Vertex topLeftVert  = m_verts[vertIndex++];
-            const sf::Vertex topRightVert = m_verts[vertIndex++];
-            const sf::Vertex botRightVert = m_verts[vertIndex++];
-            const sf::Vertex botLeftVert  = m_verts[vertIndex++];
-
+            // see sfml-util::setupQuadVerts() for where this order comes from
+            const sf::Vertex topLeftVert   = m_verts[vertIndex + 0];
+            const sf::Vertex topRightVert  = m_verts[vertIndex + 1];
+            const sf::Vertex botLeftVert   = m_verts[vertIndex + 2];
+            const sf::Vertex botLeftVert2  = m_verts[vertIndex + 3];
+            const sf::Vertex topRightVert2 = m_verts[vertIndex + 4];
+            const sf::Vertex botRightVert  = m_verts[vertIndex + 5];
+            
             if (t_visibleRect.contains(topLeftVert.position) ||
                 t_visibleRect.contains(topRightVert.position) ||
                 t_visibleRect.contains(botRightVert.position) ||
@@ -93,9 +96,13 @@ namespace bramblefore
             {
                 m_visibleVerts.push_back(topLeftVert);
                 m_visibleVerts.push_back(topRightVert);
-                m_visibleVerts.push_back(botRightVert);
                 m_visibleVerts.push_back(botLeftVert);
+                m_visibleVerts.push_back(botLeftVert2);
+                m_visibleVerts.push_back(topRightVert2);
+                m_visibleVerts.push_back(botRightVert);
             }
+
+            vertIndex += util::verts_per_quad;
         }
     }
 
@@ -131,7 +138,7 @@ namespace bramblefore
                 const int textureIndexOrig(m_indexes[textureIndex++]);
                 if (textureIndexOrig == 0)
                 {
-                    continue; // zero means no image at this location
+                    continue; // zero means no tile image at this location
                 }
 
                 const int index(textureIndexOrig - tileTexture.gid);
@@ -145,7 +152,7 @@ namespace bramblefore
                 const sf::Vector2f screenPos(sf::Vector2f(posX, posY) + t_mapPositionOffset);
                 const sf::FloatRect screenRect{ screenPos, t_sizeOnScreen };
 
-                util::appendQuadVerts(screenRect, textureRect, m_verts);
+                util::appendTriangleVerts(screenRect, textureRect, m_verts);
             }
         }
 

@@ -168,7 +168,7 @@ namespace bramblefore
 
         if (t_info.will_fade_whole_screen)
         {
-            util::appendQuadVerts(
+            util::appendTriangleVerts(
                 t_context.layout.wholeRect(), m_bgFadeVerts, sf::Color(0, 0, 0, 127));
         }
 
@@ -268,7 +268,7 @@ namespace bramblefore
             m_sprites.push_back(bgTopRightSprite);
             m_sprites.push_back(bgBotLeftSprite);
             m_sprites.push_back(bgBotRightSprite);
-            util::appendQuadVerts(m_bgCenterRect, m_bgCenterVerts, m_bgColor);
+            util::appendTriangleVerts(m_bgCenterRect, m_bgCenterVerts, m_bgColor);
         }
 
         //
@@ -547,7 +547,7 @@ namespace bramblefore
     {
         if (!m_bgFadeVerts.empty())
         {
-            target.draw(&m_bgFadeVerts[0], m_bgFadeVerts.size(), sf::Quads, states);
+            target.draw(&m_bgFadeVerts[0], m_bgFadeVerts.size(), sf::Triangles, states);
         }
 
         for (const sf::Sprite & sprite : m_sprites)
@@ -557,7 +557,7 @@ namespace bramblefore
 
         if (!m_bgCenterVerts.empty())
         {
-            target.draw(&m_bgCenterVerts[0], m_bgCenterVerts.size(), sf::Quads, states);
+            target.draw(&m_bgCenterVerts[0], m_bgCenterVerts.size(), sf::Triangles, states);
         }
 
         target.draw(m_titleText, states);

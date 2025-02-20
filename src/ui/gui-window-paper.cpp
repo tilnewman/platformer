@@ -64,7 +64,9 @@ namespace bramblefore
         Context & t_context, const bool t_useBigPaper, const GuiWindowInfo & t_info)
     {
         m_bgFadeVerts.clear();
-        util::appendQuadVerts(t_context.layout.wholeRect(), m_bgFadeVerts, sf::Color(0, 0, 0, 127));
+
+        util::appendTriangleVerts(
+            t_context.layout.wholeRect(), m_bgFadeVerts, sf::Color(0, 0, 0, 127));
 
         m_info = t_info;
 
@@ -163,7 +165,7 @@ namespace bramblefore
     {
         if (!m_bgFadeVerts.empty())
         {
-            t_target.draw(&m_bgFadeVerts[0], m_bgFadeVerts.size(), sf::Quads, t_states);
+            t_target.draw(&m_bgFadeVerts[0], m_bgFadeVerts.size(), sf::Triangles, t_states);
         }
 
         t_target.draw(m_paperSprite, t_states);
