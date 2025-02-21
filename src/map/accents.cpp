@@ -86,7 +86,7 @@ namespace bramblefore
         }
     }
 
-    std::size_t AccentAnimations::frameCount(const Accent t_which) const noexcept
+    std::size_t AccentAnimations::frameCount(const Accent t_which) const
     {
         const sf::Texture & texture{ m_textures.at(static_cast<std::size_t>(t_which)) };
 
@@ -100,8 +100,7 @@ namespace bramblefore
         }
     }
 
-    sf::IntRect AccentAnimations::textureRect(
-        const Accent t_which, const std::size_t t_frame) const noexcept
+    sf::IntRect AccentAnimations::textureRect(const Accent t_which, const std::size_t t_frame) const
     {
         const sf::Texture & texture{ m_textures.at(static_cast<std::size_t>(t_which)) };
 

@@ -139,7 +139,7 @@ namespace bramblefore
 
         void setup(const Context & t_context);
 
-        //add() with no remove() because lamps and vines never leave the map
+        // add() with no remove() because lamps and vines never leave the map
         void add(
             const Context & t_context, const sf::FloatRect & t_rect, const std::string & t_name);
 
@@ -153,10 +153,10 @@ namespace bramblefore
         inline void clear() noexcept { m_anims.clear(); }
 
       private:
-        [[nodiscard]] std::size_t frameCount(const Accent t_which) const noexcept;
+        [[nodiscard]] std::size_t frameCount(const Accent t_which) const;
 
         [[nodiscard]] sf::IntRect
-            textureRect(const Accent t_which, const std::size_t t_frame) const noexcept;
+            textureRect(const Accent t_which, const std::size_t t_frame) const;
 
       private:
         std::vector<sf::Texture> m_textures;
