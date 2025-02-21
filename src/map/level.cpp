@@ -54,23 +54,14 @@ namespace bramblefore
         farthest_horiz_map_pixel = 0.0f;
     }
 
-    bool Level::load(Context & t_context)
+    void Level::load(Context & t_context)
     {
         reset();
-
-        if (t_context.level_loader.load(t_context))
-        {
-            appendVertLayers(t_context);
-            t_context.avatar.setPosition(enter_rect);
-            farthest_horiz_map_pixel = findFarthestHorizMapPixel();
-            // dumpInfo();
-            return true;
-        }
-        else
-        {
-            reset();
-            return false;
-        }
+        t_context.level_loader.load(t_context);
+        appendVertLayers(t_context);
+        t_context.avatar.setPosition(enter_rect);
+        farthest_horiz_map_pixel = findFarthestHorizMapPixel();
+        // dumpInfo();
     }
 
     bool Level::move(const Context & t_context, const float t_amount)

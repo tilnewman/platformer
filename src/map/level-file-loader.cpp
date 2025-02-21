@@ -61,7 +61,7 @@ namespace bramblefore
         : m_pathStr()
     {}
 
-    bool LevelFileLoader::load(Context & t_context)
+    void LevelFileLoader::load(Context & t_context)
     {
         // TODO fix to be more general so each level can be tested per run of the game
         const std::filesystem::path path = (t_context.settings.media_path / "map/dungeon1-1.json");
@@ -84,8 +84,6 @@ namespace bramblefore
         // everything else in the level file is saved in "layers"
         // which are parsed in order from back to front here, one at a time
         parseLayers(t_context, json);
-
-        return true;
     }
 
     void LevelFileLoader::parseLevelDetails(Context & t_context, const nlohmann::json & t_json)

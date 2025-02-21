@@ -4,8 +4,8 @@
 // level-file-loader.hpp
 //
 #include "map/level.hpp"
-#include "subsystem/context.hpp"
 #include "map/tile-image.hpp"
+#include "subsystem/context.hpp"
 #include "util/json-wrapper.hpp"
 
 #include <memory>
@@ -22,7 +22,7 @@ namespace bramblefore
       public:
         LevelFileLoader();
 
-        bool load(Context & t_context);
+        void load(Context & t_context);
 
       private:
         void parseLevelDetails(Context & t_context, const nlohmann::json & t_json);
@@ -49,7 +49,7 @@ namespace bramblefore
         void parseLayerOfRects(Context & t_context, const nlohmann::json & t_json)
         {
             std::vector<sf::FloatRect> rects;
-            rects.reserve(128); //harmless guess based on knowledge of maps in the game
+            rects.reserve(128); // harmless guess based on knowledge of maps in the game
 
             for (const nlohmann::json & subJson : t_json["objects"])
             {

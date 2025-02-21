@@ -23,7 +23,7 @@ namespace bramblefore
     {
         Level();
 
-        bool load(Context & t_context);
+        void load(Context & t_context);
         void reset();
 
         // returns true if the map was moved
