@@ -206,8 +206,6 @@ namespace bramblefore
 
             if (m_settings.will_display_fps_graph)
             {
-                // std::ranges::sort(m_fpsValues);
-
                 m_statsDisplayUPtr = std::make_unique<util::GraphDisplay<std::size_t>>(
                     m_fpsValues, sf::Vector2u{ 500, 200 }, 64);
             }
@@ -218,24 +216,22 @@ namespace bramblefore
 
     void Coordinator::setupRenderWindow(sf::VideoMode & t_videoMode)
     {
+        // sometimes the resolution of the window created does not match what was specified
         std::clog << "Attempting video mode " << t_videoMode << "...";
         m_window.create(t_videoMode, "Bramblefore", sf::Style::Fullscreen);
 
-        // sometimes the resolution of the window created does not match what was specified
         const unsigned actualWidth{ m_window.getSize().x };
         const unsigned actualHeight{ m_window.getSize().y };
+
         if ((t_videoMode.width == actualWidth) && (t_videoMode.height == actualHeight))
         {
             std::clog << "Success.\n";
         }
         else
         {
-            std::clog << "Failed" << ".  ";
-
             t_videoMode.width  = actualWidth;
             t_videoMode.height = actualHeight;
-
-            std::clog << "SFML switched to " << t_videoMode << " instead.\n";
+            std::clog << "Failed.  SFML switched to " << t_videoMode << " instead.\n";
         }
     }
 
