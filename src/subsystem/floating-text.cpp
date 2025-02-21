@@ -78,7 +78,7 @@ namespace bramblefore
     {
         for (FloatingTextAnim & anim : m_animations)
         {
-            anim.text.move(0.0f, t_amount);
+            anim.text.move(t_amount, 0.0f);
         }
     }
 
