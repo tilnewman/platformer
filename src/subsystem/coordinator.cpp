@@ -230,8 +230,7 @@ namespace bramblefore
         }
         else
         {
-            std::clog << "Failed"
-                      << ".  ";
+            std::clog << "Failed" << ".  ";
 
             t_videoMode.width  = actualWidth;
             t_videoMode.height = actualHeight;
