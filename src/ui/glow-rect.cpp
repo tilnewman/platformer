@@ -37,6 +37,8 @@ namespace bramblefore
         const sf::FloatRect & t_outerRect,
         const sf::FloatRect & t_innerRect)
     {
+        // see sfml-util::setupTriangleVerts() for where these offsets come from
+
         const auto setTransparentTopLeft = [&]() {
             m_verts.at(m_verts.size() - 6).color = sf::Color::Transparent;
         };
