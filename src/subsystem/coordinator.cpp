@@ -74,6 +74,8 @@ namespace bramblefore
     {
         setupRenderWindow(m_settings.video_mode);
         m_window.setMouseCursorVisible(false);
+        m_window.setFramerateLimit(0);
+        m_window.setVerticalSyncEnabled(false);
 
         m_sfx.mediaPath(m_settings.media_path / "sound");
         m_sfx.loadAll();
