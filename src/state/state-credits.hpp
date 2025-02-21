@@ -65,6 +65,7 @@ namespace bramblefore
         void onExit(Context & t_context) final;
 
       private:
+        sf::Text m_titleText;
         std::vector<CreditAnim> m_credits;
     };
 

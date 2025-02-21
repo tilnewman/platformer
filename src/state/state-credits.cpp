@@ -89,14 +89,20 @@ namespace bramblefore
     //
 
     CreditsState::CreditsState()
-        : m_credits{}
+        : m_titleText{}
+        , m_credits{}
     {}
 
     void CreditsState::update(Context & t_context, const float t_frameTimeSec)
     {
+        const float speed{ -35.0f };
+        const float moveAmount{ speed * t_frameTimeSec };
+
+        m_titleText.move(0.0f, moveAmount);
+
         for (CreditAnim & anim : m_credits)
         {
-            anim.move(-35.0f * t_frameTimeSec);
+            anim.move(moveAmount);
         }
 
         if (m_credits.back().bottom() < 50.0f)
@@ -107,6 +113,8 @@ namespace bramblefore
 
     void CreditsState::draw(Context &, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
+        t_target.draw(m_titleText, t_states);
+
         for (const CreditAnim & anim : m_credits)
         {
             anim.draw(t_target, t_states);
@@ -123,17 +131,24 @@ namespace bramblefore
 
     void CreditsState::onEnter(Context & t_context)
     {
-        m_credits.reserve(16);
-
         const sf::FloatRect screenRect{ t_context.layout.wholeRect() };
         const float vertPad{ screenRect.height * 0.15f };
+
+        m_titleText = t_context.font.makeText(
+            Font::Default, FontSize::Huge, "Credits", sf::Color(220, 220, 220));
+
+        m_titleText.setPosition(
+            (util::center(screenRect).x - (m_titleText.getGlobalBounds().width * 0.5f)),
+            ((screenRect.height - m_titleText.getGlobalBounds().height) - (vertPad * 0.5f)));
+
+        m_credits.reserve(16);
 
         m_credits.emplace_back(
             t_context,
             (t_context.settings.media_path / "image/credits/cpp.png").string(),
             0.25f,
             "Ziesche Til Newman",
-            "Software, C++, SFML, CMAKE",
+            "Software, C++, SFML, CMake",
             screenRect.height);
 
         m_credits.emplace_back(
