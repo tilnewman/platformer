@@ -704,6 +704,7 @@ namespace util
         const sf::Vector2f pos{ util::position(textureCoordinates) };
         const sf::Vector2f size{ util::size(textureCoordinates) };
 
+        // keep these offsets in sync with those in setupTriangleVerts() above
         // clang-format off
         verts[index + 0].texCoords = pos;
         verts[index + 1].texCoords = sf::Vector2f((pos.x + size.x),  pos.y          );
