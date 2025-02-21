@@ -119,7 +119,7 @@ namespace bramblefore
     void Coordinator::gameLoop()
     {
         sf::Clock frameClock;
-        while (m_window.isOpen() && m_states.current().which() != State::Shutdown)
+        while (m_window.isOpen() && (m_states.current().which() != State::Shutdown))
         {
             frameClock.restart();
 
@@ -206,7 +206,7 @@ namespace bramblefore
 
             if (m_settings.will_display_fps_graph)
             {
-                std::ranges::sort(m_fpsValues);
+                // std::ranges::sort(m_fpsValues);
 
                 m_statsDisplayUPtr = std::make_unique<util::GraphDisplay<std::size_t>>(
                     m_fpsValues, sf::Vector2u{ 500, 200 }, 64);
