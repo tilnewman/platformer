@@ -65,10 +65,7 @@ namespace bramblefore
     {
         // TODO fix to be more general so each level can be tested per run of the game
         const std::filesystem::path path = (t_context.settings.media_path / "map/dungeon1-1.json");
-        if (!std::filesystem::exists(path))
-        {
-            return false;
-        }
+        M_CHECK(std::filesystem::exists(path), "The level file does not exist: " << path.string());
 
         m_pathStr = path.string();
 
@@ -419,7 +416,7 @@ namespace bramblefore
         }
     }
 
-    void LevelFileLoader::parseChestAnimLayer(Context & t_context, const nlohmann::json & t_json) 
+    void LevelFileLoader::parseChestAnimLayer(Context & t_context, const nlohmann::json & t_json)
     {
         auto chestAnimLayerUPtr{ std::make_unique<ChestAnimationLayer>(t_context) };
 
