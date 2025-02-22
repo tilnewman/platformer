@@ -40,10 +40,11 @@ namespace bramblefore
     void MonsterSpellTextureManager::acquire(Context & t_context, const MonsterSpell t_spell)
     {
         const std::size_t spellIndex{ static_cast<std::size_t>(t_spell) };
-        if (spellIndex >= m_textureSets.size())
-        {
-            return;
-        }
+
+        M_CHECK(
+            (spellIndex < m_textureSets.size()),
+            "MonsterSpell " << toString(t_spell) << " of index " << spellIndex
+                            << " >= " << m_textureSets.size() << " -maybe setup() was not called?");
 
         MonsterSpellTextures & set{ m_textureSets.at(spellIndex) };
 
@@ -74,14 +75,15 @@ namespace bramblefore
     void MonsterSpellTextureManager::release(const MonsterSpell t_spell)
     {
         const std::size_t spellIndex{ static_cast<std::size_t>(t_spell) };
-        if (spellIndex >= m_textureSets.size())
-        {
-            return;
-        }
+
+        M_CHECK(
+            (spellIndex < m_textureSets.size()),
+            "MonsterSpell " << toString(t_spell) << " of index " << spellIndex
+                            << " >= " << m_textureSets.size() << " -maybe setup() was not called?");
 
         MonsterSpellTextures & set{ m_textureSets.at(spellIndex) };
 
-        M_CHECK((0 != set.ref_count), toString(t_spell) << "'s ref_count is already zero.");
+        M_CHECK((0 != set.ref_count), toString(t_spell) << "'s ref_count is already zero!");
 
         if (1 == set.ref_count)
         {
@@ -98,17 +100,15 @@ namespace bramblefore
         sf::Sprite & t_sprite, const MonsterSpell t_spell, const std::size_t t_frame) const
     {
         const std::size_t spellIndex{ static_cast<std::size_t>(t_spell) };
-        if (spellIndex >= m_textureSets.size())
-        {
-            return;
-        }
+
+        M_CHECK(
+            (spellIndex < m_textureSets.size()),
+            "MonsterSpell " << toString(t_spell) << " of index " << spellIndex
+                            << " >= " << m_textureSets.size() << " -maybe setup() was not called?");
 
         const std::vector<sf::Texture> & textures{ m_textureSets.at(spellIndex).textures };
 
-        if (t_frame >= textures.size())
-        {
-            return;
-        }
+        M_CHECK((t_frame < textures.size()), "t_frame=" << t_frame << " >= " << textures.size());
 
         t_sprite.setTexture(textures.at(t_frame));
     }
@@ -116,14 +116,13 @@ namespace bramblefore
     std::size_t MonsterSpellTextureManager::frameCount(const MonsterSpell t_spell) const
     {
         const std::size_t spellIndex{ static_cast<std::size_t>(t_spell) };
-        if (spellIndex >= m_textureSets.size())
-        {
-            return 0;
-        }
-        else
-        {
-            return m_textureSets.at(spellIndex).textures.size();
-        }
+
+        M_CHECK(
+            (spellIndex < m_textureSets.size()),
+            "MonsterSpell " << toString(t_spell) << " of index " << spellIndex
+                            << " >= " << m_textureSets.size() << " -maybe setup() was not called?");
+
+        return m_textureSets.at(spellIndex).textures.size();
     }
 
     //
