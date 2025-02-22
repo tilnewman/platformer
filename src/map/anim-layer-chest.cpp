@@ -11,6 +11,7 @@
 #include "subsystem/floating-text.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
 #include "util/random.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
@@ -37,11 +38,10 @@ namespace bramblefore
         Context & t_context, const std::string & t_name, const sf::FloatRect & t_rect)
     {
         const Chest chest{ chestFromName(t_name) };
-        if (Chest::Count == chest)
-        {
-            // TODO put in a log warning here so the map makers know they got the number wrong
-            return;
-        }
+
+        M_CHECK(
+            (Chest::Count != chest),
+            "Error parsing map - Unknown chest name: \"" << t_name << "\"");
 
         const sf::Texture & texture{ m_textureSets.at(static_cast<std::size_t>(chest)).closed };
 
