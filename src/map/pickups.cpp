@@ -207,7 +207,7 @@ namespace bramblefore
             {
                 t_context.player.coinAdjust(t_context, 1);
             }
-            else if (Pickup::Coin2 == anim.which)
+            else if (Pickup::Coin10 == anim.which)
             {
                 t_context.player.coinAdjust(t_context, 10);
             }

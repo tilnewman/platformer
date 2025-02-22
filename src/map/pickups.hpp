@@ -28,7 +28,7 @@ namespace bramblefore
         Arrow = 0,
         Bottle,
         Coin1,
-        Coin2,
+        Coin10,
         Crystal1,
         Crystal2,
         Crystal3,
@@ -47,7 +47,7 @@ namespace bramblefore
             case Pickup::Arrow:     { return "arrow.png";    }
             case Pickup::Bottle:    { return "bottle.png";   }
             case Pickup::Coin1:     { return "coin1.png";    }
-            case Pickup::Coin2:     { return "coin2.png";    }
+            case Pickup::Coin10:    { return "coin2.png";    }
             case Pickup::Crystal1:  { return "crystal1.png"; }
             case Pickup::Crystal2:  { return "crystal2.png"; }
             case Pickup::Crystal3:  { return "crystal3.png"; }
@@ -67,7 +67,7 @@ namespace bramblefore
         if      (name == "arrow")    return Pickup::Arrow;
         else if (name == "bottle")   return Pickup::Bottle;
         else if (name == "coin1")    return Pickup::Coin1;
-        else if (name == "coin2")    return Pickup::Coin2;
+        else if (name == "coin10")   return Pickup::Coin10;
         else if (name == "crystal1") return Pickup::Crystal1;
         else if (name == "crystal2") return Pickup::Crystal2;
         else if (name == "crystal3") return Pickup::Crystal3;
