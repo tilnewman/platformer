@@ -6,8 +6,11 @@
 #include "state/states.hpp"
 #include "ui/spell-select-menu.hpp"
 
+#include <vector>
+
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Vertex.hpp>
 
 namespace sf
 {
@@ -40,6 +43,9 @@ namespace bramblefore
 
       private:
         SpellSelectMenu m_spellSelectMenu;
+        bool m_isPaused;
+        sf::Text m_pauseText;
+        std::vector<sf::Vertex> m_pauseFadeVerts;
     };
 
 } // namespace bramblefore

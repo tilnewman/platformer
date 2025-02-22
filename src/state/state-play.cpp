@@ -16,7 +16,11 @@
 #include "subsystem/background-images.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/floating-text.hpp"
+#include "subsystem/font.hpp"
+#include "subsystem/screen-layout.hpp"
 #include "util/sfml-keys.hpp"
+#include "util/sfml-util.hpp"
+#include "util/sound-player.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Event.hpp>
@@ -26,10 +30,18 @@ namespace bramblefore
 
     PlayState::PlayState()
         : m_spellSelectMenu{}
+        , m_isPaused{ false }
+        , m_pauseText{}
+        , m_pauseFadeVerts{}
     {}
 
     void PlayState::update(Context & t_context, const float t_frameTimeSec)
     {
+        if (m_isPaused)
+        {
+            return;
+        }
+
         t_context.avatar.update(t_context, t_frameTimeSec);
 
         if (!t_context.state.isChangePending())
@@ -56,6 +68,17 @@ namespace bramblefore
         t_context.float_text.draw(t_target, t_states);
         t_context.player_display.draw(t_target, t_states);
         m_spellSelectMenu.draw(t_target, t_states);
+
+        if (m_isPaused)
+        {
+            if (!m_pauseFadeVerts.empty())
+            {
+                t_target.draw(
+                    &m_pauseFadeVerts[0], m_pauseFadeVerts.size(), sf::Triangles, t_states);
+            }
+
+            t_target.draw(m_pauseText, t_states);
+        }
     }
 
     void PlayState::handleEvent(Context & t_context, const sf::Event & t_event)
@@ -65,7 +88,20 @@ namespace bramblefore
             return;
         }
 
-        if (t_event.key.code == sf::Keyboard::T)
+        if (m_isPaused)
+        {
+            m_isPaused = false;
+            t_context.sfx.play("pause");
+            return;
+        }
+
+        if (t_event.key.code == sf::Keyboard::Space)
+        {
+            m_isPaused = true;
+            t_context.sfx.play("pause");
+            t_context.sfx.stop("walk");
+        }
+        else if (t_event.key.code == sf::Keyboard::T)
         {
             std::size_t temp{ static_cast<std::size_t>(t_context.player.avatarType()) };
 
@@ -92,6 +128,14 @@ namespace bramblefore
         t_context.avatar.setup(t_context);
         t_context.player_display.setup(t_context);
         t_context.level.load(t_context);
+
+        m_pauseText = t_context.font.makeText(
+            Font::Default, FontSize::Huge, "PAUSED", sf::Color(220, 220, 220));
+
+        const sf::FloatRect screenRect{ t_context.layout.wholeRect() };
+        util::centerInside(m_pauseText, screenRect);
+
+        util::appendTriangleVerts(screenRect, m_pauseFadeVerts, sf::Color(0, 0, 0, 127));
     }
 
     void PlayState::onExit(Context & t_context) { t_context.level.reset(); }
