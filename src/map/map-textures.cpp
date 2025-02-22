@@ -49,11 +49,11 @@ namespace bramblefore
     void MapTextureManager::acquire(const Context & t_context, const TileImage t_image)
     {
         const std::size_t imageIndex{ static_cast<std::size_t>(t_image) };
-        if (imageIndex >= m_tileTextures.size())
-        {
-            // TODO log an error here
-            return;
-        }
+
+        M_CHECK(
+            (imageIndex < m_tileTextures.size()),
+            "TileImage " << toString(t_image) << " of index " << imageIndex
+                         << " >= " << m_tileTextures.size() << " -maybe setup() was not called?");
 
         TileTexture & tileTexture{ m_tileTextures.at(imageIndex) };
 
@@ -74,11 +74,11 @@ namespace bramblefore
     void MapTextureManager::release(const TileImage t_image)
     {
         const std::size_t imageIndex{ static_cast<std::size_t>(t_image) };
-        if (imageIndex >= m_tileTextures.size())
-        {
-            // TODO log an error here
-            return;
-        }
+
+        M_CHECK(
+            (imageIndex < m_tileTextures.size()),
+            "TileImage " << toString(t_image) << " of index " << imageIndex
+                         << " >= " << m_tileTextures.size() << " -maybe setup() was not called?");
 
         TileTexture & tileTexture{ m_tileTextures.at(imageIndex) };
 
@@ -96,13 +96,25 @@ namespace bramblefore
     const TileTexture & MapTextureManager::get(const TileImage t_image) const
     {
         const std::size_t imageIndex{ static_cast<std::size_t>(t_image) };
-        M_CHECK((imageIndex < m_tileTextures.size()), "Out of range TileImage.");
+
+        M_CHECK(
+            (imageIndex < m_tileTextures.size()),
+            "TileImage " << toString(t_image) << " of index " << imageIndex
+                         << " >= " << m_tileTextures.size() << " -maybe setup() was not called?");
+
         return m_tileTextures.at(imageIndex);
     }
 
     void MapTextureManager::setGid(const TileImage t_image, const int t_gid)
     {
-        m_tileTextures.at(static_cast<std::size_t>(t_image)).gid = t_gid;
+        const std::size_t imageIndex{ static_cast<std::size_t>(t_image) };
+
+        M_CHECK(
+            (imageIndex < m_tileTextures.size()),
+            "TileImage " << toString(t_image) << " of index " << imageIndex
+                         << " >= " << m_tileTextures.size() << " -maybe setup() was not called?");
+
+        m_tileTextures.at(imageIndex).gid = t_gid;
     }
 
 } // namespace bramblefore
