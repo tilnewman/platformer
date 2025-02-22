@@ -33,11 +33,13 @@ namespace bramblefore
         , m_isPaused{ false }
         , m_pauseText{}
         , m_pauseFadeVerts{}
+        , m_isQuitting{ false }
+        , m_quitWindow{}
     {}
 
     void PlayState::update(Context & t_context, const float t_frameTimeSec)
     {
-        if (m_isPaused)
+        if (m_isPaused || m_isQuitting)
         {
             return;
         }
@@ -79,6 +81,10 @@ namespace bramblefore
 
             t_target.draw(m_pauseText, t_states);
         }
+        else if (m_isQuitting)
+        {
+            m_quitWindow.draw(t_target, t_states);
+        }
     }
 
     void PlayState::handleEvent(Context & t_context, const sf::Event & t_event)
@@ -88,6 +94,28 @@ namespace bramblefore
             return;
         }
 
+        // leave the quitting popup
+        if (m_isQuitting)
+        {
+            if (t_event.key.code == sf::Keyboard::L)
+            {
+                m_isQuitting = false;
+                t_context.avatar.triggerDeath(t_context);
+            }
+            else if (t_event.key.code == sf::Keyboard::G)
+            {
+                m_isQuitting = false;
+                t_context.state.setChangePending(State::Credits);
+            }
+            else if (t_event.key.code == sf::Keyboard::N)
+            {
+                m_isQuitting = false;
+            }
+
+            return;
+        }
+
+        // unpause
         if (m_isPaused)
         {
             m_isPaused = false;
@@ -95,10 +123,15 @@ namespace bramblefore
             return;
         }
 
-        if (t_event.key.code == sf::Keyboard::Space)
+        if (!m_isPaused && !m_isQuitting && (t_event.key.code == sf::Keyboard::Space))
         {
             m_isPaused = true;
             t_context.sfx.play("pause");
+            t_context.sfx.stop("walk");
+        }
+        else if (!m_isQuitting && !m_isPaused && (t_event.key.code == sf::Keyboard::Q))
+        {
+            m_isQuitting = true;
             t_context.sfx.stop("walk");
         }
         else if (t_event.key.code == sf::Keyboard::T)
@@ -136,6 +169,19 @@ namespace bramblefore
         util::centerInside(m_pauseText, screenRect);
 
         util::appendTriangleVerts(screenRect, m_pauseFadeVerts, sf::Color(0, 0, 0, 127));
+
+        m_quitWindow.loadTextures(t_context.settings);
+
+        GuiWindowInfo quitWindowInfo;
+        quitWindowInfo.border  = GuiWindowBorder::Fancy;
+        quitWindowInfo.content = "Restart (l)evel, quit the (g)ame, or (n)evermind?";
+        quitWindowInfo.details = TextDetails(Font::Default, FontSize::Medium, sf::Color::Black);
+        quitWindowInfo.region  = util::scaleRectInPlaceCopy(screenRect, 0.2f);
+        quitWindowInfo.title   = "Quit?";
+        quitWindowInfo.will_draw_background   = true;
+        quitWindowInfo.will_fade_whole_screen = true;
+
+        m_quitWindow.arrange(t_context, quitWindowInfo);
     }
 
     void PlayState::onExit(Context & t_context) { t_context.level.reset(); }

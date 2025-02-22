@@ -4,6 +4,7 @@
 // state-play.hpp
 //
 #include "state/states.hpp"
+#include "ui/gui-window.hpp"
 #include "ui/spell-select-menu.hpp"
 
 #include <vector>
@@ -43,9 +44,13 @@ namespace bramblefore
 
       private:
         SpellSelectMenu m_spellSelectMenu;
+
         bool m_isPaused;
         sf::Text m_pauseText;
         std::vector<sf::Vertex> m_pauseFadeVerts;
+
+        bool m_isQuitting;
+        GuiWindow m_quitWindow;
     };
 
 } // namespace bramblefore
