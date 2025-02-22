@@ -77,14 +77,19 @@ namespace bramblefore
 
     void SpellAnimations::add(const sf::Vector2f & t_pos, const Spell t_spell)
     {
-        const std::vector<sf::Texture> & textures{
-            m_textureSets.at(static_cast<std::size_t>(t_spell)).textures
-        };
+        const std::size_t spellIndex{ static_cast<std::size_t>(t_spell) };
 
-        if (textures.empty())
-        {
-            return;
-        }
+        M_CHECK(
+            (spellIndex < m_textureSets.size()),
+            toFilesystemName(t_spell)
+                << " of index " << spellIndex << " >= " << m_textureSets.size());
+
+        const auto & textures{ m_textureSets.at(spellIndex).textures };
+
+        M_CHECK(
+            !textures.empty(),
+            toFilesystemName(t_spell) << " of index " << spellIndex
+                                      << " has no images loaded. Maybe setup() was not called?");
 
         SpellAnim & anim{ m_anims.emplace_back() };
         anim.is_alive           = true;
