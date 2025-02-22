@@ -96,10 +96,10 @@ namespace bramblefore
         void updateDrops(const Context & t_context, const float t_frameTimeSec);
         void updateSplashes(const float t_frameTimeSec);
 
-        [[nodiscard]] std::size_t frameCount(const sf::Texture & t_texture) const;
+        [[nodiscard]] std::size_t frameCount(const sf::Texture & t_texture) const noexcept;
 
         [[nodiscard]] sf::IntRect
-            textureRect(const sf::Texture & t_texture, const std::size_t t_frame) const;
+            textureRect(const sf::Texture & t_texture, const std::size_t t_frame) const noexcept;
 
         [[nodiscard]] Harm makeHarm(const sf::FloatRect & t_rect) const noexcept;
 

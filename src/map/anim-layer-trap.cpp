@@ -125,7 +125,7 @@ namespace bramblefore
         }
     }
 
-    std::size_t TrapAnimationLayer::frameCount() const
+    std::size_t TrapAnimationLayer::frameCount() const noexcept
     {
         if (m_texture.getSize().y > 0)
         {
@@ -137,7 +137,7 @@ namespace bramblefore
         }
     }
 
-    sf::IntRect TrapAnimationLayer::textureRect(const std::size_t frame) const
+    sf::IntRect TrapAnimationLayer::textureRect(const std::size_t frame) const noexcept
     {
         sf::IntRect rect;
         rect.width  = static_cast<int>(m_texture.getSize().y);

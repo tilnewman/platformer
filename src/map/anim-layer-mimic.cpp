@@ -119,7 +119,7 @@ namespace bramblefore
         }
     }
 
-    std::size_t MimicAnimationLayer::frameCount() const
+    std::size_t MimicAnimationLayer::frameCount() const noexcept
     {
         if (m_texture.getSize().y > 0)
         {
@@ -131,7 +131,7 @@ namespace bramblefore
         }
     }
 
-    sf::IntRect MimicAnimationLayer::textureRect(const std::size_t frame) const
+    sf::IntRect MimicAnimationLayer::textureRect(const std::size_t frame) const noexcept
     {
         sf::IntRect rect;
         rect.width  = static_cast<int>(m_texture.getSize().y);

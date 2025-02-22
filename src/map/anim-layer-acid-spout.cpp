@@ -230,7 +230,7 @@ namespace bramblefore
         }
     }
 
-    std::size_t AcidSpoutAnimationLayer::frameCount(const sf::Texture & t_texture) const
+    std::size_t AcidSpoutAnimationLayer::frameCount(const sf::Texture & t_texture) const noexcept
     {
         if (t_texture.getSize().y > 0)
         {
@@ -243,7 +243,7 @@ namespace bramblefore
     }
 
     sf::IntRect AcidSpoutAnimationLayer::textureRect(
-        const sf::Texture & t_texture, const std::size_t frame) const
+        const sf::Texture & t_texture, const std::size_t frame) const noexcept
     {
         sf::IntRect rect;
         rect.width  = static_cast<int>(t_texture.getSize().y);
