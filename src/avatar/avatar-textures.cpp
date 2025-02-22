@@ -7,7 +7,6 @@
 
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
-#include "subsystem/default-texture.hpp"
 #include "subsystem/texture-stats.hpp"
 #include "util/check-macros.hpp"
 #include "util/filesystem-util.hpp"
@@ -83,10 +82,10 @@ namespace bramblefore
     void AvatarTextureManager::acquire(const Context & t_context, const AvatarType t_type)
     {
         const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
-        if (typeIndex >= m_textureSets.size())
-        {
-            return;
-        }
+
+        M_CHECK(
+            (typeIndex < m_textureSets.size()),
+            toString(t_type) << " of " << typeIndex << " >= " << m_textureSets.size());
 
         AvatarTextureSet & set{ m_textureSets.at(typeIndex) };
 
@@ -127,10 +126,10 @@ namespace bramblefore
     void AvatarTextureManager::release(const AvatarType t_type)
     {
         const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
-        if (typeIndex >= m_textureSets.size())
-        {
-            return;
-        }
+
+        M_CHECK(
+            (typeIndex < m_textureSets.size()),
+            toString(t_type) << " of " << typeIndex << " >= " << m_textureSets.size());
 
         AvatarTextureSet & set{ m_textureSets.at(typeIndex) };
 
@@ -156,47 +155,71 @@ namespace bramblefore
         const AvatarAnim t_anim,
         const std::size_t t_frame) const
     {
-        const AvatarTextureSet & set{ m_textureSets.at(static_cast<std::size_t>(t_type)) };
-        const AnimTextures & anims{ set.anims.at(static_cast<std::size_t>(t_anim)) };
+        const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
 
-        if (t_frame < anims.textures.size())
-        {
-            t_sprite.setTexture(anims.textures.at(t_frame), true);
-        }
+        M_CHECK(
+            (typeIndex < m_textureSets.size()),
+            toString(t_type) << " of " << typeIndex << " >= " << m_textureSets.size());
+
+        const AvatarTextureSet & set{ m_textureSets.at(typeIndex) };
+
+        const std::size_t animIndex{ static_cast<std::size_t>(t_anim) };
+
+        M_CHECK(
+            (animIndex < set.anims.size()),
+            toString(t_anim) << " of " << animIndex << " >= " << set.anims.size());
+
+        const AnimTextures & anims{ set.anims.at(animIndex) };
+
+        M_CHECK(
+            (t_frame < anims.textures.size()),
+            "t_frame of " << t_frame << " >= " << anims.textures.size());
+
+        t_sprite.setTexture(anims.textures.at(t_frame), true);
     }
 
     std::size_t
         AvatarTextureManager::frameCount(const AvatarType t_type, const AvatarAnim t_anim) const
     {
-        const AvatarTextureSet & set{ m_textureSets.at(static_cast<std::size_t>(t_type)) };
-        const AnimTextures & anims{ set.anims.at(static_cast<std::size_t>(t_anim)) };
+        const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
+
+        M_CHECK(
+            (typeIndex < m_textureSets.size()),
+            toString(t_type) << " of " << typeIndex << " >= " << m_textureSets.size());
+
+        const AvatarTextureSet & set{ m_textureSets.at(typeIndex) };
+
+        const std::size_t animIndex{ static_cast<std::size_t>(t_anim) };
+
+        M_CHECK(
+            (animIndex < set.anims.size()),
+            toString(t_anim) << " of " << animIndex << " >= " << set.anims.size());
+
+        const AnimTextures & anims{ set.anims.at(animIndex) };
+
         return anims.textures.size();
     }
 
     const sf::Texture & AvatarTextureManager::getDefault(const AvatarType t_type) const
     {
-        const std::size_t index{ static_cast<std::size_t>(t_type) };
-        if (index >= m_textureSets.size())
-        {
-            return DefaultTexture::instance().get();
-        }
-        else
-        {
-            return m_textureSets.at(index).defalt;
-        }
+        const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
+
+        M_CHECK(
+            (typeIndex < m_textureSets.size()),
+            toString(t_type) << " of " << typeIndex << " >= " << m_textureSets.size());
+
+        return m_textureSets.at(typeIndex).defalt;
     }
 
     const sf::Texture & AvatarTextureManager::getIcon(const AvatarType t_type) const
     {
-        const std::size_t index{ static_cast<std::size_t>(t_type) };
-        if (index >= m_textureSets.size())
-        {
-            return DefaultTexture::instance().get();
-        }
-        else
-        {
-            return m_textureSets.at(static_cast<std::size_t>(t_type)).icon;
-        }
+        const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
+
+        M_CHECK(
+            (typeIndex < m_textureSets.size()),
+            toString(t_type) << " of " << typeIndex << " >= " << m_textureSets.size());
+
+        return m_textureSets.at(typeIndex).icon;
     }
 
 } // namespace bramblefore

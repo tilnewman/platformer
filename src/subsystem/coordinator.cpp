@@ -9,7 +9,6 @@
 #include "map/map-textures.hpp"
 #include "monster/monster-spell-anim.hpp"
 #include "monster/monster-textures.hpp"
-#include "subsystem/default-texture.hpp"
 #include "subsystem/texture-stats.hpp"
 #include "ui/gui-window.hpp"
 #include "util/sfml-util.hpp"
@@ -81,7 +80,6 @@ namespace bramblefore
         m_sfx.loadAll();
         m_sfx.willLoop("walk", true);
 
-        DefaultTexture::instance().setup();
         AvatarTextureManager::instance().setup(m_settings);
         MonsterTextureManager::instance().setup(m_settings);
         MapTextureManager::instance().setup();
@@ -104,7 +102,6 @@ namespace bramblefore
         MapTextureManager::instance().teardown();
         AvatarTextureManager::instance().teardown();
         MonsterTextureManager::instance().teardown();
-        DefaultTexture::instance().teardown();
         m_window.close();
         TextureStats::instance().dumpInfo();
     }

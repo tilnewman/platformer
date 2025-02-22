@@ -7,7 +7,6 @@
 
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
-#include "subsystem/default-texture.hpp"
 #include "subsystem/texture-stats.hpp"
 #include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
@@ -55,11 +54,10 @@ namespace bramblefore
     void MonsterTextureManager::acquire(Context & t_context, const MonsterType t_type)
     {
         const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
-        if (typeIndex >= m_textureSets.size())
-        {
-            // TODO log an error here
-            return;
-        }
+
+        M_CHECK(
+            (typeIndex < m_textureSets.size()),
+            toString(t_type) << " of " << typeIndex << " >= " << m_textureSets.size());
 
         MonsterTextures & set{ m_textureSets.at(typeIndex) };
 
@@ -88,11 +86,10 @@ namespace bramblefore
     void MonsterTextureManager::release(const MonsterType t_type)
     {
         const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
-        if (typeIndex >= m_textureSets.size())
-        {
-            // TODO log an error here
-            return;
-        }
+
+        M_CHECK(
+            (typeIndex < m_textureSets.size()),
+            toString(t_type) << " of " << typeIndex << " >= " << m_textureSets.size());
 
         MonsterTextures & set{ m_textureSets.at(typeIndex) };
 
@@ -138,18 +135,18 @@ namespace bramblefore
         MonsterTextureManager::getTexture(const MonsterType t_type, const MonsterAnim t_anim) const
     {
         const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
-        if (typeIndex >= m_textureSets.size())
-        {
-            return DefaultTexture::instance().get();
-        }
+
+        M_CHECK(
+            (typeIndex < m_textureSets.size()),
+            toString(t_type) << " of " << typeIndex << " >= " << m_textureSets.size());
 
         const MonsterTextures & set{ m_textureSets.at(typeIndex) };
 
         const std::size_t animIndex{ static_cast<std::size_t>(t_anim) };
-        if (animIndex >= set.textures.size())
-        {
-            return DefaultTexture::instance().get();
-        }
+
+        M_CHECK(
+            (animIndex < set.textures.size()),
+            toString(t_anim) << " of " << animIndex << " >= " << set.textures.size());
 
         return m_textureSets.at(typeIndex).textures.at(animIndex);
     }
