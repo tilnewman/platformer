@@ -162,7 +162,7 @@ namespace bramblefore
             }
             else
             {
-               return 6;
+                return 6;
             }
         }
         else // isWarrior(t_type)
