@@ -29,7 +29,7 @@ namespace bramblefore
     {
         bool has_exploded{ false };
         float elapsed_time_sec{ 0.0f };
-        float time_between_frames_sec{ 0.175f };
+        float time_between_frames_sec{ 0.1f };
         std::size_t frame_index{ 0 };
         sf::Sprite sprite{};
 
