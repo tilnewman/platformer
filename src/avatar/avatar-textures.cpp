@@ -46,6 +46,7 @@ namespace bramblefore
 
             set.icon.loadFromFile((typePath / "icon.png").string());
             TextureStats::instance().process(set.icon);
+            set.icon.setSmooth(true);
 
             for (std::size_t animIndex(0); animIndex < static_cast<std::size_t>(AvatarAnim::Count);
                  ++animIndex)
