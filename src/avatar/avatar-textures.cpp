@@ -125,6 +125,15 @@ namespace bramblefore
 
     void AvatarTextureManager::release(const AvatarType t_type)
     {
+        // it is valid to not have an avatar loaded and end the game or quit the app
+        if (t_type == AvatarType::Count)
+        {
+            util::log() << "AvatarTextureManager::release() called with AvatarType::Count.  Was no "
+                           "avatar loaded?\n";
+
+            return;
+        }
+
         const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
 
         M_CHECK(
