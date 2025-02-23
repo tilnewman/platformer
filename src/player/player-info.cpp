@@ -10,6 +10,7 @@
 #include "subsystem/context.hpp"
 #include "util/check-macros.hpp"
 #include "util/sound-player.hpp"
+#include "util/util.hpp"
 
 #include <algorithm>
 
@@ -114,7 +115,7 @@ namespace bramblefore
 
         if (m_coins < 0)
         {
-            // TODO log an error here
+            util::log() << "Coins=" << m_coins << " after adj=" << t_adjustment << '\n';
             m_coins = 0;
         }
 
@@ -123,13 +124,13 @@ namespace bramblefore
         return m_coins;
     }
 
-    Experience_t PlayerInfo::experienceAdjust(const Experience_t adjustment)
+    Experience_t PlayerInfo::experienceAdjust(const Experience_t t_adjustment)
     {
-        m_experience += adjustment;
+        m_experience += t_adjustment;
 
         if (m_experience < 0)
         {
-            // TODO log an error here
+            util::log() << "Experience=" << m_experience << " after adj=" << t_adjustment << '\n';
             m_experience = 0;
         }
 
@@ -148,20 +149,20 @@ namespace bramblefore
         t_context.player_display.setStarCount(m_mapStarCount);
     }
 
-    void PlayerInfo::setCurentSpellIndex(const std::size_t newSpellIndex)
+    void PlayerInfo::setCurentSpellIndex(const std::size_t t_newSpellIndex)
     {
         M_CHECK(
-            (m_currentSpell < m_spells.size()),
-            "newSpellIndex=" << newSpellIndex << " but spell list size=" << m_spells.size());
+            (t_newSpellIndex < m_spells.size()),
+            "newSpellIndex=" << t_newSpellIndex << " but spell list size=" << m_spells.size());
 
-        const PlayerSpell & spell{ m_spells.at(newSpellIndex) };
+        const PlayerSpell & spell{ m_spells.at(t_newSpellIndex) };
 
         M_CHECK(
             spell.is_learned,
-            "newSpellIndex=" << newSpellIndex << " but that spell \"" << toName(spell.spell)
+            "newSpellIndex=" << t_newSpellIndex << " but that spell \"" << toName(spell.spell)
                              << "\" is not learned");
 
-        m_currentSpell = newSpellIndex;
+        m_currentSpell = t_newSpellIndex;
     }
 
     Spell PlayerInfo::currentSpell() const
