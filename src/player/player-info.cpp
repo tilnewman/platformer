@@ -41,11 +41,11 @@ namespace bramblefore
             PlayerSpell & playerSpell{ m_spells.emplace_back() };
             playerSpell.cost       = toManaCost(spell);
             playerSpell.damage     = toDamage(spell);
-            playerSpell.is_learned = false;
+            playerSpell.is_learned = true; // TODO set to false when done showing off
             playerSpell.spell      = spell;
         }
 
-        //spellcasters always have the first spell learned when the game begins
+        // spellcasters always have the first spell learned when the game begins
         if (!m_spells.empty())
         {
             m_spells.front().is_learned = true;
@@ -114,7 +114,7 @@ namespace bramblefore
 
         if (m_coins < 0)
         {
-            //TODO log an error here
+            // TODO log an error here
             m_coins = 0;
         }
 
