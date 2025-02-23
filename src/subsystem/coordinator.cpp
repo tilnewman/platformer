@@ -214,21 +214,16 @@ namespace bramblefore
     void Coordinator::setupRenderWindow(sf::VideoMode & t_videoMode)
     {
         // sometimes the resolution of the window created does not match what was specified
-        std::clog << "Attempting video mode " << t_videoMode << "...";
         m_window.create(t_videoMode, "Bramblefore", sf::Style::Fullscreen);
 
         const unsigned actualWidth{ m_window.getSize().x };
         const unsigned actualHeight{ m_window.getSize().y };
 
-        if ((t_videoMode.width == actualWidth) && (t_videoMode.height == actualHeight))
-        {
-            std::clog << "Success.\n";
-        }
-        else
+        if ((t_videoMode.width != actualWidth) || (t_videoMode.height != actualHeight))
         {
             t_videoMode.width  = actualWidth;
             t_videoMode.height = actualHeight;
-            std::clog << "Failed.  SFML switched to " << t_videoMode << " instead.\n";
+            std::clog << "SFML switched resolution to " << t_videoMode << ".\n";
         }
     }
 
