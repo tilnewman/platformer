@@ -116,7 +116,7 @@ namespace bramblefore
         }
 
         // unpause
-        if (m_isPaused)
+        if (m_isPaused && (t_event.key.code == sf::Keyboard::Space))
         {
             m_isPaused = false;
             t_context.sfx.play("pause");
@@ -126,13 +126,14 @@ namespace bramblefore
         if (!m_isPaused && !m_isQuitting && (t_event.key.code == sf::Keyboard::Space))
         {
             m_isPaused = true;
-            t_context.sfx.play("pause");
             t_context.sfx.stop("walk");
+            t_context.sfx.play("pause");
         }
         else if (!m_isQuitting && !m_isPaused && (t_event.key.code == sf::Keyboard::Q))
         {
             m_isQuitting = true;
             t_context.sfx.stop("walk");
+            t_context.sfx.play("ui-select-thock-slide");
         }
         else if (t_event.key.code == sf::Keyboard::T)
         {
