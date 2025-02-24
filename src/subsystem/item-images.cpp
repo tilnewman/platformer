@@ -27,7 +27,7 @@ namespace bramblefore
         m_backgroundTexture.loadFromFile(
             (t_settings.media_path / "image/item/item-background.png").string());
 
-        m_backgroundTexture.setSmooth(false);
+        m_backgroundTexture.setSmooth(true);
 
         TextureStats::instance().process(m_backgroundTexture);
     }
