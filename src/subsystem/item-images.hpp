@@ -223,7 +223,7 @@ namespace bramblefore
             case Item::Mushroom1:       { return { 192, 192, 32, 32 }; }
             case Item::Mushroom2:       { return { 224, 192, 32, 32 }; }
             case Item::Mushroom3:       { return {   0, 224, 32, 32 }; }
-            case Item::Mushroom4:      { return {  32, 224, 32, 32 }; }
+            case Item::Mushroom4:       { return {  32, 224, 32, 32 }; }
             case Item::Nuts:            { return {  64, 224, 32, 32 }; }
             case Item::PineNeedles:     { return {  96, 224, 32, 32 }; }
             case Item::RedPepper:       { return { 128, 224, 32, 32 }; }
