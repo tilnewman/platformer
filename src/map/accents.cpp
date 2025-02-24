@@ -23,9 +23,7 @@ namespace bramblefore
         : m_textures{}
         , m_anims{}
         , m_elapsedFireTimeSec{ 0.0f }
-        , m_elapsedVineTimeSec{ 0.0f }
         , m_timePerFireFrameSec{ 0.15f }
-        , m_timePerVineFrameSec{ 0.75f }
         , m_scale{}
     {
         m_anims.reserve(32); // just a harmless guess based on knowledge of maps
@@ -66,8 +64,9 @@ namespace bramblefore
         M_CHECK((Accent::Count != accent), "\"" << t_name << "\" is an unknown Accent name");
 
         AccentAnim & anim{ m_anims.emplace_back() };
-        anim.which      = accent;
-        anim.anim_index = t_context.random.zeroToOneLessThan(frameCount(anim.which));
+        anim.which                   = accent;
+        anim.anim_index              = t_context.random.zeroToOneLessThan(frameCount(anim.which));
+        anim.time_per_vine_frame_sec = t_context.random.fromTo(0.35f, 0.8f);
         anim.sprite.setTexture(m_textures.at(static_cast<std::size_t>(accent)), true);
         anim.sprite.setTextureRect(textureRect(accent, 0));
         anim.sprite.setScale(m_scale);
@@ -137,17 +136,17 @@ namespace bramblefore
             }
         }
 
-        m_elapsedVineTimeSec += t_frameTimeSec;
-        if (m_elapsedVineTimeSec > m_timePerVineFrameSec)
+        for (AccentAnim & anim : m_anims)
         {
-            m_elapsedVineTimeSec -= m_timePerVineFrameSec;
-
-            for (AccentAnim & anim : m_anims)
+            if (!isVine(anim.which))
             {
-                if (!isVine(anim.which))
-                {
-                    continue;
-                }
+                continue;
+            }
+
+            anim.elapsed_vine_time_sec += t_frameTimeSec;
+            if (anim.elapsed_vine_time_sec > anim.time_per_vine_frame_sec)
+            {
+                anim.elapsed_vine_time_sec -= anim.time_per_vine_frame_sec;
 
                 ++anim.anim_index;
                 if (anim.anim_index >= frameCount(anim.which))

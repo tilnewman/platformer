@@ -128,6 +128,10 @@ namespace bramblefore
         Accent which{ Accent::Vine1 }; // anything works here
         std::size_t anim_index{ 0 };
         sf::Sprite sprite{};
+
+        // only vines have unique timing
+        float elapsed_vine_time_sec{ 0.0f };
+        float time_per_vine_frame_sec{ 0.0f };
     };
 
     //
@@ -162,9 +166,7 @@ namespace bramblefore
         std::vector<sf::Texture> m_textures;
         std::vector<AccentAnim> m_anims;
         float m_elapsedFireTimeSec;
-        float m_elapsedVineTimeSec;
         float m_timePerFireFrameSec;
-        float m_timePerVineFrameSec;
         sf::Vector2f m_scale;
     };
 
