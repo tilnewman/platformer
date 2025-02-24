@@ -117,7 +117,7 @@ namespace bramblefore
         void exitCollisions(Context & t_context) const;
         void hurtCollisions(Context & t_context);
         void harm(Context & t_context, const Harm & t_harm);
-        MovementDetails calculateMovementDetails(const Context & t_context) const;
+        [[nodiscard]] MovementDetails calculateMovementDetails(const Context & t_context) const;
 
       private:
         sf::Sprite m_sprite;
@@ -130,7 +130,7 @@ namespace bramblefore
         sf::Vector2f m_velocity;
         bool m_hasLanded;
         bool m_isFacingRight;
-        float m_avatarImageWidthRatio;
+        sf::Vector2f m_avatarSizeRatio;
         bool m_isAnimating;
         bool m_hasHitEnemy;
         AvatarSpellAnimations m_spellAnim;

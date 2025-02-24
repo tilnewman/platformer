@@ -39,7 +39,7 @@ namespace bramblefore
         , m_velocity{}
         , m_hasLanded{ false }
         , m_isFacingRight{ true }
-        , m_avatarImageWidthRatio{ 0.25f }
+        , m_avatarSizeRatio{ 0.25f, 0.35f }
         , m_isAnimating{ false }
         , m_hasHitEnemy{ false }
         , m_spellAnim{}
@@ -122,7 +122,7 @@ namespace bramblefore
     {
         const sf::FloatRect bounds{ m_sprite.getGlobalBounds() };
         sf::FloatRect rect{ bounds };
-        util::scaleRectInPlace(rect, { m_avatarImageWidthRatio, 0.35f });
+        util::scaleRectInPlace(rect, m_avatarSizeRatio);
         rect.top += (bounds.width * 0.175f);
 
         if (m_isFacingRight)
@@ -771,14 +771,14 @@ namespace bramblefore
     {
         m_isFacingRight = true;
         m_sprite.scale(-1.0f, 1.0f);
-        m_sprite.move(-(m_sprite.getGlobalBounds().width * (1.0f - m_avatarImageWidthRatio)), 0.0f);
+        m_sprite.move(-(m_sprite.getGlobalBounds().width * (1.0f - m_avatarSizeRatio.x)), 0.0f);
     }
 
     void Avatar::turnLeft()
     {
         m_isFacingRight = false;
         m_sprite.scale(-1.0f, 1.0f);
-        m_sprite.move((m_sprite.getGlobalBounds().width * (1.0f - m_avatarImageWidthRatio)), 0.0f);
+        m_sprite.move((m_sprite.getGlobalBounds().width * (1.0f - m_avatarSizeRatio.x)), 0.0f);
     }
 
     void Avatar::exitCollisions(Context & t_context) const
