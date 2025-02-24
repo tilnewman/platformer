@@ -242,6 +242,10 @@ namespace bramblefore
             {
                 parseRectLayer(t_context, jsonLayer, t_context.level.collisions);
             }
+            else if (layerName == "kill-collision")
+            {
+                parseRectLayer(t_context, jsonLayer, t_context.level.kill_collisions);
+            }
             else if (layerName == "ladder")
             {
                 parseRectLayer(t_context, jsonLayer, t_context.level.ladders);

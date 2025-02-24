@@ -28,6 +28,7 @@ namespace bramblefore
         , tile_size_screen{}
         , tile_size_texture{}
         , collisions{}
+        , kill_collisions{}
         , ladders{}
         , enter_rect{}
         , exit_rect{}
@@ -42,12 +43,14 @@ namespace bramblefore
         // harmless guesses based on what I know is in map files
         tile_layers.reserve(32);
         collisions.reserve(1024);
+        kill_collisions.reserve(32);
     }
 
     void Level::reset()
     {
         tile_layers.clear();
         collisions.clear();
+        kill_collisions.clear();
         ladders.clear();
         monsters.clear();
         farthest_horiz_traveled  = 0.0f;
@@ -76,6 +79,11 @@ namespace bramblefore
         exit_rect.left += t_amount;
 
         for (sf::FloatRect & rect : collisions)
+        {
+            rect.left += t_amount;
+        }
+
+        for (sf::FloatRect & rect : kill_collisions)
         {
             rect.left += t_amount;
         }

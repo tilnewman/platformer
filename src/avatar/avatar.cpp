@@ -78,7 +78,7 @@ namespace bramblefore
             return;
         }
 
-        // handleAttacking() should be called BEFORE these three
+        // handleAttacking() should be called BEFORE these
         handleAttackState(t_context);
         handleAttackingEnemies(t_context);
         sideToSideMotion(t_context, t_frameTimeSec);
@@ -91,12 +91,13 @@ namespace bramblefore
             m_sprite.move(m_velocity);
         }
 
-        // moveMap() and collisions should be called AFTER m_sprite.move() above
+        // moveMap() and collision handlers should be called AFTER m_sprite.move() above
         moveMap(t_context);
         preventBacktracking(t_context);
         collisions(t_context);
         exitCollisions(t_context);
         hurtCollisions(t_context);
+        killCollisions(t_context);
 
         t_context.pickup.processCollisionWithAvatar(t_context, collisionRect());
 
@@ -802,6 +803,21 @@ namespace bramblefore
         harm(t_context, t_context.level.monsters.avatarCollide(avatarRect));
     }
 
+    void Avatar::killCollisions(Context & t_context)
+    {
+        const sf::FloatRect collRect{ collisionRect() };
+
+        for (const sf::FloatRect & killRect : t_context.level.kill_collisions)
+        {
+            if (collRect.intersects(killRect))
+            {
+                t_context.player.healthAdjust(t_context, -t_context.player.health());
+                triggerDeath(t_context);
+                break;
+            }
+        }
+    }
+
     void Avatar::harm(Context & t_context, const Harm & t_harm)
     {
         if (!t_harm.isAnyHarmDone())
@@ -814,6 +830,7 @@ namespace bramblefore
             t_context.sfx.play(t_harm.sfx);
         }
 
+        // some harm has only the sfx so bail here if only an sfx
         if (t_harm.damage <= 0)
         {
             return;
@@ -838,7 +855,7 @@ namespace bramblefore
 
         t_context.player.healthAdjust(t_context, -t_harm.damage);
 
-        if (t_context.player.health() == 0)
+        if (t_context.player.health() <= 0)
         {
             triggerDeath(t_context);
         }
