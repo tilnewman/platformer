@@ -391,61 +391,6 @@
          "visible":true,
          "x":0,
          "y":0
-        }, 
-        {
-         "draworder":"topdown",
-         "id":8,
-         "name":"flame-trap",
-         "objects":[
-                {
-                 "height":16,
-                 "id":17,
-                 "name":"down",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":32,
-                 "x":144,
-                 "y":640
-                }, 
-                {
-                 "height":32,
-                 "id":18,
-                 "name":"right",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":176,
-                 "y":608
-                }, 
-                {
-                 "height":16,
-                 "id":19,
-                 "name":"up",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":32,
-                 "x":144,
-                 "y":592
-                }, 
-                {
-                 "height":32,
-                 "id":20,
-                 "name":"left",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":128,
-                 "y":608
-                }],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
         }],
  "nextlayerid":9,
  "nextobjectid":21,

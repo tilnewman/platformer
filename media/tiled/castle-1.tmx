@@ -231,10 +231,4 @@
  <objectgroup id="7" name="accent-anim">
   <object id="16" name="lamp-tri" x="80" y="816" width="32" height="16"/>
  </objectgroup>
- <objectgroup id="8" name="flame-trap">
-  <object id="17" name="down" x="144" y="640" width="32" height="16"/>
-  <object id="18" name="right" x="176" y="608" width="16" height="32"/>
-  <object id="19" name="up" x="144" y="592" width="32" height="16"/>
-  <object id="20" name="left" x="128" y="608" width="16" height="32"/>
- </objectgroup>
 </map>
