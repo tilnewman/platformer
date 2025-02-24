@@ -204,7 +204,7 @@ namespace bramblefore
             if (m_settings.will_display_fps_graph)
             {
                 m_statsDisplayUPtr = std::make_unique<util::GraphDisplay<std::size_t>>(
-                    m_fpsValues, sf::Vector2u{ 500, 200 }, 64);
+                    m_fpsValues, sf::Vector2u{ 500, 200 }, sf::Uint8(64));
             }
 
             m_fpsValues.clear();
