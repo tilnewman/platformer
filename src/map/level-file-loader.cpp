@@ -5,6 +5,7 @@
 #include "anim-layer-acid-spout.hpp"
 #include "anim-layer-acid.hpp"
 #include "anim-layer-bomb.hpp"
+#include "anim-layer-flame-trap.hpp"
 #include "anim-layer-flaming-skull.hpp"
 #include "anim-layer-ghost-bottle.hpp"
 #include "anim-layer-lightning.hpp"
@@ -306,6 +307,10 @@ namespace bramblefore
             {
                 parseMonsterLayer(t_context, jsonLayer);
             }
+            else if (layerName == "flame-trap")
+            {
+                parseFlameTrapLayer(t_context, jsonLayer);
+            }
             else
             {
                 util::log() << "While parsing level file \"" << m_pathStr
@@ -566,6 +571,22 @@ namespace bramblefore
                             << "\".\n";
             }
         }
+    }
+
+    void LevelFileLoader::parseFlameTrapLayer(Context & t_context, const nlohmann::json & t_json)
+    {
+        std::vector<FlameTrapRectDir> rectDirs;
+        rectDirs.reserve(16); // harmless guess based on what I know is in the maps
+
+        for (const nlohmann::json & accentJson : t_json["objects"])
+        {
+            rectDirs.emplace_back(
+                parseAndConvertRect(t_context, accentJson),
+                stringToTrapDirection(accentJson["name"]));
+        }
+
+        t_context.level.tile_layers.push_back(
+            std::make_unique<FlameTrapAnimationLayer>(t_context, rectDirs));
     }
 
 } // namespace bramblefore
