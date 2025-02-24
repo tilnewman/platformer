@@ -21,11 +21,12 @@ namespace bramblefore
 
     FlameTrapAnimationLayer::FlameTrapAnimationLayer(
         Context & t_context, const std::vector<FlameTrapRectDir> & t_rectDirs)
-        : m_scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.8f) }
+        : m_emitterScale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.8f) }
         , m_emitterUpTexture{}
         , m_emitterDownTexture{}
         , m_emitterLeftTexture{}
         , m_emitterRightTexture{}
+        , m_flameScale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.25f) }
         , m_flamesUpTexture{}
         , m_flamesDownTexture{}
         , m_flamesLeftTexture{}
@@ -88,7 +89,7 @@ namespace bramblefore
         for (const FlameTrapRectDir & rectDir : t_rectDirs)
         {
             sf::Sprite & emitterSprite{ m_emitterSprites.emplace_back() };
-            emitterSprite.scale(m_scale, m_scale);
+            emitterSprite.scale(m_emitterScale, m_emitterScale);
 
             FlameAnim & anim{ m_anims.emplace_back() };
             anim.direction                = rectDir.direction;
@@ -103,6 +104,7 @@ namespace bramblefore
                     (util::bottom(rectDir.rect) - emitterSprite.getGlobalBounds().height));
 
                 anim.sprite = sf::Sprite(m_flamesUpTexture, textureRect(anim.direction, 0));
+                anim.sprite.scale(m_flameScale, m_flameScale);
 
                 anim.sprite.setPosition(
                     util::center(rectDir.rect).x - (anim.sprite.getGlobalBounds().width * 0.5f),
@@ -119,6 +121,7 @@ namespace bramblefore
                     rectDir.rect.top);
 
                 anim.sprite = sf::Sprite(m_flamesDownTexture, textureRect(anim.direction, 0));
+                anim.sprite.scale(m_flameScale, m_flameScale);
 
                 anim.sprite.setPosition(
                     util::center(rectDir.rect).x - (anim.sprite.getGlobalBounds().width * 0.5f),
@@ -136,6 +139,7 @@ namespace bramblefore
                      (emitterSprite.getGlobalBounds().height * 0.5f)));
 
                 anim.sprite = sf::Sprite(m_flamesLeftTexture, textureRect(anim.direction, 0));
+                anim.sprite.scale(m_flameScale, m_flameScale);
 
                 anim.sprite.setPosition(
                     (emitterSprite.getGlobalBounds().left - anim.sprite.getGlobalBounds().width),
@@ -153,6 +157,7 @@ namespace bramblefore
                      (emitterSprite.getGlobalBounds().height * 0.5f)));
 
                 anim.sprite = sf::Sprite(m_flamesRightTexture, textureRect(anim.direction, 0));
+                anim.sprite.scale(m_flameScale, m_flameScale);
 
                 anim.sprite.setPosition(
                     util::right(emitterSprite.getGlobalBounds()),
@@ -191,7 +196,6 @@ namespace bramblefore
             if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
-                // util::drawRectangleShape(t_target, anim.coll_rect, false, sf::Color::Red);
             }
         }
     }
@@ -239,8 +243,8 @@ namespace bramblefore
                 anim.elapsed_time_sec += t_frameTimeSec;
                 if (anim.elapsed_time_sec > anim.time_between_flaming_sec)
                 {
-                    anim.elapsed_time_sec -= anim.time_between_flaming_sec;
-                    anim.is_flaming = true;
+                    anim.elapsed_time_sec = 0.0f;
+                    anim.is_flaming       = true;
 
                     if (wholeScreenRect.intersects(anim.coll_rect))
                     {

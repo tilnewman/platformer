@@ -139,22 +139,19 @@ namespace bramblefore
     void FlamingSkullAnimationLayer::draw(
         const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
+        const sf::FloatRect wholeScreenRect{ t_context.layout.wholeRect() };
+
         for (const FlamesAnim & anim : m_anims)
         {
-            if (t_context.layout.wholeRect().intersects(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
-
-                // if (anim.is_flaming)
-                // {
-                //     util::drawRectangleShape(t_target, anim.coll_rect, false, sf::Color::Yellow);
-                // }
             }
         }
 
         for (const sf::Sprite & sprite : m_skullBlockSprites)
         {
-            if (t_context.layout.wholeRect().intersects(sprite.getGlobalBounds()))
+            if (wholeScreenRect.intersects(sprite.getGlobalBounds()))
             {
                 t_target.draw(sprite, t_states);
             }
@@ -177,6 +174,8 @@ namespace bramblefore
 
     void FlamingSkullAnimationLayer::update(Context & t_context, const float t_frameTimeSec)
     {
+        const sf::FloatRect wholeScreenRect{ t_context.layout.wholeRect() };
+
         for (FlamesAnim & anim : m_anims)
         {
             if (anim.is_flaming)
@@ -207,7 +206,7 @@ namespace bramblefore
                     anim.elapsed_time_sec = 0.0f;
                     anim.is_flaming       = true;
 
-                    if (t_context.layout.wholeRect().intersects(anim.coll_rect))
+                    if (wholeScreenRect.intersects(anim.coll_rect))
                     {
                         t_context.sfx.play("fire-puff");
                     }

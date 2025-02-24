@@ -52,9 +52,11 @@ namespace bramblefore
     void WaterAnimationLayer::draw(
         const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
+        const sf::FloatRect wholeScreenRect{ t_context.layout.wholeRect() };
+
         for (const WaterAnim & anim : m_anims)
         {
-            if (t_context.layout.wholeRect().intersects(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
             }

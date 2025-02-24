@@ -120,12 +120,13 @@ namespace bramblefore
             textureRect(const TrapDirection t_direction, const std::size_t t_frame) const noexcept;
 
       private:
-        float m_scale;
+        float m_emitterScale;
         sf::Texture m_emitterUpTexture;
         sf::Texture m_emitterDownTexture;
         sf::Texture m_emitterLeftTexture;
         sf::Texture m_emitterRightTexture;
 
+        float m_flameScale;
         sf::Texture m_flamesUpTexture;
         sf::Texture m_flamesDownTexture;
         sf::Texture m_flamesLeftTexture;

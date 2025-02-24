@@ -63,9 +63,11 @@ namespace bramblefore
     void LightningAnimationLayer::draw(
         const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
+        const sf::FloatRect wholeScreenRect{ t_context.layout.wholeRect() };
+
         for (const LightningAnim & anim : m_anims)
         {
-            if (t_context.layout.wholeRect().intersects(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
             }
@@ -92,6 +94,8 @@ namespace bramblefore
 
     void LightningAnimationLayer::update(Context & t_context, const float t_frameTimeSec)
     {
+        const sf::FloatRect wholeScreenRect{ t_context.layout.wholeRect() };
+
         for (LightningAnim & anim : m_anims)
         {
             anim.elapsed_time_sec += t_frameTimeSec;
@@ -120,7 +124,7 @@ namespace bramblefore
                     anim.elapsed_time_sec = 0.0f;
                     anim.is_animating     = true;
 
-                    if (t_context.layout.wholeRect().intersects(anim.sprite.getGlobalBounds()))
+                    if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
                     {
                         t_context.sfx.play("electricity");
                     }

@@ -53,9 +53,11 @@ namespace bramblefore
     void AcidAnimationLayer::draw(
         const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
+        const sf::FloatRect wholeScreenRect{ t_context.layout.wholeRect() };
+
         for (const sf::Sprite & sprite : m_sprites)
         {
-            if (t_context.layout.wholeRect().intersects(sprite.getGlobalBounds()))
+            if (wholeScreenRect.intersects(sprite.getGlobalBounds()))
             {
                 t_target.draw(sprite, t_states);
             }

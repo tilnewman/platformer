@@ -57,9 +57,11 @@ namespace bramblefore
     void MimicAnimationLayer::draw(
         const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
+        const sf::FloatRect wholeScreenRect{ t_context.layout.wholeRect() };
+
         for (const MimicAnim & anim : m_anims)
         {
-            if (t_context.layout.wholeRect().intersects(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
             }
@@ -108,14 +110,6 @@ namespace bramblefore
                     anim.sprite.setTextureRect(textureRect(anim.frame_index));
                 }
             }
-            // else
-            //{
-            //     if (t_context.avatar.collisionRect().intersects(anim.coll_rect))
-            //     {
-            //         t_context.sfx.play("mimic");
-            //         anim.is_springing = true;
-            //     }
-            // }
         }
     }
 
