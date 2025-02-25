@@ -48,8 +48,7 @@ namespace bramblefore
             sf::Texture & texture{ m_textures.emplace_back() };
 
             texture.loadFromFile(
-                (t_context.settings.media_path / "image/accent-anim" / toFilename(accent))
-                    .string());
+                (t_context.settings.media_path / "image/map-anim" / toFilename(accent)).string());
 
             texture.setSmooth(true);
 

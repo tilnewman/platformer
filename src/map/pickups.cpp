@@ -48,8 +48,7 @@ namespace bramblefore
             sf::Texture & texture{ m_textures.emplace_back() };
 
             texture.loadFromFile(
-                (t_context.settings.media_path / "image/pickup-anim" / toFilename(pickup))
-                    .string());
+                (t_context.settings.media_path / "image/map-anim" / toFilename(pickup)).string());
 
             TextureStats::instance().process(texture);
 
