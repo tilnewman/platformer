@@ -12,6 +12,7 @@
 #include "anim-layer-lightning.hpp"
 #include "anim-layer-plant-puke.hpp"
 #include "anim-layer-plant-trap.hpp"
+#include "anim-layer-saw.hpp"
 #include "anim-layer-spike-trap.hpp"
 #include "anim-layer-trap.hpp"
 #include "anim-layer-water.hpp"
@@ -330,6 +331,10 @@ namespace bramblefore
             else if (layerName == "rock-trap")
             {
                 parseFallingRockTrapLayer(t_context, jsonLayer);
+            }
+            else if (layerName == "saw")
+            {
+                parseLayerOfRects<SawAnimationLayer>(t_context, jsonLayer);
             }
             else
             {
