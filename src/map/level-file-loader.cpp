@@ -5,6 +5,7 @@
 #include "anim-layer-acid-spout.hpp"
 #include "anim-layer-acid.hpp"
 #include "anim-layer-bomb.hpp"
+#include "anim-layer-falling-rock.hpp"
 #include "anim-layer-flame-trap.hpp"
 #include "anim-layer-flaming-skull.hpp"
 #include "anim-layer-ghost-bottle.hpp"
@@ -326,6 +327,10 @@ namespace bramblefore
             {
                 parseLayerOfRects<SpikeTrapAnimationLayer>(t_context, jsonLayer);
             }
+            else if (layerName == "rock-trap")
+            {
+                parseFallingRockTrapLayer(t_context, jsonLayer);
+            }
             else
             {
                 util::log() << "While parsing level file \"" << m_pathStr
@@ -602,6 +607,22 @@ namespace bramblefore
 
         t_context.level.tile_layers.push_back(
             std::make_unique<FlameTrapAnimationLayer>(t_context, rectDirs));
+    }
+
+    void LevelFileLoader::parseFallingRockTrapLayer(
+        Context & t_context, const nlohmann::json & t_json)
+    {
+        std::vector<RectRock> rectRocks;
+        rectRocks.reserve(16); // harmless guess based on what I know is in the maps
+
+        for (const nlohmann::json & accentJson : t_json["objects"])
+        {
+            rectRocks.emplace_back(
+                parseAndConvertRect(t_context, accentJson), stringToRock(accentJson["name"]));
+        }
+
+        t_context.level.tile_layers.push_back(
+            std::make_unique<FallingRockAnimationLayer>(t_context, rectRocks));
     }
 
 } // namespace bramblefore

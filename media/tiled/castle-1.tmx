@@ -231,7 +231,4 @@
  <objectgroup id="7" name="accent-anim">
   <object id="16" name="lamp-tri" x="80" y="816" width="32" height="16"/>
  </objectgroup>
- <objectgroup id="10" name="spike-trap">
-  <object id="22" x="512" y="784" width="96" height="48"/>
- </objectgroup>
 </map>
