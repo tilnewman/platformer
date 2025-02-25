@@ -163,7 +163,7 @@ namespace sf
 
         if (!vm.isValid())
         {
-            os << "(invalid)";
+            os << "[invalid]";
         }
 
         os << ")";
