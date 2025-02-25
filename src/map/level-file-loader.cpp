@@ -6,6 +6,7 @@
 #include "anim-layer-acid.hpp"
 #include "anim-layer-bomb.hpp"
 #include "anim-layer-falling-rock.hpp"
+#include "anim-layer-firewall.hpp"
 #include "anim-layer-flame-trap.hpp"
 #include "anim-layer-flaming-skull.hpp"
 #include "anim-layer-ghost-bottle.hpp"
@@ -335,6 +336,10 @@ namespace bramblefore
             else if (layerName == "saw")
             {
                 parseLayerOfRects<SawAnimationLayer>(t_context, jsonLayer);
+            }
+            else if (layerName == "firewall")
+            {
+                parseLayerOfRects<FirewallAnimationLayer>(t_context, jsonLayer);
             }
             else
             {
