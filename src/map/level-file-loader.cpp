@@ -9,6 +9,7 @@
 #include "anim-layer-flaming-skull.hpp"
 #include "anim-layer-ghost-bottle.hpp"
 #include "anim-layer-lightning.hpp"
+#include "anim-layer-plant-trap.hpp"
 #include "anim-layer-trap.hpp"
 #include "anim-layer-water.hpp"
 #include "bramblefore/settings.hpp"
@@ -310,6 +311,10 @@ namespace bramblefore
             else if (layerName == "flame-trap")
             {
                 parseFlameTrapLayer(t_context, jsonLayer);
+            }
+            else if (layerName == "plant-trap")
+            {
+                parseLayerOfRects<PlantTrapAnimationLayer>(t_context, jsonLayer);
             }
             else
             {
