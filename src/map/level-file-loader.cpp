@@ -71,7 +71,7 @@ namespace bramblefore
     void LevelFileLoader::load(Context & t_context)
     {
         // TODO fix to be more general so each level can be tested per run of the game
-        const std::filesystem::path path = (t_context.settings.media_path / "map/dungeon1-1.json");
+        const std::filesystem::path path = (t_context.settings.media_path / "map/cave-1.json");
         M_CHECK(std::filesystem::exists(path), "The level file does not exist: " << path.string());
 
         m_pathStr = path.string();
@@ -142,13 +142,13 @@ namespace bramblefore
             {
                 MapTextureManager::instance().setGid(TileImage::Dungeon1Ground, gid);
             }
-            else if (filename == toMapFilename(TileImage::Dungeon2Ground))
+            else if (filename == toMapFilename(TileImage::CaveGround))
             {
-                MapTextureManager::instance().setGid(TileImage::Dungeon2Ground, gid);
+                MapTextureManager::instance().setGid(TileImage::CaveGround, gid);
             }
-            else if (filename == toMapFilename(TileImage::Dungeon2Object))
+            else if (filename == toMapFilename(TileImage::CaveObject))
             {
-                MapTextureManager::instance().setGid(TileImage::Dungeon2Object, gid);
+                MapTextureManager::instance().setGid(TileImage::CaveObject, gid);
             }
             else if (filename == toMapFilename(TileImage::ForestGround))
             {
@@ -178,19 +178,29 @@ namespace bramblefore
         Context & t_context, const nlohmann::json & t_json)
     {
         std::string backgroundImageName;
-        for (const nlohmann::json & propJson : t_json["properties"])
+
+        try
         {
-            const std::string propName = propJson["name"];
-            if ("background" == propName)
+            for (const nlohmann::json & propJson : t_json["properties"])
             {
-                backgroundImageName = propJson["value"];
-                break;
+                const std::string propName = propJson["name"];
+                if ("background" == propName)
+                {
+                    backgroundImageName = propJson["value"];
+                    break;
+                }
+                else
+                {
+                    util::log() << "While parsing \"" << m_pathStr
+                                << "\": Ignored custom property named \"" << propName << "\"\n";
+                }
             }
-            else
-            {
-                util::log() << "While parsing \"" << m_pathStr
-                            << "\": Ignored custom property named \"" << propName << "\"\n";
-            }
+        }
+        catch (...)
+        {
+            util::log()
+                << "Exception Error: While parsing \"" << m_pathStr
+                << "\":  Perhaps did the map maker forget to add the background property?\n";
         }
 
         if (backgroundImageName.empty())
@@ -221,13 +231,13 @@ namespace bramblefore
             {
                 parseTileLayer(t_context, TileImage::Dungeon1Ground, jsonLayer);
             }
-            else if (layerName == toString(TileImage::Dungeon2Ground))
+            else if (layerName == toString(TileImage::CaveGround))
             {
-                parseTileLayer(t_context, TileImage::Dungeon2Ground, jsonLayer);
+                parseTileLayer(t_context, TileImage::CaveGround, jsonLayer);
             }
-            else if (layerName == toString(TileImage::Dungeon2Object))
+            else if (layerName == toString(TileImage::CaveObject))
             {
-                parseTileLayer(t_context, TileImage::Dungeon2Object, jsonLayer);
+                parseTileLayer(t_context, TileImage::CaveObject, jsonLayer);
             }
             else if (layerName == toString(TileImage::ForestGround))
             {

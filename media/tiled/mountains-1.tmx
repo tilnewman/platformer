@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="150" height="88" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="32">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="150" height="88" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="32">
  <editorsettings>
   <export target="../map/mountains-1.json" format="json"/>
  </editorsettings>
  <properties>
-  <property name="background" value="mountains"/>
+  <property name="background" value="mountain"/>
  </properties>
  <tileset firstgid="1" source="mountains-ground.tsx"/>
  <tileset firstgid="1025" source="mountains-object.tsx"/>

@@ -166,102 +166,97 @@ namespace bramblefore
 
             return info;
         }
-        else if (t_name == "underground-swamp")
+        else if (t_name == "dungeon")
         {
             std::vector<SlidingImageInfo> slidingImages;
 
-            slidingImages.push_back({ 0.2f,
-                                      (t_context.settings.media_path /
-                                       "image/background/underground-swamp/ruins-back.png") });
+            slidingImages.push_back(
+                { 0.2f,
+                  (t_context.settings.media_path / "image/background/dungeon/ruins-back.png") });
 
-            slidingImages.push_back({ 0.4f,
-                                      (t_context.settings.media_path /
-                                       "image/background/underground-swamp/ruins-front.png") });
-
-            slidingImages.push_back({ 0.6f,
-                                      (t_context.settings.media_path /
-                                       "image/background/underground-swamp/floor-back.png") });
-
-            slidingImages.push_back({ 0.8f,
-                                      (t_context.settings.media_path /
-                                       "image/background/underground-swamp/floor-front.png") });
-
-            slidingImages.push_back({ 0.8f,
-                                      (t_context.settings.media_path /
-                                       "image/background/underground-swamp/chains.png") });
-
-            BackgroundImagesInfo info(
-                fadeAlpha,
-                (t_context.settings.media_path /
-                 "image/background/underground-swamp/background.png"),
-                slidingImages,
-                {});
-
-            return info;
-        }
-        else if (t_name == "underground-cave")
-        {
-            std::vector<SlidingImageInfo> slidingImages;
-
-            slidingImages.push_back({ 0.2f,
-                                      (t_context.settings.media_path /
-                                       "image/background/underground-cave/rock-back.png") });
-
-            slidingImages.push_back({ 0.4f,
-                                      (t_context.settings.media_path /
-                                       "image/background/underground-cave/rock-middle.png") });
+            slidingImages.push_back(
+                { 0.4f,
+                  (t_context.settings.media_path / "image/background/dungeon/ruins-front.png") });
 
             slidingImages.push_back(
                 { 0.6f,
-                  (t_context.settings.media_path / "image/background/underground-cave/mist.png") });
+                  (t_context.settings.media_path / "image/background/dungeon/floor-back.png") });
 
-            slidingImages.push_back({ 0.8f,
-                                      (t_context.settings.media_path /
-                                       "image/background/underground-cave/rock-front1.png") });
+            slidingImages.push_back(
+                { 0.8f,
+                  (t_context.settings.media_path / "image/background/dungeon/floor-front.png") });
 
-            slidingImages.push_back({ 0.8f,
-                                      (t_context.settings.media_path /
-                                       "image/background/underground-cave/rock-front2.png") });
+            slidingImages.push_back(
+                { 0.8f, (t_context.settings.media_path / "image/background/dungeon/chains.png") });
 
             BackgroundImagesInfo info(
                 fadeAlpha,
-                (t_context.settings.media_path /
-                 "image/background/underground-cave/background.png"),
+                (t_context.settings.media_path / "image/background/dungeon/background.png"),
                 slidingImages,
                 {});
 
             return info;
         }
-        else if (t_name == "mountains")
+        else if (t_name == "cave")
+        {
+            std::vector<SlidingImageInfo> slidingImages;
+
+            slidingImages.push_back(
+                { 0.2f, (t_context.settings.media_path / "image/background/cave/rock-back.png") });
+
+            slidingImages.push_back(
+                { 0.4f,
+                  (t_context.settings.media_path / "image/background/cave/rock-middle.png") });
+
+            slidingImages.push_back(
+                { 0.6f, (t_context.settings.media_path / "image/background/cave/mist.png") });
+
+            slidingImages.push_back(
+                { 0.8f,
+                  (t_context.settings.media_path / "image/background/cave/rock-front1.png") });
+
+            slidingImages.push_back(
+                { 0.8f,
+                  (t_context.settings.media_path / "image/background/cave/rock-front2.png") });
+
+            BackgroundImagesInfo info(
+                fadeAlpha,
+                (t_context.settings.media_path / "image/background/cave/background.png"),
+                slidingImages,
+                {});
+
+            return info;
+        }
+        else if (t_name == "mountain")
         {
             std::vector<SlidingImageInfo> slidingImages;
 
             slidingImages.push_back(
                 { 0.1f,
-                  (t_context.settings.media_path / "image/background/mountains/clouds1.png") });
+                  (t_context.settings.media_path / "image/background/mountain/clouds1.png") });
 
             slidingImages.push_back(
                 { 0.2f,
-                  (t_context.settings.media_path / "image/background/mountains/clouds2.png") });
+                  (t_context.settings.media_path / "image/background/mountain/clouds2.png") });
 
             slidingImages.push_back(
                 { 0.4f,
-                  (t_context.settings.media_path / "image/background/mountains/rocks-back.png") });
-
-            slidingImages.push_back({ 0.6f,
-                                      (t_context.settings.media_path /
-                                       "image/background/mountains/rocks-middle.png") });
+                  (t_context.settings.media_path / "image/background/mountain/rocks-back.png") });
 
             slidingImages.push_back(
-                { 0.7f, (t_context.settings.media_path / "image/background/mountains/mist.png") });
+                { 0.6f,
+                  (t_context.settings.media_path / "image/background/mountain/rocks-middle.png") });
+
+            slidingImages.push_back(
+                { 0.7f, (t_context.settings.media_path / "image/background/mountain/mist.png") });
 
             slidingImages.push_back(
                 { 0.8f,
-                  (t_context.settings.media_path / "image/background/mountains/rocks-front.png") });
+                  (t_context.settings.media_path / "image/background/mountain/rocks-front.png") });
 
             BackgroundImagesInfo info(
                 fadeAlpha,
-                (t_context.settings.media_path / "image/background/mountains/sky.png"),
+                (t_context.settings.media_path / "image/background/mountain/sky.png"),
                 slidingImages,
                 {});
 

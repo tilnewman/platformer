@@ -4,7 +4,7 @@
   <export target="../map/dungeon1-1.json" format="json"/>
  </editorsettings>
  <properties>
-  <property name="background" value="underground-swamp"/>
+  <property name="background" value="dungeon"/>
  </properties>
  <tileset firstgid="1" source="dungeon1-ground.tsx"/>
  <layer id="1" name="dungeon1-ground" width="400" height="88">
@@ -388,7 +388,7 @@
   <object id="144" name="lamp-hanging" x="784" y="1328" width="64" height="16"/>
   <object id="145" name="lamp-hanging" x="912" y="1328" width="64" height="16"/>
   <object id="146" name="lamp-hanging" x="1504" y="1264" width="64" height="16"/>
-  <object id="147" name="lamp-hanging" x="2022" y="1004" width="64" height="16"/>
+  <object id="147" name="lamp-hanging" x="2021" y="1004" width="64" height="16"/>
   <object id="151" name="lamp-hanging" x="2320" y="960" width="64" height="16"/>
   <object id="152" name="lamp-hanging" x="2560" y="960" width="64" height="16"/>
   <object id="148" name="lamp-hanging" x="2208" y="1216" width="64" height="16"/>

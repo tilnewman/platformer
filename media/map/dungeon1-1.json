@@ -1368,7 +1368,7 @@
                  "type":"",
                  "visible":true,
                  "width":64,
-                 "x":2022,
+                 "x":2021,
                  "y":1004
                 }, 
                 {
@@ -1494,7 +1494,7 @@
         {
          "name":"background",
          "type":"string",
-         "value":"underground-swamp"
+         "value":"dungeon"
         }],
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

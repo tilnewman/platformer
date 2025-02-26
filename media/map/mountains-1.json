@@ -713,10 +713,10 @@
         {
          "name":"background",
          "type":"string",
-         "value":"mountains"
+         "value":"mountain"
         }],
  "renderorder":"right-down",
- "tiledversion":"1.11.0",
+ "tiledversion":"1.11.2",
  "tileheight":16,
  "tilesets":[
         {

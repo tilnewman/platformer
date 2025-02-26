@@ -15,8 +15,8 @@ namespace bramblefore
         CastleGround = 0,
         CastleObject,
         Dungeon1Ground,
-        Dungeon2Ground,
-        Dungeon2Object,
+        CaveGround,
+        CaveObject,
         ForestGround,
         ForestTrees,
         MountainsGround,
@@ -29,17 +29,17 @@ namespace bramblefore
         // clang-format off
         switch (image)
         {
-            case TileImage::CastleGround:    { return "castle-ground";           }
-            case TileImage::CastleObject:    { return "castle-object";           }
-            case TileImage::Dungeon1Ground:  { return "dungeon1-ground";         }
-            case TileImage::Dungeon2Ground:  { return "dungeon2-ground";         }
-            case TileImage::Dungeon2Object:  { return "dungeon2-object";         }
-            case TileImage::ForestGround:    { return "forest-ground";           }
-            case TileImage::ForestTrees:     { return "forest-trees";            }
-            case TileImage::MountainsGround: { return "mountains-ground";        } 
-            case TileImage::MountainsObject: { return "mountains-object";        }
+            case TileImage::CastleGround:    { return "castle-ground";      }
+            case TileImage::CastleObject:    { return "castle-object";      }
+            case TileImage::Dungeon1Ground:  { return "dungeon1-ground";    }
+            case TileImage::CaveGround:      { return "cave-ground";        }
+            case TileImage::CaveObject:      { return "cave-object";        }
+            case TileImage::ForestGround:    { return "forest-ground";      }
+            case TileImage::ForestTrees:     { return "forest-trees";       }
+            case TileImage::MountainsGround: { return "mountains-ground";   } 
+            case TileImage::MountainsObject: { return "mountains-object";   }
             case TileImage::Count:           [[fallthrough]];
-            default:                         { return "Error_TileImage_unknown"; }
+            default:                    { return "Error_TileImage_unknown"; }
         }
         // clang-format on
     }
