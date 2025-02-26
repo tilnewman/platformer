@@ -29,9 +29,7 @@ namespace bramblefore
 
     void AccentAnimations::setup(const Context & t_context)
     {
-        const float scale{ t_context.layout.calScaleBasedOnResolution(
-            t_context, t_context.settings.tile_scale) };
-
+        const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 2.4f) };
         m_scale.x = scale;
         m_scale.y = scale;
 
