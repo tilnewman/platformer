@@ -32,17 +32,17 @@ namespace bramblefore
         HarmCollisionManager::instance().addOwner(*this);
 
         m_spoutTexture.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/acid-spout.png").string());
+            (t_context.settings.media_path / "image/anim/acid-spout.png").string());
 
         TextureStats::instance().process(m_spoutTexture);
 
         m_dropTexture.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/acid-spout-drop.png").string());
+            (t_context.settings.media_path / "image/anim/acid-spout-drop.png").string());
 
         TextureStats::instance().process(m_dropTexture);
 
         m_splashTexture.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/acid-spout-splash.png").string());
+            (t_context.settings.media_path / "image/anim/acid-spout-splash.png").string());
 
         TextureStats::instance().process(m_splashTexture);
 

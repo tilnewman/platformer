@@ -52,7 +52,7 @@ namespace bramblefore
         {
             const std::filesystem::path imageDirPath{
                 t_context.settings.media_path /
-                std::string("image/monster-spell-anim/").append(toString(t_spell))
+                std::string("image/monster-spell/").append(toString(t_spell))
             };
 
             const std::vector<std::filesystem::path> files{ util::findFilesInDirectory(

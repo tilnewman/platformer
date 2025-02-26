@@ -32,30 +32,34 @@ namespace bramblefore
     {
         HarmCollisionManager::instance().addOwner(*this);
 
+        //
+
         m_skullBlockTexture.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/skull-flames-block.png").string());
+            (t_context.settings.media_path / "image/anim/skull-flames-block.png").string());
 
         TextureStats::instance().process(m_skullBlockTexture);
 
         m_flamesUpTexture.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/skull-flames-up.png").string());
+            (t_context.settings.media_path / "image/anim/skull-flames-up.png").string());
 
         TextureStats::instance().process(m_flamesUpTexture);
 
         m_flamesDownTexture.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/skull-flames-down.png").string());
+            (t_context.settings.media_path / "image/anim/skull-flames-down.png").string());
 
         TextureStats::instance().process(m_flamesDownTexture);
 
         m_flamesLeftTexture.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/skull-flames-left.png").string());
+            (t_context.settings.media_path / "image/anim/skull-flames-left.png").string());
 
         TextureStats::instance().process(m_flamesLeftTexture);
 
         m_flamesRightTexture.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/skull-flames-right.png").string());
+            (t_context.settings.media_path / "image/anim/skull-flames-right.png").string());
 
         TextureStats::instance().process(m_flamesRightTexture);
+
+        //
 
         for (const sf::FloatRect & rect : t_rects)
         {

@@ -35,22 +35,22 @@ namespace bramblefore
         //
 
         m_texture1.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/rock-spike-1.png").string());
+            (t_context.settings.media_path / "image/anim/rock-spike-1.png").string());
 
         TextureStats::instance().process(m_texture1);
 
         m_texture2.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/rock-spike-2.png").string());
+            (t_context.settings.media_path / "image/anim/rock-spike-2.png").string());
 
         TextureStats::instance().process(m_texture1);
 
         m_texture3.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/rock-spike-3.png").string());
+            (t_context.settings.media_path / "image/anim/rock-spike-3.png").string());
 
         TextureStats::instance().process(m_texture1);
 
         m_texture4.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/rock-spike-4.png").string());
+            (t_context.settings.media_path / "image/anim/rock-spike-4.png").string());
 
         TextureStats::instance().process(m_texture1);
 

@@ -47,7 +47,7 @@ namespace bramblefore
             SpellTextures & set{ m_textureSets.at(spellIndex) };
 
             const std::filesystem::path iconPath{
-                t_context.settings.media_path / "image/spell-anim" /
+                t_context.settings.media_path / "image/spell" /
                 std::string(toFilesystemName(spell)).append("-icon.png")
             };
 
@@ -55,7 +55,7 @@ namespace bramblefore
             TextureStats::instance().process(set.icon_texture);
             set.icon_texture.setSmooth(true);
 
-            const std::filesystem::path path{ t_context.settings.media_path / "image/spell-anim" /
+            const std::filesystem::path path{ t_context.settings.media_path / "image/spell" /
                                               toFilesystemName(spell) };
 
             const std::vector<std::filesystem::path> files{ util::findFilesInDirectory(

@@ -28,7 +28,7 @@ namespace bramblefore
         HarmCollisionManager::instance().addOwner(*this);
 
         m_texture.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/lightning.png").string());
+            (t_context.settings.media_path / "image/anim/lightning.png").string());
 
         m_texture.setSmooth(true);
 

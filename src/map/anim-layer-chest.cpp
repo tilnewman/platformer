@@ -126,7 +126,7 @@ namespace bramblefore
             ChestTextures & textures{ m_textureSets.emplace_back() };
 
             textures.open.loadFromFile(
-                (t_context.settings.media_path / std::string("image/map-anim/chest")
+                (t_context.settings.media_path / std::string("image/anim/chest")
                                                      .append(std::to_string(chestIndex))
                                                      .append("-open.png"))
                     .string());
@@ -134,7 +134,7 @@ namespace bramblefore
             TextureStats::instance().process(textures.open);
 
             textures.closed.loadFromFile(
-                (t_context.settings.media_path / std::string("image/map-anim/chest")
+                (t_context.settings.media_path / std::string("image/anim/chest")
                                                      .append(std::to_string(chestIndex))
                                                      .append(".png"))
                     .string());

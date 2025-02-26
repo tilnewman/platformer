@@ -40,51 +40,51 @@ namespace bramblefore
         //
 
         m_dripperTexture1.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/lava-spill1.png").string());
+            (t_context.settings.media_path / "image/anim/lava-spill1.png").string());
 
         TextureStats::instance().process(m_dripperTexture1);
 
         m_dripperTexture2.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/lava-spill2.png").string());
+            (t_context.settings.media_path / "image/anim/lava-spill2.png").string());
 
         TextureStats::instance().process(m_dripperTexture2);
 
         m_dripperTexture3.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/lava-spill3.png").string());
+            (t_context.settings.media_path / "image/anim/lava-spill3.png").string());
 
         TextureStats::instance().process(m_dripperTexture3);
 
         //
 
         m_dripTexture1.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/lava-drop1.png").string());
+            (t_context.settings.media_path / "image/anim/lava-drop1.png").string());
 
         TextureStats::instance().process(m_dripTexture1);
 
         m_dripTexture2.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/lava-drop2.png").string());
+            (t_context.settings.media_path / "image/anim/lava-drop2.png").string());
 
         TextureStats::instance().process(m_dripTexture2);
 
         m_dripTexture3.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/lava-drop3.png").string());
+            (t_context.settings.media_path / "image/anim/lava-drop3.png").string());
 
         TextureStats::instance().process(m_dripTexture3);
 
         //
 
         m_splatTexture1.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/lava-splat1.png").string());
+            (t_context.settings.media_path / "image/anim/lava-splat1.png").string());
 
         TextureStats::instance().process(m_splatTexture1);
 
         m_splatTexture2.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/lava-splat2.png").string());
+            (t_context.settings.media_path / "image/anim/lava-splat2.png").string());
 
         TextureStats::instance().process(m_splatTexture2);
 
         m_splatTexture3.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/lava-splat3.png").string());
+            (t_context.settings.media_path / "image/anim/lava-splat3.png").string());
 
         TextureStats::instance().process(m_splatTexture3);
 

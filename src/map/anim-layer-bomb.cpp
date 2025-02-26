@@ -26,9 +26,7 @@ namespace bramblefore
     {
         HarmCollisionManager::instance().addOwner(*this);
 
-        m_texture.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/bomb.png").string());
-
+        m_texture.loadFromFile((t_context.settings.media_path / "image/anim/bomb.png").string());
         TextureStats::instance().process(m_texture);
 
         for (const sf::FloatRect & rect : t_rects)

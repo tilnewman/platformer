@@ -39,44 +39,44 @@ namespace bramblefore
         //
 
         m_emitterUpTexture.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/flame-trap-up.png").string());
+            (t_context.settings.media_path / "image/anim/flame-trap-up.png").string());
 
         TextureStats::instance().process(m_emitterUpTexture);
 
         m_emitterDownTexture.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/flame-trap-down.png").string());
+            (t_context.settings.media_path / "image/anim/flame-trap-down.png").string());
 
         TextureStats::instance().process(m_emitterDownTexture);
 
         m_emitterLeftTexture.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/flame-trap-left.png").string());
+            (t_context.settings.media_path / "image/anim/flame-trap-left.png").string());
 
         TextureStats::instance().process(m_emitterLeftTexture);
 
         m_emitterRightTexture.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/flame-trap-right.png").string());
+            (t_context.settings.media_path / "image/anim/flame-trap-right.png").string());
 
         TextureStats::instance().process(m_emitterRightTexture);
 
         //
 
         m_flamesUpTexture.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/flame-trap-flames-up.png").string());
+            (t_context.settings.media_path / "image/anim/flame-trap-flames-up.png").string());
 
         TextureStats::instance().process(m_flamesUpTexture);
 
         m_flamesDownTexture.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/flame-trap-flames-down.png").string());
+            (t_context.settings.media_path / "image/anim/flame-trap-flames-down.png").string());
 
         TextureStats::instance().process(m_flamesDownTexture);
 
         m_flamesLeftTexture.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/flame-trap-flames-left.png").string());
+            (t_context.settings.media_path / "image/anim/flame-trap-flames-left.png").string());
 
         TextureStats::instance().process(m_flamesLeftTexture);
 
         m_flamesRightTexture.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/flame-trap-flames-right.png")
+            (t_context.settings.media_path / "image/anim/flame-trap-flames-right.png")
                 .string());
 
         TextureStats::instance().process(m_flamesRightTexture);

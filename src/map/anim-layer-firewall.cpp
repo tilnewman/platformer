@@ -34,16 +34,16 @@ namespace bramblefore
         m_textures.resize(4); // prevent reallocations
 
         m_textures.at(0).loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/firewall-1-center.png").string());
+            (t_context.settings.media_path / "image/anim/firewall-1-center.png").string());
 
         m_textures.at(1).loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/firewall-2-center.png").string());
+            (t_context.settings.media_path / "image/anim/firewall-2-center.png").string());
 
         m_textures.at(2).loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/firewall-3-center.png").string());
+            (t_context.settings.media_path / "image/anim/firewall-3-center.png").string());
 
         m_textures.at(3).loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/firewall-4-center.png").string());
+            (t_context.settings.media_path / "image/anim/firewall-4-center.png").string());
 
         for (sf::Texture & texture : m_textures)
         {

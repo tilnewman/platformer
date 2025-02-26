@@ -28,7 +28,7 @@ namespace bramblefore
         HarmCollisionManager::instance().addOwner(*this);
 
         m_texture.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/water-surface1.png").string());
+            (t_context.settings.media_path / "image/anim/water-surface1.png").string());
 
         TextureStats::instance().process(m_texture);
 

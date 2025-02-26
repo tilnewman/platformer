@@ -30,7 +30,7 @@ namespace bramblefore
         HarmCollisionManager::instance().addOwner(*this);
 
         m_texture.loadFromFile(
-            (t_context.settings.media_path / "image/map-anim/acid-surface.png").string());
+            (t_context.settings.media_path / "image/anim/acid-surface.png").string());
 
         TextureStats::instance().process(m_texture);
 
