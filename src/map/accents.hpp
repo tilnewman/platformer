@@ -129,9 +129,8 @@ namespace bramblefore
         std::size_t anim_index{ 0 };
         sf::Sprite sprite{};
 
-        // only vines have unique timing
-        float elapsed_vine_time_sec{ 0.0f };
-        float time_per_vine_frame_sec{ 0.0f };
+        float elapsed_time_sec{ 0.0f };
+        float time_per_frame_sec{ 0.0f };
     };
 
     //
@@ -165,8 +164,6 @@ namespace bramblefore
       private:
         std::vector<sf::Texture> m_textures;
         std::vector<AccentAnim> m_anims;
-        float m_elapsedFireTimeSec;
-        float m_timePerFireFrameSec;
         sf::Vector2f m_scale;
     };
 

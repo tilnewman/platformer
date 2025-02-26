@@ -22,8 +22,6 @@ namespace bramblefore
     AccentAnimations::AccentAnimations()
         : m_textures{}
         , m_anims{}
-        , m_elapsedFireTimeSec{ 0.0f }
-        , m_timePerFireFrameSec{ 0.15f }
         , m_scale{}
     {
         m_anims.reserve(32); // just a harmless guess based on knowledge of maps
@@ -63,21 +61,24 @@ namespace bramblefore
         M_CHECK((Accent::Count != accent), "\"" << t_name << "\" is an unknown Accent name");
 
         AccentAnim & anim{ m_anims.emplace_back() };
-        anim.which                   = accent;
-        anim.anim_index              = t_context.random.zeroToOneLessThan(frameCount(anim.which));
-        anim.time_per_vine_frame_sec = t_context.random.fromTo(0.35f, 0.8f);
+        anim.which      = accent;
+        anim.anim_index = t_context.random.zeroToOneLessThan(frameCount(anim.which));
         anim.sprite.setTexture(m_textures.at(static_cast<std::size_t>(accent)), true);
         anim.sprite.setTextureRect(textureRect(accent, 0));
         anim.sprite.setScale(m_scale);
 
         if (isVine(accent))
         {
+            anim.time_per_frame_sec = t_context.random.fromTo(0.35f, 0.8f);
+
             anim.sprite.setPosition(
                 (util::center(t_rect).x - (anim.sprite.getGlobalBounds().width * 0.5f)),
                 util::center(t_rect).y);
         }
         else
         {
+            anim.time_per_frame_sec = t_context.random.fromTo(0.08f, 0.18f);
+
             anim.sprite.setPosition(
                 (util::center(t_rect).x - (anim.sprite.getGlobalBounds().width * 0.5f)),
                 (util::bottom(t_rect) - anim.sprite.getGlobalBounds().height));
@@ -113,39 +114,12 @@ namespace bramblefore
 
     void AccentAnimations::update(Context &, const float t_frameTimeSec)
     {
-        m_elapsedFireTimeSec += t_frameTimeSec;
-        if (m_elapsedFireTimeSec > m_timePerFireFrameSec)
-        {
-            m_elapsedFireTimeSec -= m_timePerFireFrameSec;
-
-            for (AccentAnim & anim : m_anims)
-            {
-                if (isVine(anim.which))
-                {
-                    continue;
-                }
-
-                ++anim.anim_index;
-                if (anim.anim_index >= frameCount(anim.which))
-                {
-                    anim.anim_index = 0;
-                }
-
-                anim.sprite.setTextureRect(textureRect(anim.which, anim.anim_index));
-            }
-        }
-
         for (AccentAnim & anim : m_anims)
         {
-            if (!isVine(anim.which))
+            anim.elapsed_time_sec += t_frameTimeSec;
+            if (anim.elapsed_time_sec > anim.time_per_frame_sec)
             {
-                continue;
-            }
-
-            anim.elapsed_vine_time_sec += t_frameTimeSec;
-            if (anim.elapsed_vine_time_sec > anim.time_per_vine_frame_sec)
-            {
-                anim.elapsed_vine_time_sec -= anim.time_per_vine_frame_sec;
+                anim.elapsed_time_sec -= anim.time_per_frame_sec;
 
                 ++anim.anim_index;
                 if (anim.anim_index >= frameCount(anim.which))
