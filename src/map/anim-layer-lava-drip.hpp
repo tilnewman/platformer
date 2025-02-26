@@ -153,7 +153,7 @@ namespace bramblefore
 
         [[nodiscard]] inline const sf::Texture & dripperTexture(const DripSize t_size) noexcept
         {
-            if (t_size == DripSize::Small)
+            if (t_size == DripSize::Large)
             {
                 return m_dripperTexture1;
             }
@@ -169,7 +169,7 @@ namespace bramblefore
 
         [[nodiscard]] inline const sf::Texture & dripTexture(const DripSize t_size) noexcept
         {
-            if (t_size == DripSize::Small)
+            if (t_size == DripSize::Large)
             {
                 return m_dripTexture1;
             }
@@ -185,7 +185,7 @@ namespace bramblefore
 
         [[nodiscard]] inline const sf::Texture & splatTexture(const DripSize t_size) noexcept
         {
-            if (t_size == DripSize::Small)
+            if (t_size == DripSize::Large)
             {
                 return m_splatTexture1;
             }
