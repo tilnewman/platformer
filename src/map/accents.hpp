@@ -128,7 +128,6 @@ namespace bramblefore
         Accent which{ Accent::Vine1 }; // anything works here
         std::size_t anim_index{ 0 };
         sf::Sprite sprite{};
-
         float elapsed_time_sec{ 0.0f };
         float time_per_frame_sec{ 0.0f };
     };
@@ -152,7 +151,6 @@ namespace bramblefore
             const;
 
         void move(const float t_amount);
-
         inline void clear() noexcept { m_anims.clear(); }
 
       private:
