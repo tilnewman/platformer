@@ -10,6 +10,7 @@
 #include "anim-layer-flame-trap.hpp"
 #include "anim-layer-flaming-skull.hpp"
 #include "anim-layer-ghost-bottle.hpp"
+#include "anim-layer-lava-drip.hpp"
 #include "anim-layer-lava.hpp"
 #include "anim-layer-lightning.hpp"
 #include "anim-layer-plant-puke.hpp"
@@ -348,6 +349,10 @@ namespace bramblefore
             {
                 parseFallingRockTrapLayer(t_context, jsonLayer);
             }
+            else if (layerName == "lava-drip")
+            {
+                parseLavaDripTrapLayer(t_context, jsonLayer);
+            }
             else if (layerName == "saw")
             {
                 parseLayerOfRects<SawAnimationLayer>(t_context, jsonLayer);
@@ -623,11 +628,10 @@ namespace bramblefore
         std::vector<FlameTrapRectDir> rectDirs;
         rectDirs.reserve(16); // harmless guess based on what I know is in the maps
 
-        for (const nlohmann::json & accentJson : t_json["objects"])
+        for (const nlohmann::json & trapJson : t_json["objects"])
         {
             rectDirs.emplace_back(
-                parseAndConvertRect(t_context, accentJson),
-                stringToTrapDirection(accentJson["name"]));
+                parseAndConvertRect(t_context, trapJson), stringToTrapDirection(trapJson["name"]));
         }
 
         t_context.level.tile_layers.push_back(
@@ -638,16 +642,31 @@ namespace bramblefore
         Context & t_context, const nlohmann::json & t_json)
     {
         std::vector<RectRock> rectRocks;
-        rectRocks.reserve(16); // harmless guess based on what I know is in the maps
+        rectRocks.reserve(32); // harmless guess based on what I know is in the maps
 
-        for (const nlohmann::json & accentJson : t_json["objects"])
+        for (const nlohmann::json & trapJson : t_json["objects"])
         {
             rectRocks.emplace_back(
-                parseAndConvertRect(t_context, accentJson), stringToRock(accentJson["name"]));
+                parseAndConvertRect(t_context, trapJson), stringToRock(trapJson["name"]));
         }
 
         t_context.level.tile_layers.push_back(
             std::make_unique<FallingRockAnimationLayer>(t_context, rectRocks));
+    }
+
+    void LevelFileLoader::parseLavaDripTrapLayer(Context & t_context, const nlohmann::json & t_json)
+    {
+        std::vector<LavaRectSize> rectSizes;
+        rectSizes.reserve(16); // harmless guess based on what I know is in the maps
+
+        for (const nlohmann::json & trapJson : t_json["objects"])
+        {
+            rectSizes.emplace_back(
+                parseAndConvertRect(t_context, trapJson), stringToDripSize(trapJson["name"]));
+        }
+
+        t_context.level.tile_layers.push_back(
+            std::make_unique<LavaDripAnimationLayer>(t_context, rectSizes));
     }
 
 } // namespace bramblefore
