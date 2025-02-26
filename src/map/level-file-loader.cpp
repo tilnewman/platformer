@@ -10,6 +10,7 @@
 #include "anim-layer-flame-trap.hpp"
 #include "anim-layer-flaming-skull.hpp"
 #include "anim-layer-ghost-bottle.hpp"
+#include "anim-layer-lava.hpp"
 #include "anim-layer-lightning.hpp"
 #include "anim-layer-plant-puke.hpp"
 #include "anim-layer-plant-trap.hpp"
@@ -286,6 +287,10 @@ namespace bramblefore
             else if (layerName == "acid-anim")
             {
                 parseLayerOfRects<AcidAnimationLayer>(t_context, jsonLayer);
+            }
+            else if (layerName == "lava")
+            {
+                parseLayerOfRects<LavaAnimationLayer>(t_context, jsonLayer);
             }
             else if (layerName == "acid-spout")
             {
