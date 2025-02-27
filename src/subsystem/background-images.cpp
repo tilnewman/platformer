@@ -8,9 +8,9 @@
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "subsystem/texture-stats.hpp"
 #include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
+#include "util/texture-loader.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -43,11 +43,7 @@ namespace bramblefore
         // there won't always be a static background image
         if (!infoPack.background_path.empty())
         {
-            M_CHECK(
-                m_backgroundTexture.loadFromFile(infoPack.background_path.string()),
-                "file not found");
-
-            TextureStats::instance().process(m_backgroundTexture);
+            util::TextureLoader::load(m_backgroundTexture, infoPack.background_path);
             m_backgroundSprite.setTexture(m_backgroundTexture, true);
             util::scaleAndCenterInside(m_backgroundSprite, t_context.layout.wholeRect());
         }
@@ -59,10 +55,7 @@ namespace bramblefore
         // there won't always be a static overlay image
         if (!infoPack.overlay_path.empty())
         {
-            M_CHECK(
-                m_overlayTexture.loadFromFile(infoPack.overlay_path.string()), "file not found");
-
-            TextureStats::instance().process(m_overlayTexture);
+            util::TextureLoader::load(m_overlayTexture, infoPack.overlay_path);
             m_overlaySprite.setTexture(m_overlayTexture, true);
             util::scaleAndCenterInside(m_overlaySprite, t_context.layout.wholeRect());
         }
@@ -82,8 +75,7 @@ namespace bramblefore
 
             SlidingImage & slidingImage{ m_slidingImages.emplace_back() };
             slidingImage.info = info;
-            M_CHECK(slidingImage.texture.loadFromFile(info.path.string()), "file not found");
-            TextureStats::instance().process(slidingImage.texture);
+            util::TextureLoader::load(slidingImage.texture, info.path);
             slidingImage.sprite_left.setTexture(slidingImage.texture, true);
             slidingImage.sprite_right.setTexture(slidingImage.texture, true);
             util::scaleAndCenterInside(slidingImage.sprite_left, t_context.layout.wholeRect());

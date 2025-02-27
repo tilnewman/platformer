@@ -9,7 +9,7 @@
 #include "map/map-textures.hpp"
 #include "monster/monster-spell-anim.hpp"
 #include "monster/monster-textures.hpp"
-#include "subsystem/texture-stats.hpp"
+#include "util/texture-loader.hpp"
 #include "ui/gui-window.hpp"
 #include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
@@ -114,7 +114,7 @@ namespace bramblefore
         MonsterTextureManager::instance().teardown();
         util::SfmlDefaults::instance().teardown();
         m_window.close();
-        TextureStats::instance().dumpInfo();
+        util::TextureLoader::dumpInfo();
     }
 
     void Coordinator::play()

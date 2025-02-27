@@ -7,9 +7,9 @@
 
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
-#include "subsystem/texture-stats.hpp"
 #include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
+#include "util/texture-loader.hpp"
 
 #include <filesystem>
 
@@ -74,9 +74,7 @@ namespace bramblefore
                                                   std::string(toString(t_type)) /
                                                   std::string(toString(anim)).append(".png") };
 
-                M_CHECK(texture.loadFromFile(path.string()), "file not found");
-                texture.setSmooth(true);
-                TextureStats::instance().process(texture);
+                util::TextureLoader::load(texture, path, true);
             }
         }
 

@@ -10,10 +10,10 @@
 #include "subsystem/context.hpp"
 #include "subsystem/font.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "subsystem/texture-stats.hpp"
 #include "util/check-macros.hpp"
 #include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
+#include "util/texture-loader.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -29,18 +29,12 @@ namespace bramblefore
 
     void LevelCompleteState::onEnter(Context & t_context)
     {
-        const sf::FloatRect wholeRect{ t_context.layout.wholeRect() };
-
-        M_CHECK(
-            m_texture.loadFromFile(
-                (t_context.settings.media_path / "image/splash/knight-win.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_texture);
-        m_texture.setSmooth(true);
+        util::TextureLoader::load(
+            m_texture, (t_context.settings.media_path / "image/splash/knight-win.png"), true);
 
         m_sprite.setTexture(m_texture, true);
 
+        const sf::FloatRect wholeRect{ t_context.layout.wholeRect() };
         util::fitAndCenterInside(m_sprite, util::scaleRectInPlaceCopy(wholeRect, 0.3f));
         m_sprite.move({ 0.0f, -(wholeRect.size.y * 0.1f) });
 

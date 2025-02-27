@@ -10,10 +10,10 @@
 #include "map/level.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "subsystem/texture-stats.hpp"
 #include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
+#include "util/texture-loader.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -34,30 +34,17 @@ namespace bramblefore
 
         m_textures.resize(4); // prevent reallocations
 
-        M_CHECK(
-            m_textures.at(0).loadFromFile(
-                (t_context.settings.media_path / "image/anim/firewall-1-center.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_textures.at(0), (t_context.settings.media_path / "image/anim/firewall-1-center.png"));
 
-        M_CHECK(
-            m_textures.at(1).loadFromFile(
-                (t_context.settings.media_path / "image/anim/firewall-2-center.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_textures.at(1), (t_context.settings.media_path / "image/anim/firewall-2-center.png"));
 
-        M_CHECK(
-            m_textures.at(2).loadFromFile(
-                (t_context.settings.media_path / "image/anim/firewall-3-center.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_textures.at(2), (t_context.settings.media_path / "image/anim/firewall-3-center.png"));
 
-        M_CHECK(
-            m_textures.at(3).loadFromFile(
-                (t_context.settings.media_path / "image/anim/firewall-4-center.png").string()),
-            "file not found");
-
-        for (sf::Texture & texture : m_textures)
-        {
-            TextureStats::instance().process(texture);
-        }
+        util::TextureLoader::load(
+            m_textures.at(3), (t_context.settings.media_path / "image/anim/firewall-4-center.png"));
 
         //
 

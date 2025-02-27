@@ -9,11 +9,11 @@
 #include "subsystem/context.hpp"
 #include "subsystem/font.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "subsystem/texture-stats.hpp"
 #include "text-layout.hpp"
 #include "util/check-macros.hpp"
 #include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
+#include "util/texture-loader.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -45,177 +45,96 @@ namespace bramblefore
             return;
         }
 
-        M_CHECK(
-            m_borderTopLeftTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/border-top-left.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_borderTopLeftTexture, (t_settings.media_path / "image/ui/border-top-left.png"));
 
-        M_CHECK(
-            m_borderTopRightTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/border-top-right.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_borderTopRightTexture, (t_settings.media_path / "image/ui/border-top-right.png"));
 
-        M_CHECK(
-            m_borderBotLeftTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/border-bottom-left.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_borderBotLeftTexture, (t_settings.media_path / "image/ui/border-bottom-left.png"));
 
-        M_CHECK(
-            m_borderBotRightTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/border-bottom-right.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_borderBotRightTexture, (t_settings.media_path / "image/ui/border-bottom-right.png"));
 
-        M_CHECK(
-            m_borderTopTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/border-top.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_borderTopTexture, (t_settings.media_path / "image/ui/border-top.png"));
 
-        M_CHECK(
-            m_borderBotTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/border-bottom.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_borderBotTexture, (t_settings.media_path / "image/ui/border-bottom.png"));
 
-        M_CHECK(
-            m_borderLeftTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/border-left.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_borderLeftTexture, (t_settings.media_path / "image/ui/border-left.png"));
 
-        M_CHECK(
-            m_borderRightTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/border-right.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_borderTopLeftTexture);
-        TextureStats::instance().process(m_borderTopRightTexture);
-        TextureStats::instance().process(m_borderBotLeftTexture);
-        TextureStats::instance().process(m_borderBotRightTexture);
-        TextureStats::instance().process(m_borderTopTexture);
-        TextureStats::instance().process(m_borderBotTexture);
-        TextureStats::instance().process(m_borderLeftTexture);
-        TextureStats::instance().process(m_borderRightTexture);
+        util::TextureLoader::load(
+            m_borderRightTexture, (t_settings.media_path / "image/ui/border-right.png"));
 
         //
 
-        M_CHECK(
-            m_smallBorderTopLeftTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/small-border-top-left.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_smallBorderTopLeftTexture,
+            (t_settings.media_path / "image/ui/small-border-top-left.png"));
 
-        M_CHECK(
-            m_smallBorderTopRightTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/small-border-top-right.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_smallBorderTopRightTexture,
+            (t_settings.media_path / "image/ui/small-border-top-right.png"));
 
-        M_CHECK(
-            m_smallBorderBotLeftTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/small-border-bottom-left.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_smallBorderBotLeftTexture,
+            (t_settings.media_path / "image/ui/small-border-bottom-left.png"));
 
-        M_CHECK(
-            m_smallBorderBotRightTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/small-border-bottom-right.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_smallBorderBotRightTexture,
+            (t_settings.media_path / "image/ui/small-border-bottom-right.png"));
 
-        M_CHECK(
-            m_smallBorderTopTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/small-border-top.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_smallBorderTopTexture, (t_settings.media_path / "image/ui/small-border-top.png"));
 
-        M_CHECK(
-            m_smallBorderBotTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/small-border-bottom.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_smallBorderBotTexture, (t_settings.media_path / "image/ui/small-border-bottom.png"));
 
-        M_CHECK(
-            m_smallBorderLeftTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/small-border-left.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_smallBorderLeftTexture, (t_settings.media_path / "image/ui/small-border-left.png"));
 
-        M_CHECK(
-            m_smallBorderRightTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/small-border-right.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_smallBorderTopLeftTexture);
-        TextureStats::instance().process(m_smallBorderTopRightTexture);
-        TextureStats::instance().process(m_smallBorderBotLeftTexture);
-        TextureStats::instance().process(m_smallBorderBotRightTexture);
-        TextureStats::instance().process(m_smallBorderTopTexture);
-        TextureStats::instance().process(m_smallBorderBotTexture);
-        TextureStats::instance().process(m_smallBorderLeftTexture);
-        TextureStats::instance().process(m_smallBorderRightTexture);
+        util::TextureLoader::load(
+            m_smallBorderRightTexture, (t_settings.media_path / "image/ui/small-border-right.png"));
 
         //
 
-        M_CHECK(
-            m_bgTopLeftTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/menu-bg-top-left.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_bgTopLeftTexture, (t_settings.media_path / "image/ui/menu-bg-top-left.png"));
 
-        M_CHECK(
-            m_bgTopRightTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/menu-bg-top-right.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_bgTopRightTexture, (t_settings.media_path / "image/ui/menu-bg-top-right.png"));
 
-        M_CHECK(
-            m_bgBotLeftTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/menu-bg-bottom-left.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_bgBotLeftTexture, (t_settings.media_path / "image/ui/menu-bg-bottom-left.png"));
 
-        M_CHECK(
-            m_bgBotRightTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/menu-bg-bottom-right.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_bgBotRightTexture, (t_settings.media_path / "image/ui/menu-bg-bottom-right.png"));
 
-        M_CHECK(
-            m_bgTopTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/menu-bg-top.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_bgTopTexture, (t_settings.media_path / "image/ui/menu-bg-top.png"));
 
-        M_CHECK(
-            m_bgBotTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/menu-bg-bottom.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_bgBotTexture, (t_settings.media_path / "image/ui/menu-bg-bottom.png"));
 
-        M_CHECK(
-            m_bgLeftTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/menu-bg-left.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_bgLeftTexture, (t_settings.media_path / "image/ui/menu-bg-left.png"));
 
-        M_CHECK(
-            m_bgRightTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/menu-bg-right.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_bgTopLeftTexture);
-        TextureStats::instance().process(m_bgTopRightTexture);
-        TextureStats::instance().process(m_bgBotLeftTexture);
-        TextureStats::instance().process(m_bgBotRightTexture);
-        TextureStats::instance().process(m_bgTopTexture);
-        TextureStats::instance().process(m_bgBotTexture);
-        TextureStats::instance().process(m_bgLeftTexture);
-        TextureStats::instance().process(m_bgRightTexture);
+        util::TextureLoader::load(
+            m_bgRightTexture, (t_settings.media_path / "image/ui/menu-bg-right.png"));
 
         //
 
-        M_CHECK(
-            m_tapeLeftTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/tape-left.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_tapeLeftTexture, (t_settings.media_path / "image/ui/tape-left.png"));
 
-        M_CHECK(
-            m_tapeRightTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/tape-right.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_tapeRightTexture, (t_settings.media_path / "image/ui/tape-right.png"));
 
-        M_CHECK(
-            m_tapeMiddleTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/tape-middle.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_tapeLeftTexture);
-        TextureStats::instance().process(m_tapeRightTexture);
-        TextureStats::instance().process(m_tapeMiddleTexture);
+        util::TextureLoader::load(
+            m_tapeMiddleTexture, (t_settings.media_path / "image/ui/tape-middle.png"));
     }
 
     void GuiWindow::arrange(Context & t_context, const GuiWindowInfo & t_info)

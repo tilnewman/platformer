@@ -10,10 +10,10 @@
 #include "map/level.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "subsystem/texture-stats.hpp"
 #include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
+#include "util/texture-loader.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -32,26 +32,14 @@ namespace bramblefore
     {
         HarmCollisionManager::instance().addOwner(*this);
 
-        M_CHECK(
-            m_spoutTexture.loadFromFile(
-                (t_context.settings.media_path / "image/anim/acid-spout.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_spoutTexture, (t_context.settings.media_path / "image/anim/acid-spout.png"));
 
-        TextureStats::instance().process(m_spoutTexture);
+        util::TextureLoader::load(
+            m_dropTexture, (t_context.settings.media_path / "image/anim/acid-spout-drop.png"));
 
-        M_CHECK(
-            m_dropTexture.loadFromFile(
-                (t_context.settings.media_path / "image/anim/acid-spout-drop.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_dropTexture);
-
-        M_CHECK(
-            m_splashTexture.loadFromFile(
-                (t_context.settings.media_path / "image/anim/acid-spout-splash.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_splashTexture);
+        util::TextureLoader::load(
+            m_splashTexture, (t_context.settings.media_path / "image/anim/acid-spout-splash.png"));
 
         for (const sf::FloatRect & rect : t_rects)
         {

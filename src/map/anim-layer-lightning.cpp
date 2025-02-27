@@ -8,11 +8,11 @@
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "subsystem/texture-stats.hpp"
 #include "util/check-macros.hpp"
 #include "util/random.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
+#include "util/texture-loader.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -28,14 +28,8 @@ namespace bramblefore
     {
         HarmCollisionManager::instance().addOwner(*this);
 
-        M_CHECK(
-            m_texture.loadFromFile(
-                (t_context.settings.media_path / "image/anim/lightning.png").string()),
-            "file not found");
-
-        m_texture.setSmooth(true);
-
-        TextureStats::instance().process(m_texture);
+        util::TextureLoader::load(
+            m_texture, (t_context.settings.media_path / "image/anim/lightning.png"), true);
 
         m_anims.reserve(t_rects.size());
         for (const sf::FloatRect & rect : t_rects)

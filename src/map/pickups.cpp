@@ -9,11 +9,11 @@
 #include "player/player-info.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "subsystem/texture-stats.hpp"
 #include "util/check-macros.hpp"
 #include "util/random.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
+#include "util/texture-loader.hpp"
 
 namespace bramblefore
 {
@@ -45,14 +45,8 @@ namespace bramblefore
 
             sf::Texture & texture{ m_textures.emplace_back() };
 
-            M_CHECK(
-                texture.loadFromFile(
-                    (t_context.settings.media_path / "image/anim" / toFilename(pickup)).string()),
-                "file not found");
-
-            TextureStats::instance().process(texture);
-
-            texture.setSmooth(true);
+            util::TextureLoader::load(
+                texture, (t_context.settings.media_path / "image/anim" / toFilename(pickup)), true);
         }
     }
 

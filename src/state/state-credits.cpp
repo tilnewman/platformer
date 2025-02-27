@@ -13,10 +13,10 @@
 #include "subsystem/context.hpp"
 #include "subsystem/floating-text.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "subsystem/texture-stats.hpp"
 #include "util/check-macros.hpp"
 #include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
+#include "util/texture-loader.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Event.hpp>
@@ -36,9 +36,7 @@ namespace bramblefore
         , name{ util::SfmlDefaults::instance().font() }
         , description{ util::SfmlDefaults::instance().font() }
     {
-        M_CHECK(texture.loadFromFile(t_imageFilePath), "file not found");
-        texture.setSmooth(true);
-        TextureStats::instance().process(texture);
+        util::TextureLoader::load(texture, t_imageFilePath, true);
 
         sprite.setTexture(texture, true);
 

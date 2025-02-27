@@ -8,7 +8,7 @@
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "subsystem/texture-stats.hpp"
+#include "util/texture-loader.hpp"
 #include "util/check-macros.hpp"
 #include "util/filesystem-util.hpp"
 #include "util/random.hpp"
@@ -160,9 +160,7 @@ namespace bramblefore
 
         for (std::size_t fileIndex(0); fileIndex < files.size(); ++fileIndex)
         {
-            sf::Texture & texture{ t_textures.at(fileIndex) };
-            M_CHECK(texture.loadFromFile(files.at(fileIndex).string()), "file not found");
-            TextureStats::instance().process(texture);
+            util::TextureLoader::load(t_textures.at(fileIndex), files.at(fileIndex));
         }
     }
 

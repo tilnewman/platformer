@@ -10,10 +10,10 @@
 #include "map/level.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "subsystem/texture-stats.hpp"
 #include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
+#include "util/texture-loader.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -35,33 +35,17 @@ namespace bramblefore
 
         //
 
-        M_CHECK(
-            m_texture1.loadFromFile(
-                (t_context.settings.media_path / "image/anim/rock-spike-1.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_texture1, (t_context.settings.media_path / "image/anim/rock-spike-1.png"));
 
-        TextureStats::instance().process(m_texture1);
+        util::TextureLoader::load(
+            m_texture2, (t_context.settings.media_path / "image/anim/rock-spike-2.png"));
 
-        M_CHECK(
-            m_texture2.loadFromFile(
-                (t_context.settings.media_path / "image/anim/rock-spike-2.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_texture3, (t_context.settings.media_path / "image/anim/rock-spike-3.png"));
 
-        TextureStats::instance().process(m_texture1);
-
-        M_CHECK(
-            m_texture3.loadFromFile(
-                (t_context.settings.media_path / "image/anim/rock-spike-3.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_texture1);
-
-        M_CHECK(
-            m_texture4.loadFromFile(
-                (t_context.settings.media_path / "image/anim/rock-spike-4.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_texture1);
+        util::TextureLoader::load(
+            m_texture4, (t_context.settings.media_path / "image/anim/rock-spike-4.png"));
 
         //
 

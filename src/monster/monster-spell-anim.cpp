@@ -8,11 +8,11 @@
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "subsystem/texture-stats.hpp"
 #include "util/check-macros.hpp"
 #include "util/filesystem-util.hpp"
 #include "util/random.hpp"
 #include "util/sfml-util.hpp"
+#include "util/texture-loader.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -63,9 +63,7 @@ namespace bramblefore
             set.textures.resize(files.size());
             for (std::size_t frameIndex{ 0 }; frameIndex < files.size(); ++frameIndex)
             {
-                sf::Texture & texture{ set.textures.at(frameIndex) };
-                M_CHECK(texture.loadFromFile(files.at(frameIndex).string()), "file not found");
-                TextureStats::instance().process(texture);
+                util::TextureLoader::load(set.textures.at(frameIndex), files.at(frameIndex));
             }
         }
 

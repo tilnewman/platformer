@@ -7,9 +7,9 @@
 
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
-#include "subsystem/texture-stats.hpp"
 #include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
+#include "util/texture-loader.hpp"
 
 namespace bramblefore
 {
@@ -59,14 +59,11 @@ namespace bramblefore
 
         if (0 == tileTexture.ref_count)
         {
-            M_CHECK(
-                tileTexture.texture.loadFromFile(
-                    (t_context.settings.media_path /
-                     std::string("image/map/").append(toImageFilename(t_image)))
-                        .string()),
-                "file not found");
+            util::TextureLoader::load(
+                tileTexture.texture,
+                (t_context.settings.media_path /
+                 std::string("image/map/").append(toImageFilename(t_image))));
 
-            TextureStats::instance().process(tileTexture.texture);
             tileTexture.size = sf::Vector2i{ tileTexture.texture.getSize() };
         }
 

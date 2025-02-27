@@ -7,10 +7,10 @@
 
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
-#include "subsystem/texture-stats.hpp"
 #include "util/check-macros.hpp"
 #include "util/filesystem-util.hpp"
 #include "util/sfml-util.hpp"
+#include "util/texture-loader.hpp"
 
 namespace bramblefore
 {
@@ -41,12 +41,8 @@ namespace bramblefore
             AvatarTextureSet & set{ m_textureSets.at(typeIndex) };
             set.anims.resize(static_cast<std::size_t>(AvatarAnim::Count));
 
-            M_CHECK(set.defalt.loadFromFile((typePath / "default.png").string()), "file not found");
-            TextureStats::instance().process(set.defalt);
-
-            M_CHECK(set.icon.loadFromFile((typePath / "icon.png").string()), "file not found");
-            TextureStats::instance().process(set.icon);
-            set.icon.setSmooth(true);
+            util::TextureLoader::load(set.defalt, (typePath / "default.png"));
+            util::TextureLoader::load(set.icon, (typePath / "icon.png"), true);
 
             for (std::size_t animIndex(0); animIndex < static_cast<std::size_t>(AvatarAnim::Count);
                  ++animIndex)
@@ -113,10 +109,7 @@ namespace bramblefore
 
                 for (std::size_t frameIndex{ 0 }; frameIndex < files.size(); ++frameIndex)
                 {
-                    const std::filesystem::path path{ files.at(frameIndex) };
-                    sf::Texture & texture{ anims.textures.at(frameIndex) };
-                    M_CHECK(texture.loadFromFile(path.string()), "file not found");
-                    TextureStats::instance().process(texture);
+                    util::TextureLoader::load(anims.textures.at(frameIndex), files.at(frameIndex));
                 }
             }
         }

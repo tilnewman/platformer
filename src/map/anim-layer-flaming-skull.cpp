@@ -10,10 +10,10 @@
 #include "map/level.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "subsystem/texture-stats.hpp"
 #include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
+#include "util/texture-loader.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -35,40 +35,24 @@ namespace bramblefore
 
         //
 
-        M_CHECK(
-            m_skullBlockTexture.loadFromFile(
-                (t_context.settings.media_path / "image/anim/skull-flames-block.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_skullBlockTexture,
+            (t_context.settings.media_path / "image/anim/skull-flames-block.png"));
 
-        TextureStats::instance().process(m_skullBlockTexture);
+        util::TextureLoader::load(
+            m_flamesUpTexture, (t_context.settings.media_path / "image/anim/skull-flames-up.png"));
 
-        M_CHECK(
-            m_flamesUpTexture.loadFromFile(
-                (t_context.settings.media_path / "image/anim/skull-flames-up.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_flamesDownTexture,
+            (t_context.settings.media_path / "image/anim/skull-flames-down.png"));
 
-        TextureStats::instance().process(m_flamesUpTexture);
+        util::TextureLoader::load(
+            m_flamesLeftTexture,
+            (t_context.settings.media_path / "image/anim/skull-flames-left.png"));
 
-        M_CHECK(
-            m_flamesDownTexture.loadFromFile(
-                (t_context.settings.media_path / "image/anim/skull-flames-down.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_flamesDownTexture);
-
-        M_CHECK(
-            m_flamesLeftTexture.loadFromFile(
-                (t_context.settings.media_path / "image/anim/skull-flames-left.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_flamesLeftTexture);
-
-        M_CHECK(
-            m_flamesRightTexture.loadFromFile(
-                (t_context.settings.media_path / "image/anim/skull-flames-right.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_flamesRightTexture);
+        util::TextureLoader::load(
+            m_flamesRightTexture,
+            (t_context.settings.media_path / "image/anim/skull-flames-right.png"));
 
         //
 

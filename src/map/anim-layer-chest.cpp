@@ -10,11 +10,11 @@
 #include "subsystem/context.hpp"
 #include "subsystem/floating-text.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "subsystem/texture-stats.hpp"
 #include "util/check-macros.hpp"
 #include "util/random.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
+#include "util/texture-loader.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -125,25 +125,17 @@ namespace bramblefore
         {
             ChestTextures & textures{ m_textureSets.emplace_back() };
 
-            M_CHECK(
-                textures.open.loadFromFile(
-                    (t_context.settings.media_path / std::string("image/anim/chest")
-                                                         .append(std::to_string(chestIndex))
-                                                         .append("-open.png"))
-                        .string()),
-                "file not found");
+            util::TextureLoader::load(
+                textures.open,
+                (t_context.settings.media_path / std::string("image/anim/chest")
+                                                     .append(std::to_string(chestIndex))
+                                                     .append("-open.png")));
 
-            TextureStats::instance().process(textures.open);
-
-            M_CHECK(
-                textures.closed.loadFromFile(
-                    (t_context.settings.media_path / std::string("image/anim/chest")
-                                                         .append(std::to_string(chestIndex))
-                                                         .append(".png"))
-                        .string()),
-                "file not found");
-
-            TextureStats::instance().process(textures.closed);
+            util::TextureLoader::load(
+                textures.closed,
+                (t_context.settings.media_path / std::string("image/anim/chest")
+                                                     .append(std::to_string(chestIndex))
+                                                     .append(".png")));
         }
     }
 

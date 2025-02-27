@@ -8,11 +8,11 @@
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "subsystem/texture-stats.hpp"
 #include "util/check-macros.hpp"
 #include "util/filesystem-util.hpp"
 #include "util/random.hpp"
 #include "util/sfml-util.hpp"
+#include "util/texture-loader.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -51,9 +51,7 @@ namespace bramblefore
                 std::string(toFilesystemName(spell)).append("-icon.png")
             };
 
-            M_CHECK(set.icon_texture.loadFromFile(iconPath.string()), "file not found");
-            TextureStats::instance().process(set.icon_texture);
-            set.icon_texture.setSmooth(true);
+            util::TextureLoader::load(set.icon_texture, iconPath, true);
 
             const std::filesystem::path path{ t_context.settings.media_path / "image/spell" /
                                               toFilesystemName(spell) };
@@ -67,10 +65,7 @@ namespace bramblefore
 
             for (std::size_t fileIndex{ 0 }; fileIndex < files.size(); ++fileIndex)
             {
-                sf::Texture & texture{ set.textures.at(fileIndex) };
-                M_CHECK(texture.loadFromFile(files.at(fileIndex).string()), "file not found");
-                texture.setSmooth(true);
-                TextureStats::instance().process(texture);
+                util::TextureLoader::load(set.textures.at(fileIndex), files.at(fileIndex), true);
             }
         }
     }

@@ -10,10 +10,10 @@
 #include "map/level.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "subsystem/texture-stats.hpp"
 #include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
+#include "util/texture-loader.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -40,72 +40,36 @@ namespace bramblefore
 
         //
 
-        M_CHECK(
-            m_dripperTexture1.loadFromFile(
-                (t_context.settings.media_path / "image/anim/lava-spill1.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_dripperTexture1, (t_context.settings.media_path / "image/anim/lava-spill1.png"));
 
-        TextureStats::instance().process(m_dripperTexture1);
+        util::TextureLoader::load(
+            m_dripperTexture2, (t_context.settings.media_path / "image/anim/lava-spill2.png"));
 
-        M_CHECK(
-            m_dripperTexture2.loadFromFile(
-                (t_context.settings.media_path / "image/anim/lava-spill2.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_dripperTexture2);
-
-        M_CHECK(
-            m_dripperTexture3.loadFromFile(
-                (t_context.settings.media_path / "image/anim/lava-spill3.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_dripperTexture3);
+        util::TextureLoader::load(
+            m_dripperTexture3, (t_context.settings.media_path / "image/anim/lava-spill3.png"));
 
         //
 
-        M_CHECK(
-            m_dripTexture1.loadFromFile(
-                (t_context.settings.media_path / "image/anim/lava-drop1.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_dripTexture1, (t_context.settings.media_path / "image/anim/lava-drop1.png"));
 
-        TextureStats::instance().process(m_dripTexture1);
+        util::TextureLoader::load(
+            m_dripTexture2, (t_context.settings.media_path / "image/anim/lava-drop2.png"));
 
-        M_CHECK(
-            m_dripTexture2.loadFromFile(
-                (t_context.settings.media_path / "image/anim/lava-drop2.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_dripTexture2);
-
-        M_CHECK(
-            m_dripTexture3.loadFromFile(
-                (t_context.settings.media_path / "image/anim/lava-drop3.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_dripTexture3);
+        util::TextureLoader::load(
+            m_dripTexture3, (t_context.settings.media_path / "image/anim/lava-drop3.png"));
 
         //
 
-        M_CHECK(
-            m_splatTexture1.loadFromFile(
-                (t_context.settings.media_path / "image/anim/lava-splat1.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_splatTexture1, (t_context.settings.media_path / "image/anim/lava-splat1.png"));
 
-        TextureStats::instance().process(m_splatTexture1);
+        util::TextureLoader::load(
+            m_splatTexture2, (t_context.settings.media_path / "image/anim/lava-splat2.png"));
 
-        M_CHECK(
-            m_splatTexture2.loadFromFile(
-                (t_context.settings.media_path / "image/anim/lava-splat2.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_splatTexture2);
-
-        M_CHECK(
-            m_splatTexture3.loadFromFile(
-                (t_context.settings.media_path / "image/anim/lava-splat3.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_splatTexture3);
+        util::TextureLoader::load(
+            m_splatTexture3, (t_context.settings.media_path / "image/anim/lava-splat3.png"));
 
         //
 

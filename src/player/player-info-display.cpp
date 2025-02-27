@@ -11,10 +11,10 @@
 #include "subsystem/context.hpp"
 #include "subsystem/font.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "subsystem/texture-stats.hpp"
 #include "util/check-macros.hpp"
 #include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
+#include "util/texture-loader.hpp"
 
 #include <filesystem>
 #include <string>
@@ -73,15 +73,12 @@ namespace bramblefore
     {
         m_barFillMax = t_context.layout.calScaleBasedOnResolution(t_context, 226.0f);
 
-        const float frameScale{ t_context.layout.calScaleBasedOnResolution(t_context, 2.0f) };
+        util::TextureLoader::load(
+            m_halfFrameTexture, (t_context.settings.media_path / "image/ui/half-frame.png"));
 
-        M_CHECK(
-            m_halfFrameTexture.loadFromFile(
-                (t_context.settings.media_path / "image/ui/half-frame.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_halfFrameTexture);
         m_halfFrameSprite.setTexture(m_halfFrameTexture, true);
+
+        const float frameScale{ t_context.layout.calScaleBasedOnResolution(t_context, 2.0f) };
         m_halfFrameSprite.scale({ frameScale, frameScale });
 
         const float posDimm{ t_context.layout.wholeSize().y * 0.1f };
@@ -89,15 +86,11 @@ namespace bramblefore
 
         //
 
-        M_CHECK(
-            m_fullFrameTexture.loadFromFile(
-                (t_context.settings.media_path / "image/ui/full-frame.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_fullFrameTexture, (t_context.settings.media_path / "image/ui/full-frame.png"));
 
-        TextureStats::instance().process(m_fullFrameTexture);
         m_fullFrameSprite.setTexture(m_fullFrameTexture, true);
         m_fullFrameSprite.scale({ frameScale, frameScale });
-
         m_fullFrameSprite.setPosition(m_halfFrameSprite.getPosition() + sf::Vector2f(8.0f, 8.0f));
 
         //
@@ -118,12 +111,8 @@ namespace bramblefore
 
         //
 
-        M_CHECK(
-            m_barFrameTexture.loadFromFile(
-                (t_context.settings.media_path / "image/ui/bar-frame.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_barFrameTexture);
+        util::TextureLoader::load(
+            m_barFrameTexture, (t_context.settings.media_path / "image/ui/bar-frame.png"));
 
         m_healthBarFrameSprite.setTexture(m_barFrameTexture, true);
         m_healthBarFrameSprite.scale({ frameScale, frameScale });
@@ -144,12 +133,8 @@ namespace bramblefore
 
         //
 
-        M_CHECK(
-            m_barFillLeftTexture.loadFromFile(
-                (t_context.settings.media_path / "image/ui/bar-fill-left.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_barFillLeftTexture);
+        util::TextureLoader::load(
+            m_barFillLeftTexture, (t_context.settings.media_path / "image/ui/bar-fill-left.png"));
 
         m_healthBarLeftSprite.setTexture(m_barFillLeftTexture, true);
         m_healthBarLeftSprite.scale({ frameScale, frameScale });
@@ -164,12 +149,9 @@ namespace bramblefore
 
         //
 
-        M_CHECK(
-            m_barFillMiddleTexture.loadFromFile(
-                (t_context.settings.media_path / "image/ui/bar-fill-middle.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_barFillMiddleTexture);
+        util::TextureLoader::load(
+            m_barFillMiddleTexture,
+            (t_context.settings.media_path / "image/ui/bar-fill-middle.png"));
 
         m_healthBarMiddleSprite.setTexture(m_barFillMiddleTexture, true);
         m_healthBarMiddleSprite.scale({ frameScale, frameScale });
@@ -184,12 +166,8 @@ namespace bramblefore
 
         //
 
-        M_CHECK(
-            m_barFillRightTexture.loadFromFile(
-                (t_context.settings.media_path / "image/ui/bar-fill-right.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_barFillRightTexture);
+        util::TextureLoader::load(
+            m_barFillRightTexture, (t_context.settings.media_path / "image/ui/bar-fill-right.png"));
 
         m_healthBarRightSprite.setTexture(m_barFillRightTexture, true);
         m_healthBarRightSprite.scale({ frameScale, frameScale });
@@ -203,7 +181,6 @@ namespace bramblefore
         m_manaBarLeftSprite.setTexture(m_barFillLeftTexture, true);
         m_manaBarLeftSprite.scale({ frameScale, frameScale });
         m_manaBarLeftSprite.setColor(m_manaColor);
-
         m_manaBarLeftSprite.setPosition(m_manaBarFrameSprite.getPosition() + barPosOffset);
 
         //
@@ -236,13 +213,9 @@ namespace bramblefore
         const float starRectHeightMiddle{ m_healthBarFrameSprite.getPosition().y -
                                           (starRectHeight * 0.5f) };
 
-        M_CHECK(
-            m_coinTexture.loadFromFile(
-                (t_context.settings.media_path / "image/ui/coin.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_coinTexture, (t_context.settings.media_path / "image/ui/coin.png"), true);
 
-        TextureStats::instance().process(m_coinTexture);
-        m_coinTexture.setSmooth(true);
         m_coinSprite.setTexture(m_coinTexture, true);
 
         const float coinScale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.7f) };
@@ -265,13 +238,8 @@ namespace bramblefore
 
         //
 
-        M_CHECK(
-            m_starBrownTexture.loadFromFile(
-                (t_context.settings.media_path / "image/ui/star-brown.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_starBrownTexture);
-        m_starBrownTexture.setSmooth(true);
+        util::TextureLoader::load(
+            m_starBrownTexture, (t_context.settings.media_path / "image/ui/star-brown.png"), true);
 
         m_starBrown1Sprite.setTexture(m_starBrownTexture, true);
 
@@ -307,13 +275,10 @@ namespace bramblefore
 
         //
 
-        M_CHECK(
-            m_starYellowTexture.loadFromFile(
-                (t_context.settings.media_path / "image/ui/star-yellow.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_starYellowTexture);
-        m_starYellowTexture.setSmooth(true);
+        util::TextureLoader::load(
+            m_starYellowTexture,
+            (t_context.settings.media_path / "image/ui/star-yellow.png"),
+            true);
 
         m_starYellow1Sprite.setTexture(m_starYellowTexture, true);
         m_starYellow1Sprite.scale(m_starBrown1Sprite.getScale());

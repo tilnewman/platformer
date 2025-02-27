@@ -9,11 +9,11 @@
 #include "subsystem/context.hpp"
 #include "subsystem/font.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "subsystem/texture-stats.hpp"
 #include "ui/text-layout.hpp"
 #include "util/check-macros.hpp"
 #include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
+#include "util/texture-loader.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -44,35 +44,17 @@ namespace bramblefore
     {
         // um...should we always be reloading these big textures?
 
-        M_CHECK(
-            m_paper1Texture.loadFromFile((t_settings.media_path / "image/ui/paper1.png").string()),
-            "file not found");
+        util::TextureLoader::load(m_paper1Texture, (t_settings.media_path / "image/ui/paper1.png"));
+        util::TextureLoader::load(m_paper2Texture, (t_settings.media_path / "image/ui/paper2.png"));
 
-        M_CHECK(
-            m_paper2Texture.loadFromFile((t_settings.media_path / "image/ui/paper2.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_tapeLeftTexture, (t_settings.media_path / "image/ui/tape-left.png"));
 
-        TextureStats::instance().process(m_paper1Texture);
-        TextureStats::instance().process(m_paper2Texture);
+        util::TextureLoader::load(
+            m_tapeRightTexture, (t_settings.media_path / "image/ui/tape-right.png"));
 
-        M_CHECK(
-            m_tapeLeftTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/tape-left.png").string()),
-            "file not found");
-
-        M_CHECK(
-            m_tapeRightTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/tape-right.png").string()),
-            "file not found");
-
-        M_CHECK(
-            m_tapeMiddleTexture.loadFromFile(
-                (t_settings.media_path / "image/ui/tape-middle.png").string()),
-            "file not found");
-
-        TextureStats::instance().process(m_tapeLeftTexture);
-        TextureStats::instance().process(m_tapeRightTexture);
-        TextureStats::instance().process(m_tapeMiddleTexture);
+        util::TextureLoader::load(
+            m_tapeMiddleTexture, (t_settings.media_path / "image/ui/tape-middle.png"));
     }
 
     void GuiWindowPaper::create(
