@@ -11,6 +11,7 @@
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
 
@@ -38,46 +39,62 @@ namespace bramblefore
 
         //
 
-        m_emitterUpTexture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/flame-trap-up.png").string());
+        M_CHECK(
+            m_emitterUpTexture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/flame-trap-up.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_emitterUpTexture);
 
-        m_emitterDownTexture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/flame-trap-down.png").string());
+        M_CHECK(
+            m_emitterDownTexture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/flame-trap-down.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_emitterDownTexture);
 
-        m_emitterLeftTexture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/flame-trap-left.png").string());
+        M_CHECK(
+            m_emitterLeftTexture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/flame-trap-left.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_emitterLeftTexture);
 
-        m_emitterRightTexture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/flame-trap-right.png").string());
+        M_CHECK(
+            m_emitterRightTexture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/flame-trap-right.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_emitterRightTexture);
 
         //
 
-        m_flamesUpTexture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/flame-trap-flames-up.png").string());
+        M_CHECK(
+            m_flamesUpTexture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/flame-trap-flames-up.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_flamesUpTexture);
 
-        m_flamesDownTexture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/flame-trap-flames-down.png").string());
+        M_CHECK(
+            m_flamesDownTexture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/flame-trap-flames-down.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_flamesDownTexture);
 
-        m_flamesLeftTexture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/flame-trap-flames-left.png").string());
+        M_CHECK(
+            m_flamesLeftTexture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/flame-trap-flames-left.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_flamesLeftTexture);
 
-        m_flamesRightTexture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/flame-trap-flames-right.png")
-                .string());
+        M_CHECK(
+            m_flamesRightTexture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/flame-trap-flames-right.png")
+                    .string()),
+            "file not found");
 
         TextureStats::instance().process(m_flamesRightTexture);
 
@@ -88,8 +105,10 @@ namespace bramblefore
 
         for (const FlameTrapRectDir & rectDir : t_rectDirs)
         {
-            sf::Sprite & emitterSprite{ m_emitterSprites.emplace_back() };
-            emitterSprite.scale(m_emitterScale, m_emitterScale);
+            sf::Sprite & emitterSprite{ m_emitterSprites.emplace_back(
+                util::SfmlDefaults::instance().texture()) };
+
+            emitterSprite.scale({ m_emitterScale, m_emitterScale });
 
             FlameAnim & anim{ m_anims.emplace_back() };
             anim.direction                = rectDir.direction;
@@ -97,71 +116,73 @@ namespace bramblefore
 
             if (rectDir.direction == TrapDirection::Up)
             {
-                emitterSprite.setTexture(m_emitterUpTexture);
+                emitterSprite.setTexture(m_emitterUpTexture, true);
 
                 emitterSprite.setPosition(
-                    (util::center(rectDir.rect).x - (emitterSprite.getGlobalBounds().width * 0.5f)),
-                    (util::bottom(rectDir.rect) - emitterSprite.getGlobalBounds().height));
+                    { (util::center(rectDir.rect).x -
+                       (emitterSprite.getGlobalBounds().size.x * 0.5f)),
+                      (util::bottom(rectDir.rect) - emitterSprite.getGlobalBounds().size.y) });
 
                 anim.sprite = sf::Sprite(m_flamesUpTexture, textureRect(anim.direction, 0));
-                anim.sprite.scale(m_flameScale, m_flameScale);
+                anim.sprite.scale({ m_flameScale, m_flameScale });
 
                 anim.sprite.setPosition(
-                    util::center(rectDir.rect).x - (anim.sprite.getGlobalBounds().width * 0.5f),
-                    (emitterSprite.getGlobalBounds().top - anim.sprite.getGlobalBounds().height));
+                    { util::center(rectDir.rect).x - (anim.sprite.getGlobalBounds().size.x * 0.5f),
+                      (emitterSprite.getGlobalBounds().position.y -
+                       anim.sprite.getGlobalBounds().size.y) });
 
                 anim.coll_rect = anim.sprite.getGlobalBounds();
             }
             else if (rectDir.direction == TrapDirection::Down)
             {
-                emitterSprite.setTexture(m_emitterDownTexture);
+                emitterSprite.setTexture(m_emitterDownTexture, true);
 
-                emitterSprite.setPosition(
-                    (util::center(rectDir.rect).x - (emitterSprite.getGlobalBounds().width * 0.5f)),
-                    rectDir.rect.top);
+                emitterSprite.setPosition({ (util::center(rectDir.rect).x -
+                                             (emitterSprite.getGlobalBounds().size.x * 0.5f)),
+                                            rectDir.rect.position.y });
 
                 anim.sprite = sf::Sprite(m_flamesDownTexture, textureRect(anim.direction, 0));
-                anim.sprite.scale(m_flameScale, m_flameScale);
+                anim.sprite.scale({ m_flameScale, m_flameScale });
 
                 anim.sprite.setPosition(
-                    util::center(rectDir.rect).x - (anim.sprite.getGlobalBounds().width * 0.5f),
-                    util::bottom(emitterSprite.getGlobalBounds()));
+                    { util::center(rectDir.rect).x - (anim.sprite.getGlobalBounds().size.x * 0.5f),
+                      util::bottom(emitterSprite.getGlobalBounds()) });
 
                 anim.coll_rect = anim.sprite.getGlobalBounds();
             }
             else if (rectDir.direction == TrapDirection::Left)
             {
-                emitterSprite.setTexture(m_emitterLeftTexture);
+                emitterSprite.setTexture(m_emitterLeftTexture, true);
 
                 emitterSprite.setPosition(
-                    (util::right(rectDir.rect) - emitterSprite.getGlobalBounds().width),
-                    (util::center(rectDir.rect).y -
-                     (emitterSprite.getGlobalBounds().height * 0.5f)));
+                    { (util::right(rectDir.rect) - emitterSprite.getGlobalBounds().size.x),
+                      (util::center(rectDir.rect).y -
+                       (emitterSprite.getGlobalBounds().size.y * 0.5f)) });
 
                 anim.sprite = sf::Sprite(m_flamesLeftTexture, textureRect(anim.direction, 0));
-                anim.sprite.scale(m_flameScale, m_flameScale);
+                anim.sprite.scale({ m_flameScale, m_flameScale });
 
-                anim.sprite.setPosition(
-                    (emitterSprite.getGlobalBounds().left - anim.sprite.getGlobalBounds().width),
-                    util::center(rectDir.rect).y - (anim.sprite.getGlobalBounds().height * 0.5f));
+                anim.sprite.setPosition({ (emitterSprite.getGlobalBounds().position.x -
+                                           anim.sprite.getGlobalBounds().size.x),
+                                          util::center(rectDir.rect).y -
+                                              (anim.sprite.getGlobalBounds().size.y * 0.5f) });
 
                 anim.coll_rect = anim.sprite.getGlobalBounds();
             }
             else
             {
-                emitterSprite.setTexture(m_emitterRightTexture);
+                emitterSprite.setTexture(m_emitterRightTexture, true);
 
-                emitterSprite.setPosition(
-                    rectDir.rect.left,
-                    (util::center(rectDir.rect).y -
-                     (emitterSprite.getGlobalBounds().height * 0.5f)));
+                emitterSprite.setPosition({ rectDir.rect.position.x,
+                                            (util::center(rectDir.rect).y -
+                                             (emitterSprite.getGlobalBounds().size.y * 0.5f)) });
 
                 anim.sprite = sf::Sprite(m_flamesRightTexture, textureRect(anim.direction, 0));
-                anim.sprite.scale(m_flameScale, m_flameScale);
+                anim.sprite.scale({ m_flameScale, m_flameScale });
 
-                anim.sprite.setPosition(
-                    util::right(emitterSprite.getGlobalBounds()),
-                    util::center(rectDir.rect).y - (anim.sprite.getGlobalBounds().height * 0.5f));
+                anim.sprite.setPosition({ util::right(emitterSprite.getGlobalBounds()),
+                                          util::center(rectDir.rect).y -
+                                              (anim.sprite.getGlobalBounds().size.y * 0.5f) });
 
                 anim.coll_rect = anim.sprite.getGlobalBounds();
             }
@@ -180,7 +201,7 @@ namespace bramblefore
 
         for (const sf::Sprite & sprite : m_emitterSprites)
         {
-            if (wholeScreenRect.intersects(sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(sprite.getGlobalBounds()))
             {
                 t_target.draw(sprite, t_states);
             }
@@ -193,7 +214,7 @@ namespace bramblefore
                 continue;
             }
 
-            if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
             }
@@ -204,13 +225,13 @@ namespace bramblefore
     {
         for (sf::Sprite & sprite : m_emitterSprites)
         {
-            sprite.move(t_amount, 0.0f);
+            sprite.move({ t_amount, 0.0f });
         }
 
         for (FlameAnim & anim : m_anims)
         {
-            anim.sprite.move(t_amount, 0.0f);
-            anim.coll_rect.left += t_amount;
+            anim.sprite.move({ t_amount, 0.0f });
+            anim.coll_rect.position.x += t_amount;
         }
     }
 
@@ -246,7 +267,7 @@ namespace bramblefore
                     anim.elapsed_time_sec = 0.0f;
                     anim.is_flaming       = true;
 
-                    if (wholeScreenRect.intersects(anim.coll_rect))
+                    if (wholeScreenRect.findIntersection(anim.coll_rect))
                     {
                         t_context.sfx.play("fire-puff");
                     }
@@ -262,17 +283,17 @@ namespace bramblefore
 
         if ((t_direction == TrapDirection::Up) || (t_direction == TrapDirection::Down))
         {
-            rect.width  = 32;
-            rect.height = 112;
-            rect.top    = 0;
-            rect.left   = (static_cast<int>(frame) * rect.width);
+            rect.size.x     = 32;
+            rect.size.y     = 112;
+            rect.position.y = 0;
+            rect.position.x = (static_cast<int>(frame) * rect.size.x);
         }
         else
         {
-            rect.width  = 112;
-            rect.height = 32;
-            rect.top    = (static_cast<int>(frame) * rect.height);
-            rect.left   = 0;
+            rect.size.x     = 112;
+            rect.size.y     = 32;
+            rect.position.y = (static_cast<int>(frame) * rect.size.y);
+            rect.position.x = 0;
         }
 
         return rect;
@@ -289,7 +310,7 @@ namespace bramblefore
                 continue;
             }
 
-            if (t_avatarRect.intersects(anim.coll_rect))
+            if (t_avatarRect.findIntersection(anim.coll_rect))
             {
                 harm.rect   = anim.coll_rect;
                 harm.damage = 10;

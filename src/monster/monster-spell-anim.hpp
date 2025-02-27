@@ -3,6 +3,8 @@
 //
 // monster-spell-anim.hpp
 //
+#include "util/sfml-defaults.hpp"
+
 #include <string_view>
 #include <vector>
 
@@ -14,7 +16,7 @@
 namespace sf
 {
     class RenderTarget;
-    class RenderStates;
+    struct RenderStates;
 } // namespace sf
 
 namespace bramblefore
@@ -90,7 +92,7 @@ namespace bramblefore
         std::size_t frame_index{ 0 };
         float elapsed_time_sec{ 0.0f };
         bool is_moving_right{ true };
-        sf::Sprite sprite{};
+        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
     };
 
     //

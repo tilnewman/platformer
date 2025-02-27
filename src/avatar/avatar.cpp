@@ -19,6 +19,7 @@
 #include "subsystem/harm-collision-manager.hpp"
 #include "subsystem/map-coordinator.hpp"
 #include "subsystem/screen-layout.hpp"
+#include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
 
@@ -29,7 +30,7 @@ namespace bramblefore
 {
 
     Avatar::Avatar()
-        : m_sprite{}
+        : m_sprite{ util::SfmlDefaults::instance().texture() }
         , m_type{ AvatarType::Count } // anything works here
         , m_anim{ AvatarAnim::Walk }
         , m_state{ AvatarState::Still }
@@ -63,7 +64,7 @@ namespace bramblefore
         const float scale{ t_context.layout.calScaleBasedOnResolution(
             t_context, t_context.settings.avatar_scale) };
 
-        m_sprite.setScale(scale, scale);
+        m_sprite.setScale({ scale, scale });
 
         m_movement = calculateMovementDetails(t_context);
     }
@@ -115,8 +116,8 @@ namespace bramblefore
 
     void Avatar::setPosition(const sf::FloatRect & t_rect)
     {
-        m_sprite.setPosition(util::center(t_rect).x, util::bottom(t_rect));
-        m_sprite.move(0.0f, (-110.0f * m_sprite.getScale().y));
+        m_sprite.setPosition({ util::center(t_rect).x, util::bottom(t_rect) });
+        m_sprite.move({ 0.0f, (-110.0f * m_sprite.getScale().y) });
     }
 
     sf::FloatRect Avatar::collisionRect() const
@@ -124,15 +125,15 @@ namespace bramblefore
         const sf::FloatRect bounds{ m_sprite.getGlobalBounds() };
         sf::FloatRect rect{ bounds };
         util::scaleRectInPlace(rect, m_avatarSizeRatio);
-        rect.top += (bounds.width * 0.175f);
+        rect.position.y += (bounds.size.x * 0.175f);
 
         if (m_isFacingRight)
         {
-            rect.left -= (bounds.width * 0.15f);
+            rect.position.x -= (bounds.size.x * 0.15f);
         }
         else
         {
-            rect.left += (bounds.width * 0.15f);
+            rect.position.x += (bounds.size.x * 0.15f);
         }
 
         return rect;
@@ -156,22 +157,22 @@ namespace bramblefore
         sf::FloatRect rect{ collisionRect() };
 
         // make the attack rect 2 pixels bigger vertically so players can attack up and down
-        rect.height += 4.0f;
-        rect.top -= 2.0f;
+        rect.size.y += 4.0f;
+        rect.position.y -= 2.0f;
 
         if ((AvatarType::BlueKnight == m_type) || (AvatarType::RedKnight == m_type) ||
             (AvatarType::Viking == m_type))
         {
-            rect.width *= 1.2f;
+            rect.size.x *= 1.2f;
         }
 
         if (m_isFacingRight)
         {
-            rect.left += rect.width;
+            rect.position.x += rect.size.x;
         }
         else
         {
-            rect.left -= rect.width;
+            rect.position.x -= rect.size.x;
         }
 
         return rect;
@@ -217,9 +218,10 @@ namespace bramblefore
     void Avatar::handleClimbing(Context & t_context, const float t_frameTimeSec)
     {
         // first frame
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && (AvatarState::Attack != m_state) &&
-            (AvatarState::AttackExtra != m_state) && (AvatarState::Climb != m_state) &&
-            (AvatarState::Hurt != m_state) && (AvatarState::Death != m_state))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A) &&
+            (AvatarState::Attack != m_state) && (AvatarState::AttackExtra != m_state) &&
+            (AvatarState::Climb != m_state) && (AvatarState::Hurt != m_state) &&
+            (AvatarState::Death != m_state))
         {
             const std::optional<sf::FloatRect> ladderRectOpt{ t_context.level.ladderCollisionRect(
                 collisionRect()) };
@@ -245,24 +247,24 @@ namespace bramblefore
 
             if (ladderRectOpt.has_value())
             {
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Up))
                 {
-                    m_sprite.move(0.0f, -(m_movement.ladder_speed * t_frameTimeSec));
+                    m_sprite.move({ 0.0f, -(m_movement.ladder_speed * t_frameTimeSec) });
                 }
 
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Down))
                 {
-                    m_sprite.move(0.0f, (m_movement.ladder_speed * t_frameTimeSec));
+                    m_sprite.move({ 0.0f, (m_movement.ladder_speed * t_frameTimeSec) });
                 }
 
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Left))
                 {
-                    m_sprite.move(-(m_movement.ladder_speed * t_frameTimeSec), 0.0f);
+                    m_sprite.move({ -(m_movement.ladder_speed * t_frameTimeSec), 0.0f });
                 }
 
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Right))
                 {
-                    m_sprite.move((m_movement.ladder_speed * t_frameTimeSec), 0.0f);
+                    m_sprite.move({ (m_movement.ladder_speed * t_frameTimeSec), 0.0f });
                 }
             }
         }
@@ -271,11 +273,12 @@ namespace bramblefore
     void Avatar::handleAttackState(Context & t_context)
     {
         // first frame
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::F) && (AvatarState::Attack != m_state) &&
-            (AvatarState::AttackExtra != m_state) && (AvatarState::Climb != m_state) &&
-            (AvatarState::Hurt != m_state) && (AvatarState::Death != m_state))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::F) &&
+            (AvatarState::Attack != m_state) && (AvatarState::AttackExtra != m_state) &&
+            (AvatarState::Climb != m_state) && (AvatarState::Hurt != m_state) &&
+            (AvatarState::Death != m_state))
         {
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::LShift))
             {
                 m_state = AvatarState::AttackExtra;
                 m_anim  = AvatarAnim::AttackExtra;
@@ -288,11 +291,11 @@ namespace bramblefore
 
                         if (m_isFacingRight)
                         {
-                            pos.x += (collRect.width * 1.5f);
+                            pos.x += (collRect.size.x * 1.5f);
                         }
                         else
                         {
-                            pos.x -= (collRect.width * 1.5f);
+                            pos.x -= (collRect.size.x * 1.5f);
                         }
 
                         return pos;
@@ -361,7 +364,7 @@ namespace bramblefore
     void Avatar::moveMap(Context & t_context)
     {
         const float posXAfter    = util::center(m_sprite.getGlobalBounds()).x;
-        const float screenMiddle = (t_context.layout.wholeRect().width * 0.5f);
+        const float screenMiddle = (t_context.layout.wholeRect().size.x * 0.5f);
 
         if ((m_velocity.x < 0.0f) || (posXAfter < screenMiddle))
         {
@@ -371,13 +374,13 @@ namespace bramblefore
         const float moveX = (screenMiddle - posXAfter);
         if (t_context.level.move(t_context, moveX))
         {
-            m_sprite.move(moveX, 0.0f);
+            m_sprite.move({ moveX, 0.0f });
         }
     }
 
     void Avatar::killIfOutOfBounds(Context & t_context)
     {
-        if (!t_context.layout.wholeRect().intersects(collisionRect()))
+        if (!t_context.layout.wholeRect().findIntersection(collisionRect()))
         {
             triggerDeath(t_context);
         }
@@ -385,13 +388,14 @@ namespace bramblefore
 
     void Avatar::preventBacktracking(const Context & t_context)
     {
-        const sf::FloatRect backtrackRect{ -100.0f, 0.0f, 100.0f, t_context.layout.wholeSize().y };
+        const sf::FloatRect backtrackRect{ { -100.0f, 0.0f },
+                                           { 100.0f, t_context.layout.wholeSize().y } };
 
-        sf::FloatRect intersection;
-        if (collisionRect().intersects(backtrackRect, intersection))
+        const auto intersectionOpt{ collisionRect().findIntersection(backtrackRect) };
+        if (intersectionOpt.has_value())
         {
             m_velocity.x = 0.0f;
-            m_sprite.move(intersection.width, 0.0f);
+            m_sprite.move({ intersectionOpt.value().size.x, 0.0f });
         }
     }
 
@@ -402,35 +406,37 @@ namespace bramblefore
         const sf::FloatRect avatarRect  = collisionRect();
         const sf::Vector2f avatarCenter = util::center(avatarRect);
 
-        const float footRectHeightAdj{ avatarRect.height * 0.8f };
+        const float footRectHeightAdj{ avatarRect.size.y * 0.8f };
         sf::FloatRect footRect = avatarRect;
-        footRect.top += footRectHeightAdj;
-        footRect.height -= footRectHeightAdj;
+        footRect.position.y += footRectHeightAdj;
+        footRect.size.y -= footRectHeightAdj;
 
         std::vector<sf::FloatRect> rects{ t_context.level.collisions };
         t_context.level.monsters.appendCollisionRects(rects);
 
         bool hasHitSomething{ false };
-        sf::FloatRect intersection;
         for (const sf::FloatRect & collRect : rects)
         {
-            if (!avatarRect.intersects(collRect, intersection))
+            const auto intersectOpt{ avatarRect.findIntersection(collRect) };
+            if (!intersectOpt)
             {
                 continue;
             }
+
+            const sf::FloatRect intersection{ intersectOpt.value() };
 
             if ((m_velocity.y < 0.0f) && (util::center(collRect).y < avatarCenter.y))
             {
                 // rising and hit something above
 
                 m_velocity.y = 0.0f;
-                m_sprite.move(0.0f, intersection.height);
+                m_sprite.move({ 0.0f, intersection.size.y });
                 hasHitSomething = true;
                 continue;
             }
 
-            if ((m_velocity.y >= 0.0f) && (intersection.height < tolerance) &&
-                collRect.intersects(footRect))
+            if ((m_velocity.y >= 0.0f) && (intersection.size.y < tolerance) &&
+                collRect.findIntersection(footRect))
             {
                 // falling and hit something below
 
@@ -444,26 +450,26 @@ namespace bramblefore
 
                 m_hasLanded  = true;
                 m_velocity.y = 0.0f;
-                m_sprite.move(0.0f, -intersection.height);
+                m_sprite.move({ 0.0f, -intersection.size.y });
                 hasHitSomething = true;
                 continue;
             }
 
             // at this point we hit something from the side
 
-            if (intersection.width < tolerance)
+            if (intersection.size.x < tolerance)
             {
                 if (m_velocity.x > 0.0f)
                 {
                     m_velocity.x = 0.0f;
-                    m_sprite.move(-intersection.width, 0.0f);
+                    m_sprite.move({ -intersection.size.x, 0.0f });
                     hasHitSomething = true;
                     continue;
                 }
                 else if (m_velocity.x < 0.0f)
                 {
                     m_velocity.x = 0.0f;
-                    m_sprite.move(intersection.width, 0.0f);
+                    m_sprite.move({ intersection.size.x, 0.0f });
                     hasHitSomething = true;
                     continue;
                 }
@@ -528,7 +534,8 @@ namespace bramblefore
     void Avatar::sideToSideMotion(Context & t_context, const float t_frameTimeSec)
     {
         if ((AvatarState::Hurt == m_state) || (AvatarState::Attack == m_state) ||
-            (AvatarState::AttackExtra == m_state) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+            (AvatarState::AttackExtra == m_state) ||
+            sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A))
         {
             return;
         }
@@ -540,7 +547,7 @@ namespace bramblefore
             // What the hell, mario did it.
             const float jumpMoveDivisor = 3.0f;
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Right))
             {
                 m_velocity.x += ((m_movement.walk_acc / jumpMoveDivisor) * t_frameTimeSec);
 
@@ -550,7 +557,7 @@ namespace bramblefore
                 }
             }
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Left))
             {
                 m_velocity.x -= ((m_movement.walk_acc / jumpMoveDivisor) * t_frameTimeSec);
 
@@ -563,9 +570,9 @@ namespace bramblefore
             return;
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Right))
         {
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::LShift))
             {
                 m_velocity.x += (m_movement.run_acc * t_frameTimeSec);
                 if (m_velocity.x > m_movement.run_speed_limit)
@@ -605,9 +612,9 @@ namespace bramblefore
                 turnRight();
             }
         }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Left))
         {
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::LShift))
             {
                 m_velocity.x -= (m_movement.run_acc * t_frameTimeSec);
                 if (m_velocity.x < -m_movement.run_speed_limit)
@@ -673,7 +680,7 @@ namespace bramblefore
             return;
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && m_hasLanded)
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Up) && m_hasLanded)
         {
             m_hasLanded = false;
             t_context.sfx.stop("walk");
@@ -687,7 +694,7 @@ namespace bramblefore
                 t_context.sfx.play("jump-female");
             }
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::LShift))
             {
                 m_state = AvatarState::JumpHigh;
                 m_anim  = AvatarAnim::JumpHigh;
@@ -771,20 +778,22 @@ namespace bramblefore
     void Avatar::turnRight()
     {
         m_isFacingRight = true;
-        m_sprite.scale(-1.0f, 1.0f);
-        m_sprite.move(-(m_sprite.getGlobalBounds().width * (1.0f - m_avatarSizeRatio.x)), 0.0f);
+        m_sprite.scale({ -1.0f, 1.0f });
+
+        m_sprite.move(
+            { -(m_sprite.getGlobalBounds().size.x * (1.0f - m_avatarSizeRatio.x)), 0.0f });
     }
 
     void Avatar::turnLeft()
     {
         m_isFacingRight = false;
-        m_sprite.scale(-1.0f, 1.0f);
-        m_sprite.move((m_sprite.getGlobalBounds().width * (1.0f - m_avatarSizeRatio.x)), 0.0f);
+        m_sprite.scale({ -1.0f, 1.0f });
+        m_sprite.move({ (m_sprite.getGlobalBounds().size.x * (1.0f - m_avatarSizeRatio.x)), 0.0f });
     }
 
     void Avatar::exitCollisions(Context & t_context) const
     {
-        if (collisionRect().intersects(t_context.level.exit_rect))
+        if (collisionRect().findIntersection(t_context.level.exit_rect))
         {
             t_context.sfx.stopAllLooped();
             t_context.state.setChangePending(State::LevelComplete);
@@ -809,7 +818,7 @@ namespace bramblefore
 
         for (const sf::FloatRect & killRect : t_context.level.kill_collisions)
         {
-            if (collRect.intersects(killRect))
+            if (collRect.findIntersection(killRect))
             {
                 t_context.player.healthAdjust(t_context, -t_context.player.health());
                 triggerDeath(t_context);

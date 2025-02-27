@@ -11,6 +11,8 @@
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
 #include "ui/text-layout.hpp"
+#include "util/check-macros.hpp"
+#include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -27,11 +29,11 @@ namespace bramblefore
         , m_tapeLeftTexture{}
         , m_tapeRightTexture{}
         , m_tapeMiddleTexture{}
-        , m_paperSprite{}
-        , m_tapeLeftSprite{}
-        , m_tapeRightSprite{}
-        , m_tapeMiddleSprite{}
-        , m_titleText{}
+        , m_paperSprite{ m_paper1Texture }
+        , m_tapeLeftSprite{ m_tapeLeftTexture }
+        , m_tapeRightSprite{ m_tapeRightTexture }
+        , m_tapeMiddleSprite{ m_tapeMiddleTexture }
+        , m_titleText{ util::SfmlDefaults::instance().font() }
         , m_contentTexts{}
         , m_bgFadeVerts{}
     {
@@ -42,18 +44,31 @@ namespace bramblefore
     {
         // um...should we always be reloading these big textures?
 
-        m_paper1Texture.loadFromFile((t_settings.media_path / "image/ui/paper1.png").string());
-        m_paper2Texture.loadFromFile((t_settings.media_path / "image/ui/paper2.png").string());
+        M_CHECK(
+            m_paper1Texture.loadFromFile((t_settings.media_path / "image/ui/paper1.png").string()),
+            "file not found");
+
+        M_CHECK(
+            m_paper2Texture.loadFromFile((t_settings.media_path / "image/ui/paper2.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_paper1Texture);
         TextureStats::instance().process(m_paper2Texture);
 
-        m_tapeLeftTexture.loadFromFile((t_settings.media_path / "image/ui/tape-left.png").string());
-        m_tapeRightTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/tape-right.png").string());
+        M_CHECK(
+            m_tapeLeftTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/tape-left.png").string()),
+            "file not found");
 
-        m_tapeMiddleTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/tape-middle.png").string());
+        M_CHECK(
+            m_tapeRightTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/tape-right.png").string()),
+            "file not found");
+
+        M_CHECK(
+            m_tapeMiddleTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/tape-middle.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_tapeLeftTexture);
         TextureStats::instance().process(m_tapeRightTexture);
@@ -77,26 +92,26 @@ namespace bramblefore
             m_paperSprite.setTexture(m_paper2Texture);
 
             m_paperSprite.setPosition(
-                ((wholeSize.x * 0.5f) - (m_paperSprite.getGlobalBounds().width * 0.5f)),
-                ((wholeSize.y * 0.5f) - (m_paperSprite.getGlobalBounds().height * 0.5f)));
+                { ((wholeSize.x * 0.5f) - (m_paperSprite.getGlobalBounds().size.x * 0.5f)),
+                  ((wholeSize.y * 0.5f) - (m_paperSprite.getGlobalBounds().size.y * 0.5f)) });
 
-            m_innerRect.left   = (m_paperSprite.getPosition().x + 32.0f);
-            m_innerRect.top    = (m_paperSprite.getPosition().y + 32.0f);
-            m_innerRect.width  = 432.0f;
-            m_innerRect.height = 256.0f;
+            m_innerRect.position.x = (m_paperSprite.getPosition().x + 32.0f);
+            m_innerRect.position.y = (m_paperSprite.getPosition().y + 32.0f);
+            m_innerRect.size.x     = 432.0f;
+            m_innerRect.size.y     = 256.0f;
         }
         else
         {
             m_paperSprite.setTexture(m_paper1Texture);
 
             m_paperSprite.setPosition(
-                ((wholeSize.x * 0.5f) - (m_paperSprite.getGlobalBounds().width * 0.5f)),
-                ((wholeSize.y * 0.5f) - (m_paperSprite.getGlobalBounds().height * 0.5f)));
+                { ((wholeSize.x * 0.5f) - (m_paperSprite.getGlobalBounds().size.x * 0.5f)),
+                  ((wholeSize.y * 0.5f) - (m_paperSprite.getGlobalBounds().size.y * 0.5f)) });
 
-            m_innerRect.left   = (m_paperSprite.getPosition().x + 48.0f);
-            m_innerRect.top    = (m_paperSprite.getPosition().y + 48.0f);
-            m_innerRect.width  = 410.0f;
-            m_innerRect.height = 410.0f;
+            m_innerRect.position.x = (m_paperSprite.getPosition().x + 48.0f);
+            m_innerRect.position.y = (m_paperSprite.getPosition().y + 48.0f);
+            m_innerRect.size.x     = 410.0f;
+            m_innerRect.size.y     = 410.0f;
         }
 
         m_outerRect = m_paperSprite.getGlobalBounds();
@@ -106,56 +121,60 @@ namespace bramblefore
             m_tapeLeftSprite.setTexture(m_tapeLeftTexture);
 
             m_tapeLeftSprite.setPosition(
-                ((wholeSize.x * 0.5f) - m_tapeLeftSprite.getGlobalBounds().width),
-                (m_outerRect.top - (m_tapeLeftSprite.getGlobalBounds().height * 0.65f)));
+                { ((wholeSize.x * 0.5f) - m_tapeLeftSprite.getGlobalBounds().size.x),
+                  (m_outerRect.position.y - (m_tapeLeftSprite.getGlobalBounds().size.y * 0.65f)) });
 
             m_tapeRightSprite.setTexture(m_tapeRightTexture);
 
             m_tapeRightSprite.setPosition(
-                (wholeSize.x * 0.5f),
-                (m_outerRect.top - (m_tapeRightSprite.getGlobalBounds().height * 0.65f)));
+                { (wholeSize.x * 0.5f),
+                  (m_outerRect.position.y -
+                   (m_tapeRightSprite.getGlobalBounds().size.y * 0.65f)) });
 
             sf::FloatRect titleRect;
-            titleRect.left   = ((wholeSize.x * 0.5f) - 100.0f);
-            titleRect.top    = (m_tapeLeftSprite.getPosition().y + 14.0f);
-            titleRect.width  = 200.0f;
-            titleRect.height = 37.0f;
+            titleRect.position.x = ((wholeSize.x * 0.5f) - 100.0f);
+            titleRect.position.y = (m_tapeLeftSprite.getPosition().y + 14.0f);
+            titleRect.size.x     = 200.0f;
+            titleRect.size.y     = 37.0f;
 
             m_titleText = t_context.font.makeText(
                 Font::Default, FontSize::Medium, m_info.title, sf::Color(32, 32, 32));
 
             util::fitAndCenterInside(m_titleText, titleRect);
 
-            const float betweenTapeSize{ m_titleText.getGlobalBounds().width - titleRect.width };
+            const float betweenTapeSize{ m_titleText.getGlobalBounds().size.x - titleRect.size.x };
 
             if (betweenTapeSize > 0.0f)
             {
-                m_tapeLeftSprite.move(-(betweenTapeSize * 0.5f), 0.0f);
-                m_tapeRightSprite.move((betweenTapeSize * 0.5f), 0.0f);
+                m_tapeLeftSprite.move({ -(betweenTapeSize * 0.5f), 0.0f });
+                m_tapeRightSprite.move({ (betweenTapeSize * 0.5f), 0.0f });
 
-                titleRect.left -= (betweenTapeSize * 0.5f);
-                titleRect.width += betweenTapeSize;
+                titleRect.position.x -= (betweenTapeSize * 0.5f);
+                titleRect.size.x += betweenTapeSize;
 
                 util::fitAndCenterInside(m_titleText, titleRect);
 
                 m_tapeMiddleSprite.setTexture(m_tapeMiddleTexture);
+
                 sf::FloatRect tapeMiddleRect;
 
-                tapeMiddleRect.left =
+                tapeMiddleRect.position.x =
                     ((t_context.layout.wholeSize().x * 0.5f) - (betweenTapeSize * 0.5f));
 
-                tapeMiddleRect.top    = (m_tapeLeftSprite.getPosition().y + 8.0f);
-                tapeMiddleRect.width  = betweenTapeSize;
-                tapeMiddleRect.height = m_tapeMiddleSprite.getGlobalBounds().height;
+                tapeMiddleRect.position.y = (m_tapeLeftSprite.getPosition().y + 8.0f);
+                tapeMiddleRect.size.x     = betweenTapeSize;
+                tapeMiddleRect.size.y     = m_tapeMiddleSprite.getGlobalBounds().size.y;
 
                 util::scaleAndCenterInside(m_tapeMiddleSprite, tapeMiddleRect);
             }
 
-            m_outerRect.width += ((m_outerRect.left - m_tapeLeftSprite.getPosition().x) * 2.0f);
-            m_outerRect.left = m_tapeLeftSprite.getPosition().x;
+            m_outerRect.size.x +=
+                ((m_outerRect.position.x - m_tapeLeftSprite.getPosition().x) * 2.0f);
 
-            m_outerRect.height += (m_outerRect.top - m_tapeLeftSprite.getPosition().y);
-            m_outerRect.top = m_tapeLeftSprite.getPosition().y;
+            m_outerRect.position.x = m_tapeLeftSprite.getPosition().x;
+
+            m_outerRect.size.y += (m_outerRect.position.y - m_tapeLeftSprite.getPosition().y);
+            m_outerRect.position.y = m_tapeLeftSprite.getPosition().y;
         }
 
         m_contentTexts = TextLayout::layout(t_context, m_info.content, m_innerRect, m_info.details);
@@ -165,7 +184,8 @@ namespace bramblefore
     {
         if (!m_bgFadeVerts.empty())
         {
-            t_target.draw(&m_bgFadeVerts[0], m_bgFadeVerts.size(), sf::Triangles, t_states);
+            t_target.draw(
+                &m_bgFadeVerts[0], m_bgFadeVerts.size(), sf::PrimitiveType::Triangles, t_states);
         }
 
         t_target.draw(m_paperSprite, t_states);

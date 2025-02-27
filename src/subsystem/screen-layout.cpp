@@ -29,7 +29,7 @@ namespace bramblefore
         const float originalResProduct{ std::sqrt(2056.0f * 1329.0f) };
 
         const float currentResProduct{ std::sqrt(static_cast<float>(
-            context.settings.video_mode.width * context.settings.video_mode.height)) };
+            context.settings.video_mode.size.x * context.settings.video_mode.size.y)) };
 
         return ((originalScale * currentResProduct) / originalResProduct);
     }

@@ -43,8 +43,10 @@ namespace bramblefore
 
             sf::Texture & texture{ m_textures.emplace_back() };
 
-            texture.loadFromFile(
-                (t_context.settings.media_path / "image/anim" / toFilename(accent)).string());
+            M_CHECK(
+                texture.loadFromFile(
+                    (t_context.settings.media_path / "image/anim" / toFilename(accent)).string()),
+                "file not found");
 
             texture.setSmooth(true);
 
@@ -70,16 +72,16 @@ namespace bramblefore
             anim.time_per_frame_sec = t_context.random.fromTo(0.35f, 0.8f);
 
             anim.sprite.setPosition(
-                (util::center(t_rect).x - (anim.sprite.getGlobalBounds().width * 0.5f)),
-                util::center(t_rect).y);
+                { (util::center(t_rect).x - (anim.sprite.getGlobalBounds().size.x * 0.5f)),
+                  util::center(t_rect).y });
         }
         else
         {
             anim.time_per_frame_sec = t_context.random.fromTo(0.08f, 0.18f);
 
             anim.sprite.setPosition(
-                (util::center(t_rect).x - (anim.sprite.getGlobalBounds().width * 0.5f)),
-                (util::bottom(t_rect) - anim.sprite.getGlobalBounds().height));
+                { (util::center(t_rect).x - (anim.sprite.getGlobalBounds().size.x * 0.5f)),
+                  (util::bottom(t_rect) - anim.sprite.getGlobalBounds().size.y) });
         }
     }
 
@@ -102,10 +104,10 @@ namespace bramblefore
         const sf::Texture & texture{ m_textures.at(static_cast<std::size_t>(t_which)) };
 
         sf::IntRect rect;
-        rect.width  = static_cast<int>(texture.getSize().y);
-        rect.height = rect.width;
-        rect.top    = 0;
-        rect.left   = (static_cast<int>(t_frame) * rect.width);
+        rect.size.x     = static_cast<int>(texture.getSize().y);
+        rect.size.y     = rect.size.x;
+        rect.position.y = 0;
+        rect.position.x = (static_cast<int>(t_frame) * rect.size.x);
 
         return rect;
     }
@@ -135,7 +137,7 @@ namespace bramblefore
     {
         for (const AccentAnim & anim : m_anims)
         {
-            if (t_context.layout.wholeRect().intersects(anim.sprite.getGlobalBounds()))
+            if (t_context.layout.wholeRect().findIntersection(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
             }
@@ -146,7 +148,7 @@ namespace bramblefore
     {
         for (AccentAnim & anim : m_anims)
         {
-            anim.sprite.move(t_amount, 0.0f);
+            anim.sprite.move({ t_amount, 0.0f });
         }
     }
 

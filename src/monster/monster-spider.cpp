@@ -20,7 +20,7 @@ namespace bramblefore
     {
         if (MonsterAnim::Death == m_anim)
         {
-            return { 0.0f, 0.0f, 0.0f, 0.0f };
+            return { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
         }
         else
         {
@@ -34,15 +34,15 @@ namespace bramblefore
     {
         sf::FloatRect rect{ collisionRect() };
 
-        const float shiftHoriz{ rect.width * 0.35f };
+        const float shiftHoriz{ rect.size.x * 0.35f };
 
         if (m_isFacingRight)
         {
-            rect.left += shiftHoriz;
+            rect.position.x += shiftHoriz;
         }
         else
         {
-            rect.left -= shiftHoriz;
+            rect.position.x -= shiftHoriz;
         }
 
         util::scaleRectInPlace(rect, 1.1f);

@@ -14,7 +14,9 @@ namespace bramblefore
 
     GlowRect::GlowRect()
         : m_verts{}
-    {}
+    {
+        m_verts.reserve(util::verts_per_quad);
+    }
 
     void GlowRect::setup(
         const sf::Color & t_color,
@@ -61,43 +63,39 @@ namespace bramblefore
 
         util::appendTriangleVerts(t_innerRect, m_verts, t_color);
 
-        const sf::FloatRect topLeftRect{ t_outerRect.left,
-                                         t_outerRect.top,
-                                         (t_innerRect.left - t_outerRect.left),
-                                         (t_innerRect.top - t_outerRect.top) };
+        const sf::FloatRect topLeftRect{ { t_outerRect.position.x, t_outerRect.position.y },
+                                         { (t_innerRect.position.x - t_outerRect.position.x),
+                                           (t_innerRect.position.y - t_outerRect.position.y) } };
 
         util::appendTriangleVerts(topLeftRect, m_verts, t_color);
         setTransparentBotLeft();
         setTransparentTopLeft();
         setTransparentTopRight();
 
-        const sf::FloatRect topRect{
-            t_innerRect.left, t_outerRect.top, t_innerRect.width, topLeftRect.height
-        };
+        const sf::FloatRect topRect{ { t_innerRect.position.x, t_outerRect.position.y },
+                                     { t_innerRect.size.x, topLeftRect.size.y } };
 
         util::appendTriangleVerts(topRect, m_verts, t_color);
         setTransparentTopLeft();
         setTransparentTopRight();
 
-        const sf::FloatRect topRightRect{
-            util::right(topRect), topRect.top, topLeftRect.width, topLeftRect.height
-        };
+        const sf::FloatRect topRightRect{ { util::right(topRect), topRect.position.y },
+                                          { topLeftRect.size.x, topLeftRect.size.y } };
 
         util::appendTriangleVerts(topRightRect, m_verts, t_color);
         setTransparentTopLeft();
         setTransparentTopRight();
         setTransparentBotRight();
 
-        const sf::FloatRect leftRect{
-            t_outerRect.left, t_innerRect.top, topLeftRect.width, t_innerRect.height
-        };
+        const sf::FloatRect leftRect{ { t_outerRect.position.x, t_innerRect.position.y },
+                                      { topLeftRect.size.x, t_innerRect.size.y } };
 
         util::appendTriangleVerts(leftRect, m_verts, t_color);
         setTransparentTopLeft();
         setTransparentBotLeft();
 
-        const sf::FloatRect rightRect{
-            util::right(t_innerRect), t_innerRect.top, leftRect.width, t_innerRect.height
+        const sf::FloatRect rightRect{ { util::right(t_innerRect), t_innerRect.position.y },
+                                       { leftRect.size.x, t_innerRect.size.y }
 
         };
 
@@ -105,28 +103,23 @@ namespace bramblefore
         setTransparentTopRight();
         setTransparentBotRight();
 
-        const sf::FloatRect botLeftRect{
-            t_outerRect.left, util::bottom(t_innerRect), leftRect.width, topLeftRect.height
-        };
+        const sf::FloatRect botLeftRect{ { t_outerRect.position.x, util::bottom(t_innerRect) },
+                                         { leftRect.size.x, topLeftRect.size.y } };
 
         util::appendTriangleVerts(botLeftRect, m_verts, t_color);
         setTransparentTopLeft();
         setTransparentBotLeft();
         setTransparentBotRight();
 
-        const sf::FloatRect botRect{
-            t_innerRect.left, util::bottom(t_innerRect), t_innerRect.width, topLeftRect.height
-
-        };
+        const sf::FloatRect botRect{ { t_innerRect.position.x, util::bottom(t_innerRect) },
+                                     { t_innerRect.size.x, topLeftRect.size.y } };
 
         util::appendTriangleVerts(botRect, m_verts, t_color);
         setTransparentBotLeft();
         setTransparentBotRight();
 
-        const sf::FloatRect botRightRect{ util::right(t_innerRect),
-                                          util::bottom(t_innerRect),
-                                          topRightRect.width,
-                                          topRightRect.height };
+        const sf::FloatRect botRightRect{ { util::right(t_innerRect), util::bottom(t_innerRect) },
+                                          { topRightRect.size.x, topRightRect.size.y } };
 
         util::appendTriangleVerts(botRightRect, m_verts, t_color);
         setTransparentBotLeft();
@@ -138,7 +131,7 @@ namespace bramblefore
     {
         if (!m_verts.empty())
         {
-            t_target.draw(&m_verts[0], m_verts.size(), sf::Triangles);
+            t_target.draw(&m_verts[0], m_verts.size(), sf::PrimitiveType::Triangles);
         }
     }
 

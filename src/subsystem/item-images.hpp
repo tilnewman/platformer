@@ -166,72 +166,72 @@ namespace bramblefore
         // clang-format off
         switch (item)
         {
-            case Item::Bone:            { return {   0,   0, 32, 32 }; }
-            case Item::Berries:         { return {  32,   0, 32, 32 }; }
-            case Item::BlackPearl:      { return {  64,   0, 32, 32 }; }
-            case Item::Bottle1:         { return {  96,   0, 32, 32 }; }
-            case Item::Bottle2:         { return { 128,   0, 32, 32 }; }
-            case Item::Bottle3:         { return { 160,   0, 32, 32 }; }
-            case Item::Bottle4:         { return { 192,   0, 32, 32 }; }
-            case Item::Bottle5:         { return { 224,   0, 32, 32 }; }
-            case Item::Bottle6:         { return {   0,  32, 32, 32 }; }
-            case Item::Bottle7:         { return {  32,  32, 32, 32 }; }
-            case Item::Bottle8:         { return {  64,  32, 32, 32 }; }
-            case Item::Bottle9:         { return {  96,  32, 32, 32 }; }
-            case Item::Bottle10:        { return { 128,  32, 32, 32 }; }
-            case Item::Bottle11:        { return { 160,  32, 32, 32 }; }
-            case Item::Bottle12:        { return { 192,  32, 32, 32 }; }
-            case Item::Bottle13:        { return { 224,  32, 32, 32 }; }
-            case Item::Bottle14:        { return {   0,  64, 32, 32 }; }
-            case Item::Bottle15:        { return {  32,  64, 32, 32 }; }
-            case Item::Bottle16:        { return {  64,  64, 32, 32 }; }
-            case Item::Bottle17:        { return {  96,  64, 32, 32 }; }
-            case Item::Bottle18:        { return { 128,  64, 32, 32 }; }
-            case Item::Bottle19:        { return { 160,  64, 32, 32 }; }
-            case Item::Bottle20:        { return { 192,  64, 32, 32 }; }
-            case Item::Bottle21:        { return { 224,  64, 32, 32 }; }
-            case Item::Bottle22:        { return {   0,  96, 32, 32 }; }
-            case Item::Bottle23:        { return {  32,  96, 32, 32 }; }
-            case Item::Bottle24:        { return {  64,  96, 32, 32 }; }
-            case Item::ButterflyWing:   { return {  96,  96, 32, 32 }; }
-            case Item::Container1:      { return { 128,  96, 32, 32 }; }
-            case Item::Container2:      { return { 160,  96, 32, 32 }; }
-            case Item::Cotton:          { return { 192,  96, 32, 32 }; }
-            case Item::Crown:           { return { 224,  96, 32, 32 }; }
-            case Item::Crystal1:        { return {   0, 128, 32, 32 }; }
-            case Item::Crystal2:        { return {  32, 128, 32, 32 }; }
-            case Item::Crystal3:        { return {  64, 128, 32, 32 }; }
-            case Item::Crystal4:        { return {  96, 128, 32, 32 }; }
-            case Item::Crystal5:        { return { 128, 128, 32, 32 }; }
-            case Item::DriedHerb:       { return { 160, 128, 32, 32 }; }
-            case Item::EagleFeather:    { return { 192, 128, 32, 32 }; }
-            case Item::Egg:             { return { 224, 128, 32, 32 }; }
-            case Item::FlowerDaisy:     { return {   0, 160, 32, 32 }; }
-            case Item::FlowerRose:      { return {  32, 160, 32, 32 }; }
-            case Item::FlowerSunflower: { return {  64, 160, 32, 32 }; }
-            case Item::Fruit:           { return {  96, 160, 32, 32 }; }
-            case Item::Goblet:          { return { 128, 160, 32, 32 }; }
-            case Item::Herb1:           { return { 160, 160, 32, 32 }; }
-            case Item::Herb2:           { return { 192, 160, 32, 32 }; }
-            case Item::Herb3:           { return { 224, 160, 32, 32 }; }
-            case Item::Jevellery1:      { return {   0, 192, 32, 32 }; }
-            case Item::Jevellery2:      { return {  32, 192, 32, 32 }; }
-            case Item::Key:             { return {  64, 192, 32, 32 }; }
-            case Item::Leaf:            { return {  96, 192, 32, 32 }; }
-            case Item::Meat:            { return { 128, 192, 32, 32 }; }
-            case Item::Mint:            { return { 160, 192, 32, 32 }; }
-            case Item::Mushroom1:       { return { 192, 192, 32, 32 }; }
-            case Item::Mushroom2:       { return { 224, 192, 32, 32 }; }
-            case Item::Mushroom3:       { return {   0, 224, 32, 32 }; }
-            case Item::Mushroom4:       { return {  32, 224, 32, 32 }; }
-            case Item::Nuts:            { return {  64, 224, 32, 32 }; }
-            case Item::PineNeedles:     { return {  96, 224, 32, 32 }; }
-            case Item::RedPepper:       { return { 128, 224, 32, 32 }; }
-            case Item::Ring1:           { return { 160, 224, 32, 32 }; }
-            case Item::Ring2:           { return { 192, 224, 32, 32 }; }
-            case Item::Seed:            { return { 224, 224, 32, 32 }; }
+            case Item::Bone:            { return { {   0,   0 }, { 32, 32 } }; }
+            case Item::Berries:         { return { {  32,   0 }, { 32, 32 } }; }
+            case Item::BlackPearl:      { return { {  64,   0 }, { 32, 32 } }; }
+            case Item::Bottle1:         { return { {  96,   0 }, { 32, 32 } }; }
+            case Item::Bottle2:         { return { { 128,   0 }, { 32, 32 } }; }
+            case Item::Bottle3:         { return { { 160,   0 }, { 32, 32 } }; }
+            case Item::Bottle4:         { return { { 192,   0 }, { 32, 32 } }; }
+            case Item::Bottle5:         { return { { 224,   0 }, { 32, 32 } }; }
+            case Item::Bottle6:         { return { {   0,  32 }, { 32, 32 } }; }
+            case Item::Bottle7:         { return { {  32,  32 }, { 32, 32 } }; }
+            case Item::Bottle8:         { return { {  64,  32 }, { 32, 32 } }; }
+            case Item::Bottle9:         { return { {  96,  32 }, { 32, 32 } }; }
+            case Item::Bottle10:        { return { { 128,  32 }, { 32, 32 } }; }
+            case Item::Bottle11:        { return { { 160,  32 }, { 32, 32 } }; }
+            case Item::Bottle12:        { return { { 192,  32 }, { 32, 32 } }; }
+            case Item::Bottle13:        { return { { 224,  32 }, { 32, 32 } }; }
+            case Item::Bottle14:        { return { {   0,  64 }, { 32, 32 } }; }
+            case Item::Bottle15:        { return { {  32,  64 }, { 32, 32 } }; }
+            case Item::Bottle16:        { return { {  64,  64 }, { 32, 32 } }; }
+            case Item::Bottle17:        { return { {  96,  64 }, { 32, 32 } }; }
+            case Item::Bottle18:        { return { { 128,  64 }, { 32, 32 } }; }
+            case Item::Bottle19:        { return { { 160,  64 }, { 32, 32 } }; }
+            case Item::Bottle20:        { return { { 192,  64 }, { 32, 32 } }; }
+            case Item::Bottle21:        { return { { 224,  64 }, { 32, 32 } }; }
+            case Item::Bottle22:        { return { {   0,  96 }, { 32, 32 } }; }
+            case Item::Bottle23:        { return { {  32,  96 }, { 32, 32 } }; }
+            case Item::Bottle24:        { return { {  64,  96 }, { 32, 32 } }; }
+            case Item::ButterflyWing:   { return { {  96,  96 }, { 32, 32 } }; }
+            case Item::Container1:      { return { { 128,  96 }, { 32, 32 } }; }
+            case Item::Container2:      { return { { 160,  96 }, { 32, 32 } }; }
+            case Item::Cotton:          { return { { 192,  96 }, { 32, 32 } }; }
+            case Item::Crown:           { return { { 224,  96 }, { 32, 32 } }; }
+            case Item::Crystal1:        { return { {   0, 128 }, { 32, 32 } }; }
+            case Item::Crystal2:        { return { {  32, 128 }, { 32, 32 } }; }
+            case Item::Crystal3:        { return { {  64, 128 }, { 32, 32 } }; }
+            case Item::Crystal4:        { return { {  96, 128 }, { 32, 32 } }; }
+            case Item::Crystal5:        { return { { 128, 128 }, { 32, 32 } }; }
+            case Item::DriedHerb:       { return { { 160, 128 }, { 32, 32 } }; }
+            case Item::EagleFeather:    { return { { 192, 128 }, { 32, 32 } }; }
+            case Item::Egg:             { return { { 224, 128 }, { 32, 32 } }; }
+            case Item::FlowerDaisy:     { return { {   0, 160 }, { 32, 32 } }; }
+            case Item::FlowerRose:      { return { {  32, 160 }, { 32, 32 } }; }
+            case Item::FlowerSunflower: { return { {  64, 160 }, { 32, 32 } }; }
+            case Item::Fruit:           { return { {  96, 160 }, { 32, 32 } }; }
+            case Item::Goblet:          { return { { 128, 160 }, { 32, 32 } }; }
+            case Item::Herb1:           { return { { 160, 160 }, { 32, 32 } }; }
+            case Item::Herb2:           { return { { 192, 160 }, { 32, 32 } }; }
+            case Item::Herb3:           { return { { 224, 160 }, { 32, 32 } }; }
+            case Item::Jevellery1:      { return { {   0, 192 }, { 32, 32 } }; }
+            case Item::Jevellery2:      { return { {  32, 192 }, { 32, 32 } }; }
+            case Item::Key:             { return { {  64, 192 }, { 32, 32 } }; }
+            case Item::Leaf:            { return { {  96, 192 }, { 32, 32 } }; }
+            case Item::Meat:            { return { { 128, 192 }, { 32, 32 } }; }
+            case Item::Mint:            { return { { 160, 192 }, { 32, 32 } }; }
+            case Item::Mushroom1:       { return { { 192, 192 }, { 32, 32 } }; }
+            case Item::Mushroom2:       { return { { 224, 192 }, { 32, 32 } }; }
+            case Item::Mushroom3:       { return { {   0, 224 }, { 32, 32 } }; }
+            case Item::Mushroom4:       { return { {  32, 224 }, { 32, 32 } }; }
+            case Item::Nuts:            { return { {  64, 224 }, { 32, 32 } }; }
+            case Item::PineNeedles:     { return { {  96, 224 }, { 32, 32 } }; }
+            case Item::RedPepper:       { return { { 128, 224 }, { 32, 32 } }; }
+            case Item::Ring1:           { return { { 160, 224 }, { 32, 32 } }; }
+            case Item::Ring2:           { return { { 192, 224 }, { 32, 32 } }; }
+            case Item::Seed:            { return { { 224, 224 }, { 32, 32 } }; }
             case Item::Count:           [[fallthrough]];
-            default:                    { return {   0,   0, 32, 32 }; }
+            default:                    { return {  {  0,   0 }, { 32, 32 } }; }
         }
         // clang-format on
     }

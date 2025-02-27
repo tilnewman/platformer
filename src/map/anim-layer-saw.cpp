@@ -11,6 +11,7 @@
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
 
@@ -26,19 +27,20 @@ namespace bramblefore
     {
         HarmCollisionManager::instance().addOwner(*this);
 
-        m_texture.loadFromFile((t_context.settings.media_path / "image/anim/saw.png").string());
+        M_CHECK(
+            m_texture.loadFromFile((t_context.settings.media_path / "image/anim/saw.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_texture);
 
         for (const sf::FloatRect & rect : t_rects)
         {
-            sf::Sprite & sprite{ m_anims.emplace_back() };
-            sprite.setTexture(m_texture);
+            sf::Sprite & sprite{ m_anims.emplace_back(m_texture) };
             util::setOriginToCenter(sprite);
             sprite.setPosition(util::center(rect));
 
             const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 0.5f) };
-            sprite.scale(scale, scale);
+            sprite.scale({ scale, scale });
         }
     }
 
@@ -51,7 +53,7 @@ namespace bramblefore
 
         for (const sf::Sprite & sprite : m_anims)
         {
-            if (wholeScreenRect.intersects(sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(sprite.getGlobalBounds()))
             {
                 t_target.draw(sprite, t_states);
             }
@@ -62,7 +64,7 @@ namespace bramblefore
     {
         for (sf::Sprite & sprite : m_anims)
         {
-            sprite.move(t_amount, 0.0f);
+            sprite.move({ t_amount, 0.0f });
         }
     }
 
@@ -70,7 +72,7 @@ namespace bramblefore
     {
         for (sf::Sprite & sprite : m_anims)
         {
-            sprite.rotate(t_frameTimeSec * -80.0f);
+            sprite.rotate(sf::degrees(t_frameTimeSec * -80.0f));
         }
     }
 
@@ -85,11 +87,12 @@ namespace bramblefore
             const sf::FloatRect globalBounds{ sprite.getGlobalBounds() };
 
             if (util::distance(util::center(globalBounds), avatarCenter) <
-                (globalBounds.width * 0.5f))
+                (globalBounds.size.x * 0.5f))
             {
                 harm.rect   = globalBounds;
                 harm.damage = 16;
                 harm.sfx    = "";
+
                 break;
             }
         }

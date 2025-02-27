@@ -75,22 +75,22 @@ namespace bramblefore
             return false;
         }
 
-        enter_rect.left += t_amount;
-        exit_rect.left += t_amount;
+        enter_rect.position.x += t_amount;
+        exit_rect.position.x += t_amount;
 
         for (sf::FloatRect & rect : collisions)
         {
-            rect.left += t_amount;
+            rect.position.x += t_amount;
         }
 
         for (sf::FloatRect & rect : kill_collisions)
         {
-            rect.left += t_amount;
+            rect.position.x += t_amount;
         }
 
         for (sf::FloatRect & rect : ladders)
         {
-            rect.left += t_amount;
+            rect.position.x += t_amount;
         }
 
         for (auto & layerUPtr : tile_layers)
@@ -170,7 +170,7 @@ namespace bramblefore
     {
         for (const sf::FloatRect & ladderRect : ladders)
         {
-            if (avatarRect.intersects(ladderRect))
+            if (avatarRect.findIntersection(ladderRect))
             {
                 return { ladderRect };
             }

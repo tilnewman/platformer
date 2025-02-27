@@ -11,6 +11,7 @@
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
 
@@ -26,8 +27,10 @@ namespace bramblefore
     {
         HarmCollisionManager::instance().addOwner(*this);
 
-        m_texture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/puke-trap.png").string());
+        M_CHECK(
+            m_texture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/puke-trap.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_texture);
 
@@ -38,22 +41,22 @@ namespace bramblefore
             anim.sprite.setTextureRect(textureRect(0));
 
             const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.5f) };
-            anim.sprite.scale(scale, scale);
+            anim.sprite.scale({ scale, scale });
 
             anim.sprite.setPosition(
-                (util::center(rect).x - (anim.sprite.getGlobalBounds().width * 0.5f)),
-                (util::bottom(rect) - (anim.sprite.getGlobalBounds().height * 0.65f)));
+                { (util::center(rect).x - (anim.sprite.getGlobalBounds().size.x * 0.5f)),
+                  (util::bottom(rect) - (anim.sprite.getGlobalBounds().size.y * 0.65f)) });
 
             anim.coll_rect =
                 util::scaleRectInPlaceCopy(anim.sprite.getGlobalBounds(), { 0.6f, 0.2f });
 
-            anim.coll_rect.left -= (anim.coll_rect.width * 0.1f);
+            anim.coll_rect.position.x -= (anim.coll_rect.size.x * 0.1f);
 
             // make the spring rect bigger so players can walk to and trigger it without harm
             anim.spring_rect =
                 util::scaleRectInPlaceCopy(anim.sprite.getGlobalBounds(), { 0.8f, 0.35f });
 
-            anim.spring_rect.left -= (anim.spring_rect.width * 0.10f);
+            anim.spring_rect.position.x -= (anim.spring_rect.size.x * 0.10f);
         }
     }
 
@@ -69,7 +72,7 @@ namespace bramblefore
 
         for (const PukeTrapAnim & anim : m_anims)
         {
-            if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
             }
@@ -80,9 +83,9 @@ namespace bramblefore
     {
         for (PukeTrapAnim & anim : m_anims)
         {
-            anim.sprite.move(t_amount, 0.0f);
-            anim.coll_rect.left += t_amount;
-            anim.spring_rect.left += t_amount;
+            anim.sprite.move({ t_amount, 0.0f });
+            anim.coll_rect.position.x += t_amount;
+            anim.spring_rect.position.x += t_amount;
         }
     }
 
@@ -123,7 +126,7 @@ namespace bramblefore
             }
             else
             {
-                if (avatarCollRect.intersects(anim.spring_rect))
+                if (avatarCollRect.findIntersection(anim.spring_rect))
                 {
                     t_context.sfx.play("mimic");
                     anim.is_springing = true;
@@ -147,10 +150,11 @@ namespace bramblefore
     sf::IntRect PukeTrapAnimationLayer::textureRect(const std::size_t frame) const noexcept
     {
         sf::IntRect rect;
-        rect.width  = static_cast<int>(m_texture.getSize().y);
-        rect.height = rect.width;
-        rect.top    = 0;
-        rect.left   = (static_cast<int>(frame) * rect.width);
+        rect.size.x     = static_cast<int>(m_texture.getSize().y);
+        rect.size.y     = rect.size.x;
+        rect.position.y = 0;
+        rect.position.x = (static_cast<int>(frame) * rect.size.x);
+
         return rect;
     }
 
@@ -165,7 +169,7 @@ namespace bramblefore
                 continue;
             }
 
-            if (t_avatarRect.intersects(anim.coll_rect))
+            if (t_avatarRect.findIntersection(anim.coll_rect))
             {
                 anim.is_springing = true;
                 harm.rect         = anim.coll_rect;

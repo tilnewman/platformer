@@ -14,6 +14,8 @@
 #include "subsystem/floating-text.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
+#include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -30,35 +32,34 @@ namespace bramblefore
         const std::string & t_description,
         const float t_vertPos)
         : texture{}
-        , sprite{}
-        , name{}
-        , description{}
+        , sprite{ texture }
+        , name{ util::SfmlDefaults::instance().font() }
+        , description{ util::SfmlDefaults::instance().font() }
     {
-        texture.loadFromFile(t_imageFilePath);
+        M_CHECK(texture.loadFromFile(t_imageFilePath), "file not found");
         texture.setSmooth(true);
         TextureStats::instance().process(texture);
 
-        sprite.setTexture(texture);
+        sprite.setTexture(texture, true);
 
         const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, t_imageScale) };
-        sprite.scale(scale, scale);
+        sprite.scale({ scale, scale });
 
         const sf::FloatRect screenRect{ t_context.layout.wholeRect() };
 
         sprite.setPosition(
-            (util::center(screenRect).x - (sprite.getGlobalBounds().width * 0.5f)), t_vertPos);
+            { (util::center(screenRect).x - (sprite.getGlobalBounds().size.x * 0.5f)), t_vertPos });
 
         //
 
         // this is the vertical empty space between images and lines of text
-        const float vertPad{ screenRect.height * 0.025f };
+        const float vertPad{ screenRect.size.y * 0.025f };
 
         name = t_context.font.makeText(
             Font::Default, FontSize::Large, t_name, sf::Color(220, 220, 220));
 
-        name.setPosition(
-            (util::center(screenRect).x - (name.getGlobalBounds().width * 0.5f)),
-            (util::bottom(sprite) + vertPad));
+        name.setPosition({ (util::center(screenRect).x - (name.getGlobalBounds().size.x * 0.5f)),
+                           (util::bottom(sprite) + vertPad) });
 
         //
 
@@ -66,15 +67,15 @@ namespace bramblefore
             Font::Default, FontSize::Small, t_description, sf::Color(160, 160, 160));
 
         description.setPosition(
-            (util::center(screenRect).x - (description.getGlobalBounds().width * 0.5f)),
-            (util::bottom(name) + (vertPad * 0.35f)));
+            { (util::center(screenRect).x - (description.getGlobalBounds().size.x * 0.5f)),
+              (util::bottom(name) + (vertPad * 0.35f)) });
     }
 
     void CreditAnim::move(const float t_amount)
     {
-        sprite.move(0.0f, t_amount);
-        name.move(0.0f, t_amount);
-        description.move(0.0f, t_amount);
+        sprite.move({ 0.0f, t_amount });
+        name.move({ 0.0f, t_amount });
+        description.move({ 0.0f, t_amount });
     }
 
     float CreditAnim::bottom() const { return util::bottom(description); }
@@ -89,7 +90,7 @@ namespace bramblefore
     //
 
     CreditsState::CreditsState()
-        : m_titleText{}
+        : m_titleText{ util::SfmlDefaults::instance().font() }
         , m_credits{}
     {}
 
@@ -98,7 +99,7 @@ namespace bramblefore
         const float speed{ -35.0f };
         const float moveAmount{ speed * t_frameTimeSec };
 
-        m_titleText.move(0.0f, moveAmount);
+        m_titleText.move({ 0.0f, moveAmount });
 
         for (CreditAnim & anim : m_credits)
         {
@@ -123,7 +124,7 @@ namespace bramblefore
 
     void CreditsState::handleEvent(Context & t_context, const sf::Event & t_event)
     {
-        if (t_event.type == sf::Event::KeyPressed)
+        if (t_event.is<sf::Event::KeyPressed>())
         {
             t_context.state.setChangePending(State::Shutdown);
         }
@@ -132,14 +133,14 @@ namespace bramblefore
     void CreditsState::onEnter(Context & t_context)
     {
         const sf::FloatRect screenRect{ t_context.layout.wholeRect() };
-        const float vertPad{ screenRect.height * 0.15f };
+        const float vertPad{ screenRect.size.y * 0.15f };
 
         m_titleText = t_context.font.makeText(
             Font::Default, FontSize::Huge, "Credits", sf::Color(220, 220, 220));
 
         m_titleText.setPosition(
-            (util::center(screenRect).x - (m_titleText.getGlobalBounds().width * 0.5f)),
-            ((screenRect.height - m_titleText.getGlobalBounds().height) - (vertPad * 0.5f)));
+            { (util::center(screenRect).x - (m_titleText.getGlobalBounds().size.x * 0.5f)),
+              ((screenRect.size.y - m_titleText.getGlobalBounds().size.y) - (vertPad * 0.5f)) });
 
         m_credits.reserve(16);
 
@@ -149,7 +150,7 @@ namespace bramblefore
             0.25f,
             "Ziesche Til Newman",
             "Software, C++, SFML, CMake",
-            screenRect.height);
+            screenRect.size.y);
 
         m_credits.emplace_back(
             t_context,

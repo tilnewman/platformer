@@ -21,21 +21,21 @@ namespace bramblefore
     {
         if (MonsterAnim::Death == m_anim)
         {
-            return { 0.0f, 0.0f, 0.0f, 0.0f };
+            return { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
         }
         else
         {
             sf::FloatRect rect{ m_sprite.getGlobalBounds() };
             util::scaleRectInPlace(rect, { 0.4f, 0.25f });
-            rect.top += (rect.height * 0.5f);
+            rect.position.y += (rect.size.y * 0.5f);
 
             if (m_isFacingRight)
             {
-                rect.left += (rect.width * 0.2f);
+                rect.position.x += (rect.size.x * 0.2f);
             }
             else
             {
-                rect.left -= (rect.width * 0.2f);
+                rect.position.x -= (rect.size.x * 0.2f);
             }
 
             return rect;
@@ -46,15 +46,15 @@ namespace bramblefore
     {
         sf::FloatRect rect{ collisionRect() };
 
-        const float shiftHoriz{ rect.width * 0.6f };
+        const float shiftHoriz{ rect.size.x * 0.6f };
 
         if (m_isFacingRight)
         {
-            rect.left += shiftHoriz;
+            rect.position.x += shiftHoriz;
         }
         else
         {
-            rect.left -= shiftHoriz;
+            rect.position.x -= shiftHoriz;
         }
 
         util::scaleRectInPlace(rect, 1.1f);
@@ -67,7 +67,7 @@ namespace bramblefore
         const sf::FloatRect collRect{ collisionRect() };
 
         sf::Vector2f pos;
-        pos.y = collRect.top;
+        pos.y = collRect.position.y;
 
         if (m_isFacingRight)
         {
@@ -75,7 +75,7 @@ namespace bramblefore
         }
         else
         {
-            pos.x = collRect.left;
+            pos.x = collRect.position.x;
         }
 
         m_animations.add(pos, m_spell, m_isFacingRight);

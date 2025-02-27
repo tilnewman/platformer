@@ -5,8 +5,11 @@
 //
 #include "map/tile-layer.hpp"
 #include "subsystem/harm-collision-manager.hpp"
+#include "util/sfml-defaults.hpp"
 
 #include <vector>
+#include <string>
+#include <string_view>
 
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -78,7 +81,7 @@ namespace bramblefore
         float time_between_flaming_sec{ 0.0f };
         float time_between_frames_sec{ 0.15f };
         std::size_t frame_index{ 0 };
-        sf::Sprite sprite{};
+        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
         bool is_flaming{ false };
         TrapDirection direction{ TrapDirection::Up }; // anything works here
         sf::FloatRect coll_rect{};

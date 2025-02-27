@@ -3,6 +3,8 @@
 //
 // accents.hpp
 //
+#include "util/sfml-defaults.hpp"
+
 #include <string_view>
 #include <vector>
 
@@ -13,7 +15,7 @@
 namespace sf
 {
     class RenderTarget;
-    class RenderStates;
+    struct RenderStates;
 } // namespace sf
 
 namespace bramblefore
@@ -127,7 +129,7 @@ namespace bramblefore
     {
         Accent which{ Accent::Vine1 }; // anything works here
         std::size_t anim_index{ 0 };
-        sf::Sprite sprite{};
+        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
         float elapsed_time_sec{ 0.0f };
         float time_per_frame_sec{ 0.0f };
     };

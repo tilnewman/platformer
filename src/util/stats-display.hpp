@@ -3,6 +3,7 @@
 //
 // stats-display.hpp
 //
+#include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
 
 #include <iostream>
@@ -20,7 +21,7 @@ namespace util
         explicit GraphDisplay(
             const std::vector<data_t> & t_data,
             const sf::Vector2u & t_size = { 1000, 500 },
-            const sf::Uint8 t_alpha     = 255)
+            const std::uint8_t t_alpha  = 255)
             : m_size{ t_size }
             , m_data{ t_data }
             , m_alpha{ t_alpha }
@@ -48,13 +49,13 @@ namespace util
 
             // create render texture of the correct size to fit the data -not the m_size.x
             const unsigned dataWidth = static_cast<unsigned>(util::right(dataBarRects.back()));
-            if (!m_renderTexture.create(dataWidth, m_size.y))
+            if (!m_renderTexture.resize({ dataWidth, m_size.y }))
             {
                 std::cout << "GraphDisplay's sf::RenderTexture::create failed for size="
                           << dataWidth << "x" << m_size.y
                           << ". So the graph will show solid magenta.  The color of pure evil.\n";
 
-                m_renderTexture.create(32, 32); // this probably won't fail...
+                M_CHECK(m_renderTexture.resize({ 4u, 4u }), "can't create 4x4 RenderTexture");
                 m_renderTexture.clear(sf::Color::Magenta);
                 m_renderTexture.display();
             }
@@ -192,14 +193,14 @@ namespace util
                     (static_cast<float>(value) / static_cast<float>(t_maxValue));
 
                 sf::FloatRect dataBarRect;
-                dataBarRect.left   = posLeft;
-                dataBarRect.width  = dataBarWidth;
-                dataBarRect.height = (static_cast<float>(m_size.y) * valueRatio);
-                dataBarRect.top    = (static_cast<float>(m_size.y) - dataBarRect.height);
+                dataBarRect.position.x = posLeft;
+                dataBarRect.size.x     = dataBarWidth;
+                dataBarRect.size.y     = (static_cast<float>(m_size.y) * valueRatio);
+                dataBarRect.position.y = (static_cast<float>(m_size.y) - dataBarRect.size.y);
 
                 t_dataBarRects.push_back(dataBarRect);
 
-                posLeft += dataBarRect.width;
+                posLeft += dataBarRect.size.x;
             }
         }
 
@@ -213,8 +214,8 @@ namespace util
 
             for (const sf::FloatRect & dataBarRect : t_dataBarRects)
             {
-                rectangle.setSize(util::size(dataBarRect));
-                rectangle.setPosition(util::position(dataBarRect));
+                rectangle.setSize(dataBarRect.size);
+                rectangle.setPosition(dataBarRect.position);
 
                 rectangle.setFillColor(t_barColor);
                 rectangle.setOutlineColor(sf::Color::Transparent);
@@ -223,7 +224,7 @@ namespace util
                 t_renderTexture.draw(rectangle);
 
                 // if bars are wide enough then draw dark outline around them because it's pretty
-                if (dataBarRect.width > 4.0f)
+                if (dataBarRect.size.x > 4.0f)
                 {
                     rectangle.setOutlineThickness(1.0f);
                     rectangle.setOutlineColor(t_backgroundColor);
@@ -259,7 +260,7 @@ namespace util
       private:
         sf::Vector2u m_size;
         std::vector<data_t> m_data;
-        sf::Uint8 m_alpha;
+        std::uint8_t m_alpha;
         sf::RenderTexture m_renderTexture;
         sf::Color m_backgroundColor;
         sf::Color m_dataBarColor;
@@ -291,18 +292,20 @@ namespace util
             , m_titleTextColor{ 245, 246, 249 }
             , m_subTitleTextColor{ 132, 139, 148 }
         {
-            const sf::Vector2f graphPadRatio(0.1f, 0.25f);
+            const sf::Vector2f graphPadRatio({ 0.1f, 0.25f });
             const sf::Vector2f graphSizeF{ t_graphSize };
             m_size = (graphSizeF + (graphSizeF * graphPadRatio));
             const sf::Vector2u fullSizeU{ m_size };
             const sf::FloatRect fullRect({ 0.0f, 0.0f }, m_size);
             const sf::FloatRect graphRect((graphSizeF * graphPadRatio * 0.5f), graphSizeF);
-            const sf::FloatRect borderRect(1.0f, 1.0f, (m_size.x - 2.0f), (m_size.y - 2.0f));
 
-            sf::FloatRect titleRect(2.0f, 2.0f, (m_size.x - 4.0f), (graphRect.top - 3.0f));
+            const sf::FloatRect borderRect(
+                { 1.0f, 1.0f }, { (m_size.x - 2.0f), (m_size.y - 2.0f) });
+
+            sf::FloatRect titleRect(
+                { 2.0f, 2.0f }, { (m_size.x - 4.0f), (graphRect.position.y - 3.0f) });
             util::scaleRectInPlace(titleRect, 0.6f);
-            sf::Text titleText;
-            titleText.setFont(t_font);
+            sf::Text titleText(t_font);
             titleText.setCharacterSize(50);
             titleText.setFillColor(m_titleTextColor);
             titleText.setString(t_title);
@@ -311,31 +314,29 @@ namespace util
 
             const auto stats = util::makeStats(m_data);
 
-            sf::FloatRect subTitleRect(
-                2.0f, (util::bottom(graphRect) + 1.0f), titleRect.width, titleRect.height);
+            sf::FloatRect subTitleRect({ 2.0f, (util::bottom(graphRect) + 1.0f) }, titleRect.size);
 
             util::scaleRectInPlace(subTitleRect, 0.5f);
-            sf::Text subTitleText;
-            subTitleText.setFont(t_font);
+            sf::Text subTitleText(t_font);
             subTitleText.setCharacterSize(50);
             subTitleText.setFillColor(m_subTitleTextColor);
             subTitleText.setString(stats.toString());
             util::setOriginToPosition(subTitleText);
             util::fitAndCenterInside(subTitleText, subTitleRect);
 
-            if (!m_renderTexture.create(fullSizeU.x, fullSizeU.y))
+            if (!m_renderTexture.resize({ fullSizeU.x, fullSizeU.y }))
             {
                 std::cout << "StatDisplay's sf::RenderTexture::create failed for size=" << fullSizeU
                           << ". So the graph will show solid magenta.  The color of pure evil.\n";
 
-                m_renderTexture.create(32, 32); // this probably won't fail...
+                M_CHECK(m_renderTexture.resize({ 4u, 4u }), "can't create 4x4 RenderTexture");
                 m_renderTexture.clear(sf::Color::Magenta);
                 m_renderTexture.display();
                 return;
             }
 
             m_renderTexture.clear(m_backgroundColor);
-            m_graphDisplay.draw(util::position(graphRect), m_renderTexture);
+            m_graphDisplay.draw(graphRect.position, m_renderTexture);
             util::drawRectangleShape(m_renderTexture, borderRect, false, m_borderColor);
             m_renderTexture.draw(titleText);
             m_renderTexture.draw(subTitleText);

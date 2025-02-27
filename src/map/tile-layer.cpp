@@ -39,7 +39,7 @@ namespace bramblefore
 
         if (!m_visibleVerts.empty())
         {
-            t_target.draw(&m_visibleVerts[0], m_visibleVerts.size(), sf::Triangles, t_states);
+            t_target.draw(&m_visibleVerts[0], m_visibleVerts.size(), sf::PrimitiveType::Triangles, t_states);
         }
     }
 
@@ -71,7 +71,7 @@ namespace bramblefore
     {
         std::clog << "\tLayer Tiles:  " << m_image << ", possible=" << m_indexes.size()
                   << ", actual=" << (m_verts.size() / util::verts_per_quad)
-                  << ", visible=" << (m_visibleVerts.size() / util::verts_per_quad) << "\n";
+                  << ", visible=" << (m_visibleVerts.size() / util::verts_per_quad) << '\n';
     }
 
     void TileLayer::populateVisibleVerts(const sf::FloatRect & t_visibleRect)

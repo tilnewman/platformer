@@ -8,6 +8,7 @@
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
 
 namespace bramblefore
@@ -20,12 +21,17 @@ namespace bramblefore
 
     void ItemImages::setup(const Settings & t_settings)
     {
-        m_iconsTexture.loadFromFile((t_settings.media_path / "image/item/items.png").string());
+        M_CHECK(
+            m_iconsTexture.loadFromFile((t_settings.media_path / "image/item/items.png").string()),
+            "file not found");
+
         m_iconsTexture.setSmooth(true);
         TextureStats::instance().process(m_iconsTexture);
 
-        m_backgroundTexture.loadFromFile(
-            (t_settings.media_path / "image/item/item-background.png").string());
+        M_CHECK(
+            m_backgroundTexture.loadFromFile(
+                (t_settings.media_path / "image/item/item-background.png").string()),
+            "file not found");
 
         m_backgroundTexture.setSmooth(true);
 

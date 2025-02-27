@@ -5,6 +5,7 @@
 //
 #include "map/tile-layer.hpp"
 #include "subsystem/harm-collision-manager.hpp"
+#include "util/sfml-defaults.hpp"
 
 #include <vector>
 
@@ -61,7 +62,7 @@ namespace bramblefore
     {
         Chest chest{ Chest::Chest1 }; // anything works here
         bool is_open{ false };
-        sf::Sprite sprite;
+        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
     };
 
     //
@@ -84,7 +85,6 @@ namespace bramblefore
         void move(const Context & t_context, const float t_amount) final;
         float findFarthestHorizVert() const final { return 0.0f; }
         void dumpInfo() const final {}
-
         void update(Context &, const float) final {}
 
         void appendVertLayer(

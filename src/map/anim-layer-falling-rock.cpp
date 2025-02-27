@@ -11,6 +11,7 @@
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
 
@@ -34,23 +35,31 @@ namespace bramblefore
 
         //
 
-        m_texture1.loadFromFile(
-            (t_context.settings.media_path / "image/anim/rock-spike-1.png").string());
+        M_CHECK(
+            m_texture1.loadFromFile(
+                (t_context.settings.media_path / "image/anim/rock-spike-1.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_texture1);
 
-        m_texture2.loadFromFile(
-            (t_context.settings.media_path / "image/anim/rock-spike-2.png").string());
+        M_CHECK(
+            m_texture2.loadFromFile(
+                (t_context.settings.media_path / "image/anim/rock-spike-2.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_texture1);
 
-        m_texture3.loadFromFile(
-            (t_context.settings.media_path / "image/anim/rock-spike-3.png").string());
+        M_CHECK(
+            m_texture3.loadFromFile(
+                (t_context.settings.media_path / "image/anim/rock-spike-3.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_texture1);
 
-        m_texture4.loadFromFile(
-            (t_context.settings.media_path / "image/anim/rock-spike-4.png").string());
+        M_CHECK(
+            m_texture4.loadFromFile(
+                (t_context.settings.media_path / "image/anim/rock-spike-4.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_texture1);
 
@@ -62,21 +71,24 @@ namespace bramblefore
             anim.fall_region = rectRock.rect;
             anim.rock        = rectRock.rock;
 
-            anim.trigger_region.height = t_context.avatar.collisionRect().height;
-            anim.trigger_region.top = (util::bottom(anim.fall_region) - anim.trigger_region.height);
-            anim.trigger_region.width = (anim.fall_region.height * 0.5f);
+            anim.trigger_region.size.y = t_context.avatar.collisionRect().size.y;
 
-            anim.trigger_region.left =
-                (util::center(anim.fall_region).x - (anim.trigger_region.width * 0.5f));
+            anim.trigger_region.position.y =
+                (util::bottom(anim.fall_region) - anim.trigger_region.size.y);
+
+            anim.trigger_region.size.x = (anim.fall_region.size.y * 0.5f);
+
+            anim.trigger_region.position.x =
+                (util::center(anim.fall_region).x - (anim.trigger_region.size.x * 0.5f));
 
             anim.sprite.setTexture(texture(rectRock.rock));
             anim.sprite.setTextureRect(textureRect(texture(rectRock.rock), 0));
 
-            anim.sprite.scale(m_scale, m_scale);
+            anim.sprite.scale({ m_scale, m_scale });
 
             anim.sprite.setPosition(
-                (util::center(rectRock.rect).x - (anim.sprite.getGlobalBounds().width * 0.5f)),
-                (rectRock.rect.top - (anim.sprite.getGlobalBounds().height * 0.25f)));
+                { (util::center(rectRock.rect).x - (anim.sprite.getGlobalBounds().size.x * 0.5f)),
+                  (rectRock.rect.position.y - (anim.sprite.getGlobalBounds().size.y * 0.25f)) });
         }
     }
 
@@ -92,7 +104,7 @@ namespace bramblefore
 
         for (const RockHangingAnim & anim : m_hangingAnims)
         {
-            if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
             }
@@ -100,7 +112,7 @@ namespace bramblefore
 
         for (const RockDropAnim & anim : m_dropAnims)
         {
-            if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
             }
@@ -108,7 +120,7 @@ namespace bramblefore
 
         for (const RockShatterAnim & anim : m_shatterAnims)
         {
-            if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
             }
@@ -119,21 +131,21 @@ namespace bramblefore
     {
         for (RockHangingAnim & anim : m_hangingAnims)
         {
-            anim.sprite.move(t_amount, 0.0f);
-            anim.trigger_region.left += t_amount;
-            anim.fall_region.left += t_amount;
+            anim.sprite.move({ t_amount, 0.0f });
+            anim.trigger_region.position.x += t_amount;
+            anim.fall_region.position.x += t_amount;
         }
 
         for (RockDropAnim & anim : m_dropAnims)
         {
-            anim.sprite.move(t_amount, 0.0f);
-            anim.fall_region.left += t_amount;
+            anim.sprite.move({ t_amount, 0.0f });
+            anim.fall_region.position.x += t_amount;
         }
 
         for (RockShatterAnim & anim : m_shatterAnims)
         {
-            anim.sprite.move(t_amount, 0.0f);
-            anim.coll_rect.left += t_amount;
+            anim.sprite.move({ t_amount, 0.0f });
+            anim.coll_rect.position.x += t_amount;
         }
     }
 
@@ -151,7 +163,7 @@ namespace bramblefore
         bool haveAnyDropped{ false };
         for (RockHangingAnim & anim : m_hangingAnims)
         {
-            if (!avatarCollRect.intersects(anim.trigger_region))
+            if (!avatarCollRect.findIntersection(anim.trigger_region))
             {
                 continue;
             }
@@ -181,7 +193,7 @@ namespace bramblefore
         for (RockDropAnim & anim : m_dropAnims)
         {
             anim.velocity += (t_frameTimeSec * 50.0f);
-            anim.sprite.move(0.0f, anim.velocity);
+            anim.sprite.move({ 0.0f, anim.velocity });
 
             if (util::bottom(util::scaleRectInPlaceCopy(anim.sprite.getGlobalBounds(), 0.5f)) <
                 util::bottom(anim.fall_region))
@@ -199,7 +211,7 @@ namespace bramblefore
             shatterAnim.coll_rect =
                 util::scaleRectInPlaceCopy(anim.sprite.getGlobalBounds(), 0.75f);
 
-            if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(anim.sprite.getGlobalBounds()))
             {
                 t_context.sfx.play("rock-crumble");
             }
@@ -279,10 +291,11 @@ namespace bramblefore
         const sf::Texture & t_texture, const std::size_t frame) const noexcept
     {
         sf::IntRect rect;
-        rect.width  = static_cast<int>(t_texture.getSize().y);
-        rect.height = rect.width;
-        rect.top    = 0;
-        rect.left   = (static_cast<int>(frame) * rect.width);
+        rect.size.x     = static_cast<int>(t_texture.getSize().y);
+        rect.size.y     = rect.size.x;
+        rect.position.y = 0;
+        rect.position.x = (static_cast<int>(frame) * rect.size.x);
+
         return rect;
     }
 
@@ -291,7 +304,7 @@ namespace bramblefore
         for (const RockDropAnim & anim : m_dropAnims)
         {
             const sf::FloatRect rockRect{ anim.sprite.getGlobalBounds() };
-            if (t_avatarRect.intersects(rockRect))
+            if (t_avatarRect.findIntersection(rockRect))
             {
                 return makeHarm(rockRect);
             }
@@ -302,7 +315,7 @@ namespace bramblefore
             const sf::FloatRect shatterRect{ util::scaleRectInPlaceCopy(
                 anim.sprite.getGlobalBounds(), 0.7f) };
 
-            if (t_avatarRect.intersects(shatterRect))
+            if (t_avatarRect.findIntersection(shatterRect))
             {
                 return makeHarm(shatterRect);
             }
@@ -317,6 +330,7 @@ namespace bramblefore
         harm.rect   = t_rect;
         harm.damage = 12;
         harm.sfx    = "";
+
         return harm;
     }
 

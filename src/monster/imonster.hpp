@@ -6,7 +6,7 @@
 #include "player/custom-types.hpp"
 #include "subsystem/harm.hpp"
 
-#include <string>
+#include <string_view>
 
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderStates.hpp>

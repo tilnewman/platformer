@@ -10,6 +10,8 @@
 #include "subsystem/context.hpp"
 #include "subsystem/font.hpp"
 #include "subsystem/screen-layout.hpp"
+#include "util/check-macros.hpp"
+#include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -20,30 +22,32 @@ namespace bramblefore
 
     SplashState::SplashState()
         : m_texture{}
-        , m_sprite{}
-        , m_text{}
+        , m_sprite{ m_texture }
+        , m_text{ util::SfmlDefaults::instance().font() }
         , m_elpasedTimeSec{ 0.0f }
     {}
 
     void SplashState::onEnter(Context & t_context)
     {
-        m_texture.loadFromFile(
-            (t_context.settings.media_path / "image/splash/characters.png").string());
+        M_CHECK(
+            m_texture.loadFromFile(
+                (t_context.settings.media_path / "image/splash/characters.png").string()),
+            "file not found");
 
-        m_sprite.setTexture(m_texture);
+        m_sprite.setTexture(m_texture, true);
 
         sf::FloatRect wholeScreenRect{ t_context.layout.wholeRect() };
         util::scaleRectInPlace(wholeScreenRect, 0.4f);
         util::fitAndCenterInside(m_sprite, wholeScreenRect);
 
         m_sprite.setPosition(
-            m_sprite.getPosition().x, (t_context.layout.wholeRect().height * 0.15f));
+            { m_sprite.getPosition().x, (t_context.layout.wholeRect().size.y * 0.15f) });
 
         m_text = t_context.font.makeText(
             Font::Default, FontSize::Huge, "Bramblefore", sf::Color(220, 220, 220));
 
         util::centerInside(m_text, t_context.layout.wholeRect());
-        m_text.setPosition(m_text.getPosition().x, util::bottom(m_sprite));
+        m_text.setPosition({ m_text.getPosition().x, util::bottom(m_sprite) });
     }
 
     void SplashState::update(Context & t_context, const float t_frameTimeSec)
@@ -63,12 +67,10 @@ namespace bramblefore
 
     void SplashState::handleEvent(Context & t_context, const sf::Event & t_event)
     {
-        if (t_event.type != sf::Event::KeyPressed)
+        if (t_event.is<sf::Event::KeyPressed>())
         {
-            return;
+            t_context.state.setChangePending(State::CharacterSelect);
         }
-
-        t_context.state.setChangePending(State::CharacterSelect);
     }
 
 } // namespace bramblefore

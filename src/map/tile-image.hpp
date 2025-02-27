@@ -1,5 +1,5 @@
-#ifndef TILEIMAGE_HPP_INCLUDED
-#define TILEIMAGE_HPP_INCLUDED
+#ifndef TILE_IMAGE_HPP_INCLUDED
+#define TILE_IMAGE_HPP_INCLUDED
 //
 // tile-image.hpp
 //
@@ -66,4 +66,4 @@ namespace bramblefore
 
 } // namespace bramblefore
 
-#endif // TILEIMAGE_HPP_INCLUDED
+#endif // TILE_IMAGE_HPP_INCLUDED

@@ -31,7 +31,7 @@ namespace bramblefore
             const sf::FloatRect & t_roamRegion,
             const float t_imageHeightRatio,
             const float t_imageScale   = 1.0f,
-            const MonsterSpell t_spell = MonsterSpell::Count)
+            const MonsterSpell t_spell = MonsterSpell::Count) //Count means no spell
             : type(t_monsterType)
             , region(t_roamRegion)
             , image_height_ratio(t_imageHeightRatio)

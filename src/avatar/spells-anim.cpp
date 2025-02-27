@@ -51,7 +51,7 @@ namespace bramblefore
                 std::string(toFilesystemName(spell)).append("-icon.png")
             };
 
-            set.icon_texture.loadFromFile(iconPath.string());
+            M_CHECK(set.icon_texture.loadFromFile(iconPath.string()), "file not found");
             TextureStats::instance().process(set.icon_texture);
             set.icon_texture.setSmooth(true);
 
@@ -68,7 +68,7 @@ namespace bramblefore
             for (std::size_t fileIndex{ 0 }; fileIndex < files.size(); ++fileIndex)
             {
                 sf::Texture & texture{ set.textures.at(fileIndex) };
-                texture.loadFromFile(files.at(fileIndex).string());
+                M_CHECK(texture.loadFromFile(files.at(fileIndex).string()), "file not found");
                 texture.setSmooth(true);
                 TextureStats::instance().process(texture);
             }
@@ -95,7 +95,7 @@ namespace bramblefore
         anim.is_alive           = true;
         anim.spell              = t_spell;
         anim.time_per_frame_sec = timePerFrameSec(t_spell);
-        anim.sprite.setTexture(textures.at(0));
+        anim.sprite.setTexture(textures.at(0), true);
         anim.sprite.setScale(m_scale);
         util::setOriginToCenter(anim.sprite);
         anim.sprite.setPosition(t_pos);
@@ -147,7 +147,7 @@ namespace bramblefore
     {
         for (SpellAnim & anim : m_anims)
         {
-            anim.sprite.move(t_amount, 0.0f);
+            anim.sprite.move({ t_amount, 0.0f });
         }
     }
 

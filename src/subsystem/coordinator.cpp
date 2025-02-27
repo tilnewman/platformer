@@ -11,6 +11,7 @@
 #include "monster/monster-textures.hpp"
 #include "subsystem/texture-stats.hpp"
 #include "ui/gui-window.hpp"
+#include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
 
 #include <iostream>
@@ -28,7 +29,7 @@ namespace bramblefore
         , m_sfx{ m_random }
         , m_states{}
         , m_fonts{}
-        , m_avatarUPtr{ std::make_unique<Avatar>() }
+        , m_avatarUPtr{}
         , m_layout{}
         , m_levelLoader{}
         , m_level{}
@@ -39,28 +40,10 @@ namespace bramblefore
         , m_itemImages{}
         , m_levelInfo{ t_settings }
         , m_playerInfo{}
-        , m_playerInfoDisplay{}
+        , m_playerInfoDisplayUPtr{}
         , m_floatText{}
         , m_mapCoord{}
-        , m_context{ m_settings,
-                     m_random,
-                     m_sfx,
-                     m_states,
-                     m_fonts,
-                     *m_avatarUPtr,
-                     m_layout,
-                     m_levelLoader,
-                     m_level,
-                     m_backgroundImages,
-                     m_pickups,
-                     m_accents,
-                     m_spells,
-                     m_itemImages,
-                     m_levelInfo,
-                     m_playerInfo,
-                     m_playerInfoDisplay,
-                     m_floatText,
-                     m_mapCoord }
+        , m_contextUPtr{}
         , m_fpsValues{}
         , m_oneSecondClock{}
         , m_elapsedTimeSec{ 0.0f }
@@ -76,9 +59,35 @@ namespace bramblefore
         m_window.setFramerateLimit(0);
         m_window.setVerticalSyncEnabled(false);
 
+        util::SfmlDefaults::instance().setup();
+
         m_sfx.mediaPath(m_settings.media_path / "sound");
         m_sfx.loadAll();
         m_sfx.willLoop("walk", true);
+
+        m_avatarUPtr            = std::make_unique<Avatar>();
+        m_playerInfoDisplayUPtr = std::make_unique<PlayerInfoDisplay>();
+
+        m_contextUPtr = std::make_unique<Context>(
+            m_settings,
+            m_random,
+            m_sfx,
+            m_states,
+            m_fonts,
+            *m_avatarUPtr,
+            m_layout,
+            m_levelLoader,
+            m_level,
+            m_backgroundImages,
+            m_pickups,
+            m_accents,
+            m_spells,
+            m_itemImages,
+            m_levelInfo,
+            m_playerInfo,
+            *m_playerInfoDisplayUPtr,
+            m_floatText,
+            m_mapCoord);
 
         AvatarTextureManager::instance().setup(m_settings);
         MonsterTextureManager::instance().setup(m_settings);
@@ -88,20 +97,22 @@ namespace bramblefore
         m_layout.setup(m_window.getSize());
         m_fonts.setup(m_settings);
         m_itemImages.setup(m_settings);
-        m_pickups.setup(m_context);
-        m_accents.setup(m_context);
-        m_spells.setup(m_context);
+        m_pickups.setup(*m_contextUPtr);
+        m_accents.setup(*m_contextUPtr);
+        m_spells.setup(*m_contextUPtr);
 
         m_states.setChangePending(State::Splash);
     }
 
     void Coordinator::teardown()
     {
+        m_playerInfoDisplayUPtr.reset();
         m_avatarUPtr.reset();
         MonsterSpellTextureManager::instance().teardown();
         MapTextureManager::instance().teardown();
         AvatarTextureManager::instance().teardown();
         MonsterTextureManager::instance().teardown();
+        util::SfmlDefaults::instance().teardown();
         m_window.close();
         TextureStats::instance().dumpInfo();
     }
@@ -131,25 +142,27 @@ namespace bramblefore
 
     void Coordinator::handleEvents()
     {
-        sf::Event event;
-        while (m_window.pollEvent(event))
+        while (const std::optional event = m_window.pollEvent())
         {
-            handleEvent(event);
+            handleEvent(event.value());
         }
     }
 
-    void Coordinator::handleEvent(const sf::Event & event)
+    void Coordinator::handleEvent(const sf::Event & t_event)
     {
-        if (event.type == sf::Event::Closed)
+        if (t_event.is<sf::Event::Closed>())
         {
             m_states.setChangePending(State::Shutdown);
         }
-        else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))
+        else if (const auto * keyPtr = t_event.getIf<sf::Event::KeyPressed>())
         {
-            m_states.setChangePending(State::Shutdown);
+            if (keyPtr->scancode == sf::Keyboard::Scancode::Escape)
+            {
+                m_states.setChangePending(State::Shutdown);
+            }
         }
 
-        m_states.current().handleEvent(m_context, event);
+        m_states.current().handleEvent(*m_contextUPtr, t_event);
     }
 
     void Coordinator::draw()
@@ -157,7 +170,7 @@ namespace bramblefore
         sf::RenderStates states;
 
         m_window.clear(sf::Color::Black);
-        m_states.current().draw(m_context, m_window, states);
+        m_states.current().draw(*m_contextUPtr, m_window, states);
 
         if (m_statsDisplayUPtr && m_settings.will_display_fps_graph)
         {
@@ -169,8 +182,8 @@ namespace bramblefore
 
     void Coordinator::update(const float t_frameTimeSec)
     {
-        m_states.current().update(m_context, t_frameTimeSec);
-        m_states.changeIfPending(m_context);
+        m_states.current().update(*m_contextUPtr, t_frameTimeSec);
+        m_states.changeIfPending(*m_contextUPtr);
     }
 
     void Coordinator::handleSleepUntilEndOfFrame(const float t_elapsedTimeSec)
@@ -204,7 +217,7 @@ namespace bramblefore
             if (m_settings.will_display_fps_graph)
             {
                 m_statsDisplayUPtr = std::make_unique<util::GraphDisplay<std::size_t>>(
-                    m_fpsValues, sf::Vector2u{ 500, 200 }, sf::Uint8(64));
+                    m_fpsValues, sf::Vector2u{ 500, 200 }, std::uint8_t(64));
             }
 
             m_fpsValues.clear();
@@ -216,15 +229,15 @@ namespace bramblefore
         const sf::VideoMode videoModeOrig{ t_videoMode };
 
         // sometimes the resolution of the window created does not match what was specified
-        m_window.create(t_videoMode, "Bramblefore", sf::Style::Fullscreen);
+        m_window.create(t_videoMode, "Bramblefore", sf::State::Fullscreen);
 
         const unsigned actualWidth{ m_window.getSize().x };
         const unsigned actualHeight{ m_window.getSize().y };
 
-        if ((t_videoMode.width != actualWidth) || (t_videoMode.height != actualHeight))
+        if ((t_videoMode.size.x != actualWidth) || (t_videoMode.size.y != actualHeight))
         {
-            t_videoMode.width  = actualWidth;
-            t_videoMode.height = actualHeight;
+            t_videoMode.size.x = actualWidth;
+            t_videoMode.size.y = actualHeight;
 
             std::clog << "SFML switched resolution from " << videoModeOrig << " to " << t_videoMode
                       << ".\n";

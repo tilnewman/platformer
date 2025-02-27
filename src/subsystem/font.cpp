@@ -6,6 +6,7 @@
 #include "subsystem/font.hpp"
 
 #include "bramblefore/settings.hpp"
+#include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
 
 #include <iostream>
@@ -23,7 +24,10 @@ namespace bramblefore
 
     void FontManager::setup(const Settings & t_settings)
     {
-        m_defaultFont.loadFromFile((t_settings.media_path / "font/mops-antiqua.ttf").string());
+        M_CHECK(
+            m_defaultFont.openFromFile((t_settings.media_path / "font/mops-antiqua.ttf").string()),
+            "file not found");
+
         setupFontExtents(t_settings);
     }
 
@@ -34,7 +38,7 @@ namespace bramblefore
         const sf::Color & t_color,
         const sf::Text::Style t_style) const
     {
-        sf::Text text(t_string, get(t_font), extent(t_size).char_size);
+        sf::Text text(get(t_font), t_string, extent(t_size).char_size);
         text.setFillColor(t_color);
         text.setStyle(t_style);
         util::setOriginToPosition(text);
@@ -68,38 +72,38 @@ namespace bramblefore
         const float standardRes = std::sqrt(3840.f * 2400.0f);
 
         const float currentRes = std::sqrt(
-            static_cast<float>(t_settings.video_mode.width * t_settings.video_mode.height));
+            static_cast<float>(t_settings.video_mode.size.x * t_settings.video_mode.size.y));
 
         const float ratioRes = (currentRes / standardRes);
 
-        sf::Text text;
+        sf::Text text{ m_defaultFont };
 
         const std::string widthStr{ "M" };
         const std::string heightStr{ "|g" };
 
         m_fontExtentHuge.char_size     = static_cast<unsigned>(200.0f * ratioRes);
         text                           = makeText(Font::Default, FontSize::Huge, widthStr);
-        m_fontExtentHuge.letter_size.x = text.getGlobalBounds().width;
+        m_fontExtentHuge.letter_size.x = text.getGlobalBounds().size.x;
         text                           = makeText(Font::Default, FontSize::Huge, heightStr);
-        m_fontExtentHuge.letter_size.y = text.getGlobalBounds().height;
+        m_fontExtentHuge.letter_size.y = text.getGlobalBounds().size.y;
 
         m_fontExtentLarge.char_size     = static_cast<unsigned>(90.0f * ratioRes);
         text                            = makeText(Font::Default, FontSize::Large, widthStr);
-        m_fontExtentLarge.letter_size.x = text.getGlobalBounds().width;
+        m_fontExtentLarge.letter_size.x = text.getGlobalBounds().size.x;
         text                            = makeText(Font::Default, FontSize::Large, heightStr);
-        m_fontExtentLarge.letter_size.y = text.getGlobalBounds().height;
+        m_fontExtentLarge.letter_size.y = text.getGlobalBounds().size.y;
 
         m_fontExtentMedium.char_size     = static_cast<unsigned>(60.0f * ratioRes);
         text                             = makeText(Font::Default, FontSize::Medium, widthStr);
-        m_fontExtentMedium.letter_size.x = text.getGlobalBounds().width;
+        m_fontExtentMedium.letter_size.x = text.getGlobalBounds().size.x;
         text                             = makeText(Font::Default, FontSize::Medium, heightStr);
-        m_fontExtentMedium.letter_size.y = text.getGlobalBounds().height;
+        m_fontExtentMedium.letter_size.y = text.getGlobalBounds().size.y;
 
         m_fontExtentSmall.char_size     = static_cast<unsigned>(40.0f * ratioRes);
         text                            = makeText(Font::Default, FontSize::Small, widthStr);
-        m_fontExtentSmall.letter_size.x = text.getGlobalBounds().width;
+        m_fontExtentSmall.letter_size.x = text.getGlobalBounds().size.x;
         text                            = makeText(Font::Default, FontSize::Small, heightStr);
-        m_fontExtentSmall.letter_size.y = text.getGlobalBounds().height;
+        m_fontExtentSmall.letter_size.y = text.getGlobalBounds().size.y;
     }
 
 } // namespace bramblefore

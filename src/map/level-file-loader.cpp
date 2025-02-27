@@ -73,7 +73,7 @@ namespace bramblefore
     void LevelFileLoader::load(Context & t_context)
     {
         // TODO fix to be more general so each level can be tested per run of the game
-        const std::filesystem::path path = (t_context.settings.media_path / "map/cave-1.json");
+        const std::filesystem::path path = (t_context.settings.media_path / "map/dungeon1-1.json");
         M_CHECK(std::filesystem::exists(path), "The level file does not exist: " << path.string());
 
         m_pathStr = path.string();
@@ -115,9 +115,9 @@ namespace bramblefore
         const sf::Vector2f tileCountF{ t_context.level.tile_count };
         const sf::Vector2f mapSizeOrig{ t_context.level.tile_size_screen * tileCountF };
 
-        const float heightOffset{
-            (t_context.layout.wholeRect().top + t_context.layout.wholeRect().height) - mapSizeOrig.y
-        };
+        const float heightOffset{ (t_context.layout.wholeRect().position.y +
+                                   t_context.layout.wholeRect().size.y) -
+                                  mapSizeOrig.y };
 
         t_context.level.map_position_offset = { 0.0f, heightOffset };
     }
@@ -398,31 +398,31 @@ namespace bramblefore
         const Context & t_context, const nlohmann::json & t_json)
     {
         sf::IntRect mapRect;
-        mapRect.left   = t_json["x"];
-        mapRect.top    = t_json["y"];
-        mapRect.width  = t_json["width"];
-        mapRect.height = t_json["height"];
+        mapRect.position.x = t_json["x"];
+        mapRect.position.y = t_json["y"];
+        mapRect.size.x     = t_json["width"];
+        mapRect.size.y     = t_json["height"];
 
         const float scale{ t_context.layout.calScaleBasedOnResolution(
             t_context, t_context.settings.tile_scale) };
 
         // convert from map to screen coordinates
         sf::FloatRect screenRect{ mapRect };
-        screenRect.left *= scale;
-        screenRect.top *= scale;
-        screenRect.width *= scale;
-        screenRect.height *= scale;
+        screenRect.position.x *= scale;
+        screenRect.position.y *= scale;
+        screenRect.size.x *= scale;
+        screenRect.size.y *= scale;
         //
-        screenRect.left += t_context.level.map_position_offset.x;
-        screenRect.top += t_context.level.map_position_offset.y;
+        screenRect.position.x += t_context.level.map_position_offset.x;
+        screenRect.position.y += t_context.level.map_position_offset.y;
 
         return screenRect;
     }
 
     void LevelFileLoader::parseSpawnLayer(Context & t_context, const nlohmann::json & t_json)
     {
-        t_context.level.enter_rect = { 0.0f, 0.0f, -1.0f, -1.0f };
-        t_context.level.exit_rect  = { 0.0f, 0.0f, -1.0f, -1.0f };
+        t_context.level.enter_rect = { { 0.0f, 0.0f }, { -1.0f, -1.0f } };
+        t_context.level.exit_rect  = { { 0.0f, 0.0f }, { -1.0f, -1.0f } };
 
         for (const nlohmann::json & spawnJson : t_json["objects"])
         {
@@ -445,11 +445,11 @@ namespace bramblefore
         }
 
         M_CHECK(
-            (t_context.level.enter_rect.width > 0.0f),
+            (t_context.level.enter_rect.size.x > 0.0f),
             "Error Parsing Level File " << m_pathStr << ":  Failed to find enter location.");
 
         M_CHECK(
-            (t_context.level.exit_rect.width > 0.0f),
+            (t_context.level.exit_rect.size.x > 0.0f),
             "Error Parsing Level File " << m_pathStr << ":  Failed to find exit location.");
     }
 

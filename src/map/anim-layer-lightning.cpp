@@ -9,6 +9,7 @@
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
 #include "util/random.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
@@ -27,8 +28,10 @@ namespace bramblefore
     {
         HarmCollisionManager::instance().addOwner(*this);
 
-        m_texture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/lightning.png").string());
+        M_CHECK(
+            m_texture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/lightning.png").string()),
+            "file not found");
 
         m_texture.setSmooth(true);
 
@@ -42,11 +45,11 @@ namespace bramblefore
             anim.sprite.setTextureRect(textureRect(0));
 
             const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.0f) };
-            anim.sprite.scale(scale, scale);
+            anim.sprite.scale({ scale, scale });
 
             anim.sprite.setPosition(
-                (util::center(rect).x - anim.sprite.getGlobalBounds().width),
-                (util::bottom(rect) - anim.sprite.getGlobalBounds().height));
+                { (util::center(rect).x - anim.sprite.getGlobalBounds().size.x),
+                  (util::bottom(rect) - anim.sprite.getGlobalBounds().size.y) });
 
             anim.time_between_anim_sec = t_context.random.fromTo(2.0f, 6.0f);
             anim.is_animating          = false;
@@ -67,7 +70,7 @@ namespace bramblefore
 
         for (const LightningAnim & anim : m_anims)
         {
-            if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
             }
@@ -78,17 +81,18 @@ namespace bramblefore
     {
         for (LightningAnim & anim : m_anims)
         {
-            anim.sprite.move(t_amount, 0.0f);
+            anim.sprite.move({ t_amount, 0.0f });
         }
     }
 
     sf::IntRect LightningAnimationLayer::textureRect(const std::size_t t_frame) const noexcept
     {
         sf::IntRect rect;
-        rect.width  = 64;
-        rect.height = static_cast<int>(m_texture.getSize().y);
-        rect.top    = 0;
-        rect.left   = (static_cast<int>(t_frame) * rect.width);
+        rect.size.x     = 64;
+        rect.size.y     = static_cast<int>(m_texture.getSize().y);
+        rect.position.y = 0;
+        rect.position.x = (static_cast<int>(t_frame) * rect.size.x);
+
         return rect;
     }
 
@@ -124,7 +128,7 @@ namespace bramblefore
                     anim.elapsed_time_sec = 0.0f;
                     anim.is_animating     = true;
 
-                    if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
+                    if (wholeScreenRect.findIntersection(anim.sprite.getGlobalBounds()))
                     {
                         t_context.sfx.play("electricity");
                     }
@@ -147,7 +151,7 @@ namespace bramblefore
             const sf::FloatRect reducedBounds{ util::scaleRectInPlaceCopy(
                 anim.sprite.getGlobalBounds(), 0.75f) };
 
-            if (!reducedBounds.intersects(t_avatarRect))
+            if (!reducedBounds.findIntersection(t_avatarRect))
             {
                 continue;
             }

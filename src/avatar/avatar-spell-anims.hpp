@@ -4,6 +4,7 @@
 // avatar-spell-anims.hpp
 //
 #include "avatar/avatar-textures.hpp"
+#include "util/sfml-defaults.hpp"
 
 #include <filesystem>
 #include <vector>
@@ -33,7 +34,7 @@ namespace bramblefore
         bool is_first_anim{ true };
         std::size_t frame_index{ 0 };
         float elapsed_time_sec{ 0.0f };
-        sf::Sprite sprite{};
+        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
         bool is_moving_right{ true };
     };
 

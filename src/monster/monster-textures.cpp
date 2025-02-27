@@ -74,7 +74,7 @@ namespace bramblefore
                                                   std::string(toString(t_type)) /
                                                   std::string(toString(anim)).append(".png") };
 
-                texture.loadFromFile(path.string());
+                M_CHECK(texture.loadFromFile(path.string()), "file not found");
                 texture.setSmooth(true);
                 TextureStats::instance().process(texture);
             }
@@ -160,16 +160,17 @@ namespace bramblefore
 
         if (t_frame >= frameCount(t_type, t_anim))
         {
-            rect.left = 0;
+            rect.position.x = 0;
         }
         else
         {
-            rect.left = static_cast<int>(static_cast<std::size_t>(texture.getSize().y) * t_frame);
+            rect.position.x =
+                static_cast<int>(static_cast<std::size_t>(texture.getSize().y) * t_frame);
         }
 
-        rect.top    = 0;
-        rect.width  = static_cast<int>(texture.getSize().y);
-        rect.height = rect.width;
+        rect.position.y = 0;
+        rect.size.x     = static_cast<int>(texture.getSize().y);
+        rect.size.y     = rect.size.x;
 
         return rect;
     }

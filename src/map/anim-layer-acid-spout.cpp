@@ -11,6 +11,7 @@
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
 
@@ -31,18 +32,24 @@ namespace bramblefore
     {
         HarmCollisionManager::instance().addOwner(*this);
 
-        m_spoutTexture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/acid-spout.png").string());
+        M_CHECK(
+            m_spoutTexture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/acid-spout.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_spoutTexture);
 
-        m_dropTexture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/acid-spout-drop.png").string());
+        M_CHECK(
+            m_dropTexture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/acid-spout-drop.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_dropTexture);
 
-        m_splashTexture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/acid-spout-splash.png").string());
+        M_CHECK(
+            m_splashTexture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/acid-spout-splash.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_splashTexture);
 
@@ -53,10 +60,11 @@ namespace bramblefore
             anim.time_between_drips = t_context.random.fromTo(1.0f, 4.0f);
             anim.sprite.setTexture(m_spoutTexture);
             anim.sprite.setTextureRect(textureRect(m_spoutTexture, 0));
-            anim.sprite.scale(m_scale, m_scale);
+            anim.sprite.scale({ m_scale, m_scale });
 
             anim.sprite.setPosition(
-                (util::center(rect).x - (anim.sprite.getGlobalBounds().width * 0.5f)), rect.top);
+                { (util::center(rect).x - (anim.sprite.getGlobalBounds().size.x * 0.5f)),
+                  rect.position.y });
         }
     }
 
@@ -72,7 +80,7 @@ namespace bramblefore
 
         for (const AcidDropAnim & anim : m_dropAnims)
         {
-            if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
             }
@@ -80,7 +88,7 @@ namespace bramblefore
 
         for (const AcidSpoutAnim & anim : m_spoutAnims)
         {
-            if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
             }
@@ -88,7 +96,7 @@ namespace bramblefore
 
         for (const AcidSplashAnim & anim : m_splashAnims)
         {
-            if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
             }
@@ -99,19 +107,19 @@ namespace bramblefore
     {
         for (AcidDropAnim & anim : m_dropAnims)
         {
-            anim.sprite.move(t_amount, 0.0f);
-            anim.region.left += t_amount;
+            anim.sprite.move({ t_amount, 0.0f });
+            anim.region.position.x += t_amount;
         }
 
         for (AcidSpoutAnim & anim : m_spoutAnims)
         {
-            anim.sprite.move(t_amount, 0.0f);
-            anim.region.left += t_amount;
+            anim.sprite.move({ t_amount, 0.0f });
+            anim.region.position.x += t_amount;
         }
 
         for (AcidSplashAnim & anim : m_splashAnims)
         {
-            anim.sprite.move(t_amount, 0.0f);
+            anim.sprite.move({ t_amount, 0.0f });
         }
     }
 
@@ -154,13 +162,12 @@ namespace bramblefore
 
                     AcidDropAnim & drop{ m_dropAnims.emplace_back() };
                     drop.region = anim.region;
-                    drop.sprite.setTexture(m_dropTexture);
-                    drop.sprite.scale(m_scale, m_scale);
+                    drop.sprite.setTexture(m_dropTexture, true);
+                    drop.sprite.scale({ m_scale, m_scale });
 
-                    drop.sprite.setPosition(
-                        (util::center(anim.region).x -
-                         (drop.sprite.getGlobalBounds().width * 0.5f)),
-                        anim.region.top);
+                    drop.sprite.setPosition({ (util::center(anim.region).x -
+                                               (drop.sprite.getGlobalBounds().size.x * 0.5f)),
+                                              anim.region.position.y });
                 }
             }
         }
@@ -172,7 +179,7 @@ namespace bramblefore
         for (AcidDropAnim & anim : m_dropAnims)
         {
             anim.velocity += (t_frameTimeSec * 50.0f);
-            anim.sprite.move(0.0f, anim.velocity);
+            anim.sprite.move({ 0.0f, anim.velocity });
 
             if (util::bottom(anim.sprite) > util::bottom(anim.region))
             {
@@ -184,13 +191,14 @@ namespace bramblefore
                 splash.sprite.setTextureRect(textureRect(m_splashTexture, 0));
 
                 const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.0f) };
-                splash.sprite.scale(scale, scale);
+                splash.sprite.scale({ scale, scale });
 
-                splash.sprite.setPosition(
-                    (util::center(anim.region).x - (splash.sprite.getGlobalBounds().width * 0.5f)),
-                    (util::bottom(anim.region) - (splash.sprite.getGlobalBounds().height * 0.7f)));
+                splash.sprite.setPosition({ (util::center(anim.region).x -
+                                             (splash.sprite.getGlobalBounds().size.x * 0.5f)),
+                                            (util::bottom(anim.region) -
+                                             (splash.sprite.getGlobalBounds().size.y * 0.7f)) });
 
-                if (t_context.layout.wholeRect().intersects(splash.sprite.getGlobalBounds()))
+                if (t_context.layout.wholeRect().findIntersection(splash.sprite.getGlobalBounds()))
                 {
                     t_context.sfx.play("splat");
                 }
@@ -248,10 +256,11 @@ namespace bramblefore
         const sf::Texture & t_texture, const std::size_t frame) const noexcept
     {
         sf::IntRect rect;
-        rect.width  = static_cast<int>(t_texture.getSize().y);
-        rect.height = rect.width;
-        rect.top    = 0;
-        rect.left   = (static_cast<int>(frame) * rect.width);
+        rect.size.x     = static_cast<int>(t_texture.getSize().y);
+        rect.size.y     = rect.size.x;
+        rect.position.y = 0;
+        rect.position.x = (static_cast<int>(frame) * rect.size.x);
+
         return rect;
     }
 
@@ -260,7 +269,7 @@ namespace bramblefore
         for (const AcidDropAnim & anim : m_dropAnims)
         {
             const sf::FloatRect acidRect{ anim.sprite.getGlobalBounds() };
-            if (t_avatarRect.intersects(acidRect))
+            if (t_avatarRect.findIntersection(acidRect))
             {
                 return makeHarm(acidRect);
             }
@@ -271,7 +280,7 @@ namespace bramblefore
             const sf::FloatRect acidRect{ util::scaleRectInPlaceCopy(
                 anim.sprite.getGlobalBounds(), 0.7f) };
 
-            if (t_avatarRect.intersects(acidRect))
+            if (t_avatarRect.findIntersection(acidRect))
             {
                 return makeHarm(acidRect);
             }

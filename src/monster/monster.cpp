@@ -12,6 +12,7 @@
 #include "subsystem/floating-text.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "util/random.hpp"
+#include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
 
@@ -26,7 +27,7 @@ namespace bramblefore
         , m_region{ t_setupInfo.region }
         , m_anim{ MonsterAnim::Idle }
         , m_animFrame{ 0 }
-        , m_sprite{}
+        , m_sprite{ util::SfmlDefaults::instance().texture() }
         , m_elapsedTimeSec{ 0.0f }
         , m_isFacingRight{ true }
         , m_stateElapsedTimeSec{ 0.0f }
@@ -66,7 +67,7 @@ namespace bramblefore
             return;
         }
 
-        if (!m_hasSpottedPlayer && m_region.intersects(t_context.avatar.collisionRect()))
+        if (!m_hasSpottedPlayer && m_region.findIntersection(t_context.avatar.collisionRect()))
         {
             m_hasSpottedPlayer = true;
             turnToFacePlayer(t_context);
@@ -146,22 +147,17 @@ namespace bramblefore
     void Monster::draw(
         const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
-        if (t_context.layout.wholeRect().intersects(m_sprite.getGlobalBounds()))
+        if (t_context.layout.wholeRect().findIntersection(m_sprite.getGlobalBounds()))
         {
             t_target.draw(m_sprite, t_states);
-
-            // these are very useful when adding new monsters and fine tuning the collision rects
-            // util::drawRectangleShape(target, collisionRect(), false, sf::Color::Green);
-            // util::drawRectangleShape(target, attackCollisionRect(), false, sf::Color::Red);
-
             m_animations.draw(t_target, t_states);
         }
     }
 
     void Monster::move(const float t_amount)
     {
-        m_sprite.move(t_amount, 0.0f);
-        m_region.left += t_amount;
+        m_sprite.move({ t_amount, 0.0f });
+        m_region.position.x += t_amount;
         m_animations.move(t_amount);
     }
 
@@ -172,7 +168,7 @@ namespace bramblefore
             return false;
         }
 
-        if (!t_attackInfo.rect.intersects(collisionRect()))
+        if (!t_attackInfo.rect.findIntersection(collisionRect()))
         {
             return false;
         }
@@ -209,7 +205,7 @@ namespace bramblefore
     {
         Harm harm;
 
-        if ((MonsterAnim::Attack == m_anim) && t_avatarRect.intersects(attackCollisionRect()))
+        if ((MonsterAnim::Attack == m_anim) && t_avatarRect.findIntersection(attackCollisionRect()))
         {
             harm.damage = attackDamage(m_type);
             harm.rect   = collisionRect();
@@ -292,7 +288,7 @@ namespace bramblefore
 
     void Monster::changeStateAfterSeeingPlayer(Context & t_context)
     {
-        if (!t_context.layout.wholeRect().intersects(collisionRect()))
+        if (!t_context.layout.wholeRect().findIntersection(collisionRect()))
         {
             return;
         }
@@ -343,27 +339,27 @@ namespace bramblefore
         const float speed{ walkSpeed(m_type) };
         if (m_isFacingRight)
         {
-            m_sprite.move((speed * t_frameTimeSec), 0.0f);
+            m_sprite.move({ (speed * t_frameTimeSec), 0.0f });
         }
         else
         {
-            m_sprite.move(-(speed * t_frameTimeSec), 0.0f);
+            m_sprite.move({ -(speed * t_frameTimeSec), 0.0f });
         }
 
         const sf::FloatRect avatarRect{ t_context.avatar.collisionRect() };
         const sf::FloatRect monsterRect{ collisionRect() };
 
         // backoff if walking into the player
-        sf::FloatRect intersection;
-        if (monsterRect.intersects(avatarRect, intersection))
+        const auto intersectOpt{ monsterRect.findIntersection(avatarRect) };
+        if (intersectOpt)
         {
             if (m_isFacingRight)
             {
-                m_sprite.move(-intersection.width, 0.0f);
+                m_sprite.move({ -intersectOpt.value().size.x, 0.0f });
             }
             else
             {
-                m_sprite.move(intersection.width, 0.0f);
+                m_sprite.move({ intersectOpt.value().size.x, 0.0f });
             }
         }
 
@@ -371,12 +367,12 @@ namespace bramblefore
         if (util::right(monsterRect) > util::right(m_region))
         {
             turnAround();
-            m_sprite.move((util::right(m_region) - util::right(monsterRect)), 0.0f);
+            m_sprite.move({ (util::right(m_region) - util::right(monsterRect)), 0.0f });
         }
-        else if (monsterRect.left < m_region.left)
+        else if (monsterRect.position.x < m_region.position.x)
         {
             turnAround();
-            m_sprite.move((m_region.left - monsterRect.left), 0.0f);
+            m_sprite.move({ (m_region.position.x - monsterRect.position.x), 0.0f });
         }
     }
 
@@ -394,16 +390,15 @@ namespace bramblefore
         const float scale{ t_context.layout.calScaleBasedOnResolution(
             t_context, t_context.settings.monster_scale) };
 
-        m_sprite.setScale(scale, scale);
+        m_sprite.setScale({ scale, scale });
 
-        m_sprite.scale(t_imageScale, t_imageScale);
+        m_sprite.scale({ t_imageScale, t_imageScale });
         util::setOriginToCenter(m_sprite);
 
-        m_sprite.setPosition(
-            t_context.random.fromTo(m_region.left, util::right(m_region)),
-            (util::bottom(m_region) - m_sprite.getGlobalBounds().height));
+        m_sprite.setPosition({ t_context.random.fromTo(m_region.position.x, util::right(m_region)),
+                               (util::bottom(m_region) - m_sprite.getGlobalBounds().size.y) });
 
-        m_sprite.move(0.0f, (t_imageHeightOffsetRatio * m_sprite.getGlobalBounds().height));
+        m_sprite.move({ 0.0f, (t_imageHeightOffsetRatio * m_sprite.getGlobalBounds().size.y) });
     }
 
     void Monster::turnToFacePlayer(Context & t_context)
@@ -419,7 +414,7 @@ namespace bramblefore
 
     void Monster::turnAround()
     {
-        m_sprite.scale(-1.0f, 1.0f);
+        m_sprite.scale({ -1.0f, 1.0f });
         m_isFacingRight = !m_isFacingRight;
     }
 

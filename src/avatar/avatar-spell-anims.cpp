@@ -77,15 +77,15 @@ namespace bramblefore
         anim.is_first_anim   = t_isFirstAttack;
         anim.type            = t_type;
         anim.is_moving_right = t_isFacingRight;
-        anim.sprite.setTexture(getTextures(t_type, t_isFirstAttack).at(0));
+        anim.sprite.setTexture(getTextures(t_type, t_isFirstAttack).at(0), true);
         util::setOriginToCenter(anim.sprite);
         anim.sprite.scale(m_scale);
         anim.sprite.setPosition(t_pos);
 
         if (!t_isFacingRight)
         {
-            anim.sprite.scale(-1.0f, 1.0f);
-            //TODO need to slide the images horiz to correct when facing/moving left
+            anim.sprite.scale({ -1.0f, 1.0f });
+            // TODO need to slide the images horiz to correct when facing/moving left
         }
     }
 
@@ -98,11 +98,11 @@ namespace bramblefore
             const float moveAmount{ t_frameTimeSec * 40.0f };
             if (anim.is_moving_right)
             {
-                anim.sprite.move(moveAmount, 0.0f);
+                anim.sprite.move({ moveAmount, 0.0f });
             }
             else
             {
-                anim.sprite.move(-moveAmount, 0.0f);
+                anim.sprite.move({ -moveAmount, 0.0f });
             }
 
             anim.elapsed_time_sec += t_frameTimeSec;
@@ -144,7 +144,7 @@ namespace bramblefore
     {
         for (AvatarSpellAnim & anim : m_anims)
         {
-            anim.sprite.move(t_amount, 0.0f);
+            anim.sprite.move({ t_amount, 0.0f });
         }
     }
 
@@ -161,7 +161,7 @@ namespace bramblefore
         for (std::size_t fileIndex(0); fileIndex < files.size(); ++fileIndex)
         {
             sf::Texture & texture{ t_textures.at(fileIndex) };
-            texture.loadFromFile(files.at(fileIndex).string());
+            M_CHECK(texture.loadFromFile(files.at(fileIndex).string()), "file not found");
             TextureStats::instance().process(texture);
         }
     }

@@ -5,6 +5,7 @@
 //
 #include "map/tile-layer.hpp"
 #include "subsystem/harm-collision-manager.hpp"
+#include "util/sfml-defaults.hpp"
 
 #include <vector>
 
@@ -27,7 +28,7 @@ namespace bramblefore
 
     struct WaterAnim
     {
-        sf::Sprite sprite{};
+        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
         float elapsed_time_sec{ 0.0f };
         float time_per_frame_sec{ 0.0f };
         std::size_t frame_index{ 0 };

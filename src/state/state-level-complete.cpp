@@ -11,6 +11,8 @@
 #include "subsystem/font.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
+#include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -20,8 +22,8 @@ namespace bramblefore
 
     LevelCompleteState::LevelCompleteState()
         : m_texture{}
-        , m_sprite{}
-        , m_text{}
+        , m_sprite{ m_texture }
+        , m_text{ util::SfmlDefaults::instance().font() }
         , m_elapsedTimeSec{ 0.0f }
     {}
 
@@ -29,25 +31,26 @@ namespace bramblefore
     {
         const sf::FloatRect wholeRect{ t_context.layout.wholeRect() };
 
-        m_texture.loadFromFile(
-            (t_context.settings.media_path / "image/splash/knight-win.png").string());
+        M_CHECK(
+            m_texture.loadFromFile(
+                (t_context.settings.media_path / "image/splash/knight-win.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_texture);
         m_texture.setSmooth(true);
 
-        m_sprite.setTexture(m_texture);
+        m_sprite.setTexture(m_texture, true);
 
         util::fitAndCenterInside(m_sprite, util::scaleRectInPlaceCopy(wholeRect, 0.3f));
-        m_sprite.move(0.0f, -(wholeRect.height * 0.1f));
+        m_sprite.move({ 0.0f, -(wholeRect.size.y * 0.1f) });
 
         //
 
         m_text = t_context.font.makeText(
             Font::Default, FontSize::Huge, "You Survived!", sf::Color(220, 220, 220));
 
-        m_text.setPosition(
-            ((wholeRect.width * 0.5f) - (m_text.getGlobalBounds().width * 0.5f)),
-            (util::bottom(m_sprite) + (wholeRect.height * 0.015f)));
+        m_text.setPosition({ ((wholeRect.size.x * 0.5f) - (m_text.getGlobalBounds().size.x * 0.5f)),
+                             (util::bottom(m_sprite) + (wholeRect.size.y * 0.015f)) });
     }
 
     void LevelCompleteState::update(Context & t_context, const float t_frameTimeSec)

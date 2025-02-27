@@ -11,6 +11,7 @@
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
 
@@ -29,8 +30,10 @@ namespace bramblefore
     {
         HarmCollisionManager::instance().addOwner(*this);
 
-        m_texture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/acid-surface.png").string());
+        M_CHECK(
+            m_texture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/acid-surface.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_texture);
 
@@ -38,8 +41,7 @@ namespace bramblefore
 
         for (const sf::FloatRect & rect : t_rects)
         {
-            sf::Sprite & sprite{ m_sprites.emplace_back() };
-            sprite.setTexture(m_texture);
+            sf::Sprite & sprite{ m_sprites.emplace_back(m_texture) };
             sprite.setTextureRect(textureRect(0));
             util::fitAndCenterInside(sprite, rect);
         }
@@ -57,7 +59,7 @@ namespace bramblefore
 
         for (const sf::Sprite & sprite : m_sprites)
         {
-            if (wholeScreenRect.intersects(sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(sprite.getGlobalBounds()))
             {
                 t_target.draw(sprite, t_states);
             }
@@ -68,7 +70,7 @@ namespace bramblefore
     {
         for (sf::Sprite & sprite : m_sprites)
         {
-            sprite.move(t_amount, 0.0f);
+            sprite.move({ t_amount, 0.0f });
         }
     }
 
@@ -87,10 +89,10 @@ namespace bramblefore
     sf::IntRect AcidAnimationLayer::textureRect(const std::size_t frame) const noexcept
     {
         sf::IntRect rect;
-        rect.width  = static_cast<int>(m_texture.getSize().y);
-        rect.height = rect.width;
-        rect.top    = 0;
-        rect.left   = (static_cast<int>(frame) * rect.width);
+        rect.size.x     = static_cast<int>(m_texture.getSize().y);
+        rect.size.y     = rect.size.x;
+        rect.position.y = 0;
+        rect.position.x = (static_cast<int>(frame) * rect.size.x);
         return rect;
     }
 
@@ -121,7 +123,7 @@ namespace bramblefore
         for (const sf::Sprite & sprite : m_sprites)
         {
             const sf::FloatRect acidRect{ sprite.getGlobalBounds() };
-            if (t_avatarRect.intersects(acidRect))
+            if (t_avatarRect.findIntersection(acidRect))
             {
                 harm.rect   = acidRect;
                 harm.damage = 99999; // TOOD lookup real max health somewhere

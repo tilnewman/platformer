@@ -12,6 +12,8 @@
 #include "subsystem/font.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
+#include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
 
 #include <filesystem>
@@ -24,25 +26,25 @@ namespace bramblefore
 
     PlayerInfoDisplay::PlayerInfoDisplay()
         : m_halfFrameTexture{}
-        , m_halfFrameSprite{}
+        , m_halfFrameSprite{ m_halfFrameTexture }
         , m_fullFrameTexture{}
-        , m_fullFrameSprite{}
-        , m_avatarIconSprite{}
+        , m_fullFrameSprite{ m_fullFrameTexture }
+        , m_avatarIconSprite{ util::SfmlDefaults::instance().texture() }
         , m_bgAvatarBgVerts{}
         , m_barFrameTexture{}
-        , m_healthBarFrameSprite{}
-        , m_manaBarFrameSprite{}
+        , m_healthBarFrameSprite{ util::SfmlDefaults::instance().texture() }
+        , m_manaBarFrameSprite{ util::SfmlDefaults::instance().texture() }
         , m_barFillLeftTexture{}
         , m_barFillMiddleTexture{}
         , m_barFillRightTexture{}
         , m_healthBarRect{}
-        , m_healthBarLeftSprite{}
-        , m_healthBarMiddleSprite{}
-        , m_healthBarRightSprite{}
+        , m_healthBarLeftSprite{ m_barFillLeftTexture }
+        , m_healthBarMiddleSprite{ m_barFillMiddleTexture }
+        , m_healthBarRightSprite{ m_barFillRightTexture }
         , m_manaBarRect{}
-        , m_manaBarLeftSprite{}
-        , m_manaBarMiddleSprite{}
-        , m_manaBarRightSprite{}
+        , m_manaBarLeftSprite{ m_barFillLeftTexture }
+        , m_manaBarMiddleSprite{ m_barFillMiddleTexture }
+        , m_manaBarRightSprite{ m_barFillRightTexture }
         , m_healthColor{ 255, 50, 50 }
         , m_manaColor{ 50, 50, 255 }
         , m_barFillMax{ 0.0f }
@@ -51,20 +53,20 @@ namespace bramblefore
         , m_willDrawManaBarRight{ true }
         , m_willDrawManaBarLeft{ true }
         , m_coinTexture{}
-        , m_coinSprite{}
-        , m_coinText{}
+        , m_coinSprite{ m_coinTexture }
+        , m_coinText{ util::SfmlDefaults::instance().font() }
         , m_starBrownTexture{}
-        , m_starBrown1Sprite{}
-        , m_starBrown2Sprite{}
-        , m_starBrown3Sprite{}
-        , m_starBrown4Sprite{}
-        , m_starBrown5Sprite{}
+        , m_starBrown1Sprite{ m_starBrownTexture }
+        , m_starBrown2Sprite{ m_starBrownTexture }
+        , m_starBrown3Sprite{ m_starBrownTexture }
+        , m_starBrown4Sprite{ m_starBrownTexture }
+        , m_starBrown5Sprite{ m_starBrownTexture }
         , m_starYellowTexture{}
-        , m_starYellow1Sprite{}
-        , m_starYellow2Sprite{}
-        , m_starYellow3Sprite{}
-        , m_starYellow4Sprite{}
-        , m_starYellow5Sprite{}
+        , m_starYellow1Sprite{ m_starYellowTexture }
+        , m_starYellow2Sprite{ m_starYellowTexture }
+        , m_starYellow3Sprite{ m_starYellowTexture }
+        , m_starYellow4Sprite{ m_starYellowTexture }
+        , m_starYellow5Sprite{ m_starYellowTexture }
     {}
 
     void PlayerInfoDisplay::setup(const Context & t_context)
@@ -73,24 +75,28 @@ namespace bramblefore
 
         const float frameScale{ t_context.layout.calScaleBasedOnResolution(t_context, 2.0f) };
 
-        m_halfFrameTexture.loadFromFile(
-            (t_context.settings.media_path / "image/ui/half-frame.png").string());
+        M_CHECK(
+            m_halfFrameTexture.loadFromFile(
+                (t_context.settings.media_path / "image/ui/half-frame.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_halfFrameTexture);
-        m_halfFrameSprite.setTexture(m_halfFrameTexture);
-        m_halfFrameSprite.scale(frameScale, frameScale);
+        m_halfFrameSprite.setTexture(m_halfFrameTexture, true);
+        m_halfFrameSprite.scale({ frameScale, frameScale });
 
         const float posDimm{ t_context.layout.wholeSize().y * 0.1f };
-        m_halfFrameSprite.setPosition(posDimm, posDimm);
+        m_halfFrameSprite.setPosition({ posDimm, posDimm });
 
         //
 
-        m_fullFrameTexture.loadFromFile(
-            (t_context.settings.media_path / "image/ui/full-frame.png").string());
+        M_CHECK(
+            m_fullFrameTexture.loadFromFile(
+                (t_context.settings.media_path / "image/ui/full-frame.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_fullFrameTexture);
-        m_fullFrameSprite.setTexture(m_fullFrameTexture);
-        m_fullFrameSprite.scale(frameScale, frameScale);
+        m_fullFrameSprite.setTexture(m_fullFrameTexture, true);
+        m_fullFrameSprite.scale({ frameScale, frameScale });
 
         m_fullFrameSprite.setPosition(m_halfFrameSprite.getPosition() + sf::Vector2f(8.0f, 8.0f));
 
@@ -106,43 +112,47 @@ namespace bramblefore
         //
 
         m_avatarIconSprite.setTexture(
-            AvatarTextureManager::instance().getIcon(t_context.player.avatarType()));
+            AvatarTextureManager::instance().getIcon(t_context.player.avatarType()), true);
 
         util::scaleAndCenterInside(m_avatarIconSprite, m_bgRect);
 
         //
 
-        m_barFrameTexture.loadFromFile(
-            (t_context.settings.media_path / "image/ui/bar-frame.png").string());
+        M_CHECK(
+            m_barFrameTexture.loadFromFile(
+                (t_context.settings.media_path / "image/ui/bar-frame.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_barFrameTexture);
 
-        m_healthBarFrameSprite.setTexture(m_barFrameTexture);
-        m_healthBarFrameSprite.scale(frameScale, frameScale);
+        m_healthBarFrameSprite.setTexture(m_barFrameTexture, true);
+        m_healthBarFrameSprite.scale({ frameScale, frameScale });
 
         m_healthBarFrameSprite.setPosition(
-            (util::right(m_fullFrameSprite) - 2.0f),
-            (util::bottom(m_fullFrameSprite) -
-             (m_healthBarFrameSprite.getGlobalBounds().height * 2.0f)));
+            { (util::right(m_fullFrameSprite) - 2.0f),
+              (util::bottom(m_fullFrameSprite) -
+               (m_healthBarFrameSprite.getGlobalBounds().size.y * 2.0f)) });
 
         //
 
-        m_manaBarFrameSprite.setTexture(m_barFrameTexture);
-        m_manaBarFrameSprite.scale(frameScale, frameScale);
+        m_manaBarFrameSprite.setTexture(m_barFrameTexture, true);
+        m_manaBarFrameSprite.scale({ frameScale, frameScale });
 
         m_manaBarFrameSprite.setPosition(
-            (util::right(m_fullFrameSprite) - 2.0f),
-            (util::bottom(m_fullFrameSprite) - m_manaBarFrameSprite.getGlobalBounds().height));
+            { (util::right(m_fullFrameSprite) - 2.0f),
+              (util::bottom(m_fullFrameSprite) - m_manaBarFrameSprite.getGlobalBounds().size.y) });
 
         //
 
-        m_barFillLeftTexture.loadFromFile(
-            (t_context.settings.media_path / "image/ui/bar-fill-left.png").string());
+        M_CHECK(
+            m_barFillLeftTexture.loadFromFile(
+                (t_context.settings.media_path / "image/ui/bar-fill-left.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_barFillLeftTexture);
 
-        m_healthBarLeftSprite.setTexture(m_barFillLeftTexture);
-        m_healthBarLeftSprite.scale(frameScale, frameScale);
+        m_healthBarLeftSprite.setTexture(m_barFillLeftTexture, true);
+        m_healthBarLeftSprite.scale({ frameScale, frameScale });
         m_healthBarLeftSprite.setColor(m_healthColor);
 
         const sf::Vector2f barPosOffset{
@@ -154,65 +164,69 @@ namespace bramblefore
 
         //
 
-        m_barFillMiddleTexture.loadFromFile(
-            (t_context.settings.media_path / "image/ui/bar-fill-middle.png").string());
+        M_CHECK(
+            m_barFillMiddleTexture.loadFromFile(
+                (t_context.settings.media_path / "image/ui/bar-fill-middle.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_barFillMiddleTexture);
 
-        m_healthBarMiddleSprite.setTexture(m_barFillMiddleTexture);
-        m_healthBarMiddleSprite.scale(frameScale, frameScale);
+        m_healthBarMiddleSprite.setTexture(m_barFillMiddleTexture, true);
+        m_healthBarMiddleSprite.scale({ frameScale, frameScale });
         m_healthBarMiddleSprite.setColor(m_healthColor);
 
-        m_healthBarRect.left   = util::right(m_healthBarLeftSprite);
-        m_healthBarRect.top    = m_healthBarLeftSprite.getPosition().y;
-        m_healthBarRect.width  = m_barFillMax;
-        m_healthBarRect.height = m_healthBarMiddleSprite.getGlobalBounds().height;
+        m_healthBarRect.position.x = util::right(m_healthBarLeftSprite);
+        m_healthBarRect.position.y = m_healthBarLeftSprite.getPosition().y;
+        m_healthBarRect.size.x     = m_barFillMax;
+        m_healthBarRect.size.y     = m_healthBarMiddleSprite.getGlobalBounds().size.y;
 
         util::scaleAndCenterInside(m_healthBarMiddleSprite, m_healthBarRect);
 
         //
 
-        m_barFillRightTexture.loadFromFile(
-            (t_context.settings.media_path / "image/ui/bar-fill-right.png").string());
+        M_CHECK(
+            m_barFillRightTexture.loadFromFile(
+                (t_context.settings.media_path / "image/ui/bar-fill-right.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_barFillRightTexture);
 
-        m_healthBarRightSprite.setTexture(m_barFillRightTexture);
-        m_healthBarRightSprite.scale(frameScale, frameScale);
+        m_healthBarRightSprite.setTexture(m_barFillRightTexture, true);
+        m_healthBarRightSprite.scale({ frameScale, frameScale });
         m_healthBarRightSprite.setColor(m_healthColor);
 
         m_healthBarRightSprite.setPosition(
-            util::right(m_healthBarMiddleSprite), m_healthBarMiddleSprite.getPosition().y);
+            { util::right(m_healthBarMiddleSprite), m_healthBarMiddleSprite.getPosition().y });
 
         //
 
-        m_manaBarLeftSprite.setTexture(m_barFillLeftTexture);
-        m_manaBarLeftSprite.scale(frameScale, frameScale);
+        m_manaBarLeftSprite.setTexture(m_barFillLeftTexture, true);
+        m_manaBarLeftSprite.scale({ frameScale, frameScale });
         m_manaBarLeftSprite.setColor(m_manaColor);
 
         m_manaBarLeftSprite.setPosition(m_manaBarFrameSprite.getPosition() + barPosOffset);
 
         //
 
-        m_manaBarMiddleSprite.setTexture(m_barFillMiddleTexture);
-        m_manaBarMiddleSprite.scale(frameScale, frameScale);
+        m_manaBarMiddleSprite.setTexture(m_barFillMiddleTexture, true);
+        m_manaBarMiddleSprite.scale({ frameScale, frameScale });
         m_manaBarMiddleSprite.setColor(m_manaColor);
 
-        m_manaBarRect.left   = util::right(m_manaBarLeftSprite);
-        m_manaBarRect.top    = m_manaBarLeftSprite.getPosition().y;
-        m_manaBarRect.width  = m_barFillMax;
-        m_manaBarRect.height = m_manaBarMiddleSprite.getGlobalBounds().height;
+        m_manaBarRect.position.x = util::right(m_manaBarLeftSprite);
+        m_manaBarRect.position.y = m_manaBarLeftSprite.getPosition().y;
+        m_manaBarRect.size.x     = m_barFillMax;
+        m_manaBarRect.size.y     = m_manaBarMiddleSprite.getGlobalBounds().size.y;
 
         util::scaleAndCenterInside(m_manaBarMiddleSprite, m_manaBarRect);
 
         //
 
-        m_manaBarRightSprite.setTexture(m_barFillRightTexture);
-        m_manaBarRightSprite.scale(frameScale, frameScale);
+        m_manaBarRightSprite.setTexture(m_barFillRightTexture, true);
+        m_manaBarRightSprite.scale({ frameScale, frameScale });
         m_manaBarRightSprite.setColor(m_manaColor);
 
         m_manaBarRightSprite.setPosition(
-            util::right(m_manaBarMiddleSprite), m_manaBarMiddleSprite.getPosition().y);
+            { util::right(m_manaBarMiddleSprite), m_manaBarMiddleSprite.getPosition().y });
 
         //
 
@@ -222,90 +236,98 @@ namespace bramblefore
         const float starRectHeightMiddle{ m_healthBarFrameSprite.getPosition().y -
                                           (starRectHeight * 0.5f) };
 
-        m_coinTexture.loadFromFile((t_context.settings.media_path / "image/ui/coin.png").string());
+        M_CHECK(
+            m_coinTexture.loadFromFile(
+                (t_context.settings.media_path / "image/ui/coin.png").string()),
+            "file not found");
+
         TextureStats::instance().process(m_coinTexture);
         m_coinTexture.setSmooth(true);
-        m_coinSprite.setTexture(m_coinTexture);
+        m_coinSprite.setTexture(m_coinTexture, true);
 
         const float coinScale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.7f) };
-        m_coinSprite.scale(coinScale, coinScale);
+        m_coinSprite.scale({ coinScale, coinScale });
 
         m_coinSprite.setPosition(
-            util::right(m_fullFrameSprite),
-            (starRectHeightMiddle - (m_coinSprite.getGlobalBounds().height * 0.5f)));
+            { util::right(m_fullFrameSprite),
+              (starRectHeightMiddle - (m_coinSprite.getGlobalBounds().size.y * 0.5f)) });
 
         //
 
         m_coinText =
             t_context.font.makeText(Font::Default, FontSize::Large, "0", sf::Color(236, 218, 95));
 
-        m_coinText.scale(1.4f, 1.4f);
+        m_coinText.scale({ 1.4f, 1.4f });
 
         m_coinText.setPosition(
-            (util::right(m_coinSprite) + 8.0f),
-            (starRectHeightMiddle - (m_coinText.getGlobalBounds().height * 0.5f)));
+            { (util::right(m_coinSprite) + 8.0f),
+              (starRectHeightMiddle - (m_coinText.getGlobalBounds().size.y * 0.5f)) });
 
         //
 
-        m_starBrownTexture.loadFromFile(
-            (t_context.settings.media_path / "image/ui/star-brown.png").string());
+        M_CHECK(
+            m_starBrownTexture.loadFromFile(
+                (t_context.settings.media_path / "image/ui/star-brown.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_starBrownTexture);
         m_starBrownTexture.setSmooth(true);
 
-        m_starBrown1Sprite.setTexture(m_starBrownTexture);
+        m_starBrown1Sprite.setTexture(m_starBrownTexture, true);
 
         const float starScale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.5f) };
-        m_starBrown1Sprite.scale(starScale, starScale);
+        m_starBrown1Sprite.scale({ starScale, starScale });
 
-        m_starBrown1Sprite.setPosition(
-            (m_fullFrameSprite.getPosition().x + 10.0f), (util::bottom(m_halfFrameSprite) + 10.0f));
+        m_starBrown1Sprite.setPosition({ (m_fullFrameSprite.getPosition().x + 10.0f),
+                                         (util::bottom(m_halfFrameSprite) + 10.0f) });
 
-        m_starBrown2Sprite.setTexture(m_starBrownTexture);
+        m_starBrown2Sprite.setTexture(m_starBrownTexture, true);
         m_starBrown2Sprite.scale(m_starBrown1Sprite.getScale());
 
         m_starBrown2Sprite.setPosition(
-            util::right(m_starBrown1Sprite), m_starBrown1Sprite.getPosition().y);
+            { util::right(m_starBrown1Sprite), m_starBrown1Sprite.getPosition().y });
 
-        m_starBrown3Sprite.setTexture(m_starBrownTexture);
+        m_starBrown3Sprite.setTexture(m_starBrownTexture, true);
         m_starBrown3Sprite.scale(m_starBrown1Sprite.getScale());
 
         m_starBrown3Sprite.setPosition(
-            util::right(m_starBrown2Sprite), m_starBrown1Sprite.getPosition().y);
+            { util::right(m_starBrown2Sprite), m_starBrown1Sprite.getPosition().y });
 
-        m_starBrown4Sprite.setTexture(m_starBrownTexture);
+        m_starBrown4Sprite.setTexture(m_starBrownTexture, true);
         m_starBrown4Sprite.scale(m_starBrown1Sprite.getScale());
 
         m_starBrown4Sprite.setPosition(
-            util::right(m_starBrown3Sprite), m_starBrown1Sprite.getPosition().y);
+            { util::right(m_starBrown3Sprite), m_starBrown1Sprite.getPosition().y });
 
-        m_starBrown5Sprite.setTexture(m_starBrownTexture);
+        m_starBrown5Sprite.setTexture(m_starBrownTexture, true);
         m_starBrown5Sprite.scale(m_starBrown1Sprite.getScale());
 
         m_starBrown5Sprite.setPosition(
-            util::right(m_starBrown4Sprite), m_starBrown1Sprite.getPosition().y);
+            { util::right(m_starBrown4Sprite), m_starBrown1Sprite.getPosition().y });
 
         //
 
-        m_starYellowTexture.loadFromFile(
-            (t_context.settings.media_path / "image/ui/star-yellow.png").string());
+        M_CHECK(
+            m_starYellowTexture.loadFromFile(
+                (t_context.settings.media_path / "image/ui/star-yellow.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_starYellowTexture);
         m_starYellowTexture.setSmooth(true);
 
-        m_starYellow1Sprite.setTexture(m_starYellowTexture);
+        m_starYellow1Sprite.setTexture(m_starYellowTexture, true);
         m_starYellow1Sprite.scale(m_starBrown1Sprite.getScale());
 
-        m_starYellow2Sprite.setTexture(m_starYellowTexture);
+        m_starYellow2Sprite.setTexture(m_starYellowTexture, true);
         m_starYellow2Sprite.scale(m_starBrown1Sprite.getScale());
 
-        m_starYellow3Sprite.setTexture(m_starYellowTexture);
+        m_starYellow3Sprite.setTexture(m_starYellowTexture, true);
         m_starYellow3Sprite.scale(m_starBrown1Sprite.getScale());
 
-        m_starYellow4Sprite.setTexture(m_starYellowTexture);
+        m_starYellow4Sprite.setTexture(m_starYellowTexture, true);
         m_starYellow4Sprite.scale(m_starBrown1Sprite.getScale());
 
-        m_starYellow5Sprite.setTexture(m_starYellowTexture);
+        m_starYellow5Sprite.setTexture(m_starYellowTexture, true);
         m_starYellow5Sprite.scale(m_starBrown1Sprite.getScale());
 
         setStarCount(0);
@@ -317,7 +339,11 @@ namespace bramblefore
 
         if (!m_bgAvatarBgVerts.empty())
         {
-            t_target.draw(&m_bgAvatarBgVerts[0], m_bgAvatarBgVerts.size(), sf::Triangles, t_states);
+            t_target.draw(
+                &m_bgAvatarBgVerts[0],
+                m_bgAvatarBgVerts.size(),
+                sf::PrimitiveType::Triangles,
+                t_states);
         }
 
         t_target.draw(m_avatarIconSprite, t_states);
@@ -370,7 +396,7 @@ namespace bramblefore
     {
         m_willDrawHealthBarRight = (t_ratio >= 1.0f);
         m_willDrawHealthBarLeft  = (t_ratio > 0.0f);
-        m_healthBarRect.width    = (m_barFillMax * t_ratio);
+        m_healthBarRect.size.x   = (m_barFillMax * t_ratio);
         util::scaleAndCenterInside(m_healthBarMiddleSprite, m_healthBarRect);
     }
 
@@ -378,7 +404,7 @@ namespace bramblefore
     {
         m_willDrawManaBarRight = (t_ratio >= 1.0f);
         m_willDrawManaBarLeft  = (t_ratio > 0.0f);
-        m_manaBarRect.width    = (m_barFillMax * t_ratio);
+        m_manaBarRect.size.x   = (m_barFillMax * t_ratio);
         util::scaleAndCenterInside(m_manaBarMiddleSprite, m_manaBarRect);
     }
 
@@ -391,11 +417,11 @@ namespace bramblefore
     void PlayerInfoDisplay::setStarCount(const int t_count)
     {
         // just keep stars offscreen until needed
-        m_starYellow1Sprite.setPosition(-1000.0f, -1000.0f);
-        m_starYellow2Sprite.setPosition(-1000.0f, -1000.0f);
-        m_starYellow3Sprite.setPosition(-1000.0f, -1000.0f);
-        m_starYellow4Sprite.setPosition(-1000.0f, -1000.0f);
-        m_starYellow5Sprite.setPosition(-1000.0f, -1000.0f);
+        m_starYellow1Sprite.setPosition({ -1000.0f, -1000.0f });
+        m_starYellow2Sprite.setPosition({ -1000.0f, -1000.0f });
+        m_starYellow3Sprite.setPosition({ -1000.0f, -1000.0f });
+        m_starYellow4Sprite.setPosition({ -1000.0f, -1000.0f });
+        m_starYellow5Sprite.setPosition({ -1000.0f, -1000.0f });
 
         if (0 == t_count)
         {

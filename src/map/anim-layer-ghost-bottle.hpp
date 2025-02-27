@@ -5,6 +5,7 @@
 //
 #include "map/tile-layer.hpp"
 #include "subsystem/harm-collision-manager.hpp"
+#include "util/sfml-defaults.hpp"
 
 #include <vector>
 
@@ -31,7 +32,7 @@ namespace bramblefore
         float elapsed_time_sec{ 0.0f };
         float time_between_frames_sec{ 0.175f };
         std::size_t frame_index{ 0 };
-        sf::Sprite sprite{};
+        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
         sf::FloatRect coll_rect{};
     };
 

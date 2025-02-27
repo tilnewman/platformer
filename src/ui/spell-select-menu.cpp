@@ -10,6 +10,7 @@
 #include "subsystem/context.hpp"
 #include "subsystem/font.hpp"
 #include "subsystem/screen-layout.hpp"
+#include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
 
@@ -31,7 +32,7 @@ namespace bramblefore
         , m_selectionTarget{ 0 }
         , m_selectionRect{}
         , m_isMovingSelection{ false }
-        , m_nameText{}
+        , m_nameText{ util::SfmlDefaults::instance().font() }
     {}
 
     void SpellSelectMenu::loadTextures(const Settings & t_settings)
@@ -59,12 +60,12 @@ namespace bramblefore
         //
 
         // setup m_selectionRect and m_windowFrame if first time calling setup()
-        if (m_selectionRect.width < 1.0f)
+        if (m_selectionRect.size.x < 1.0f)
         {
-            m_selectionRect.left   = pos.x;
-            m_selectionRect.top    = pos.y;
-            m_selectionRect.width  = iconSize;
-            m_selectionRect.height = iconSize;
+            m_selectionRect.position.x = pos.x;
+            m_selectionRect.position.y = pos.y;
+            m_selectionRect.size.x     = iconSize;
+            m_selectionRect.size.y     = iconSize;
 
             m_windowFrame.arrange(t_context, makeGuiWindowInfo(m_selectionRect));
         }
@@ -86,7 +87,8 @@ namespace bramblefore
                 const float targetHorizPos{ pos.x +
                                             (static_cast<float>(selection) * (iconSize * 1.5f)) };
 
-                m_slider = util::SliderFromTo<float>(m_selectionRect.left, targetHorizPos, 10.0f);
+                m_slider =
+                    util::SliderFromTo<float>(m_selectionRect.position.x, targetHorizPos, 10.0f);
 
                 t_context.player.setCurentSpellIndex(selection);
             }
@@ -101,10 +103,11 @@ namespace bramblefore
         for (std::size_t spellIndex{ 0 }; spellIndex < playerSpells.size(); ++spellIndex)
         {
             const PlayerSpell & playerSpell{ playerSpells.at(spellIndex) };
-            const sf::FloatRect rect{ pos.x, pos.y, iconSize, iconSize };
+            const sf::FloatRect rect{ { pos.x, pos.y }, { iconSize, iconSize } };
 
-            sf::Sprite & sprite{ m_spellSprites.emplace_back() };
-            sprite.setTexture(t_context.spell.iconTexture(playerSpell.spell));
+            sf::Sprite & sprite{ m_spellSprites.emplace_back(
+                t_context.spell.iconTexture(playerSpell.spell)) };
+
             util::fitAndCenterInside(sprite, rect);
 
             //
@@ -122,8 +125,8 @@ namespace bramblefore
 
             //
 
-            pos.x += rect.width;
-            pos.x += (rect.width * 0.5f);
+            pos.x += rect.size.x;
+            pos.x += (rect.size.x * 0.5f);
         }
 
         //
@@ -135,8 +138,8 @@ namespace bramblefore
         }
 
         m_nameText.setPosition(
-            (util::center(m_selectionRect).x - (m_nameText.getGlobalBounds().width * 0.5f)),
-            (util::bottom(m_selectionRect) + (m_selectionRect.height * 0.15f)));
+            { (util::center(m_selectionRect).x - (m_nameText.getGlobalBounds().size.x * 0.5f)),
+              (util::bottom(m_selectionRect) + (m_selectionRect.size.y * 0.15f)) });
     }
 
     void SpellSelectMenu::update(Context & t_context, const float t_frameTimeSec)
@@ -151,7 +154,7 @@ namespace bramblefore
         {
             m_nameText.setFillColor(sf::Color::Transparent);
 
-            m_selectionRect.left = m_slider.update(t_frameTimeSec);
+            m_selectionRect.position.x = m_slider.update(t_frameTimeSec);
             m_windowFrame.arrange(t_context, makeGuiWindowInfo(m_selectionRect));
             m_isMovingSelection = m_slider.isMoving();
 
@@ -160,8 +163,9 @@ namespace bramblefore
                 m_nameText.setFillColor(sf::Color::White);
 
                 m_nameText.setPosition(
-                    (util::center(m_selectionRect).x - (m_nameText.getGlobalBounds().width * 0.5f)),
-                    (util::bottom(m_selectionRect) + (m_selectionRect.height * 0.15f)));
+                    { (util::center(m_selectionRect).x -
+                       (m_nameText.getGlobalBounds().size.x * 0.5f)),
+                      (util::bottom(m_selectionRect) + (m_selectionRect.size.y * 0.15f)) });
             }
         }
     }
@@ -198,6 +202,7 @@ namespace bramblefore
         GuiWindowInfo info;
         info.border = GuiWindowBorder::Fancy;
         info.region = region;
+
         return info;
     }
 

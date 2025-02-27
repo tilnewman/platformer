@@ -19,7 +19,7 @@ namespace bramblefore
 
         float death_delay_sec = 4.0f;
 
-        sf::VideoMode video_mode    = { 1920, 1080, 32 };
+        sf::VideoMode video_mode    = sf::VideoMode(sf::Vector2u{ 1920u, 1080u }, 32u );
         float frame_rate            = 60; // change at your own risk
         bool will_log_fps           = false;
         bool will_display_fps_graph = true;

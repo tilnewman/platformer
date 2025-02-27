@@ -20,18 +20,17 @@ namespace bramblefore
     {
         if (MonsterAnim::Death == m_anim)
         {
-            return { 0.0f, 0.0f, 0.0f, 0.0f };
+            return { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
         }
         else
         {
             sf::FloatRect rect{ m_sprite.getGlobalBounds() };
             util::scaleRectInPlace(rect, { 0.4f, 0.3f });
-            rect.left -= (rect.width * 0.2f);
-            // rect.top += (rect.height * 0.4f);
+            rect.position.x -= (rect.size.x * 0.2f);
 
             if (!m_isFacingRight)
             {
-                rect.left += (rect.width * 0.3f);
+                rect.position.x += (rect.size.x * 0.3f);
             }
 
             return rect;
@@ -42,34 +41,35 @@ namespace bramblefore
     {
         sf::FloatRect rect{ collisionRect() };
 
-        const float shiftHoriz{ rect.width * 0.4f };
+        const float shiftHoriz{ rect.size.x * 0.4f };
 
         if (m_isFacingRight)
         {
-            rect.left += shiftHoriz;
+            rect.position.x += shiftHoriz;
         }
         else
         {
-            rect.left -= shiftHoriz;
+            rect.position.x -= shiftHoriz;
         }
 
         util::scaleRectInPlace(rect, 1.1f);
 
         return rect;
     }
-    
+
     void Dwarf::turnAround()
     {
-        m_sprite.scale(-1.0f, 1.0f);
+        m_sprite.scale({ -1.0f, 1.0f });
 
         const float imageWidthRatio{ 0.8f };
         if (m_isFacingRight)
         {
-            m_sprite.move(-(m_sprite.getGlobalBounds().width * (1.0f - imageWidthRatio)), 0.0f);
+            m_sprite.move(
+                { -(m_sprite.getGlobalBounds().size.x * (1.0f - imageWidthRatio)), 0.0f });
         }
         else
         {
-            m_sprite.move((m_sprite.getGlobalBounds().width * (1.0f - imageWidthRatio)), 0.0f);
+            m_sprite.move({ (m_sprite.getGlobalBounds().size.x * (1.0f - imageWidthRatio)), 0.0f });
         }
 
         m_isFacingRight = !m_isFacingRight;

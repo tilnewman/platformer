@@ -32,7 +32,7 @@ namespace bramblefore
         std::vector<sf::Text> lineTexts;
         lineTexts.reserve(words.size() / 4); // found by experiment to be a good upper bound
 
-        sf::Vector2f pos{ util::position(t_rect) };
+        sf::Vector2f pos{ t_rect.position };
         std::string lineStr;
         sf::Text lineText = t_context.font.makeText("", t_details);
         lineText.setPosition(pos);

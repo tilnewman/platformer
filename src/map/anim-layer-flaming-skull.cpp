@@ -11,6 +11,7 @@
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
 
@@ -34,28 +35,38 @@ namespace bramblefore
 
         //
 
-        m_skullBlockTexture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/skull-flames-block.png").string());
+        M_CHECK(
+            m_skullBlockTexture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/skull-flames-block.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_skullBlockTexture);
 
-        m_flamesUpTexture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/skull-flames-up.png").string());
+        M_CHECK(
+            m_flamesUpTexture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/skull-flames-up.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_flamesUpTexture);
 
-        m_flamesDownTexture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/skull-flames-down.png").string());
+        M_CHECK(
+            m_flamesDownTexture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/skull-flames-down.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_flamesDownTexture);
 
-        m_flamesLeftTexture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/skull-flames-left.png").string());
+        M_CHECK(
+            m_flamesLeftTexture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/skull-flames-left.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_flamesLeftTexture);
 
-        m_flamesRightTexture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/skull-flames-right.png").string());
+        M_CHECK(
+            m_flamesRightTexture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/skull-flames-right.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_flamesRightTexture);
 
@@ -63,13 +74,12 @@ namespace bramblefore
 
         for (const sf::FloatRect & rect : t_rects)
         {
-            sf::Sprite & blockSprite{ m_skullBlockSprites.emplace_back() };
-            blockSprite.setTexture(m_skullBlockTexture);
-            blockSprite.scale(m_scale, m_scale);
+            sf::Sprite & blockSprite{ m_skullBlockSprites.emplace_back(m_skullBlockTexture) };
+            blockSprite.scale({ m_scale, m_scale });
 
             blockSprite.setPosition(
-                (util::center(rect).x - (blockSprite.getGlobalBounds().width * 0.5f)),
-                (util::center(rect).y - (blockSprite.getGlobalBounds().height * 0.5f)));
+                { (util::center(rect).x - (blockSprite.getGlobalBounds().size.x * 0.5f)),
+                  (util::center(rect).y - (blockSprite.getGlobalBounds().size.y * 0.5f)) });
 
             const float spawnSecMin{ 1.5f };
             const float spawnSecMax{ 4.0f };
@@ -82,11 +92,11 @@ namespace bramblefore
             upAnim.time_between_flaming = t_context.random.fromTo(spawnSecMin, spawnSecMax);
             upAnim.sprite.setTexture(getTexture(upAnim.direction));
             upAnim.sprite.setTextureRect(textureRect(getTexture(upAnim.direction), 0));
-            upAnim.sprite.setScale(m_scale, m_scale);
+            upAnim.sprite.setScale({ m_scale, m_scale });
 
             upAnim.sprite.setPosition(
-                (util::center(rect).x - (upAnim.sprite.getGlobalBounds().width * 0.5f)),
-                (rect.top - (upAnim.sprite.getGlobalBounds().height * 0.8f)));
+                { (util::center(rect).x - (upAnim.sprite.getGlobalBounds().size.x * 0.5f)),
+                  (rect.position.y - (upAnim.sprite.getGlobalBounds().size.y * 0.8f)) });
 
             upAnim.coll_rect = util::scaleRectInPlaceCopy(
                 upAnim.sprite.getGlobalBounds(), { collWidthRatio, collLengthRatio });
@@ -96,11 +106,11 @@ namespace bramblefore
             downAnim.time_between_flaming = t_context.random.fromTo(spawnSecMin, spawnSecMax);
             downAnim.sprite.setTexture(getTexture(downAnim.direction));
             downAnim.sprite.setTextureRect(textureRect(getTexture(downAnim.direction), 0));
-            downAnim.sprite.setScale(m_scale, m_scale);
+            downAnim.sprite.setScale({ m_scale, m_scale });
 
             downAnim.sprite.setPosition(
-                (util::center(rect).x - (downAnim.sprite.getGlobalBounds().width * 0.5f)),
-                (util::bottom(rect) - (downAnim.sprite.getGlobalBounds().height * 0.2f)));
+                { (util::center(rect).x - (downAnim.sprite.getGlobalBounds().size.x * 0.5f)),
+                  (util::bottom(rect) - (downAnim.sprite.getGlobalBounds().size.y * 0.2f)) });
 
             downAnim.coll_rect = util::scaleRectInPlaceCopy(
                 downAnim.sprite.getGlobalBounds(), { collWidthRatio, collLengthRatio });
@@ -110,11 +120,11 @@ namespace bramblefore
             leftAnim.time_between_flaming = t_context.random.fromTo(spawnSecMin, spawnSecMax);
             leftAnim.sprite.setTexture(getTexture(leftAnim.direction));
             leftAnim.sprite.setTextureRect(textureRect(getTexture(leftAnim.direction), 0));
-            leftAnim.sprite.setScale(m_scale, m_scale);
+            leftAnim.sprite.setScale({ m_scale, m_scale });
 
             leftAnim.sprite.setPosition(
-                (rect.left - (leftAnim.sprite.getGlobalBounds().width * 0.8f)),
-                (util::center(rect).y - (leftAnim.sprite.getGlobalBounds().height * 0.5f)));
+                { (rect.position.x - (leftAnim.sprite.getGlobalBounds().size.x * 0.8f)),
+                  (util::center(rect).y - (leftAnim.sprite.getGlobalBounds().size.y * 0.5f)) });
 
             leftAnim.coll_rect = util::scaleRectInPlaceCopy(
                 leftAnim.sprite.getGlobalBounds(), { collLengthRatio, collWidthRatio });
@@ -124,11 +134,11 @@ namespace bramblefore
             rightAnim.time_between_flaming = t_context.random.fromTo(spawnSecMin, spawnSecMax);
             rightAnim.sprite.setTexture(getTexture(rightAnim.direction));
             rightAnim.sprite.setTextureRect(textureRect(getTexture(rightAnim.direction), 0));
-            rightAnim.sprite.setScale(m_scale, m_scale);
+            rightAnim.sprite.setScale({ m_scale, m_scale });
 
             rightAnim.sprite.setPosition(
-                (util::right(rect) - (rightAnim.sprite.getGlobalBounds().width * 0.2f)),
-                (util::center(rect).y - (rightAnim.sprite.getGlobalBounds().height * 0.5f)));
+                { (util::right(rect) - (rightAnim.sprite.getGlobalBounds().size.x * 0.2f)),
+                  (util::center(rect).y - (rightAnim.sprite.getGlobalBounds().size.y * 0.5f)) });
 
             rightAnim.coll_rect = util::scaleRectInPlaceCopy(
                 rightAnim.sprite.getGlobalBounds(), { collLengthRatio, collWidthRatio });
@@ -147,7 +157,7 @@ namespace bramblefore
 
         for (const FlamesAnim & anim : m_anims)
         {
-            if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
             }
@@ -155,7 +165,7 @@ namespace bramblefore
 
         for (const sf::Sprite & sprite : m_skullBlockSprites)
         {
-            if (wholeScreenRect.intersects(sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(sprite.getGlobalBounds()))
             {
                 t_target.draw(sprite, t_states);
             }
@@ -166,13 +176,13 @@ namespace bramblefore
     {
         for (FlamesAnim & anim : m_anims)
         {
-            anim.sprite.move(t_amount, 0.0f);
-            anim.coll_rect.left += t_amount;
+            anim.sprite.move({ t_amount, 0.0f });
+            anim.coll_rect.position.x += t_amount;
         }
 
         for (sf::Sprite & sprite : m_skullBlockSprites)
         {
-            sprite.move(t_amount, 0.0f);
+            sprite.move({ t_amount, 0.0f });
         }
     }
 
@@ -210,7 +220,7 @@ namespace bramblefore
                     anim.elapsed_time_sec = 0.0f;
                     anim.is_flaming       = true;
 
-                    if (wholeScreenRect.intersects(anim.coll_rect))
+                    if (wholeScreenRect.findIntersection(anim.coll_rect))
                     {
                         t_context.sfx.play("fire-puff");
                     }
@@ -235,10 +245,10 @@ namespace bramblefore
         const sf::Texture & t_texture, const std::size_t frame) const noexcept
     {
         sf::IntRect rect;
-        rect.width  = static_cast<int>(t_texture.getSize().y);
-        rect.height = rect.width;
-        rect.top    = 0;
-        rect.left   = (static_cast<int>(frame) * rect.width);
+        rect.size.x     = static_cast<int>(t_texture.getSize().y);
+        rect.size.y     = rect.size.x;
+        rect.position.y = 0;
+        rect.position.x = (static_cast<int>(frame) * rect.size.x);
         return rect;
     }
 
@@ -253,7 +263,7 @@ namespace bramblefore
                 continue;
             }
 
-            if (t_avatarRect.intersects(anim.coll_rect))
+            if (t_avatarRect.findIntersection(anim.coll_rect))
             {
                 harm.rect   = anim.coll_rect;
                 harm.damage = 10;

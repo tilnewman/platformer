@@ -5,6 +5,7 @@
 //
 #include "map/tile-layer.hpp"
 #include "subsystem/harm-collision-manager.hpp"
+#include "util/sfml-defaults.hpp"
 
 #include <string>
 #include <string_view>
@@ -80,7 +81,7 @@ namespace bramblefore
         float elapsed_time_sec{ 0.0f };
         float time_between_frames_sec{ 0.1f };
         std::size_t frame_index{ 0 };
-        sf::Sprite sprite{};
+        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
         sf::FloatRect coll_rect{};
         Rock rock{ Rock::Rock1 }; // any works here
     };
@@ -91,7 +92,7 @@ namespace bramblefore
     {
         bool is_alive{ true };
         float velocity{ 0.0f };
-        sf::Sprite sprite{};
+        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
         Rock rock{ Rock::Rock1 }; // any works here
 
         // the rect drawn on the map that includes the vert distance this drop will travel
@@ -103,7 +104,7 @@ namespace bramblefore
     struct RockHangingAnim
     {
         bool has_dropped{ false };
-        sf::Sprite sprite{};
+        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
         sf::FloatRect trigger_region{};
         Rock rock{ Rock::Rock1 }; // any works here
 

@@ -11,6 +11,7 @@
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
 
@@ -26,8 +27,10 @@ namespace bramblefore
     {
         HarmCollisionManager::instance().addOwner(*this);
 
-        m_texture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/mimic.png").string());
+        M_CHECK(
+            m_texture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/mimic.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_texture);
 
@@ -39,11 +42,11 @@ namespace bramblefore
             anim.sprite.setTextureRect(textureRect(0));
 
             const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.8f) };
-            anim.sprite.scale(scale, scale);
+            anim.sprite.scale({ scale, scale });
 
             anim.sprite.setPosition(
-                (util::center(rect).x - (anim.sprite.getGlobalBounds().width * 0.5f)),
-                (util::bottom(rect) - (anim.sprite.getGlobalBounds().height * 0.85f)));
+                { (util::center(rect).x - (anim.sprite.getGlobalBounds().size.x * 0.5f)),
+                  (util::bottom(rect) - (anim.sprite.getGlobalBounds().size.y * 0.85f)) });
 
             anim.coll_rect = util::scaleRectInPlaceCopy(anim.sprite.getGlobalBounds(), 0.65f);
         }
@@ -61,7 +64,7 @@ namespace bramblefore
 
         for (const MimicAnim & anim : m_anims)
         {
-            if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
             }
@@ -72,8 +75,8 @@ namespace bramblefore
     {
         for (MimicAnim & anim : m_anims)
         {
-            anim.sprite.move(t_amount, 0.0f);
-            anim.coll_rect.left += t_amount;
+            anim.sprite.move({ t_amount, 0.0f });
+            anim.coll_rect.position.x += t_amount;
         }
     }
 
@@ -128,10 +131,11 @@ namespace bramblefore
     sf::IntRect MimicAnimationLayer::textureRect(const std::size_t frame) const noexcept
     {
         sf::IntRect rect;
-        rect.width  = static_cast<int>(m_texture.getSize().y);
-        rect.height = rect.width;
-        rect.top    = 0;
-        rect.left   = (static_cast<int>(frame) * rect.width);
+        rect.size.x     = static_cast<int>(m_texture.getSize().y);
+        rect.size.y     = rect.size.x;
+        rect.position.y = 0;
+        rect.position.x = (static_cast<int>(frame) * rect.size.x);
+
         return rect;
     }
 
@@ -146,12 +150,14 @@ namespace bramblefore
                 continue;
             }
 
-            if (t_avatarRect.intersects(anim.coll_rect))
+            if (t_avatarRect.findIntersection(anim.coll_rect))
             {
                 anim.is_springing = true;
-                harm.rect         = anim.coll_rect;
-                harm.damage       = 25;
-                harm.sfx          = "mimic";
+
+                harm.rect   = anim.coll_rect;
+                harm.damage = 25;
+                harm.sfx    = "mimic";
+
                 break;
             }
         }

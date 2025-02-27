@@ -21,6 +21,7 @@
 #include "util/sfml-keys.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
+#include "util/sfml-defaults.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Event.hpp>
@@ -31,7 +32,7 @@ namespace bramblefore
     PlayState::PlayState()
         : m_spellSelectMenu{}
         , m_isPaused{ false }
-        , m_pauseText{}
+        , m_pauseText{ util::SfmlDefaults::instance().font() }
         , m_pauseFadeVerts{}
         , m_isQuitting{ false }
         , m_quitWindow{}
@@ -76,7 +77,10 @@ namespace bramblefore
             if (!m_pauseFadeVerts.empty())
             {
                 t_target.draw(
-                    &m_pauseFadeVerts[0], m_pauseFadeVerts.size(), sf::Triangles, t_states);
+                    &m_pauseFadeVerts[0],
+                    m_pauseFadeVerts.size(),
+                    sf::PrimitiveType::Triangles,
+                    t_states);
             }
 
             t_target.draw(m_pauseText, t_states);
@@ -89,70 +93,70 @@ namespace bramblefore
 
     void PlayState::handleEvent(Context & t_context, const sf::Event & t_event)
     {
-        if (t_event.type != sf::Event::KeyPressed)
+        if (const auto * keyPtr = t_event.getIf<sf::Event::KeyPressed>())
         {
-            return;
-        }
-
-        // leave the quitting popup
-        if (m_isQuitting)
-        {
-            if (t_event.key.code == sf::Keyboard::L)
+            // leave the quitting popup
+            if (m_isQuitting)
             {
-                m_isQuitting = false;
-                t_context.avatar.triggerDeath(t_context);
-            }
-            else if (t_event.key.code == sf::Keyboard::G)
-            {
-                m_isQuitting = false;
-                t_context.state.setChangePending(State::Credits);
-            }
-            else if (t_event.key.code == sf::Keyboard::N)
-            {
-                m_isQuitting = false;
-            }
+                if (keyPtr->scancode == sf::Keyboard::Scancode::L)
+                {
+                    m_isQuitting = false;
+                    t_context.avatar.triggerDeath(t_context);
+                }
+                else if (keyPtr->scancode == sf::Keyboard::Scancode::G)
+                {
+                    m_isQuitting = false;
+                    t_context.state.setChangePending(State::Credits);
+                }
+                else if (keyPtr->scancode == sf::Keyboard::Scancode::N)
+                {
+                    m_isQuitting = false;
+                }
 
-            return;
-        }
-
-        // unpause
-        if (m_isPaused && (t_event.key.code == sf::Keyboard::Space))
-        {
-            m_isPaused = false;
-            t_context.sfx.play("pause");
-            return;
-        }
-
-        if (!m_isPaused && !m_isQuitting && (t_event.key.code == sf::Keyboard::Space))
-        {
-            m_isPaused = true;
-            t_context.sfx.stop("walk");
-            t_context.sfx.play("pause");
-        }
-        else if (!m_isQuitting && !m_isPaused && (t_event.key.code == sf::Keyboard::Q))
-        {
-            m_isQuitting = true;
-            t_context.sfx.stop("walk");
-            t_context.sfx.play("ui-select-thock-slide");
-        }
-        else if (t_event.key.code == sf::Keyboard::T)
-        {
-            std::size_t temp{ static_cast<std::size_t>(t_context.player.avatarType()) };
-
-            ++temp;
-            if (temp >= static_cast<std::size_t>(AvatarType::Count))
-            {
-                temp = 0;
+                return;
             }
 
-            t_context.player.setup(t_context, static_cast<AvatarType>(temp));
-            t_context.avatar.changeType(t_context);
-        }
-        else if (
-            isWizard(t_context.player.avatarType()) && util::keys::isNumberKey(t_event.key.code))
-        {
-            m_spellSelectMenu.setup(
-                t_context, util::keys::toNumberOpt<std::size_t>(t_event.key.code).value());
+            // unpause
+            if (m_isPaused && (keyPtr->scancode == sf::Keyboard::Scancode::Space))
+            {
+                m_isPaused = false;
+                t_context.sfx.play("pause");
+                return;
+            }
+
+            if (!m_isPaused && !m_isQuitting && (keyPtr->scancode == sf::Keyboard::Scancode::Space))
+            {
+                m_isPaused = true;
+                t_context.sfx.stop("walk");
+                t_context.sfx.play("pause");
+            }
+            else if (
+                !m_isQuitting && !m_isPaused && (keyPtr->scancode == sf::Keyboard::Scancode::Q))
+            {
+                m_isQuitting = true;
+                t_context.sfx.stop("walk");
+                t_context.sfx.play("ui-select-thock-slide");
+            }
+            else if (keyPtr->scancode == sf::Keyboard::Scancode::T)
+            {
+                std::size_t temp{ static_cast<std::size_t>(t_context.player.avatarType()) };
+
+                ++temp;
+                if (temp >= static_cast<std::size_t>(AvatarType::Count))
+                {
+                    temp = 0;
+                }
+
+                t_context.player.setup(t_context, static_cast<AvatarType>(temp));
+                t_context.avatar.changeType(t_context);
+            }
+            else if (
+                isWizard(t_context.player.avatarType()) &&
+                util::keys::isNumberKey(keyPtr->scancode))
+            {
+                m_spellSelectMenu.setup(
+                    t_context, util::keys::toNumberOpt<std::size_t>(keyPtr->scancode).value());
+            }
         }
     }
 

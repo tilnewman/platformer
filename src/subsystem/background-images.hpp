@@ -44,7 +44,7 @@ namespace bramblefore
     struct BackgroundImagesInfo
     {
         BackgroundImagesInfo(
-            const sf::Uint8 t_fadeAlpha,
+            const std::uint8_t t_fadeAlpha,
             const std::filesystem::path & t_backgroundPath,
             const std::vector<SlidingImageInfo> & t_slidingImages,
             const std::filesystem::path & t_overlayPath)
@@ -54,7 +54,7 @@ namespace bramblefore
             , overlay_path{ t_overlayPath }
         {}
 
-        sf::Uint8 fade_alpha;
+        std::uint8_t fade_alpha;
         std::filesystem::path background_path;
         std::vector<SlidingImageInfo> sliding_images;
         std::filesystem::path overlay_path;
@@ -66,8 +66,8 @@ namespace bramblefore
     {
         SlidingImageInfo info{};
         sf::Texture texture{};
-        sf::Sprite sprite_left{};
-        sf::Sprite sprite_right{};
+        sf::Sprite sprite_left{ texture };
+        sf::Sprite sprite_right{ texture };
     };
 
     //

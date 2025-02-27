@@ -74,11 +74,11 @@ namespace bramblefore
         ItemImages m_itemImages;
         LevelInfo m_levelInfo;
         PlayerInfo m_playerInfo;
-        PlayerInfoDisplay m_playerInfoDisplay;
+        std::unique_ptr<PlayerInfoDisplay> m_playerInfoDisplayUPtr;
         FloatingText m_floatText;
         MapCoordinator m_mapCoord;
 
-        Context m_context;
+        std::unique_ptr <Context> m_contextUPtr;
 
         // fps stuff
         std::vector<std::size_t> m_fpsValues;

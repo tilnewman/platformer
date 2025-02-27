@@ -41,10 +41,10 @@ namespace bramblefore
             AvatarTextureSet & set{ m_textureSets.at(typeIndex) };
             set.anims.resize(static_cast<std::size_t>(AvatarAnim::Count));
 
-            set.defalt.loadFromFile((typePath / "default.png").string());
+            M_CHECK(set.defalt.loadFromFile((typePath / "default.png").string()), "file not found");
             TextureStats::instance().process(set.defalt);
 
-            set.icon.loadFromFile((typePath / "icon.png").string());
+            M_CHECK(set.icon.loadFromFile((typePath / "icon.png").string()), "file not found");
             TextureStats::instance().process(set.icon);
             set.icon.setSmooth(true);
 
@@ -115,7 +115,7 @@ namespace bramblefore
                 {
                     const std::filesystem::path path{ files.at(frameIndex) };
                     sf::Texture & texture{ anims.textures.at(frameIndex) };
-                    texture.loadFromFile(path.string());
+                    M_CHECK(texture.loadFromFile(path.string()), "file not found");
                     TextureStats::instance().process(texture);
                 }
             }

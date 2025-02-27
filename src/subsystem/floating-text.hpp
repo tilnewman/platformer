@@ -3,6 +3,8 @@
 //
 // floating-text.hpp
 //
+#include "util/sfml-defaults.hpp"
+
 #include <vector>
 
 #include <SFML/Graphics/Color.hpp>
@@ -12,7 +14,7 @@
 namespace sf
 {
     class RenderTarget;
-    class RenderStates;
+    struct RenderStates;
 } // namespace sf
 
 namespace bramblefore
@@ -24,7 +26,7 @@ namespace bramblefore
     struct FloatingTextAnim
     {
         bool is_alive{ true };
-        sf::Text text{};
+        sf::Text text{ util::SfmlDefaults::instance().font() };
     };
 
     //
@@ -50,6 +52,6 @@ namespace bramblefore
         std::vector<FloatingTextAnim> m_animations;
     };
 
-} // namespace platformer
+} // namespace bramblefore
 
 #endif // FLOATING_TEXT_HPP_INCLUDED

@@ -21,11 +21,13 @@ namespace bramblefore
         : m_loadedSetName{}
         , m_backgroundTexture{}
         , m_overlayTexture{}
-        , m_backgroundSprite{}
-        , m_overlaySprite{}
+        , m_backgroundSprite{ m_backgroundTexture }
+        , m_overlaySprite{ m_overlayTexture }
         , m_slidingImages{}
         , m_fadeVerts{}
-    {}
+    {
+        m_fadeVerts.reserve(util::verts_per_quad);
+    }
 
     void BackgroundImages::setup(const Context & t_context, const std::string & t_name)
     {
@@ -41,9 +43,12 @@ namespace bramblefore
         // there won't always be a static background image
         if (!infoPack.background_path.empty())
         {
-            m_backgroundTexture.loadFromFile(infoPack.background_path.string());
+            M_CHECK(
+                m_backgroundTexture.loadFromFile(infoPack.background_path.string()),
+                "file not found");
+
             TextureStats::instance().process(m_backgroundTexture);
-            m_backgroundSprite.setTexture(m_backgroundTexture);
+            m_backgroundSprite.setTexture(m_backgroundTexture, true);
             util::scaleAndCenterInside(m_backgroundSprite, t_context.layout.wholeRect());
         }
         else
@@ -54,9 +59,11 @@ namespace bramblefore
         // there won't always be a static overlay image
         if (!infoPack.overlay_path.empty())
         {
-            m_overlayTexture.loadFromFile(infoPack.overlay_path.string());
+            M_CHECK(
+                m_overlayTexture.loadFromFile(infoPack.overlay_path.string()), "file not found");
+
             TextureStats::instance().process(m_overlayTexture);
-            m_overlaySprite.setTexture(m_overlayTexture);
+            m_overlaySprite.setTexture(m_overlayTexture, true);
             util::scaleAndCenterInside(m_overlaySprite, t_context.layout.wholeRect());
         }
         else
@@ -75,13 +82,15 @@ namespace bramblefore
 
             SlidingImage & slidingImage{ m_slidingImages.emplace_back() };
             slidingImage.info = info;
-            slidingImage.texture.loadFromFile(info.path.string());
+            M_CHECK(slidingImage.texture.loadFromFile(info.path.string()), "file not found");
             TextureStats::instance().process(slidingImage.texture);
-            slidingImage.sprite_left.setTexture(slidingImage.texture);
-            slidingImage.sprite_right.setTexture(slidingImage.texture);
+            slidingImage.sprite_left.setTexture(slidingImage.texture, true);
+            slidingImage.sprite_right.setTexture(slidingImage.texture, true);
             util::scaleAndCenterInside(slidingImage.sprite_left, t_context.layout.wholeRect());
             util::scaleAndCenterInside(slidingImage.sprite_right, t_context.layout.wholeRect());
-            slidingImage.sprite_right.move(slidingImage.sprite_left.getGlobalBounds().width, 0.0f);
+
+            slidingImage.sprite_right.move(
+                { slidingImage.sprite_left.getGlobalBounds().size.x, 0.0f });
         }
 
         if (infoPack.fade_alpha > 0)
@@ -109,7 +118,8 @@ namespace bramblefore
 
         if (!m_fadeVerts.empty())
         {
-            t_target.draw(&m_fadeVerts[0], m_fadeVerts.size(), sf::Triangles, t_states);
+            t_target.draw(
+                &m_fadeVerts[0], m_fadeVerts.size(), sf::PrimitiveType::Triangles, t_states);
         }
     }
 
@@ -117,15 +127,15 @@ namespace bramblefore
     {
         for (SlidingImage & image : m_slidingImages)
         {
-            image.sprite_left.move((t_amount * image.info.move_ratio), 0.0f);
-            image.sprite_right.move((t_amount * image.info.move_ratio), 0.0f);
+            image.sprite_left.move({ (t_amount * image.info.move_ratio), 0.0f });
+            image.sprite_right.move({ (t_amount * image.info.move_ratio), 0.0f });
 
             if (image.sprite_right.getPosition().x < 0.0f)
             {
-                image.sprite_left.setPosition(0.0f, image.sprite_left.getPosition().y);
+                image.sprite_left.setPosition({ 0.0f, image.sprite_left.getPosition().y });
 
-                image.sprite_right.setPosition(
-                    image.sprite_left.getGlobalBounds().width, image.sprite_right.getPosition().y);
+                image.sprite_right.setPosition({ image.sprite_left.getGlobalBounds().size.x,
+                                                 image.sprite_right.getPosition().y });
             }
         }
     }
@@ -134,7 +144,7 @@ namespace bramblefore
         BackgroundImages::infoFactory(const Context & t_context, const std::string & t_name)
     {
         // behold the magic number that looked best on screen after many tests
-        const sf::Uint8 fadeAlpha{ 64 };
+        const std::uint8_t fadeAlpha{ 64 };
 
         if (t_name == "forest")
         {

@@ -45,8 +45,10 @@ namespace bramblefore
 
             sf::Texture & texture{ m_textures.emplace_back() };
 
-            texture.loadFromFile(
-                (t_context.settings.media_path / "image/anim" / toFilename(pickup)).string());
+            M_CHECK(
+                texture.loadFromFile(
+                    (t_context.settings.media_path / "image/anim" / toFilename(pickup)).string()),
+                "file not found");
 
             TextureStats::instance().process(texture);
 
@@ -90,10 +92,10 @@ namespace bramblefore
         const sf::Texture & texture{ m_textures.at(static_cast<std::size_t>(t_which)) };
 
         sf::IntRect rect;
-        rect.width  = static_cast<int>(texture.getSize().y);
-        rect.height = rect.width;
-        rect.top    = 0;
-        rect.left   = (static_cast<int>(t_frame) * rect.width);
+        rect.size.x     = static_cast<int>(texture.getSize().y);
+        rect.size.y     = rect.size.x;
+        rect.position.y = 0;
+        rect.position.x = (static_cast<int>(t_frame) * rect.size.x);
 
         return rect;
     }
@@ -120,9 +122,9 @@ namespace bramblefore
         bool didAnyFlaresFinish{ false };
         for (PickupFlareAnim & anim : m_flareAnims)
         {
-            anim.sprite.scale(1.08f, 1.08f);
+            anim.sprite.scale({ 1.08f, 1.08f });
 
-            sf::Uint8 alpha = anim.sprite.getColor().a;
+            std::uint8_t alpha = anim.sprite.getColor().a;
             if (alpha >= 10)
             {
                 alpha -= 10;
@@ -149,7 +151,7 @@ namespace bramblefore
 
         for (const PickupAnim & anim : m_anims)
         {
-            if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
             }
@@ -157,7 +159,7 @@ namespace bramblefore
 
         for (const PickupFlareAnim & anim : m_flareAnims)
         {
-            if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
             }
@@ -168,12 +170,12 @@ namespace bramblefore
     {
         for (PickupAnim & anim : m_anims)
         {
-            anim.sprite.move(t_amount, 0.0f);
+            anim.sprite.move({ t_amount, 0.0f });
         }
 
         for (PickupFlareAnim & anim : m_flareAnims)
         {
-            anim.sprite.move(t_amount, 0.0f);
+            anim.sprite.move({ t_amount, 0.0f });
         }
     }
 
@@ -183,7 +185,7 @@ namespace bramblefore
         bool wereAnyPickedUp{ false };
         for (PickupAnim & anim : m_anims)
         {
-            if (!t_avatarRect.intersects(anim.sprite.getGlobalBounds()))
+            if (!t_avatarRect.findIntersection(anim.sprite.getGlobalBounds()))
             {
                 continue;
             }

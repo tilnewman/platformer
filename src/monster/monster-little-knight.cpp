@@ -20,13 +20,13 @@ namespace bramblefore
     {
         if (MonsterAnim::Death == m_anim)
         {
-            return { 0.0f, 0.0f, 0.0f, 0.0f };
+            return { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
         }
         else
         {
             sf::FloatRect rect{ m_sprite.getGlobalBounds() };
             util::scaleRectInPlace(rect, { 0.2f, 0.2f });
-            rect.top += (rect.height * 0.2f);
+            rect.position.y += (rect.size.y * 0.2f);
             return rect;
         }
     }
@@ -35,15 +35,15 @@ namespace bramblefore
     {
         sf::FloatRect rect{ collisionRect() };
 
-        const float shiftHoriz{ rect.width * 0.7f };
+        const float shiftHoriz{ rect.size.x * 0.7f };
 
         if (m_isFacingRight)
         {
-            rect.left += shiftHoriz;
+            rect.position.x += shiftHoriz;
         }
         else
         {
-            rect.left -= shiftHoriz;
+            rect.position.x -= shiftHoriz;
         }
 
         util::scaleRectInPlace(rect, 1.1f);

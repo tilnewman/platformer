@@ -11,6 +11,8 @@
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
 #include "text-layout.hpp"
+#include "util/check-macros.hpp"
+#include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -26,7 +28,7 @@ namespace bramblefore
         , m_bgCenterRect{}
         , m_bgCenterVerts{}
         , m_sprites{}
-        , m_titleText{}
+        , m_titleText{ util::SfmlDefaults::instance().font() }
         , m_contentTexts{}
         , m_bgFadeVerts{}
     {
@@ -43,29 +45,45 @@ namespace bramblefore
             return;
         }
 
-        m_borderTopLeftTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/border-top-left.png").string());
+        M_CHECK(
+            m_borderTopLeftTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/border-top-left.png").string()),
+            "file not found");
 
-        m_borderTopRightTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/border-top-right.png").string());
+        M_CHECK(
+            m_borderTopRightTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/border-top-right.png").string()),
+            "file not found");
 
-        m_borderBotLeftTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/border-bottom-left.png").string());
+        M_CHECK(
+            m_borderBotLeftTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/border-bottom-left.png").string()),
+            "file not found");
 
-        m_borderBotRightTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/border-bottom-right.png").string());
+        M_CHECK(
+            m_borderBotRightTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/border-bottom-right.png").string()),
+            "file not found");
 
-        m_borderTopTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/border-top.png").string());
+        M_CHECK(
+            m_borderTopTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/border-top.png").string()),
+            "file not found");
 
-        m_borderBotTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/border-bottom.png").string());
+        M_CHECK(
+            m_borderBotTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/border-bottom.png").string()),
+            "file not found");
 
-        m_borderLeftTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/border-left.png").string());
+        M_CHECK(
+            m_borderLeftTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/border-left.png").string()),
+            "file not found");
 
-        m_borderRightTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/border-right.png").string());
+        M_CHECK(
+            m_borderRightTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/border-right.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_borderTopLeftTexture);
         TextureStats::instance().process(m_borderTopRightTexture);
@@ -78,29 +96,45 @@ namespace bramblefore
 
         //
 
-        m_smallBorderTopLeftTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/small-border-top-left.png").string());
+        M_CHECK(
+            m_smallBorderTopLeftTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/small-border-top-left.png").string()),
+            "file not found");
 
-        m_smallBorderTopRightTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/small-border-top-right.png").string());
+        M_CHECK(
+            m_smallBorderTopRightTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/small-border-top-right.png").string()),
+            "file not found");
 
-        m_smallBorderBotLeftTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/small-border-bottom-left.png").string());
+        M_CHECK(
+            m_smallBorderBotLeftTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/small-border-bottom-left.png").string()),
+            "file not found");
 
-        m_smallBorderBotRightTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/small-border-bottom-right.png").string());
+        M_CHECK(
+            m_smallBorderBotRightTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/small-border-bottom-right.png").string()),
+            "file not found");
 
-        m_smallBorderTopTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/small-border-top.png").string());
+        M_CHECK(
+            m_smallBorderTopTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/small-border-top.png").string()),
+            "file not found");
 
-        m_smallBorderBotTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/small-border-bottom.png").string());
+        M_CHECK(
+            m_smallBorderBotTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/small-border-bottom.png").string()),
+            "file not found");
 
-        m_smallBorderLeftTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/small-border-left.png").string());
+        M_CHECK(
+            m_smallBorderLeftTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/small-border-left.png").string()),
+            "file not found");
 
-        m_smallBorderRightTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/small-border-right.png").string());
+        M_CHECK(
+            m_smallBorderRightTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/small-border-right.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_smallBorderTopLeftTexture);
         TextureStats::instance().process(m_smallBorderTopRightTexture);
@@ -113,28 +147,45 @@ namespace bramblefore
 
         //
 
-        m_bgTopLeftTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/menu-bg-top-left.png").string());
+        M_CHECK(
+            m_bgTopLeftTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/menu-bg-top-left.png").string()),
+            "file not found");
 
-        m_bgTopRightTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/menu-bg-top-right.png").string());
+        M_CHECK(
+            m_bgTopRightTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/menu-bg-top-right.png").string()),
+            "file not found");
 
-        m_bgBotLeftTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/menu-bg-bottom-left.png").string());
+        M_CHECK(
+            m_bgBotLeftTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/menu-bg-bottom-left.png").string()),
+            "file not found");
 
-        m_bgBotRightTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/menu-bg-bottom-right.png").string());
+        M_CHECK(
+            m_bgBotRightTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/menu-bg-bottom-right.png").string()),
+            "file not found");
 
-        m_bgTopTexture.loadFromFile((t_settings.media_path / "image/ui/menu-bg-top.png").string());
+        M_CHECK(
+            m_bgTopTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/menu-bg-top.png").string()),
+            "file not found");
 
-        m_bgBotTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/menu-bg-bottom.png").string());
+        M_CHECK(
+            m_bgBotTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/menu-bg-bottom.png").string()),
+            "file not found");
 
-        m_bgLeftTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/menu-bg-left.png").string());
+        M_CHECK(
+            m_bgLeftTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/menu-bg-left.png").string()),
+            "file not found");
 
-        m_bgRightTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/menu-bg-right.png").string());
+        M_CHECK(
+            m_bgRightTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/menu-bg-right.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_bgTopLeftTexture);
         TextureStats::instance().process(m_bgTopRightTexture);
@@ -147,13 +198,20 @@ namespace bramblefore
 
         //
 
-        m_tapeLeftTexture.loadFromFile((t_settings.media_path / "image/ui/tape-left.png").string());
+        M_CHECK(
+            m_tapeLeftTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/tape-left.png").string()),
+            "file not found");
 
-        m_tapeRightTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/tape-right.png").string());
+        M_CHECK(
+            m_tapeRightTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/tape-right.png").string()),
+            "file not found");
 
-        m_tapeMiddleTexture.loadFromFile(
-            (t_settings.media_path / "image/ui/tape-middle.png").string());
+        M_CHECK(
+            m_tapeMiddleTexture.loadFromFile(
+                (t_settings.media_path / "image/ui/tape-middle.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_tapeLeftTexture);
         TextureStats::instance().process(m_tapeRightTexture);
@@ -179,7 +237,7 @@ namespace bramblefore
         sf::Vector2f betweenCornerSize;
 
         betweenCornerSize.x =
-            (m_info.region.width - (2.0f * bgTopLeftSprite.getGlobalBounds().width));
+            (m_info.region.size.x - (2.0f * bgTopLeftSprite.getGlobalBounds().size.x));
 
         if (betweenCornerSize.x < 0.0f)
         {
@@ -187,31 +245,31 @@ namespace bramblefore
         }
 
         betweenCornerSize.y =
-            (m_info.region.height - (2.0f * bgTopLeftSprite.getGlobalBounds().height));
+            (m_info.region.size.y - (2.0f * bgTopLeftSprite.getGlobalBounds().size.y));
 
         if (betweenCornerSize.y < 0.0f)
         {
             betweenCornerSize.y = 0.0f;
         }
 
-        bgTopLeftSprite.setPosition(t_info.region.left, t_info.region.top);
+        bgTopLeftSprite.setPosition({ t_info.region.position.x, t_info.region.position.y });
 
         if (t_info.will_draw_background && (betweenCornerSize.x > 0.0f))
         {
             sf::FloatRect bgTopRect;
-            bgTopRect.left   = util::right(bgTopLeftSprite);
-            bgTopRect.top    = bgTopLeftSprite.getPosition().y;
-            bgTopRect.width  = betweenCornerSize.x;
-            bgTopRect.height = bgTopLeftSprite.getGlobalBounds().height;
+            bgTopRect.position.x = util::right(bgTopLeftSprite);
+            bgTopRect.position.y = bgTopLeftSprite.getPosition().y;
+            bgTopRect.size.x     = betweenCornerSize.x;
+            bgTopRect.size.y     = bgTopLeftSprite.getGlobalBounds().size.y;
 
             sf::Sprite & bgTopSprite{ m_sprites.emplace_back(m_bgTopTexture) };
             util::scaleAndCenterInside(bgTopSprite, bgTopRect);
 
             sf::FloatRect bgBotRect;
-            bgBotRect.left   = bgTopRect.left;
-            bgBotRect.top    = (util::bottom(bgTopLeftSprite) + betweenCornerSize.y);
-            bgBotRect.width  = bgTopRect.width;
-            bgBotRect.height = bgTopRect.height;
+            bgBotRect.position.x = bgTopRect.position.x;
+            bgBotRect.position.y = (util::bottom(bgTopLeftSprite) + betweenCornerSize.y);
+            bgBotRect.size.x     = bgTopRect.size.x;
+            bgBotRect.size.y     = bgTopRect.size.y;
 
             sf::Sprite & bgBotSprite{ m_sprites.emplace_back(m_bgBotTexture) };
             util::scaleAndCenterInside(bgBotSprite, bgBotRect);
@@ -219,25 +277,25 @@ namespace bramblefore
 
         sf::Sprite bgTopRightSprite{ m_bgTopRightTexture };
 
-        bgTopRightSprite.setPosition(
-            (util::right(bgTopLeftSprite) + betweenCornerSize.x), bgTopLeftSprite.getPosition().y);
+        bgTopRightSprite.setPosition({ (util::right(bgTopLeftSprite) + betweenCornerSize.x),
+                                       bgTopLeftSprite.getPosition().y });
 
         if (t_info.will_draw_background && (betweenCornerSize.y > 0.0f))
         {
             sf::FloatRect bgLeftRect;
-            bgLeftRect.left   = bgTopLeftSprite.getPosition().x;
-            bgLeftRect.top    = util::bottom(bgTopLeftSprite);
-            bgLeftRect.width  = bgTopLeftSprite.getGlobalBounds().width;
-            bgLeftRect.height = betweenCornerSize.y;
+            bgLeftRect.position.x = bgTopLeftSprite.getPosition().x;
+            bgLeftRect.position.y = util::bottom(bgTopLeftSprite);
+            bgLeftRect.size.x     = bgTopLeftSprite.getGlobalBounds().size.x;
+            bgLeftRect.size.y     = betweenCornerSize.y;
 
             sf::Sprite & bgLeftSprite{ m_sprites.emplace_back(m_bgLeftTexture) };
             util::scaleAndCenterInside(bgLeftSprite, bgLeftRect);
 
             sf::FloatRect bgRightRect;
-            bgRightRect.left   = bgTopRightSprite.getPosition().x;
-            bgRightRect.top    = bgLeftRect.top;
-            bgRightRect.width  = bgLeftRect.width;
-            bgRightRect.height = bgLeftRect.height;
+            bgRightRect.position.x = bgTopRightSprite.getPosition().x;
+            bgRightRect.position.y = bgLeftRect.position.y;
+            bgRightRect.size.x     = bgLeftRect.size.x;
+            bgRightRect.size.y     = bgLeftRect.size.y;
 
             sf::Sprite & bgRightSprite{ m_sprites.emplace_back(m_bgRightTexture) };
             util::scaleAndCenterInside(bgRightSprite, bgRightRect);
@@ -245,20 +303,20 @@ namespace bramblefore
 
         sf::Sprite bgBotLeftSprite{ m_bgBotLeftTexture };
 
-        bgBotLeftSprite.setPosition(
-            bgTopLeftSprite.getPosition().x, (util::bottom(bgTopLeftSprite) + betweenCornerSize.y));
+        bgBotLeftSprite.setPosition({ bgTopLeftSprite.getPosition().x,
+                                      (util::bottom(bgTopLeftSprite) + betweenCornerSize.y) });
 
         sf::Sprite bgBotRightSprite{ m_bgBotRightTexture };
 
         bgBotRightSprite.setPosition(
-            bgTopRightSprite.getPosition().x, bgBotLeftSprite.getPosition().y);
+            { bgTopRightSprite.getPosition().x, bgBotLeftSprite.getPosition().y });
 
         //
 
-        m_bgCenterRect.left   = util::right(bgTopLeftSprite);
-        m_bgCenterRect.top    = util::bottom(bgTopLeftSprite);
-        m_bgCenterRect.width  = (bgTopRightSprite.getPosition().x - util::right(bgTopLeftSprite));
-        m_bgCenterRect.height = (bgBotLeftSprite.getPosition().y - util::bottom(bgTopLeftSprite));
+        m_bgCenterRect.position.x = util::right(bgTopLeftSprite);
+        m_bgCenterRect.position.y = util::bottom(bgTopLeftSprite);
+        m_bgCenterRect.size.x = (bgTopRightSprite.getPosition().x - util::right(bgTopLeftSprite));
+        m_bgCenterRect.size.y = (bgBotLeftSprite.getPosition().y - util::bottom(bgTopLeftSprite));
 
         //
 
@@ -273,10 +331,10 @@ namespace bramblefore
 
         //
 
-        m_innerRect.left   = (m_bgCenterRect.left - 1.0f);
-        m_innerRect.top    = (m_bgCenterRect.top - 1.0f);
-        m_innerRect.width  = (m_bgCenterRect.width + 2.0f);
-        m_innerRect.height = (m_bgCenterRect.height + 2.0f);
+        m_innerRect.position.x = (m_bgCenterRect.position.x - 1.0f);
+        m_innerRect.position.y = (m_bgCenterRect.position.y - 1.0f);
+        m_innerRect.size.x     = (m_bgCenterRect.size.x + 2.0f);
+        m_innerRect.size.y     = (m_bgCenterRect.size.y + 2.0f);
 
         //
 
@@ -284,30 +342,26 @@ namespace bramblefore
         {
             sf::Sprite & borderTopLeftSprite{ m_sprites.emplace_back(m_borderTopLeftTexture) };
 
-            borderTopLeftSprite.setPosition(
-                (bgTopLeftSprite.getPosition().x - 14.0f),
-                (bgTopLeftSprite.getPosition().y - 16.0f));
+            borderTopLeftSprite.setPosition({ (bgTopLeftSprite.getPosition().x - 14.0f),
+                                              (bgTopLeftSprite.getPosition().y - 16.0f) });
 
             sf::Sprite & borderTopRightSprite{ m_sprites.emplace_back(m_borderTopRightTexture) };
 
-            borderTopRightSprite.setPosition(
-                (bgTopRightSprite.getPosition().x - 26.0f),
-                (bgTopRightSprite.getPosition().y - 16.0f));
+            borderTopRightSprite.setPosition({ (bgTopRightSprite.getPosition().x - 26.0f),
+                                               (bgTopRightSprite.getPosition().y - 16.0f) });
 
             const float betweenSizeHoriz{ borderTopRightSprite.getPosition().x -
                                           util::right(borderTopLeftSprite) };
 
             sf::Sprite & borderBotLeftSprite{ m_sprites.emplace_back(m_borderBotLeftTexture) };
 
-            borderBotLeftSprite.setPosition(
-                (bgBotLeftSprite.getPosition().x - 14.0f),
-                (bgBotLeftSprite.getPosition().y - 28.0f));
+            borderBotLeftSprite.setPosition({ (bgBotLeftSprite.getPosition().x - 14.0f),
+                                              (bgBotLeftSprite.getPosition().y - 28.0f) });
 
             sf::Sprite & borderBotRightSprite{ m_sprites.emplace_back(m_borderBotRightTexture) };
 
-            borderBotRightSprite.setPosition(
-                (bgBotRightSprite.getPosition().x - 26.0f),
-                (bgBotRightSprite.getPosition().y - 28.0f));
+            borderBotRightSprite.setPosition({ (bgBotRightSprite.getPosition().x - 26.0f),
+                                               (bgBotRightSprite.getPosition().y - 28.0f) });
 
             const float betweenSizeVert{ borderBotLeftSprite.getPosition().y -
                                          util::bottom(borderTopLeftSprite) };
@@ -317,10 +371,10 @@ namespace bramblefore
                 sf::Sprite & borderTopSprite{ m_sprites.emplace_back(m_borderTopTexture) };
 
                 sf::FloatRect borderTopRect;
-                borderTopRect.left   = util::right(borderTopLeftSprite);
-                borderTopRect.top    = (borderTopLeftSprite.getPosition().y + 4.0f);
-                borderTopRect.width  = betweenSizeHoriz;
-                borderTopRect.height = borderTopSprite.getGlobalBounds().height;
+                borderTopRect.position.x = util::right(borderTopLeftSprite);
+                borderTopRect.position.y = (borderTopLeftSprite.getPosition().y + 4.0f);
+                borderTopRect.size.x     = betweenSizeHoriz;
+                borderTopRect.size.y     = borderTopSprite.getGlobalBounds().size.y;
 
                 util::scaleAndCenterInside(borderTopSprite, borderTopRect);
 
@@ -329,15 +383,15 @@ namespace bramblefore
                 sf::Sprite & borderBotSprite{ m_sprites.emplace_back(m_borderBotTexture) };
 
                 sf::FloatRect borderBotRect;
-                borderBotRect.left = borderTopRect.left;
+                borderBotRect.position.x = borderTopRect.position.x;
 
-                borderBotRect.top =
+                borderBotRect.position.y =
                     ((util::bottom(borderBotLeftSprite) -
-                      borderBotSprite.getGlobalBounds().height) -
+                      borderBotSprite.getGlobalBounds().size.y) -
                      4.0f);
 
-                borderBotRect.width  = borderTopRect.width;
-                borderBotRect.height = borderTopRect.height;
+                borderBotRect.size.x = borderTopRect.size.x;
+                borderBotRect.size.y = borderTopRect.size.y;
 
                 util::scaleAndCenterInside(borderBotSprite, borderBotRect);
             }
@@ -347,10 +401,10 @@ namespace bramblefore
                 sf::Sprite & borderLeftpSprite{ m_sprites.emplace_back(m_borderLeftTexture) };
 
                 sf::FloatRect borderLeftRect;
-                borderLeftRect.left   = (borderTopLeftSprite.getPosition().x + 3.0f);
-                borderLeftRect.top    = util::bottom(borderTopLeftSprite);
-                borderLeftRect.width  = borderLeftpSprite.getGlobalBounds().width;
-                borderLeftRect.height = betweenSizeVert;
+                borderLeftRect.position.x = (borderTopLeftSprite.getPosition().x + 3.0f);
+                borderLeftRect.position.y = util::bottom(borderTopLeftSprite);
+                borderLeftRect.size.x     = borderLeftpSprite.getGlobalBounds().size.x;
+                borderLeftRect.size.y     = betweenSizeVert;
 
                 util::scaleAndCenterInside(borderLeftpSprite, borderLeftRect);
 
@@ -359,54 +413,51 @@ namespace bramblefore
                 sf::Sprite & borderRightpSprite{ m_sprites.emplace_back(m_borderRightTexture) };
 
                 sf::FloatRect borderRightRect;
-                borderRightRect.left =
+                borderRightRect.position.x =
                     ((util::right(borderTopRightSprite) -
-                      borderRightpSprite.getGlobalBounds().width) -
+                      borderRightpSprite.getGlobalBounds().size.x) -
                      3.0f);
 
-                borderRightRect.top    = borderLeftRect.top;
-                borderRightRect.width  = borderRightpSprite.getGlobalBounds().width;
-                borderRightRect.height = betweenSizeVert;
+                borderRightRect.position.y = borderLeftRect.position.y;
+                borderRightRect.size.x     = borderRightpSprite.getGlobalBounds().size.x;
+                borderRightRect.size.y     = betweenSizeVert;
 
                 util::scaleAndCenterInside(borderRightpSprite, borderRightRect);
             }
 
             //
 
-            m_outerRect.left   = borderTopLeftSprite.getPosition().x;
-            m_outerRect.top    = borderTopLeftSprite.getPosition().y;
-            m_outerRect.width  = (util::right(borderTopRightSprite) - m_outerRect.left);
-            m_outerRect.height = (util::bottom(borderBotRightSprite) - m_outerRect.top);
+            m_outerRect.position.x = borderTopLeftSprite.getPosition().x;
+            m_outerRect.position.y = borderTopLeftSprite.getPosition().y;
+            m_outerRect.size.x     = (util::right(borderTopRightSprite) - m_outerRect.position.x);
+            m_outerRect.size.y     = (util::bottom(borderBotRightSprite) - m_outerRect.position.y);
         }
         else if (GuiWindowBorder::Small == m_info.border)
         {
             sf::Sprite & borderTopLeftSprite{ m_sprites.emplace_back(m_smallBorderTopLeftTexture) };
 
-            borderTopLeftSprite.setPosition(
-                (bgTopLeftSprite.getPosition().x - 3.0f), (bgTopLeftSprite.getPosition().y - 4.0f));
+            borderTopLeftSprite.setPosition({ (bgTopLeftSprite.getPosition().x - 3.0f),
+                                              (bgTopLeftSprite.getPosition().y - 4.0f) });
 
             sf::Sprite & borderTopRightSprite{ m_sprites.emplace_back(
                 m_smallBorderTopRightTexture) };
 
-            borderTopRightSprite.setPosition(
-                (bgTopRightSprite.getPosition().x + 4.0f),
-                (bgTopRightSprite.getPosition().y - 4.0f));
+            borderTopRightSprite.setPosition({ (bgTopRightSprite.getPosition().x + 4.0f),
+                                               (bgTopRightSprite.getPosition().y - 4.0f) });
 
             const float betweenSizeHoriz{ borderTopRightSprite.getPosition().x -
                                           util::right(borderTopLeftSprite) };
 
             sf::Sprite & borderBotLeftSprite{ m_sprites.emplace_back(m_smallBorderBotLeftTexture) };
 
-            borderBotLeftSprite.setPosition(
-                (bgBotLeftSprite.getPosition().x - 3.0f),
-                (bgBotLeftSprite.getPosition().y + 12.0f));
+            borderBotLeftSprite.setPosition({ (bgBotLeftSprite.getPosition().x - 3.0f),
+                                              (bgBotLeftSprite.getPosition().y + 12.0f) });
 
             sf::Sprite & borderBotRightSprite{ m_sprites.emplace_back(
                 m_smallBorderBotRightTexture) };
 
-            borderBotRightSprite.setPosition(
-                (bgBotRightSprite.getPosition().x + 4.0f),
-                (bgBotRightSprite.getPosition().y + 12.0f));
+            borderBotRightSprite.setPosition({ (bgBotRightSprite.getPosition().x + 4.0f),
+                                               (bgBotRightSprite.getPosition().y + 12.0f) });
 
             const float betweenSizeVert{ borderBotLeftSprite.getPosition().y -
                                          util::bottom(borderTopLeftSprite) };
@@ -416,10 +467,10 @@ namespace bramblefore
                 sf::Sprite & borderTopSprite{ m_sprites.emplace_back(m_smallBorderTopTexture) };
 
                 sf::FloatRect borderTopRect;
-                borderTopRect.left   = util::right(borderTopLeftSprite);
-                borderTopRect.top    = (borderTopLeftSprite.getPosition().y);
-                borderTopRect.width  = betweenSizeHoriz;
-                borderTopRect.height = borderTopSprite.getGlobalBounds().height;
+                borderTopRect.position.x = util::right(borderTopLeftSprite);
+                borderTopRect.position.y = (borderTopLeftSprite.getPosition().y);
+                borderTopRect.size.x     = betweenSizeHoriz;
+                borderTopRect.size.y     = borderTopSprite.getGlobalBounds().size.y;
 
                 util::scaleAndCenterInside(borderTopSprite, borderTopRect);
 
@@ -428,13 +479,13 @@ namespace bramblefore
                 sf::Sprite & borderBotSprite{ m_sprites.emplace_back(m_smallBorderBotTexture) };
 
                 sf::FloatRect borderBotRect;
-                borderBotRect.left = borderTopRect.left;
+                borderBotRect.position.x = borderTopRect.position.x;
 
-                borderBotRect.top =
-                    (util::bottom(borderBotLeftSprite) - borderBotSprite.getGlobalBounds().height);
+                borderBotRect.position.y =
+                    (util::bottom(borderBotLeftSprite) - borderBotSprite.getGlobalBounds().size.y);
 
-                borderBotRect.width  = borderTopRect.width;
-                borderBotRect.height = borderTopRect.height;
+                borderBotRect.size.x = borderTopRect.size.x;
+                borderBotRect.size.y = borderTopRect.size.y;
 
                 util::scaleAndCenterInside(borderBotSprite, borderBotRect);
             }
@@ -444,10 +495,10 @@ namespace bramblefore
                 sf::Sprite & borderLeftpSprite{ m_sprites.emplace_back(m_smallBorderLeftTexture) };
 
                 sf::FloatRect borderLeftRect;
-                borderLeftRect.left   = borderTopLeftSprite.getPosition().x;
-                borderLeftRect.top    = util::bottom(borderTopLeftSprite);
-                borderLeftRect.width  = borderLeftpSprite.getGlobalBounds().width;
-                borderLeftRect.height = betweenSizeVert;
+                borderLeftRect.position.x = borderTopLeftSprite.getPosition().x;
+                borderLeftRect.position.y = util::bottom(borderTopLeftSprite);
+                borderLeftRect.size.x     = borderLeftpSprite.getGlobalBounds().size.x;
+                borderLeftRect.size.y     = betweenSizeVert;
 
                 util::scaleAndCenterInside(borderLeftpSprite, borderLeftRect);
 
@@ -457,30 +508,31 @@ namespace bramblefore
                     m_smallBorderRightTexture) };
 
                 sf::FloatRect borderRightRect;
-                borderRightRect.left =
-                    (util::right(borderTopRightSprite) -
-                     borderRightpSprite.getGlobalBounds().width);
 
-                borderRightRect.top    = borderLeftRect.top;
-                borderRightRect.width  = borderRightpSprite.getGlobalBounds().width;
-                borderRightRect.height = betweenSizeVert;
+                borderRightRect.position.x =
+                    (util::right(borderTopRightSprite) -
+                     borderRightpSprite.getGlobalBounds().size.x);
+
+                borderRightRect.position.y = borderLeftRect.position.y;
+                borderRightRect.size.x     = borderRightpSprite.getGlobalBounds().size.x;
+                borderRightRect.size.y     = betweenSizeVert;
 
                 util::scaleAndCenterInside(borderRightpSprite, borderRightRect);
             }
 
             //
 
-            m_outerRect.left   = borderTopLeftSprite.getPosition().x;
-            m_outerRect.top    = borderTopLeftSprite.getPosition().y;
-            m_outerRect.width  = (util::right(borderTopRightSprite) - m_outerRect.left);
-            m_outerRect.height = (util::bottom(borderBotRightSprite) - m_outerRect.top);
+            m_outerRect.position.x = borderTopLeftSprite.getPosition().x;
+            m_outerRect.position.y = borderTopLeftSprite.getPosition().y;
+            m_outerRect.size.x     = (util::right(borderTopRightSprite) - m_outerRect.position.x);
+            m_outerRect.size.y     = (util::bottom(borderBotRightSprite) - m_outerRect.position.y);
         }
         else // GuiWindowBorder::None
         {
-            m_outerRect.left   = bgTopLeftSprite.getPosition().x;
-            m_outerRect.top    = bgTopLeftSprite.getPosition().y;
-            m_outerRect.width  = (util::right(bgTopRightSprite) - m_outerRect.left);
-            m_outerRect.height = (util::bottom(bgBotRightSprite) - m_outerRect.top);
+            m_outerRect.position.x = bgTopLeftSprite.getPosition().x;
+            m_outerRect.position.y = bgTopLeftSprite.getPosition().y;
+            m_outerRect.size.x     = (util::right(bgTopRightSprite) - m_outerRect.position.x);
+            m_outerRect.size.y     = (util::bottom(bgBotRightSprite) - m_outerRect.position.y);
         }
 
         if (!m_info.title.empty())
@@ -488,56 +540,59 @@ namespace bramblefore
             sf::Sprite & tapeLeftSprite{ m_sprites.emplace_back(m_tapeLeftTexture) };
 
             tapeLeftSprite.setPosition(
-                ((t_context.layout.wholeSize().x * 0.5f) - tapeLeftSprite.getGlobalBounds().width),
-                (m_outerRect.top - (tapeLeftSprite.getGlobalBounds().height * 0.65f)));
+                { ((t_context.layout.wholeSize().x * 0.5f) -
+                   tapeLeftSprite.getGlobalBounds().size.x),
+                  (m_outerRect.position.y - (tapeLeftSprite.getGlobalBounds().size.y * 0.65f)) });
 
             sf::Sprite & tapeRightSprite{ m_sprites.emplace_back(m_tapeRightTexture) };
 
             tapeRightSprite.setPosition(
-                (t_context.layout.wholeSize().x * 0.5f),
-                (m_outerRect.top - (tapeRightSprite.getGlobalBounds().height * 0.65f)));
+                { (t_context.layout.wholeSize().x * 0.5f),
+                  (m_outerRect.position.y - (tapeRightSprite.getGlobalBounds().size.y * 0.65f)) });
 
             sf::FloatRect titleRect;
-            titleRect.left   = ((t_context.layout.wholeSize().x * 0.5f) - 100.0f);
-            titleRect.top    = (tapeLeftSprite.getPosition().y + 14.0f);
-            titleRect.width  = 200.0f;
-            titleRect.height = 37.0f;
+            titleRect.position.x = ((t_context.layout.wholeSize().x * 0.5f) - 100.0f);
+            titleRect.position.y = (tapeLeftSprite.getPosition().y + 14.0f);
+            titleRect.size.x     = 200.0f;
+            titleRect.size.y     = 37.0f;
 
             m_titleText = t_context.font.makeText(
                 Font::Default, FontSize::Medium, m_info.title, sf::Color(32, 32, 32));
 
             util::fitAndCenterInside(m_titleText, titleRect);
 
-            const float betweenTapeSize{ m_titleText.getGlobalBounds().width - titleRect.width };
+            const float betweenTapeSize{ m_titleText.getGlobalBounds().size.x - titleRect.size.x };
 
             if (betweenTapeSize > 0.0f)
             {
-                tapeLeftSprite.move(-(betweenTapeSize * 0.5f), 0.0f);
-                tapeRightSprite.move((betweenTapeSize * 0.5f), 0.0f);
+                tapeLeftSprite.move({ -(betweenTapeSize * 0.5f), 0.0f });
+                tapeRightSprite.move({ (betweenTapeSize * 0.5f), 0.0f });
 
-                titleRect.left -= (betweenTapeSize * 0.5f);
-                titleRect.width += betweenTapeSize;
+                titleRect.position.x -= (betweenTapeSize * 0.5f);
+                titleRect.size.x += betweenTapeSize;
 
                 util::fitAndCenterInside(m_titleText, titleRect);
 
                 sf::Sprite & tapeMiddleSprite{ m_sprites.emplace_back(m_tapeMiddleTexture) };
                 sf::FloatRect tapeMiddleRect;
 
-                tapeMiddleRect.left =
+                tapeMiddleRect.position.x =
                     ((t_context.layout.wholeSize().x * 0.5f) - (betweenTapeSize * 0.5f));
 
-                tapeMiddleRect.top    = (tapeLeftSprite.getPosition().y + 8.0f);
-                tapeMiddleRect.width  = betweenTapeSize;
-                tapeMiddleRect.height = tapeMiddleSprite.getGlobalBounds().height;
+                tapeMiddleRect.position.y = (tapeLeftSprite.getPosition().y + 8.0f);
+                tapeMiddleRect.size.x     = betweenTapeSize;
+                tapeMiddleRect.size.y     = tapeMiddleSprite.getGlobalBounds().size.y;
 
                 util::scaleAndCenterInside(tapeMiddleSprite, tapeMiddleRect);
             }
 
-            m_outerRect.width += ((m_outerRect.left - tapeLeftSprite.getPosition().x) * 2.0f);
-            m_outerRect.left = tapeLeftSprite.getPosition().x;
+            m_outerRect.size.x +=
+                ((m_outerRect.position.x - tapeLeftSprite.getPosition().x) * 2.0f);
 
-            m_outerRect.height += (m_outerRect.top - tapeLeftSprite.getPosition().y);
-            m_outerRect.top = tapeLeftSprite.getPosition().y;
+            m_outerRect.position.x = tapeLeftSprite.getPosition().x;
+
+            m_outerRect.size.y += (m_outerRect.position.y - tapeLeftSprite.getPosition().y);
+            m_outerRect.position.y = tapeLeftSprite.getPosition().y;
         }
 
         m_contentTexts = TextLayout::layout(t_context, m_info.content, m_innerRect, m_info.details);
@@ -547,7 +602,8 @@ namespace bramblefore
     {
         if (!m_bgFadeVerts.empty())
         {
-            target.draw(&m_bgFadeVerts[0], m_bgFadeVerts.size(), sf::Triangles, states);
+            target.draw(
+                &m_bgFadeVerts[0], m_bgFadeVerts.size(), sf::PrimitiveType::Triangles, states);
         }
 
         for (const sf::Sprite & sprite : m_sprites)
@@ -557,7 +613,8 @@ namespace bramblefore
 
         if (!m_bgCenterVerts.empty())
         {
-            target.draw(&m_bgCenterVerts[0], m_bgCenterVerts.size(), sf::Triangles, states);
+            target.draw(
+                &m_bgCenterVerts[0], m_bgCenterVerts.size(), sf::PrimitiveType::Triangles, states);
         }
 
         target.draw(m_titleText, states);

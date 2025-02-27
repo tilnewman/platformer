@@ -12,6 +12,8 @@
 #include "subsystem/font.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "ui/text-layout.hpp"
+#include "util/check-macros.hpp"
+#include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
 
@@ -22,16 +24,16 @@ namespace bramblefore
 {
 
     CharacterSelectState::CharacterSelectState()
-        : m_titleText{}
-        , m_instructionsText{}
+        : m_titleText{ util::SfmlDefaults::instance().font() }
+        , m_instructionsText{ util::SfmlDefaults::instance().font() }
         , m_paperTexture{}
-        , m_paperSprite{}
+        , m_paperSprite{ m_paperTexture }
         , m_avatarType{ AvatarType::BlueKnight }
-        , m_avatarSprite{}
-        , m_paperInnerRect{ 90, 64, 368, 384 }
-        , m_avatarTypeText{}
+        , m_avatarSprite{ util::SfmlDefaults::instance().texture() }
+        , m_paperInnerRect{ { 90, 64 }, { 368, 384 } }
+        , m_avatarTypeText{ util::SfmlDefaults::instance().font() }
         , m_descriptionTexts{}
-        , m_avatarClassText{}
+        , m_avatarClassText{ util::SfmlDefaults::instance().font() }
         , m_classDescriptionTexts{}
         , m_avatarPoseSprites{}
     {}
@@ -67,51 +69,49 @@ namespace bramblefore
 
     void CharacterSelectState::handleEvent(Context & t_context, const sf::Event & t_event)
     {
-        if (t_event.type != sf::Event::KeyPressed)
+        if (const auto * keyPtr = t_event.getIf<sf::Event::KeyPressed>())
         {
-            return;
-        }
-
-        if (t_event.key.code == sf::Keyboard::Enter)
-        {
-            t_context.player.setup(t_context, m_avatarType);
-            t_context.state.setChangePending(State::Play);
-        }
-        else if (t_event.key.code == sf::Keyboard::Left)
-        {
-            AvatarTextureManager::instance().release(m_avatarType);
-
-            std::size_t typeIndex{ static_cast<std::size_t>(m_avatarType) };
-            if (0 == typeIndex)
+            if (keyPtr->scancode == sf::Keyboard::Scancode::Enter)
             {
-                typeIndex = (static_cast<std::size_t>(AvatarType::Count) - 1_st);
+                t_context.player.setup(t_context, m_avatarType);
+                t_context.state.setChangePending(State::Play);
             }
-            else
+            else if (keyPtr->scancode == sf::Keyboard::Scancode::Left)
             {
-                --typeIndex;
+                AvatarTextureManager::instance().release(m_avatarType);
+
+                std::size_t typeIndex{ static_cast<std::size_t>(m_avatarType) };
+                if (0 == typeIndex)
+                {
+                    typeIndex = (static_cast<std::size_t>(AvatarType::Count) - 1_st);
+                }
+                else
+                {
+                    --typeIndex;
+                }
+
+                m_avatarType = static_cast<AvatarType>(typeIndex);
+                t_context.sfx.play("ui-select-thock-slide");
+                setup(t_context);
             }
-
-            m_avatarType = static_cast<AvatarType>(typeIndex);
-            t_context.sfx.play("ui-select-thock-slide");
-            setup(t_context);
-        }
-        else if (t_event.key.code == sf::Keyboard::Right)
-        {
-            AvatarTextureManager::instance().release(m_avatarType);
-
-            std::size_t typeIndex{ static_cast<std::size_t>(m_avatarType) };
-            if (typeIndex < (static_cast<std::size_t>(AvatarType::Count) - 1_st))
+            else if (keyPtr->scancode == sf::Keyboard::Scancode::Right)
             {
-                ++typeIndex;
-            }
-            else
-            {
-                typeIndex = 0;
-            }
+                AvatarTextureManager::instance().release(m_avatarType);
 
-            m_avatarType = static_cast<AvatarType>(typeIndex);
-            t_context.sfx.play("ui-select-thock-slide");
-            setup(t_context);
+                std::size_t typeIndex{ static_cast<std::size_t>(m_avatarType) };
+                if (typeIndex < (static_cast<std::size_t>(AvatarType::Count) - 1_st))
+                {
+                    ++typeIndex;
+                }
+                else
+                {
+                    typeIndex = 0;
+                }
+
+                m_avatarType = static_cast<AvatarType>(typeIndex);
+                t_context.sfx.play("ui-select-thock-slide");
+                setup(t_context);
+            }
         }
     }
 
@@ -120,10 +120,9 @@ namespace bramblefore
         m_titleText = t_context.font.makeText(
             Font::Default, FontSize::Huge, "Character Selection", sf::Color(220, 220, 220));
 
-        m_titleText.setPosition(
-            (util::center(t_context.layout.wholeRect()).x -
-             (m_titleText.getGlobalBounds().width * 0.5f)),
-            (m_titleText.getGlobalBounds().height * 0.75f));
+        m_titleText.setPosition({ (util::center(t_context.layout.wholeRect()).x -
+                                   (m_titleText.getGlobalBounds().size.x * 0.5f)),
+                                  (m_titleText.getGlobalBounds().size.y * 0.75f) });
 
         m_instructionsText = t_context.font.makeText(
             Font::Default,
@@ -133,25 +132,27 @@ namespace bramblefore
             sf::Text::Italic);
 
         m_instructionsText.setPosition(
-            (util::center(t_context.layout.wholeRect()).x -
-             (m_instructionsText.getGlobalBounds().width * 0.5f)),
-            (util::bottom(m_titleText) + (m_instructionsText.getGlobalBounds().height * 0.5f)));
+            { (util::center(t_context.layout.wholeRect()).x -
+               (m_instructionsText.getGlobalBounds().size.x * 0.5f)),
+              (util::bottom(m_titleText) + (m_instructionsText.getGlobalBounds().size.y * 0.5f)) });
 
-        m_paperTexture.loadFromFile(
-            (t_context.settings.media_path / "image/ui/paper-runes.png").string());
+        M_CHECK(
+            m_paperTexture.loadFromFile(
+                (t_context.settings.media_path / "image/ui/paper-runes.png").string()),
+            "file not found");
 
-        m_paperSprite.setTexture(m_paperTexture);
+        m_paperSprite.setTexture(m_paperTexture, true);
 
         util::fitAndCenterInside(
             m_paperSprite, util::scaleRectInPlaceCopy(t_context.layout.wholeRect(), 0.5f));
 
         const float paperScale{ m_paperSprite.getScale().x };
-        m_paperInnerRect.left *= paperScale;
-        m_paperInnerRect.left += m_paperSprite.getPosition().x;
-        m_paperInnerRect.top *= paperScale;
-        m_paperInnerRect.top += m_paperSprite.getPosition().y;
-        m_paperInnerRect.width *= paperScale;
-        m_paperInnerRect.height *= paperScale;
+        m_paperInnerRect.position.x *= paperScale;
+        m_paperInnerRect.position.x += m_paperSprite.getPosition().x;
+        m_paperInnerRect.position.y *= paperScale;
+        m_paperInnerRect.position.y += m_paperSprite.getPosition().y;
+        m_paperInnerRect.size.x *= paperScale;
+        m_paperInnerRect.size.y *= paperScale;
 
         setup(t_context);
     }
@@ -165,10 +166,10 @@ namespace bramblefore
     {
         AvatarTextureManager::instance().acquire(t_context, m_avatarType);
 
-        m_avatarSprite.setTexture(AvatarTextureManager::instance().getDefault(m_avatarType));
+        m_avatarSprite.setTexture(AvatarTextureManager::instance().getDefault(m_avatarType), true);
 
         const float avatarScale{ t_context.layout.calScaleBasedOnResolution(t_context, 3.0f) };
-        m_avatarSprite.setScale(avatarScale, avatarScale);
+        m_avatarSprite.setScale({ avatarScale, avatarScale });
         m_avatarSprite.setColor(sf::Color(255, 255, 255, 75));
         util::centerInside(m_avatarSprite, m_paperInnerRect);
 
@@ -181,16 +182,16 @@ namespace bramblefore
             sf::Color(0, 0, 0, 160),
             sf::Text::Bold);
 
-        m_avatarTypeText.setPosition(
-            (util::center(m_paperInnerRect).x - (m_avatarTypeText.getGlobalBounds().width * 0.5f)),
-            m_paperInnerRect.top);
+        m_avatarTypeText.setPosition({ (util::center(m_paperInnerRect).x -
+                                        (m_avatarTypeText.getGlobalBounds().size.x * 0.5f)),
+                                       m_paperInnerRect.position.y });
 
         //
 
         sf::FloatRect descriptionRect{ m_paperInnerRect };
 
-        descriptionRect.top =
-            (util::bottom(m_avatarTypeText) + m_avatarTypeText.getGlobalBounds().height);
+        descriptionRect.position.y =
+            (util::bottom(m_avatarTypeText) + m_avatarTypeText.getGlobalBounds().size.y);
 
         const TextDetails descriptionTextDeatils{ Font::Default,
                                                   FontSize::Small,
@@ -219,14 +220,15 @@ namespace bramblefore
         m_avatarClassText = t_context.font.makeText(
             Font::Default, FontSize::Medium, classNameString, sf::Color(0, 0, 0, 200));
 
-        m_avatarClassText.setPosition(
-            (util::center(m_paperInnerRect).x - (m_avatarClassText.getGlobalBounds().width * 0.5f)),
-            (util::bottom(m_descriptionTexts.back()) + m_avatarTypeText.getGlobalBounds().height));
+        m_avatarClassText.setPosition({ (util::center(m_paperInnerRect).x -
+                                         (m_avatarClassText.getGlobalBounds().size.x * 0.5f)),
+                                        (util::bottom(m_descriptionTexts.back()) +
+                                         m_avatarTypeText.getGlobalBounds().size.y) });
 
         //
 
-        descriptionRect.top =
-            (util::bottom(m_avatarClassText) + m_avatarClassText.getGlobalBounds().height);
+        descriptionRect.position.y =
+            (util::bottom(m_avatarClassText) + m_avatarClassText.getGlobalBounds().size.y);
 
         m_classDescriptionTexts = TextLayout::layout(
             t_context,
@@ -242,40 +244,48 @@ namespace bramblefore
         m_avatarPoseSprites.clear();
         m_avatarPoseSprites.reserve(8);
 
-        sf::Sprite & poseSprite1{ m_avatarPoseSprites.emplace_back() };
+        sf::Sprite & poseSprite1{ m_avatarPoseSprites.emplace_back(
+            util::SfmlDefaults::instance().texture()) };
+
         AvatarTextureManager::instance().set(poseSprite1, m_avatarType, AvatarAnim::Attack, 3);
-        poseSprite1.setScale(poseScale, poseScale);
+        poseSprite1.setScale({ poseScale, poseScale });
         poseSprite1.setColor(poseColor);
 
         poseSprite1.setPosition(
-            m_paperInnerRect.left,
-            (util::bottom(m_paperInnerRect) - (poseSprite1.getGlobalBounds().height * 0.6f)));
+            { m_paperInnerRect.position.x,
+              (util::bottom(m_paperInnerRect) - (poseSprite1.getGlobalBounds().size.y * 0.6f)) });
 
-        const float poseSpriteHorizPad{ poseSprite1.getGlobalBounds().width * 0.07f };
+        const float poseSpriteHorizPad{ poseSprite1.getGlobalBounds().size.x * 0.07f };
 
-        sf::Sprite & poseSprite2{ m_avatarPoseSprites.emplace_back() };
+        sf::Sprite & poseSprite2{ m_avatarPoseSprites.emplace_back(
+            util::SfmlDefaults::instance().texture()) };
+
         AvatarTextureManager::instance().set(poseSprite2, m_avatarType, AvatarAnim::Death, 2);
-        poseSprite2.setScale(poseScale, poseScale);
+        poseSprite2.setScale({ poseScale, poseScale });
         poseSprite2.setColor(poseColor);
 
         poseSprite2.setPosition(
-            (util::right(poseSprite1) + poseSpriteHorizPad), poseSprite1.getPosition().y);
+            { (util::right(poseSprite1) + poseSpriteHorizPad), poseSprite1.getPosition().y });
 
-        sf::Sprite & poseSprite3{ m_avatarPoseSprites.emplace_back() };
+        sf::Sprite & poseSprite3{ m_avatarPoseSprites.emplace_back(
+            util::SfmlDefaults::instance().texture()) };
+
         AvatarTextureManager::instance().set(poseSprite3, m_avatarType, AvatarAnim::Jump, 1);
-        poseSprite3.setScale(poseScale, poseScale);
+        poseSprite3.setScale({ poseScale, poseScale });
         poseSprite3.setColor(poseColor);
 
         poseSprite3.setPosition(
-            (util::right(poseSprite2) + poseSpriteHorizPad), poseSprite1.getPosition().y);
+            { (util::right(poseSprite2) + poseSpriteHorizPad), poseSprite1.getPosition().y });
 
-        sf::Sprite & poseSprite4{ m_avatarPoseSprites.emplace_back() };
+        sf::Sprite & poseSprite4{ m_avatarPoseSprites.emplace_back(
+            util::SfmlDefaults::instance().texture()) };
+
         AvatarTextureManager::instance().set(poseSprite4, m_avatarType, AvatarAnim::Jump, 3);
-        poseSprite4.setScale(poseScale, poseScale);
+        poseSprite4.setScale({ poseScale, poseScale });
         poseSprite4.setColor(poseColor);
 
         poseSprite4.setPosition(
-            (util::right(poseSprite3) + poseSpriteHorizPad), poseSprite1.getPosition().y);
+            { (util::right(poseSprite3) + poseSpriteHorizPad), poseSprite1.getPosition().y });
     }
 
     std::string CharacterSelectState::avatarDescription(const AvatarType type) const

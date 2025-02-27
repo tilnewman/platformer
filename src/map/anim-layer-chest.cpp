@@ -48,14 +48,14 @@ namespace bramblefore
         ChestAnim & anim{ m_animations.emplace_back() };
         anim.chest   = chest;
         anim.is_open = false;
-        anim.sprite.setTexture(texture);
+        anim.sprite.setTexture(texture, true);
 
         const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 2.5f) };
-        anim.sprite.setScale(scale, scale);
+        anim.sprite.setScale({ scale, scale });
 
         anim.sprite.setPosition(
-            (util::center(t_rect).x - (anim.sprite.getGlobalBounds().width * 0.5f)),
-            (util::bottom(t_rect) - (anim.sprite.getGlobalBounds().height) * 0.9f));
+            { (util::center(t_rect).x - (anim.sprite.getGlobalBounds().size.x * 0.5f)),
+              (util::bottom(t_rect) - (anim.sprite.getGlobalBounds().size.y) * 0.9f) });
     }
 
     void ChestAnimationLayer::draw(
@@ -65,7 +65,7 @@ namespace bramblefore
 
         for (const ChestAnim & anim : m_animations)
         {
-            if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
             }
@@ -76,7 +76,7 @@ namespace bramblefore
     {
         for (ChestAnim & anim : m_animations)
         {
-            anim.sprite.move(t_amount, 0.0f);
+            anim.sprite.move({ t_amount, 0.0f });
         }
     }
 
@@ -84,7 +84,7 @@ namespace bramblefore
     {
         for (ChestAnim & anim : m_animations)
         {
-            if (!anim.is_open && t_avatarRect.intersects(anim.sprite.getGlobalBounds()))
+            if (!anim.is_open && t_avatarRect.findIntersection(anim.sprite.getGlobalBounds()))
             {
                 // chests don't really harm anyone
                 // i'm just using all this as a trigger to open the chests
@@ -125,19 +125,23 @@ namespace bramblefore
         {
             ChestTextures & textures{ m_textureSets.emplace_back() };
 
-            textures.open.loadFromFile(
-                (t_context.settings.media_path / std::string("image/anim/chest")
-                                                     .append(std::to_string(chestIndex))
-                                                     .append("-open.png"))
-                    .string());
+            M_CHECK(
+                textures.open.loadFromFile(
+                    (t_context.settings.media_path / std::string("image/anim/chest")
+                                                         .append(std::to_string(chestIndex))
+                                                         .append("-open.png"))
+                        .string()),
+                "file not found");
 
             TextureStats::instance().process(textures.open);
 
-            textures.closed.loadFromFile(
-                (t_context.settings.media_path / std::string("image/anim/chest")
-                                                     .append(std::to_string(chestIndex))
-                                                     .append(".png"))
-                    .string());
+            M_CHECK(
+                textures.closed.loadFromFile(
+                    (t_context.settings.media_path / std::string("image/anim/chest")
+                                                         .append(std::to_string(chestIndex))
+                                                         .append(".png"))
+                        .string()),
+                "file not found");
 
             TextureStats::instance().process(textures.closed);
         }

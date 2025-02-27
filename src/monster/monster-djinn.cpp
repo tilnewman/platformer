@@ -20,7 +20,7 @@ namespace bramblefore
     {
         if (MonsterAnim::Death == m_anim)
         {
-            return { 0.0f, 0.0f, 0.0f, 0.0f };
+            return { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
         }
         else
         {
@@ -29,11 +29,11 @@ namespace bramblefore
 
             if (m_isFacingRight)
             {
-                rect.left -= (rect.width * 0.35f);
+                rect.position.x -= (rect.size.x * 0.35f);
             }
             else
             {
-                rect.left += (rect.width * 0.35f);
+                rect.position.x += (rect.size.x * 0.35f);
             }
 
             return rect;
@@ -44,15 +44,15 @@ namespace bramblefore
     {
         sf::FloatRect rect{ collisionRect() };
 
-        const float shiftHoriz{ rect.width * 0.8f };
+        const float shiftHoriz{ rect.size.x * 0.8f };
 
         if (m_isFacingRight)
         {
-            rect.left += shiftHoriz;
+            rect.position.x += shiftHoriz;
         }
         else
         {
-            rect.left -= shiftHoriz;
+            rect.position.x -= shiftHoriz;
         }
 
         util::scaleRectInPlace(rect, 1.1f);
@@ -62,16 +62,17 @@ namespace bramblefore
 
     void Djinn::turnAround()
     {
-        m_sprite.scale(-1.0f, 1.0f);
+        m_sprite.scale({ -1.0f, 1.0f });
 
         const float imageWidthRatio{ 0.85f };
         if (m_isFacingRight)
         {
-            m_sprite.move(-(m_sprite.getGlobalBounds().width * (1.0f - imageWidthRatio)), 0.0f);
+            m_sprite.move(
+                { -(m_sprite.getGlobalBounds().size.x * (1.0f - imageWidthRatio)), 0.0f });
         }
         else
         {
-            m_sprite.move((m_sprite.getGlobalBounds().width * (1.0f - imageWidthRatio)), 0.0f);
+            m_sprite.move({ (m_sprite.getGlobalBounds().size.x * (1.0f - imageWidthRatio)), 0.0f });
         }
 
         m_isFacingRight = !m_isFacingRight;

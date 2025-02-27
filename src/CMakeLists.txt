@@ -63,13 +63,13 @@ if(WIN32)
 	include(FetchContent)
 	FetchContent_Declare(SFML
 		GIT_REPOSITORY https://github.com/SFML/SFML.git
-		GIT_TAG 2.6.x
+		GIT_TAG 3.0.0
 		GIT_SHALLOW ON)
 	FetchContent_MakeAvailable(SFML)
 	
 else()
 
-find_package(SFML 2.6.1 COMPONENTS window graphics audio REQUIRED)
+find_package(SFML 3.0.0 COMPONENTS Window Graphics Audio REQUIRED)
 
 endif()
 
@@ -83,7 +83,7 @@ function(setup_target name)
 
     target_link_libraries(${name} PUBLIC ${custom_link_flags})
     
-    target_link_libraries(${name} PUBLIC sfml-window sfml-graphics sfml-audio)
+    target_link_libraries(${name} PUBLIC SFML::Window SFML::Graphics SFML::Audio)
     
     set(library_names_excluding_current ${library_names})
     list(REMOVE_ITEM library_names_excluding_current ${name})

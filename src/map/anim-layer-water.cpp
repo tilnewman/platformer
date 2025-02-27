@@ -11,6 +11,7 @@
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "subsystem/texture-stats.hpp"
+#include "util/check-macros.hpp"
 #include "util/random.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
@@ -27,8 +28,10 @@ namespace bramblefore
     {
         HarmCollisionManager::instance().addOwner(*this);
 
-        m_texture.loadFromFile(
-            (t_context.settings.media_path / "image/anim/water-surface1.png").string());
+        M_CHECK(
+            m_texture.loadFromFile(
+                (t_context.settings.media_path / "image/anim/water-surface1.png").string()),
+            "file not found");
 
         TextureStats::instance().process(m_texture);
 
@@ -56,7 +59,7 @@ namespace bramblefore
 
         for (const WaterAnim & anim : m_anims)
         {
-            if (wholeScreenRect.intersects(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
             }
@@ -67,7 +70,7 @@ namespace bramblefore
     {
         for (WaterAnim & anim : m_anims)
         {
-            anim.sprite.move(amount, 0.0f);
+            anim.sprite.move({ amount, 0.0f });
         }
     }
 
@@ -86,10 +89,11 @@ namespace bramblefore
     sf::IntRect WaterAnimationLayer::textureRect(const std::size_t t_frame) const noexcept
     {
         sf::IntRect rect;
-        rect.width  = static_cast<int>(m_texture.getSize().y);
-        rect.height = rect.width;
-        rect.top    = 0;
-        rect.left   = (static_cast<int>(t_frame) * rect.width);
+        rect.size.x     = static_cast<int>(m_texture.getSize().y);
+        rect.size.y     = rect.size.x;
+        rect.position.y = 0;
+        rect.position.x = (static_cast<int>(t_frame) * rect.size.x);
+
         return rect;
     }
 
@@ -120,11 +124,12 @@ namespace bramblefore
         for (const WaterAnim & anim : m_anims)
         {
             const sf::FloatRect waterRect{ anim.sprite.getGlobalBounds() };
-            if (t_avatarRect.intersects(waterRect))
+            if (t_avatarRect.findIntersection(waterRect))
             {
                 harm.rect   = waterRect;
                 harm.damage = 0;
                 harm.sfx    = "dunk";
+
                 break;
             }
         }

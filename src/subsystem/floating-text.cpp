@@ -30,9 +30,8 @@ namespace bramblefore
         FloatingTextAnim & anim{ m_animations.emplace_back() };
         anim.text = t_context.font.makeText(Font::Default, FontSize::Medium, t_message, t_color);
 
-        anim.text.setPosition(
-            (t_pos.x - (anim.text.getGlobalBounds().width * 0.5f)),
-            (t_pos.y - (anim.text.getGlobalBounds().height * 0.5f)));
+        anim.text.setPosition({ (t_pos.x - (anim.text.getGlobalBounds().size.x * 0.5f)),
+                                (t_pos.y - (anim.text.getGlobalBounds().size.y * 0.5f)) });
     }
 
     void FloatingText::update(Context &, const float t_frameTimeSec)
@@ -40,9 +39,9 @@ namespace bramblefore
         bool areAnyAnimationsFinished{ false };
         for (FloatingTextAnim & anim : m_animations)
         {
-            anim.text.move(0.0f, -(t_frameTimeSec * 60.0f));
+            anim.text.move({ 0.0f, -(t_frameTimeSec * 60.0f) });
 
-            sf::Uint8 alpha{ anim.text.getFillColor().a };
+            std::uint8_t alpha{ anim.text.getFillColor().a };
             if (alpha < 5)
             {
                 anim.is_alive            = false;
@@ -78,7 +77,7 @@ namespace bramblefore
     {
         for (FloatingTextAnim & anim : m_animations)
         {
-            anim.text.move(t_amount, 0.0f);
+            anim.text.move({ t_amount, 0.0f });
         }
     }
 

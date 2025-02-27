@@ -5,6 +5,7 @@
 //
 #include "state/states.hpp"
 #include "ui/spell-select-menu.hpp"
+#include "util/sfml-defaults.hpp"
 
 #include <vector>
 
@@ -35,15 +36,13 @@ namespace bramblefore
             const float t_vertPos);
 
         void move(const float t_amount);
-
         float bottom() const;
-
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
 
         sf::Texture texture{};
-        sf::Sprite sprite{};
-        sf::Text name{};
-        sf::Text description{};
+        sf::Sprite sprite{ texture };
+        sf::Text name{ util::SfmlDefaults::instance().font() };
+        sf::Text description{ util::SfmlDefaults::instance().font() };
     };
 
     //

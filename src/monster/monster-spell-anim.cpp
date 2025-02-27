@@ -64,7 +64,7 @@ namespace bramblefore
             for (std::size_t frameIndex{ 0 }; frameIndex < files.size(); ++frameIndex)
             {
                 sf::Texture & texture{ set.textures.at(frameIndex) };
-                texture.loadFromFile(files.at(frameIndex).string());
+                M_CHECK(texture.loadFromFile(files.at(frameIndex).string()), "file not found");
                 TextureStats::instance().process(texture);
             }
         }
@@ -144,7 +144,7 @@ namespace bramblefore
 
         if (!t_isFacingRight)
         {
-            anim.sprite.scale(-1.0f, 1.0f);
+            anim.sprite.scale({ -1.0f, 1.0f });
         }
     }
 
@@ -192,7 +192,7 @@ namespace bramblefore
     {
         for (MonsterSpellAnim & anim : m_anims)
         {
-            anim.sprite.move(t_amount, 0.0f);
+            anim.sprite.move({ t_amount, 0.0f });
         }
     }
 
