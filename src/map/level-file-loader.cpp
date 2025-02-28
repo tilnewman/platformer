@@ -73,7 +73,7 @@ namespace bramblefore
     void LevelFileLoader::load(Context & t_context)
     {
         // TODO fix to be more general so each level can be tested per run of the game
-        const std::filesystem::path path = (t_context.settings.media_path / "map/dungeon1-1.json");
+        const std::filesystem::path path = (t_context.settings.media_path / "map/forest-1.json");
         M_CHECK(std::filesystem::exists(path), "The level file does not exist: " << path.string());
 
         m_pathStr = path.string();
@@ -202,7 +202,7 @@ namespace bramblefore
         {
             util::log()
                 << "Exception Error: While parsing \"" << m_pathStr
-                << "\":  Perhaps did the map maker forget to add the background property?\n";
+                << "\":  Perhaps the map maker forgot to add the background property?\n";
         }
 
         if (backgroundImageName.empty())

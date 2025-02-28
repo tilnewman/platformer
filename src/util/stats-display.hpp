@@ -304,6 +304,7 @@ namespace util
 
             sf::FloatRect titleRect(
                 { 2.0f, 2.0f }, { (m_size.x - 4.0f), (graphRect.position.y - 3.0f) });
+
             util::scaleRectInPlace(titleRect, 0.6f);
             sf::Text titleText(t_font);
             titleText.setCharacterSize(50);

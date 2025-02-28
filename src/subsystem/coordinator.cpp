@@ -106,6 +106,7 @@ namespace bramblefore
 
     void Coordinator::teardown()
     {
+        m_contextUPtr.reset();
         m_playerInfoDisplayUPtr.reset();
         m_avatarUPtr.reset();
         MonsterSpellTextureManager::instance().teardown();
