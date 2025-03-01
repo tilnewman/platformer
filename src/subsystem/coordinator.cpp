@@ -155,7 +155,7 @@ namespace bramblefore
         {
             m_states.setChangePending(State::Shutdown);
         }
-        else if (const auto * keyPtr = t_event.getIf<sf::Event::KeyPressed>())
+        else if (const auto * const keyPtr = t_event.getIf<sf::Event::KeyPressed>())
         {
             if (keyPtr->scancode == sf::Keyboard::Scancode::Escape)
             {

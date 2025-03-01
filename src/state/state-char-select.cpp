@@ -69,7 +69,7 @@ namespace bramblefore
 
     void CharacterSelectState::handleEvent(Context & t_context, const sf::Event & t_event)
     {
-        if (const auto * keyPtr = t_event.getIf<sf::Event::KeyPressed>())
+        if (const auto * const keyPtr = t_event.getIf<sf::Event::KeyPressed>())
         {
             if (keyPtr->scancode == sf::Keyboard::Scancode::Enter)
             {

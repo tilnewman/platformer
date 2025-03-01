@@ -93,7 +93,7 @@ namespace bramblefore
 
     void PlayState::handleEvent(Context & t_context, const sf::Event & t_event)
     {
-        if (const auto * keyPtr = t_event.getIf<sf::Event::KeyPressed>())
+        if (const auto * const keyPtr = t_event.getIf<sf::Event::KeyPressed>())
         {
             // leave the quitting popup
             if (m_isQuitting)
