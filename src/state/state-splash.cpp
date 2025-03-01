@@ -13,6 +13,7 @@
 #include "util/check-macros.hpp"
 #include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
+#include "util/texture-loader.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Event.hpp>
@@ -29,10 +30,8 @@ namespace bramblefore
 
     void SplashState::onEnter(Context & t_context)
     {
-        M_CHECK(
-            m_texture.loadFromFile(
-                (t_context.settings.media_path / "image/splash/characters.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_texture, (t_context.settings.media_path / "image/splash/characters.png"), true);
 
         m_sprite.setTexture(m_texture, true);
 

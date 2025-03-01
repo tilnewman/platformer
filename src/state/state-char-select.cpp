@@ -16,6 +16,7 @@
 #include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
+#include "util/texture-loader.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Event.hpp>
@@ -136,10 +137,8 @@ namespace bramblefore
                (m_instructionsText.getGlobalBounds().size.x * 0.5f)),
               (util::bottom(m_titleText) + (m_instructionsText.getGlobalBounds().size.y * 0.5f)) });
 
-        M_CHECK(
-            m_paperTexture.loadFromFile(
-                (t_context.settings.media_path / "image/ui/paper-runes.png").string()),
-            "file not found");
+        util::TextureLoader::load(
+            m_paperTexture, (t_context.settings.media_path / "image/ui/paper-runes.png"), true);
 
         m_paperSprite.setTexture(m_paperTexture, true);
 
