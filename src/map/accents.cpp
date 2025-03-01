@@ -67,7 +67,7 @@ namespace bramblefore
 
             anim.sprite.setPosition(
                 { (util::center(t_rect).x - (anim.sprite.getGlobalBounds().size.x * 0.5f)),
-                  util::center(t_rect).y });
+                  t_rect.position.y });
         }
         else
         {
