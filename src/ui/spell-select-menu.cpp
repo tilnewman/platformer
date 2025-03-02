@@ -51,7 +51,7 @@ namespace bramblefore
 
         const std::vector<PlayerSpell> & playerSpells{ t_context.player.spells() };
 
-        m_nameText = t_context.font.makeText(Font::Default, FontSize::Small, "");
+        m_nameText = t_context.font.makeText(Font::General, FontSize::Small, "");
 
         const float iconSize{ t_context.layout.wholeSize().y * 0.1f };
 

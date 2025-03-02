@@ -228,7 +228,7 @@ namespace bramblefore
         //
 
         m_coinText =
-            t_context.font.makeText(Font::Default, FontSize::Large, "0", sf::Color(236, 218, 95));
+            t_context.font.makeText(Font::Title, FontSize::Large, "0", sf::Color(236, 218, 95));
 
         m_coinText.scale({ 1.4f, 1.4f });
 

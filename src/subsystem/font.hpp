@@ -19,7 +19,8 @@ namespace bramblefore
 
     enum class Font
     {
-        Default // mops-antiqua
+        Title,  // mops-antiqua
+        General // et-bembo
     };
 
     //
@@ -38,7 +39,7 @@ namespace bramblefore
     struct TextDetails
     {
         TextDetails()
-            : font{ Font::Default }
+            : font{ Font::General }
             , size{ FontSize::Medium }
             , color{ sf::Color::White }
             , style{ sf::Text::Regular }
@@ -69,6 +70,14 @@ namespace bramblefore
         sf::Vector2f letter_size{};
     };
 
+    struct FontExtentSet
+    {
+        FontExtent small;
+        FontExtent medium;
+        FontExtent large;
+        FontExtent huge;
+    };
+
     //
 
     class FontManager
@@ -78,9 +87,16 @@ namespace bramblefore
 
         void setup(const Settings & t_settings);
 
-        [[nodiscard]] inline const sf::Font & get(const Font = Font::Default) const noexcept
+        [[nodiscard]] inline const sf::Font & get(const Font t_font) const noexcept
         {
-            return m_defaultFont;
+            if (t_font == Font::Title)
+            {
+                return m_titleFont;
+            }
+            else
+            {
+                return m_generalFont;
+            }
         }
 
         [[nodiscard]] sf::Text makeText(
@@ -97,17 +113,17 @@ namespace bramblefore
                 t_details.font, t_details.size, t_text, t_details.color, t_details.style);
         }
 
-        [[nodiscard]] FontExtent extent(const FontSize t_size) const noexcept;
+        [[nodiscard]] FontExtent extent(const Font t_font, const FontSize t_size) const noexcept;
 
       private:
-        void setupFontExtents(const Settings & t_settings);
+        void setupFontExtents(
+            const Settings & t_settings, const Font t_font, FontExtentSet & t_extentSet);
 
       private:
-        sf::Font m_defaultFont;
-        FontExtent m_fontExtentHuge;
-        FontExtent m_fontExtentLarge;
-        FontExtent m_fontExtentMedium;
-        FontExtent m_fontExtentSmall;
+        sf::Font m_titleFont;
+        sf::Font m_generalFont;
+        FontExtentSet m_titleExtents;
+        FontExtentSet m_generalExtents;
     };
 
 } // namespace bramblefore

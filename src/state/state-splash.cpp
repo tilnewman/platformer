@@ -43,7 +43,7 @@ namespace bramblefore
             { m_sprite.getPosition().x, (t_context.layout.wholeRect().size.y * 0.15f) });
 
         m_text = t_context.font.makeText(
-            Font::Default, FontSize::Huge, "Bramblefore", sf::Color(220, 220, 220));
+            Font::Title, FontSize::Huge, "Bramblefore", sf::Color(220, 220, 220));
 
         util::centerInside(m_text, t_context.layout.wholeRect());
         m_text.setPosition({ m_text.getPosition().x, util::bottom(m_sprite) });

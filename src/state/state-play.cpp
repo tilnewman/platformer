@@ -168,7 +168,7 @@ namespace bramblefore
         t_context.level.load(t_context);
 
         m_pauseText = t_context.font.makeText(
-            Font::Default, FontSize::Huge, "PAUSED", sf::Color(220, 220, 220));
+            Font::Title, FontSize::Huge, "PAUSED", sf::Color(220, 220, 220));
 
         const sf::FloatRect screenRect{ t_context.layout.wholeRect() };
         util::centerInside(m_pauseText, screenRect);
@@ -180,7 +180,7 @@ namespace bramblefore
         GuiWindowInfo quitWindowInfo;
         quitWindowInfo.border  = GuiWindowBorder::Fancy;
         quitWindowInfo.content = "Restart (l)evel, quit the (g)ame, or (n)evermind?";
-        quitWindowInfo.details = TextDetails(Font::Default, FontSize::Medium, sf::Color::Black);
+        quitWindowInfo.details = TextDetails(Font::General, FontSize::Medium, sf::Color::Black);
         quitWindowInfo.region  = util::scaleRectInPlaceCopy(screenRect, 0.2f);
         quitWindowInfo.title   = "Quit?";
         quitWindowInfo.will_draw_background   = true;

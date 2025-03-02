@@ -54,7 +54,7 @@ namespace bramblefore
         const float vertPad{ screenRect.size.y * 0.025f };
 
         name = t_context.font.makeText(
-            Font::Default, FontSize::Large, t_name, sf::Color(220, 220, 220));
+            Font::Title, FontSize::Large, t_name, sf::Color(220, 220, 220));
 
         name.setPosition({ (util::center(screenRect).x - (name.getGlobalBounds().size.x * 0.5f)),
                            (util::bottom(sprite) + vertPad) });
@@ -62,7 +62,7 @@ namespace bramblefore
         //
 
         description = t_context.font.makeText(
-            Font::Default, FontSize::Small, t_description, sf::Color(160, 160, 160));
+            Font::General, FontSize::Small, t_description, sf::Color(160, 160, 160));
 
         description.setPosition(
             { (util::center(screenRect).x - (description.getGlobalBounds().size.x * 0.5f)),
@@ -134,7 +134,7 @@ namespace bramblefore
         const float vertPad{ screenRect.size.y * 0.15f };
 
         m_titleText = t_context.font.makeText(
-            Font::Default, FontSize::Huge, "Credits", sf::Color(220, 220, 220));
+            Font::Title, FontSize::Huge, "Credits", sf::Color(220, 220, 220));
 
         m_titleText.setPosition(
             { (util::center(screenRect).x - (m_titleText.getGlobalBounds().size.x * 0.5f)),

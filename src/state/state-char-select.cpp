@@ -119,14 +119,14 @@ namespace bramblefore
     void CharacterSelectState::onEnter(Context & t_context)
     {
         m_titleText = t_context.font.makeText(
-            Font::Default, FontSize::Huge, "Character Selection", sf::Color(220, 220, 220));
+            Font::Title, FontSize::Huge, "Character Selection", sf::Color(220, 220, 220));
 
         m_titleText.setPosition({ (util::center(t_context.layout.wholeRect()).x -
                                    (m_titleText.getGlobalBounds().size.x * 0.5f)),
                                   (m_titleText.getGlobalBounds().size.y * 0.75f) });
 
         m_instructionsText = t_context.font.makeText(
-            Font::Default,
+            Font::General,
             FontSize::Small,
             "(Use left and right arrow keys to select a character, then press enter.)",
             sf::Color(160, 160, 160),
@@ -175,7 +175,7 @@ namespace bramblefore
         //
 
         m_avatarTypeText = t_context.font.makeText(
-            Font::Default,
+            Font::Title,
             FontSize::Large,
             std::string(toName(m_avatarType)),
             sf::Color(0, 0, 0, 160),
@@ -192,7 +192,7 @@ namespace bramblefore
         descriptionRect.position.y =
             (util::bottom(m_avatarTypeText) + m_avatarTypeText.getGlobalBounds().size.y);
 
-        const TextDetails descriptionTextDeatils{ Font::Default,
+        const TextDetails descriptionTextDeatils{ Font::General,
                                                   FontSize::Small,
                                                   sf::Color(0, 0, 0, 220) };
 
@@ -217,7 +217,7 @@ namespace bramblefore
         }();
 
         m_avatarClassText = t_context.font.makeText(
-            Font::Default, FontSize::Medium, classNameString, sf::Color(0, 0, 0, 200));
+            Font::Title, FontSize::Medium, classNameString, sf::Color(0, 0, 0, 200));
 
         m_avatarClassText.setPosition({ (util::center(m_paperInnerRect).x -
                                          (m_avatarClassText.getGlobalBounds().size.x * 0.5f)),

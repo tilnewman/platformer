@@ -476,7 +476,7 @@ namespace bramblefore
             titleRect.size.y     = 37.0f;
 
             m_titleText = t_context.font.makeText(
-                Font::Default, FontSize::Medium, m_info.title, sf::Color(32, 32, 32));
+                Font::Title, FontSize::Medium, m_info.title, sf::Color(32, 32, 32));
 
             util::fitAndCenterInside(m_titleText, titleRect);
 

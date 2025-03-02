@@ -28,7 +28,7 @@ namespace bramblefore
         const sf::Vector2f & t_pos)
     {
         FloatingTextAnim & anim{ m_animations.emplace_back() };
-        anim.text = t_context.font.makeText(Font::Default, FontSize::Medium, t_message, t_color);
+        anim.text = t_context.font.makeText(Font::Title, FontSize::Medium, t_message, t_color);
 
         anim.text.setPosition({ (t_pos.x - (anim.text.getGlobalBounds().size.x * 0.5f)),
                                 (t_pos.y - (anim.text.getGlobalBounds().size.y * 0.5f)) });

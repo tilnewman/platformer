@@ -15,20 +15,25 @@ namespace bramblefore
 {
 
     FontManager::FontManager()
-        : m_defaultFont{}
-        , m_fontExtentHuge{}
-        , m_fontExtentLarge{}
-        , m_fontExtentMedium{}
-        , m_fontExtentSmall{}
+        : m_titleFont{}
+        , m_generalFont{}
+        , m_titleExtents{}
+        , m_generalExtents{}
     {}
 
     void FontManager::setup(const Settings & t_settings)
     {
         M_CHECK(
-            m_defaultFont.openFromFile((t_settings.media_path / "font/mops-antiqua.ttf").string()),
+            m_titleFont.openFromFile((t_settings.media_path / "font/mops-antiqua.ttf").string()),
             "file not found");
 
-        setupFontExtents(t_settings);
+        setupFontExtents(t_settings, Font::Title, m_titleExtents);
+
+        M_CHECK(
+            m_generalFont.openFromFile((t_settings.media_path / "font/et-bembo.ttf").string()),
+            "file not found");
+
+        setupFontExtents(t_settings, Font::General, m_generalExtents);
     }
 
     sf::Text FontManager::makeText(
@@ -38,72 +43,104 @@ namespace bramblefore
         const sf::Color & t_color,
         const sf::Text::Style t_style) const
     {
-        sf::Text text(get(t_font), t_string, extent(t_size).char_size);
+        sf::Text text(get(t_font), t_string, extent(t_font, t_size).char_size);
         text.setFillColor(t_color);
         text.setStyle(t_style);
         util::setOriginToPosition(text);
+
         return text;
     }
 
-    FontExtent FontManager::extent(const FontSize t_size) const noexcept
+    FontExtent FontManager::extent(const Font t_font, const FontSize t_size) const noexcept
     {
-        if (FontSize::Huge == t_size)
+        if (t_font == Font::Title)
         {
-            return m_fontExtentHuge;
-        }
-        else if (FontSize::Large == t_size)
-        {
-            return m_fontExtentLarge;
-        }
-        else if (FontSize::Medium == t_size)
-        {
-            return m_fontExtentMedium;
+            if (FontSize::Huge == t_size)
+            {
+                return m_titleExtents.huge;
+            }
+            else if (FontSize::Large == t_size)
+            {
+                return m_titleExtents.large;
+            }
+            else if (FontSize::Medium == t_size)
+            {
+                return m_titleExtents.medium;
+            }
+            else
+            {
+                return m_titleExtents.small;
+            }
         }
         else
         {
-            return m_fontExtentSmall;
+            if (FontSize::Huge == t_size)
+            {
+                return m_generalExtents.huge;
+            }
+            else if (FontSize::Large == t_size)
+            {
+                return m_generalExtents.large;
+            }
+            else if (FontSize::Medium == t_size)
+            {
+                return m_generalExtents.medium;
+            }
+            else
+            {
+                return m_generalExtents.small;
+            }
         }
     }
 
-    void FontManager::setupFontExtents(const Settings & t_settings)
+    void FontManager::setupFontExtents(
+        const Settings & t_settings, const Font t_font, FontExtentSet & t_extentSet)
     {
-        // all the magic numbers in this function are based on trial and error
-        // there was nothing magical about it...
-        const float standardRes = std::sqrt(3840.f * 2400.0f);
+        // All the magic numbers in this function are based on trial and error.
+        // There was nothing magical about it...
+        const float standardRes{ std::sqrt(3840.f * 2400.0f) };
 
-        const float currentRes = std::sqrt(
-            static_cast<float>(t_settings.video_mode.size.x * t_settings.video_mode.size.y));
+        const float currentRes{ std::sqrt(
+            static_cast<float>(t_settings.video_mode.size.x * t_settings.video_mode.size.y)) };
 
-        const float ratioRes = (currentRes / standardRes);
+        const float ratioRes{ currentRes / standardRes };
 
-        sf::Text text{ m_defaultFont };
+        sf::Text text{ get(t_font) };
 
         const std::string widthStr{ "M" };
         const std::string heightStr{ "|g" };
 
-        m_fontExtentHuge.char_size     = static_cast<unsigned>(200.0f * ratioRes);
-        text                           = makeText(Font::Default, FontSize::Huge, widthStr);
-        m_fontExtentHuge.letter_size.x = text.getGlobalBounds().size.x;
-        text                           = makeText(Font::Default, FontSize::Huge, heightStr);
-        m_fontExtentHuge.letter_size.y = text.getGlobalBounds().size.y;
+        t_extentSet.huge.char_size = static_cast<unsigned>(200.0f * ratioRes);
 
-        m_fontExtentLarge.char_size     = static_cast<unsigned>(90.0f * ratioRes);
-        text                            = makeText(Font::Default, FontSize::Large, widthStr);
-        m_fontExtentLarge.letter_size.x = text.getGlobalBounds().size.x;
-        text                            = makeText(Font::Default, FontSize::Large, heightStr);
-        m_fontExtentLarge.letter_size.y = text.getGlobalBounds().size.y;
+        t_extentSet.huge.letter_size.x =
+            makeText(t_font, FontSize::Huge, widthStr).getGlobalBounds().size.x;
 
-        m_fontExtentMedium.char_size     = static_cast<unsigned>(60.0f * ratioRes);
-        text                             = makeText(Font::Default, FontSize::Medium, widthStr);
-        m_fontExtentMedium.letter_size.x = text.getGlobalBounds().size.x;
-        text                             = makeText(Font::Default, FontSize::Medium, heightStr);
-        m_fontExtentMedium.letter_size.y = text.getGlobalBounds().size.y;
+        t_extentSet.huge.letter_size.y =
+            makeText(t_font, FontSize::Huge, heightStr).getGlobalBounds().size.y;
 
-        m_fontExtentSmall.char_size     = static_cast<unsigned>(40.0f * ratioRes);
-        text                            = makeText(Font::Default, FontSize::Small, widthStr);
-        m_fontExtentSmall.letter_size.x = text.getGlobalBounds().size.x;
-        text                            = makeText(Font::Default, FontSize::Small, heightStr);
-        m_fontExtentSmall.letter_size.y = text.getGlobalBounds().size.y;
+        t_extentSet.large.char_size = static_cast<unsigned>(90.0f * ratioRes);
+
+        t_extentSet.large.letter_size.x =
+            makeText(t_font, FontSize::Large, widthStr).getGlobalBounds().size.x;
+
+        t_extentSet.large.letter_size.y =
+            makeText(t_font, FontSize::Large, heightStr).getGlobalBounds().size.y;
+
+        t_extentSet.medium.char_size = static_cast<unsigned>(60.0f * ratioRes);
+
+        t_extentSet.medium.letter_size.x =
+            makeText(t_font, FontSize::Medium, widthStr).getGlobalBounds().size.x;
+
+        t_extentSet.medium.letter_size.y =
+            makeText(t_font, FontSize::Medium, heightStr).getGlobalBounds().size.y;
+
+        t_extentSet.small.char_size = static_cast<unsigned>(40.0f * ratioRes);
+
+        t_extentSet.small.letter_size.x =
+            makeText(t_font, FontSize::Small, widthStr).getGlobalBounds().size.x;
+
+        t_extentSet.small.letter_size.y =
+            makeText(t_font, FontSize::Small, heightStr).getGlobalBounds().size.y;
     }
 
 } // namespace bramblefore

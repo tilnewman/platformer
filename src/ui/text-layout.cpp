@@ -5,9 +5,9 @@
 //
 #include "text-layout.hpp"
 
+#include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "bramblefore/settings.hpp"
 #include "util/sfml-util.hpp"
 
 #include <algorithm>
@@ -26,7 +26,7 @@ namespace bramblefore
         const sf::FloatRect & t_rect,
         const TextDetails & t_details)
     {
-        const FontExtent fontExtent{ t_context.font.extent(t_details.size) };
+        const FontExtent fontExtent{ t_context.font.extent(t_details.font, t_details.size) };
         const std::vector<std::string> words{ splitIntoWords(t_text) };
 
         std::vector<sf::Text> lineTexts;
@@ -83,7 +83,7 @@ namespace bramblefore
     std::vector<std::string> TextLayout::splitIntoWords(const std::string & t_text)
     {
         std::vector<std::string> words;
-        words.reserve(128);//just a harmless guess
+        words.reserve(128); // just a harmless guess
 
         std::istringstream iss{ t_text };
 
