@@ -70,9 +70,9 @@ namespace bramblefore
         : m_pathStr()
     {}
 
-    void LevelFileLoader::load(Context & t_context, const std::string & filename)
+    void LevelFileLoader::load(Context & t_context, const std::string & t_filename)
     {
-        const std::filesystem::path path = (t_context.settings.media_path / "map" / filename);
+        const std::filesystem::path path{ t_context.settings.media_path / "map" / t_filename };
         M_CHECK(std::filesystem::exists(path), "The level file does not exist: " << path.string());
 
         m_pathStr = path.string();

@@ -24,7 +24,7 @@ namespace bramblefore
     {
         Level();
 
-        void load(Context & t_context, const std::string & filename);
+        void load(Context & t_context, const std::string & t_filename);
         void reset();
 
         // returns true if the map was moved
@@ -55,7 +55,7 @@ namespace bramblefore
 
       private:
         void appendVertLayers(const Context & t_context);
-        void dumpInfo(const std::string & filename) const;
+        void dumpInfo(const std::string & t_filename) const;
         float findFarthestHorizMapPixel() const;
     };
 

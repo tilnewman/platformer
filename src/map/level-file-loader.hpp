@@ -22,7 +22,7 @@ namespace bramblefore
       public:
         LevelFileLoader();
 
-        void load(Context & t_context, const std::string & filename);
+        void load(Context & t_context, const std::string & t_filename);
 
       private:
         void parseLevelDetails(Context & t_context, const nlohmann::json & t_json);
