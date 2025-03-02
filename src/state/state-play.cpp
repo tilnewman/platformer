@@ -37,7 +37,9 @@ namespace bramblefore
         , m_pauseFadeVerts{}
         , m_isQuitting{ false }
         , m_quitWindow{}
-    {}
+    {
+        m_pauseFadeVerts.reserve(util::verts_per_quad);
+    }
 
     void PlayState::update(Context & t_context, const float t_frameTimeSec)
     {
@@ -138,7 +140,7 @@ namespace bramblefore
                 t_context.sfx.stop("walk");
                 t_context.sfx.play("ui-select-thock-slide");
             }
-            else if (keyPtr->scancode == sf::Keyboard::Scancode::T)
+            else if (keyPtr->scancode == sf::Keyboard::Scancode::T) // TOOD remove this after testing
             {
                 std::size_t temp{ static_cast<std::size_t>(t_context.player.avatarType()) };
 
