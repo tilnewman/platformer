@@ -67,28 +67,22 @@ namespace bramblefore
     {
         m_visibleVerts.clear();
 
-        std::size_t vertIndex = 0;
+        std::size_t vertIndex{ 0 };
         while (vertIndex < m_verts.size())
         {
             // see sfml-util::setupTriangleVerts() for where this order comes from
-            const sf::Vertex topLeftVert   = m_verts[vertIndex + 0];
-            const sf::Vertex topRightVert  = m_verts[vertIndex + 1];
-            const sf::Vertex botLeftVert   = m_verts[vertIndex + 2];
-            const sf::Vertex botLeftVert2  = m_verts[vertIndex + 3];
-            const sf::Vertex topRightVert2 = m_verts[vertIndex + 4];
-            const sf::Vertex botRightVert  = m_verts[vertIndex + 5];
+            const sf::Vector2f & topLeftVertPos{ m_verts[vertIndex + 0].position };
+            const sf::Vector2f & topRightVertPos{ m_verts[vertIndex + 1].position };
+            const sf::Vector2f & botLeftVertPos{ m_verts[vertIndex + 2].position };
+            const sf::Vector2f & botRightVertPos{ m_verts[vertIndex + 5].position };
 
-            if (t_visibleRect.contains(topLeftVert.position) ||
-                t_visibleRect.contains(topRightVert.position) ||
-                t_visibleRect.contains(botRightVert.position) ||
-                t_visibleRect.contains(botLeftVert.position))
+            if (t_visibleRect.contains(topLeftVertPos) || t_visibleRect.contains(topRightVertPos) ||
+                t_visibleRect.contains(botRightVertPos) || t_visibleRect.contains(botLeftVertPos))
             {
-                m_visibleVerts.push_back(topLeftVert);
-                m_visibleVerts.push_back(topRightVert);
-                m_visibleVerts.push_back(botLeftVert);
-                m_visibleVerts.push_back(botLeftVert2);
-                m_visibleVerts.push_back(topRightVert2);
-                m_visibleVerts.push_back(botRightVert);
+                for (std::size_t i{ 0 }; i < util::verts_per_quad; ++i)
+                {
+                    m_visibleVerts.push_back(m_verts[vertIndex + i]);
+                }
             }
 
             vertIndex += util::verts_per_quad;
