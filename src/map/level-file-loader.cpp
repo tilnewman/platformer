@@ -199,9 +199,8 @@ namespace bramblefore
         }
         catch (...)
         {
-            util::log()
-                << "Exception Error: While parsing \"" << m_pathStr
-                << "\":  Perhaps the map maker forgot to add the background property?\n";
+            util::log() << "Exception Error: While parsing \"" << m_pathStr
+                        << "\":  Perhaps the map maker forgot to add the background property?\n";
         }
 
         if (backgroundImageName.empty())
@@ -218,7 +217,7 @@ namespace bramblefore
     {
         for (const nlohmann::json & jsonLayer : jsonWholeFile["layers"])
         {
-            const std::string layerName = jsonLayer["name"];
+            const std::string layerName{ jsonLayer["name"] };
 
             if (layerName == toString(TileImage::CastleGround))
             {
@@ -425,8 +424,8 @@ namespace bramblefore
 
         for (const nlohmann::json & spawnJson : t_json["objects"])
         {
-            const std::string name   = spawnJson["name"];
-            const sf::FloatRect rect = parseAndConvertRect(t_context, spawnJson);
+            const std::string name{ spawnJson["name"] };
+            const sf::FloatRect rect{ parseAndConvertRect(t_context, spawnJson) };
 
             if (name == "enter")
             {
@@ -456,9 +455,8 @@ namespace bramblefore
     {
         for (const nlohmann::json & pickupJson : t_json["objects"])
         {
-            const std::string name   = pickupJson["name"];
-            const sf::FloatRect rect = parseAndConvertRect(t_context, pickupJson);
-            t_context.pickup.add(t_context, rect, name);
+            t_context.pickup.add(
+                t_context, parseAndConvertRect(t_context, pickupJson), pickupJson["name"]);
         }
     }
 
@@ -466,9 +464,8 @@ namespace bramblefore
     {
         for (const nlohmann::json & accentJson : t_json["objects"])
         {
-            const std::string name   = accentJson["name"];
-            const sf::FloatRect rect = parseAndConvertRect(t_context, accentJson);
-            t_context.accent.add(t_context, rect, name);
+            t_context.accent.add(
+                t_context, parseAndConvertRect(t_context, accentJson), accentJson["name"]);
         }
     }
 
@@ -478,9 +475,8 @@ namespace bramblefore
 
         for (const nlohmann::json & accentJson : t_json["objects"])
         {
-            const std::string name   = accentJson["name"];
-            const sf::FloatRect rect = parseAndConvertRect(t_context, accentJson);
-            chestAnimLayerUPtr->add(t_context, name, rect);
+            chestAnimLayerUPtr->add(
+                t_context, accentJson["name"], parseAndConvertRect(t_context, accentJson));
         }
 
         t_context.level.tile_layers.push_back(std::move(chestAnimLayerUPtr));
@@ -490,8 +486,8 @@ namespace bramblefore
     {
         for (const nlohmann::json & monsterJson : t_json["objects"])
         {
-            const std::string name   = monsterJson["name"];
-            const sf::FloatRect rect = parseAndConvertRect(t_context, monsterJson);
+            const std::string name{ monsterJson["name"] };
+            const sf::FloatRect rect{ parseAndConvertRect(t_context, monsterJson) };
 
             if (name == "goblin")
             {
