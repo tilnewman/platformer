@@ -21,7 +21,7 @@ namespace bramblefore
     {
         std::size_t ref_count{ 0 };
         std::vector<sf::Texture> textures{};
-        sf::Texture icon_texture;
+        sf::Texture icon_texture{};
     };
 
     //
@@ -33,25 +33,27 @@ namespace bramblefore
 
         static MonsterTextureManager & instance();
 
-        void setup(const Settings & settings);
+        void setup(const Settings & t_settings);
         void teardown();
 
-        void acquire(Context & context, const MonsterType type);
-        void release(const MonsterType type);
+        void acquire(Context & t_context, const MonsterType t_type);
+        void release(const MonsterType t_type);
 
         void setTexture(
-            sf::Sprite & sprite,
-            const MonsterType type,
-            const MonsterAnim a,
-            const std::size_t frame) const;
+            sf::Sprite & t_sprite,
+            const MonsterType t_type,
+            const MonsterAnim t_anim,
+            const std::size_t t_frame) const;
 
-        std::size_t frameCount(const MonsterType type, const MonsterAnim anim) const;
+        void setIconTexture(sf::Sprite & t_sprite, const MonsterType t_type) const;
+
+        std::size_t frameCount(const MonsterType t_type, const MonsterAnim t_anim) const;
 
       private:
-        const sf::Texture & getTexture(const MonsterType type, const MonsterAnim anim) const;
+        const sf::Texture & getTexture(const MonsterType t_type, const MonsterAnim t_anim) const;
 
         sf::IntRect getTextureRect(
-            const MonsterType type, const MonsterAnim anim, const std::size_t frame) const;
+            const MonsterType t_type, const MonsterAnim t_anim, const std::size_t t_frame) const;
 
       private:
         std::vector<MonsterTextures> m_textureSets;
