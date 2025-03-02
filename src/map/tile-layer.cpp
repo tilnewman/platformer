@@ -70,7 +70,7 @@ namespace bramblefore
         std::size_t vertIndex{ 0 };
         while (vertIndex < m_verts.size())
         {
-            // see sfml-util::setupTriangleVerts() for where this order comes from
+            // see sfml-util::setupTriangleVerts() for where this mapping comes from
             const sf::Vector2f & topLeftVertPos{ m_verts[vertIndex + 0].position };
             const sf::Vector2f & topRightVertPos{ m_verts[vertIndex + 1].position };
             const sf::Vector2f & botLeftVertPos{ m_verts[vertIndex + 2].position };
