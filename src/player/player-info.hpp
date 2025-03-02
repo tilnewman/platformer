@@ -378,7 +378,6 @@ namespace bramblefore
         PlayerInfo();
 
         void setup(Context & t_context, const AvatarType t_type);
-
         void update(Context & t_context, const float frameTimeSec);
 
         [[nodiscard]] inline constexpr AvatarType avatarType() const noexcept

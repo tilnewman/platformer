@@ -76,6 +76,12 @@ namespace bramblefore
 
                 util::TextureLoader::load(texture, path, true);
             }
+
+            util::TextureLoader::load(
+                set.icon_texture,
+                (t_context.settings.media_path / "image/monster" / std::string(toString(t_type)) /
+                 "icon.png"),
+                true);
         }
 
         ++set.ref_count;

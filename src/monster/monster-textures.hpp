@@ -21,6 +21,7 @@ namespace bramblefore
     {
         std::size_t ref_count{ 0 };
         std::vector<sf::Texture> textures{};
+        sf::Texture icon_texture;
     };
 
     //
