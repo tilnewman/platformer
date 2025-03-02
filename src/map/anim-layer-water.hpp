@@ -48,7 +48,6 @@ namespace bramblefore
             const override;
 
         void move(const Context & t_context, const float t_amount) override;
-        [[nodiscard]] float findFarthestHorizVert() const override { return 0.0f; }
         void dumpInfo() const override {}
 
         void update(Context & t_context, const float t_frameTimeSec) override;

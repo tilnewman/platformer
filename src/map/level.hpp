@@ -56,7 +56,6 @@ namespace bramblefore
       private:
         void appendVertLayers(const Context & t_context);
         void dumpInfo(const std::string & t_filename) const;
-        float findFarthestHorizMapPixel() const;
     };
 
 } // namespace bramblefore

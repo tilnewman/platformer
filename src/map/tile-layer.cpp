@@ -56,22 +56,6 @@ namespace bramblefore
         populateVisibleVerts(t_context.layout.wholeRect());
     }
 
-    float TileLayer::findFarthestHorizVert() const
-    {
-        float farthestHorizPos{ 0.0f };
-        for (const sf::Vertex & vertex : m_verts)
-        {
-            // TODO could be faster, use dual triangle vertex layout, see populateVisibleVerts()
-            // TODO could be even faster without looping, just use the exit spawn collision rect
-            if (vertex.position.x > farthestHorizPos)
-            {
-                farthestHorizPos = vertex.position.x;
-            }
-        }
-
-        return farthestHorizPos;
-    }
-
     void TileLayer::dumpInfo() const
     {
         std::clog << "\tLayer Tiles:  " << m_image << ", possible=" << m_indexes.size()

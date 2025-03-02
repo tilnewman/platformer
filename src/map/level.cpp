@@ -63,7 +63,7 @@ namespace bramblefore
         t_context.level_loader.load(t_context, t_filename);
         appendVertLayers(t_context);
         t_context.avatar.setPosition(enter_rect);
-        farthest_horiz_map_pixel = findFarthestHorizMapPixel();
+        farthest_horiz_map_pixel = exit_rect.position.x;
         // dumpInfo(t_filename);
     }
 
@@ -106,22 +106,6 @@ namespace bramblefore
         t_context.float_text.move(t_amount);
 
         return true;
-    }
-
-    float Level::findFarthestHorizMapPixel() const
-    {
-        float farthestHorizPos{ 0.0f };
-
-        for (const auto & layerUPtr : tile_layers)
-        {
-            const float nextFarthest{ layerUPtr->findFarthestHorizVert() };
-            if (nextFarthest > farthestHorizPos)
-            {
-                farthestHorizPos = nextFarthest;
-            }
-        }
-
-        return farthestHorizPos;
     }
 
     void Level::appendVertLayers(const Context & t_context)

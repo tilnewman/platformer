@@ -20,11 +20,11 @@ namespace bramblefore
 {
 
     MapCoordinator::MapCoordinator()
-        : m_mapNames{ "forest-1.json",
-                      "dungeon1-1.json",
+        : m_mapNames{ "dungeon1-1.json",
+                      "mountains-1.json",
+                      "forest-1.json",
                       "cave-1.json",
-                      "castle-1.json",
-                      "mountains-1.json" }
+                      "castle-1.json" }
         , m_mapNameIter{ std::begin(m_mapNames) }
     {}
 
@@ -77,7 +77,7 @@ namespace bramblefore
     }
 
     void MapCoordinator::mapNameAdvance()
-    { 
+    {
         if (m_mapNameIter != std::end(m_mapNames))
         {
             ++m_mapNameIter;

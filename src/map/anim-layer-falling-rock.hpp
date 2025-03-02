@@ -127,7 +127,6 @@ namespace bramblefore
             const final;
 
         void move(const Context & t_context, const float t_amount) final;
-        inline float findFarthestHorizVert() const final { return 0.0f; }
         inline void dumpInfo() const final {}
 
         void update(Context & t_context, const float t_frameTimeSec) final;
