@@ -123,7 +123,7 @@ namespace bramblefore
 
         m_titleText.setPosition({ (util::center(t_context.layout.wholeRect()).x -
                                    (m_titleText.getGlobalBounds().size.x * 0.5f)),
-                                  (m_titleText.getGlobalBounds().size.y * 0.75f) });
+                                  (t_context.layout.wholeSize().y * 0.15f) });
 
         m_instructionsText = t_context.font.makeText(
             Font::General,
