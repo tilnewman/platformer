@@ -35,11 +35,14 @@ namespace bramblefore
     void TileLayer::draw(
         const Context &, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
-        t_states.texture = &MapTextureManager::instance().get(m_image).texture;
-
         if (!m_visibleVerts.empty())
         {
-            t_target.draw(&m_visibleVerts[0], m_visibleVerts.size(), sf::PrimitiveType::Triangles, t_states);
+            t_states.texture = &MapTextureManager::instance().get(m_image).texture;
+
+            t_target.draw(
+                &m_visibleVerts[0], m_visibleVerts.size(), sf::PrimitiveType::Triangles, t_states);
+
+            t_states.texture = nullptr;
         }
     }
 
@@ -58,6 +61,8 @@ namespace bramblefore
         float farthestHorizPos{ 0.0f };
         for (const sf::Vertex & vertex : m_verts)
         {
+            // TODO could be faster, use dual triangle vertex layout, see populateVisibleVerts()
+            // TODO could be even faster without looping, just use the exit spawn collision rect
             if (vertex.position.x > farthestHorizPos)
             {
                 farthestHorizPos = vertex.position.x;
@@ -113,43 +118,42 @@ namespace bramblefore
         const sf::Vector2i & t_size,
         const sf::Vector2f & t_sizeOnScreen)
     {
-        const TileTexture & tileTexture = MapTextureManager::instance().get(m_image);
+        const TileTexture & tileTexture{ MapTextureManager::instance().get(m_image) };
 
         const sf::Vector2i textureTileCount{ tileTexture.size / t_size };
 
-        const std::size_t totalCount =
-            (static_cast<std::size_t>(t_count.x) * static_cast<std::size_t>(t_count.y));
+        const std::size_t totalCount{ static_cast<std::size_t>(t_count.x) *
+                                      static_cast<std::size_t>(t_count.y) };
 
         M_CHECK(
             (totalCount == m_indexes.size()),
             "index_count=" << m_indexes.size() << " does not equal tile_count=" << totalCount);
 
-        const sf::Vector2i sizeOnScreenI(t_sizeOnScreen);
+        const sf::Vector2i sizeOnScreenI{ t_sizeOnScreen };
 
-        std::size_t textureIndex = 0;
-        for (int y(0); y < t_count.y; ++y)
+        std::size_t textureIndex{ 0 };
+        for (int y{ 0 }; y < t_count.y; ++y)
         {
             const float posY = static_cast<float>(y * sizeOnScreenI.y);
 
-            for (int x(0); x < t_count.x; ++x)
+            for (int x{ 0 }; x < t_count.x; ++x)
             {
-                const float posX = static_cast<float>(x * sizeOnScreenI.x);
-
-                const int textureIndexOrig(m_indexes[textureIndex++]);
+                const int textureIndexOrig{ m_indexes[textureIndex++] };
                 if (textureIndexOrig == 0)
                 {
                     continue; // zero means no tile image at this location
                 }
 
-                const int index(textureIndexOrig - tileTexture.gid);
+                const float posX{ static_cast<float>(x * sizeOnScreenI.x) };
 
-                const int texturePosX((index % textureTileCount.x) * t_size.x);
-                const int texturePosY((index / textureTileCount.x) * t_size.y);
+                const int index{ textureIndexOrig - tileTexture.gid };
 
-                const sf::Vector2i texturePos{ texturePosX, texturePosY };
-                const sf::IntRect textureRect{ texturePos, t_size };
+                const int texturePosX{ (index % textureTileCount.x) * t_size.x };
+                const int texturePosY{ (index / textureTileCount.x) * t_size.y };
 
-                const sf::Vector2f screenPos(sf::Vector2f(posX, posY) + t_mapPositionOffset);
+                const sf::IntRect textureRect{ { texturePosX, texturePosY }, t_size };
+
+                const sf::Vector2f screenPos{ sf::Vector2f(posX, posY) + t_mapPositionOffset };
                 const sf::FloatRect screenRect{ screenPos, t_sizeOnScreen };
 
                 util::appendTriangleVerts(screenRect, textureRect, m_verts);
