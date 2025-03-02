@@ -760,7 +760,6 @@ namespace bramblefore
 
     void Avatar::respawn(Context & t_context)
     {
-
         m_state = AvatarState::Still;
         m_anim  = AvatarAnim::Walk;
         restartAnim();

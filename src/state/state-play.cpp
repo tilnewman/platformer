@@ -17,11 +17,12 @@
 #include "subsystem/context.hpp"
 #include "subsystem/floating-text.hpp"
 #include "subsystem/font.hpp"
+#include "subsystem/map-coordinator.hpp"
 #include "subsystem/screen-layout.hpp"
+#include "util/sfml-defaults.hpp"
 #include "util/sfml-keys.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
-#include "util/sfml-defaults.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Event.hpp>
@@ -162,10 +163,12 @@ namespace bramblefore
 
     void PlayState::onEnter(Context & t_context)
     {
+        // safe to call repeatedly, won't reload textures
         m_spellSelectMenu.loadTextures(t_context.settings);
-        t_context.avatar.setup(t_context);
-        t_context.player_display.setup(t_context);
-        t_context.level.load(t_context);
+
+        t_context.map_coord.respawn(t_context);
+
+        //
 
         m_pauseText = t_context.font.makeText(
             Font::Title, FontSize::Huge, "PAUSED", sf::Color(220, 220, 220));
@@ -174,6 +177,8 @@ namespace bramblefore
         util::centerInside(m_pauseText, screenRect);
 
         util::appendTriangleVerts(screenRect, m_pauseFadeVerts, sf::Color(0, 0, 0, 127));
+
+        //
 
         m_quitWindow.loadTextures(t_context.settings);
 

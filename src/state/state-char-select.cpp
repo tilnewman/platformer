@@ -6,7 +6,9 @@
 #include "state/state-char-select.hpp"
 
 #include "avatar/avatar-textures.hpp"
+#include "avatar/avatar.hpp"
 #include "bramblefore/settings.hpp"
+#include "player/player-info-display.hpp"
 #include "state/state-manager.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/font.hpp"
@@ -156,9 +158,12 @@ namespace bramblefore
         setup(t_context);
     }
 
-    void CharacterSelectState::onExit(Context &)
+    void CharacterSelectState::onExit(Context & t_context)
     {
         AvatarTextureManager::instance().release(m_avatarType);
+
+        t_context.avatar.setup(t_context);
+        t_context.player_display.setup(t_context);
     }
 
     void CharacterSelectState::setup(Context & t_context)

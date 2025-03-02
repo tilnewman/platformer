@@ -9,6 +9,7 @@
 #include "state/state-manager.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/font.hpp"
+#include "subsystem/map-coordinator.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "util/check-macros.hpp"
 #include "util/sfml-defaults.hpp"
@@ -52,7 +53,16 @@ namespace bramblefore
         m_elapsedTimeSec += t_frameTimeSec;
         if (m_elapsedTimeSec > 4.0f)
         {
-            t_context.state.setChangePending(State::Credits);
+            t_context.map_coord.mapNameAdvance();
+
+            if (t_context.map_coord.mapName().empty())
+            {
+                t_context.state.setChangePending(State::Credits);
+            }
+            else
+            {
+                t_context.state.setChangePending(State::Play);
+            }
         }
     }
 

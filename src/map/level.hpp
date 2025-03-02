@@ -7,6 +7,7 @@
 #include "monster/monster-manager.hpp"
 
 #include <optional>
+#include <string>
 #include <vector>
 
 #include <SFML/Graphics/Rect.hpp>
@@ -23,7 +24,7 @@ namespace bramblefore
     {
         Level();
 
-        void load(Context & t_context);
+        void load(Context & t_context, const std::string & filename);
         void reset();
 
         // returns true if the map was moved
@@ -54,7 +55,7 @@ namespace bramblefore
 
       private:
         void appendVertLayers(const Context & t_context);
-        void dumpInfo() const;
+        void dumpInfo(const std::string & filename) const;
         float findFarthestHorizMapPixel() const;
     };
 

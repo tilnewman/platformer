@@ -57,14 +57,14 @@ namespace bramblefore
         farthest_horiz_map_pixel = 0.0f;
     }
 
-    void Level::load(Context & t_context)
+    void Level::load(Context & t_context, const std::string & filename)
     {
         reset();
-        t_context.level_loader.load(t_context);
+        t_context.level_loader.load(t_context, filename);
         appendVertLayers(t_context);
         t_context.avatar.setPosition(enter_rect);
         farthest_horiz_map_pixel = findFarthestHorizMapPixel();
-        // dumpInfo();
+        // dumpInfo(filename);
     }
 
     bool Level::move(const Context & t_context, const float t_amount)
@@ -133,9 +133,9 @@ namespace bramblefore
         }
     }
 
-    void Level::dumpInfo() const
+    void Level::dumpInfo(const std::string & filename) const
     {
-        std::clog << "Map Graphics Layer Info:\n";
+        std::clog << filename << " Map Graphics Layer Info:\n";
 
         for (const auto & layerUPtr : tile_layers)
         {

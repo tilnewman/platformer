@@ -19,7 +19,14 @@
 namespace bramblefore
 {
 
-    MapCoordinator::MapCoordinator() {}
+    MapCoordinator::MapCoordinator()
+        : m_mapNames{ "forest-1.json",
+                      "dungeon1-1.json",
+                      "cave-1.json",
+                      "castle-1.json",
+                      "mountains-1.json" }
+        , m_mapNameIter{ std::begin(m_mapNames) }
+    {}
 
     void MapCoordinator::respawn(Context & t_context)
     {
@@ -32,9 +39,16 @@ namespace bramblefore
         t_context.player.manaReset(t_context);
         t_context.player.mapStarReset(t_context);
 
-        t_context.level.load(t_context);
-
-        t_context.sfx.play("spawn");
+        const std::string nextLevelFilename{ mapName() };
+        if (nextLevelFilename.empty())
+        {
+            t_context.state.setChangePending(State::Credits);
+        }
+        else
+        {
+            t_context.level.load(t_context, nextLevelFilename);
+            t_context.sfx.play("spawn");
+        }
     }
 
     void MapCoordinator::deathBeforeDelay(Context & t_context)
@@ -48,6 +62,26 @@ namespace bramblefore
     void MapCoordinator::deathAfterDelay(Context & t_context)
     {
         t_context.state.setChangePending(State::LevelDeath);
+    }
+
+    std::string MapCoordinator::mapName() const
+    {
+        if (m_mapNameIter != std::end(m_mapNames))
+        {
+            return *m_mapNameIter;
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    void MapCoordinator::mapNameAdvance()
+    { 
+        if (m_mapNameIter != std::end(m_mapNames))
+        {
+            ++m_mapNameIter;
+        }
     }
 
 } // namespace bramblefore

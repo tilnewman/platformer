@@ -3,6 +3,8 @@
 //
 // map-coordinator.hpp
 //
+#include <string>
+#include <vector>
 
 namespace bramblefore
 {
@@ -17,8 +19,16 @@ namespace bramblefore
         MapCoordinator();
 
         void respawn(Context & t_context);
+
         void deathBeforeDelay(Context & t_context);
         void deathAfterDelay(Context & t_context);
+
+        [[nodiscard]] std::string mapName() const;
+        void mapNameAdvance();
+
+      private:
+        std::vector<std::string> m_mapNames;
+        std::vector<std::string>::const_iterator m_mapNameIter;
     };
 
 } // namespace bramblefore

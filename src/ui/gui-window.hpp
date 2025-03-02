@@ -54,6 +54,7 @@ namespace bramblefore
       public:
         GuiWindow();
 
+        // safe to call repeatedly, won't reload textures
         void loadTextures(const Settings & t_settings);
 
         void arrange(Context & t_context, const GuiWindowInfo & t_info);

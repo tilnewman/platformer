@@ -31,6 +31,7 @@ namespace bramblefore
       public:
         SpellSelectMenu();
 
+        // safe to call repeatedly, won't reload textures
         void loadTextures(const Settings & t_settings);
 
         void setup(Context & t_context, const std::size_t t_selection);

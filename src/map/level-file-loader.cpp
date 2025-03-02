@@ -70,10 +70,9 @@ namespace bramblefore
         : m_pathStr()
     {}
 
-    void LevelFileLoader::load(Context & t_context)
+    void LevelFileLoader::load(Context & t_context, const std::string & filename)
     {
-        // TODO fix to be more general so each level can be tested per run of the game
-        const std::filesystem::path path = (t_context.settings.media_path / "map/forest-1.json");
+        const std::filesystem::path path = (t_context.settings.media_path / "map" / filename);
         M_CHECK(std::filesystem::exists(path), "The level file does not exist: " << path.string());
 
         m_pathStr = path.string();
@@ -82,7 +81,7 @@ namespace bramblefore
 
         {
             std::ifstream iStream(m_pathStr);
-            M_CHECK(iStream, "Failed to open level file: \"" << m_pathStr << "\"");
+            M_CHECK(iStream, "Found but failed to open the level file: \"" << m_pathStr << "\"");
             iStream >> json;
         }
 
