@@ -24,7 +24,9 @@ namespace util
         // based on how many files I know are in the media folders
         files.reserve(64); 
 
-        const std::filesystem::directory_iterator dirIter{ t_dirPath };
+        const std::filesystem::directory_iterator dirIter{
+            t_dirPath, std::filesystem::directory_options::skip_permission_denied
+        };
 
         auto regularFilesWithExtensionView =
             dirIter |
