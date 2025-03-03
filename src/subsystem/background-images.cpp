@@ -55,6 +55,8 @@ namespace bramblefore
             m_overlaySprite.setTexture(m_overlayTexture, true);
             util::scaleAndCenterInside(m_overlaySprite, t_context.layout.wholeRect());
         }
+
+        //
        
         m_slidingImages.clear();
         m_slidingImages.reserve(16); // prevents reallocation
@@ -77,10 +79,11 @@ namespace bramblefore
                 { slidingImage.sprite_left.getGlobalBounds().size.x, 0.0f });
         }
 
+        //
+
+        m_fadeVerts.clear();
         if (infoPack.fade_alpha > 0)
         {
-            m_fadeVerts.clear();
-
             util::appendTriangleVerts(
                 t_context.layout.wholeRect(), m_fadeVerts, sf::Color(0, 0, 0, infoPack.fade_alpha));
         }
