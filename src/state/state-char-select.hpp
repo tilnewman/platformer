@@ -61,8 +61,10 @@ namespace bramblefore
         std::vector<sf::Text> m_classDescriptionTexts;
         std::vector<sf::Sprite> m_avatarPoseSprites;
         sf::Texture m_buttonNextTexture;
+        sf::Texture m_buttonNextTextureAlt;
         sf::Sprite  m_buttonNextSprite;
         sf::Texture m_buttonPrevTexture;
+        sf::Texture m_buttonPrevTextureAlt;
         sf::Sprite  m_buttonPrevSprite;
     };
 

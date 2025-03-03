@@ -40,8 +40,10 @@ namespace bramblefore
         , m_classDescriptionTexts{}
         , m_avatarPoseSprites{}
         , m_buttonNextTexture{}
+        , m_buttonNextTextureAlt{}
         , m_buttonNextSprite{ m_buttonNextTexture }
         , m_buttonPrevTexture{}
+        , m_buttonPrevTextureAlt{}
         , m_buttonPrevSprite{ m_buttonPrevTexture }
     {}
 
@@ -88,6 +90,8 @@ namespace bramblefore
             }
             else if (keyPtr->scancode == sf::Keyboard::Scancode::Left)
             {
+                m_buttonPrevSprite.setTexture(m_buttonPrevTextureAlt);
+
                 AvatarTextureManager::instance().release(m_avatarType);
 
                 std::size_t typeIndex{ static_cast<std::size_t>(m_avatarType) };
@@ -106,6 +110,8 @@ namespace bramblefore
             }
             else if (keyPtr->scancode == sf::Keyboard::Scancode::Right)
             {
+                m_buttonNextSprite.setTexture(m_buttonNextTextureAlt);
+
                 AvatarTextureManager::instance().release(m_avatarType);
 
                 std::size_t typeIndex{ static_cast<std::size_t>(m_avatarType) };
@@ -121,6 +127,17 @@ namespace bramblefore
                 m_avatarType = static_cast<AvatarType>(typeIndex);
                 t_context.sfx.play("ui-select-thock-slide");
                 setup(t_context);
+            }
+        }
+        else if (const auto * const keyRelPtr = t_event.getIf<sf::Event::KeyReleased>())
+        {
+            if (keyRelPtr->scancode == sf::Keyboard::Scancode::Left)
+            {
+                m_buttonPrevSprite.setTexture(m_buttonPrevTexture);
+            }
+            else if (keyRelPtr->scancode == sf::Keyboard::Scancode::Right)
+            {
+                m_buttonNextSprite.setTexture(m_buttonNextTexture);
             }
         }
     }
@@ -177,6 +194,10 @@ namespace bramblefore
             m_buttonNextTexture,
             (t_context.settings.media_path / "image/ui/button-right-gold.png"));
 
+        util::TextureLoader::load(
+            m_buttonNextTextureAlt,
+            (t_context.settings.media_path / "image/ui/button-right-orange.png"));
+
         m_buttonNextSprite.setTexture(m_buttonNextTexture, true);
         m_buttonNextSprite.setScale({ nextPrevButtonScale, nextPrevButtonScale });
 
@@ -186,6 +207,10 @@ namespace bramblefore
 
         util::TextureLoader::load(
             m_buttonPrevTexture, (t_context.settings.media_path / "image/ui/button-left-gold.png"));
+
+        util::TextureLoader::load(
+            m_buttonPrevTextureAlt,
+            (t_context.settings.media_path / "image/ui/button-left-orange.png"));
 
         m_buttonPrevSprite.setTexture(m_buttonPrevTexture, true);
         m_buttonPrevSprite.setScale({ nextPrevButtonScale, nextPrevButtonScale });
