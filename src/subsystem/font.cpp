@@ -105,8 +105,6 @@ namespace bramblefore
 
         const float ratioRes{ currentRes / standardRes };
 
-        sf::Text text{ get(t_font) };
-
         const std::string widthStr{ "M" };
         const std::string heightStr{ "|g" };
 
