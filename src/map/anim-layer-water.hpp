@@ -54,7 +54,7 @@ namespace bramblefore
 
     struct WaterTypeRect
     {
-        WaterTypeRect(const bool t_isSurface, const sf::FloatRect & t_rect)
+        explicit WaterTypeRect(const bool t_isSurface, const sf::FloatRect & t_rect)
             : is_surface{ t_isSurface }
             , rect{ t_rect }
         {}
@@ -67,7 +67,7 @@ namespace bramblefore
 
     struct WaterAnim
     {
-        WaterAnim(
+        explicit WaterAnim(
             const WaterType t_type, const sf::Texture & t_texture, const float t_timePerFrameSec)
             : type(t_type)
             , sprite(t_texture)
