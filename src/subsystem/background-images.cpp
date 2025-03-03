@@ -47,11 +47,7 @@ namespace bramblefore
             m_backgroundSprite.setTexture(m_backgroundTexture, true);
             util::scaleAndCenterInside(m_backgroundSprite, t_context.layout.wholeRect());
         }
-        else
-        {
-            // why not reset the m_backgroundSprite's texture here or prevent it from drawing?
-        }
-
+        
         // there won't always be a static overlay image
         if (!infoPack.overlay_path.empty())
         {
@@ -59,11 +55,7 @@ namespace bramblefore
             m_overlaySprite.setTexture(m_overlayTexture, true);
             util::scaleAndCenterInside(m_overlaySprite, t_context.layout.wholeRect());
         }
-        else
-        {
-            // why not reset the m_overlaySprite's texture here or prevent it from drawing?
-        }
-
+       
         m_slidingImages.clear();
         m_slidingImages.reserve(16); // prevents reallocation
 
@@ -96,7 +88,6 @@ namespace bramblefore
 
     void BackgroundImages::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
-        // um...why aren't we checking if this exists before drawing it?
         t_target.draw(m_backgroundSprite, t_states);
 
         for (const SlidingImage & image : m_slidingImages)
@@ -105,7 +96,6 @@ namespace bramblefore
             t_target.draw(image.sprite_right, t_states);
         }
 
-        // um...why aren't we checking if this exists before drawing it?
         t_target.draw(m_overlaySprite, t_states);
 
         if (!m_fadeVerts.empty())

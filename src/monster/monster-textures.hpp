@@ -47,12 +47,13 @@ namespace bramblefore
 
         void setIconTexture(sf::Sprite & t_sprite, const MonsterType t_type) const;
 
-        std::size_t frameCount(const MonsterType t_type, const MonsterAnim t_anim) const;
+        [[nodiscard]] std::size_t frameCount(const MonsterType t_type, const MonsterAnim t_anim) const;
 
       private:
-        const sf::Texture & getTexture(const MonsterType t_type, const MonsterAnim t_anim) const;
+        [[nodiscard]] const sf::Texture &
+            getTexture(const MonsterType t_type, const MonsterAnim t_anim) const;
 
-        sf::IntRect getTextureRect(
+        [[nodiscard]] sf::IntRect getTextureRect(
             const MonsterType t_type, const MonsterAnim t_anim, const std::size_t t_frame) const;
 
       private:

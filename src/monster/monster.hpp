@@ -31,7 +31,7 @@ namespace bramblefore
             const sf::FloatRect & t_roamRegion,
             const float t_imageHeightRatio,
             const float t_imageScale   = 1.0f,
-            const MonsterSpell t_spell = MonsterSpell::Count) //Count means no spell
+            const MonsterSpell t_spell = MonsterSpell::Count)
             : type(t_monsterType)
             , region(t_roamRegion)
             , image_height_ratio(t_imageHeightRatio)
@@ -43,7 +43,7 @@ namespace bramblefore
         sf::FloatRect region;
         float image_height_ratio;
         float image_scale;
-        MonsterSpell spell;
+        MonsterSpell spell; // Count means this monster does not cast spells
     };
 
     //
