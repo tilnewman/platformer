@@ -58,6 +58,7 @@ namespace bramblefore
         m_window.setMouseCursorVisible(false);
         m_window.setFramerateLimit(0);
         m_window.setVerticalSyncEnabled(false);
+        m_window.setKeyRepeatEnabled(false);
 
         util::SfmlDefaults::instance().setup();
 
