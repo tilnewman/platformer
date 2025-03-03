@@ -39,6 +39,10 @@ namespace bramblefore
         , m_avatarClassText{ util::SfmlDefaults::instance().font() }
         , m_classDescriptionTexts{}
         , m_avatarPoseSprites{}
+        , m_buttonNextTexture{}
+        , m_buttonNextSprite{ m_buttonNextTexture }
+        , m_buttonPrevTexture{}
+        , m_buttonPrevSprite{ m_buttonPrevTexture }
     {}
 
     void CharacterSelectState::update(Context &, const float) {}
@@ -68,6 +72,9 @@ namespace bramblefore
         {
             t_target.draw(text, t_states);
         }
+
+        t_target.draw(m_buttonNextSprite, t_states);
+        t_target.draw(m_buttonPrevSprite, t_states);
     }
 
     void CharacterSelectState::handleEvent(Context & t_context, const sf::Event & t_event)
@@ -127,6 +134,8 @@ namespace bramblefore
                                    (m_titleText.getGlobalBounds().size.x * 0.5f)),
                                   (t_context.layout.wholeSize().y * 0.15f) });
 
+        //
+
         m_instructionsText = t_context.font.makeText(
             Font::General,
             FontSize::Small,
@@ -138,6 +147,8 @@ namespace bramblefore
             { (util::center(t_context.layout.wholeRect()).x -
                (m_instructionsText.getGlobalBounds().size.x * 0.5f)),
               (util::bottom(m_titleText) + (m_instructionsText.getGlobalBounds().size.y * 0.5f)) });
+
+        //
 
         util::TextureLoader::load(
             m_paperTexture, (t_context.settings.media_path / "image/ui/paper-runes.png"), true);
@@ -154,6 +165,37 @@ namespace bramblefore
         m_paperInnerRect.position.y += m_paperSprite.getPosition().y;
         m_paperInnerRect.size.x *= paperScale;
         m_paperInnerRect.size.y *= paperScale;
+
+        //
+
+        const float nextPrevButtonScale{ t_context.layout.calScaleBasedOnResolution(
+            t_context, 1.75f) };
+
+        const float nextPrevButtonHorizPad{ t_context.layout.wholeSize().x * 0.05f };
+
+        util::TextureLoader::load(
+            m_buttonNextTexture,
+            (t_context.settings.media_path / "image/ui/button-right-gold.png"));
+
+        m_buttonNextSprite.setTexture(m_buttonNextTexture, true);
+        m_buttonNextSprite.setScale({ nextPrevButtonScale, nextPrevButtonScale });
+
+        m_buttonNextSprite.setPosition({ (util::right(m_paperSprite) + nextPrevButtonHorizPad),
+                                         (util::center(m_paperSprite).y -
+                                          (m_buttonNextSprite.getGlobalBounds().size.y * 0.5f)) });
+
+        util::TextureLoader::load(
+            m_buttonPrevTexture, (t_context.settings.media_path / "image/ui/button-left-gold.png"));
+
+        m_buttonPrevSprite.setTexture(m_buttonPrevTexture, true);
+        m_buttonPrevSprite.setScale({ nextPrevButtonScale, nextPrevButtonScale });
+
+        m_buttonPrevSprite.setPosition({ (m_paperSprite.getPosition().x - nextPrevButtonHorizPad -
+                                          m_buttonPrevSprite.getGlobalBounds().size.x),
+                                         (util::center(m_paperSprite).y -
+                                          (m_buttonPrevSprite.getGlobalBounds().size.y * 0.5f)) });
+
+        //
 
         setup(t_context);
     }
