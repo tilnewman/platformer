@@ -5,6 +5,7 @@
 #include "anim-layer-acid-spout.hpp"
 #include "anim-layer-acid.hpp"
 #include "anim-layer-bomb.hpp"
+#include "anim-layer-dart-trap.hpp"
 #include "anim-layer-falling-rock.hpp"
 #include "anim-layer-firewall.hpp"
 #include "anim-layer-flame-trap.hpp"
@@ -347,6 +348,10 @@ namespace bramblefore
             {
                 parseLayerOfRects<SpikeTrapAnimationLayer>(t_context, jsonLayer);
             }
+            else if (layerName == "dart-trap")
+            {
+                parseDartTrapLayer(t_context, jsonLayer);
+            }
             else if (layerName == "rock-trap")
             {
                 parseFallingRockTrapLayer(t_context, jsonLayer);
@@ -666,6 +671,21 @@ namespace bramblefore
 
         t_context.level.tile_layers.push_back(
             std::make_unique<LavaDripAnimationLayer>(t_context, rectSizes));
+    }
+
+    void LevelFileLoader::parseDartTrapLayer(Context & t_context, const nlohmann::json & t_json)
+    {
+        std::vector<DartRectDir> rectDirs;
+        rectDirs.reserve(16); // harmless guess based on what I know is in the maps
+
+        for (const nlohmann::json & trapJson : t_json["objects"])
+        {
+            rectDirs.emplace_back(
+                (trapJson["name"] == "left"), parseAndConvertRect(t_context, trapJson));
+        }
+
+        t_context.level.tile_layers.push_back(
+            std::make_unique<DartTrapAnimationLayer>(t_context, rectDirs));
     }
 
     void LevelFileLoader::parseWaterLayer(

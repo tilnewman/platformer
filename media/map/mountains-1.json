@@ -686,6 +686,39 @@
         }, 
         {
          "draworder":"topdown",
+         "id":10,
+         "name":"dart-trap",
+         "objects":[
+                {
+                 "height":48,
+                 "id":32,
+                 "name":"right",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":784,
+                 "x":256,
+                 "y":1232
+                }, 
+                {
+                 "height":48,
+                 "id":33,
+                 "name":"left",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":784,
+                 "x":256,
+                 "y":1184
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":7,
          "name":"monster",
          "objects":[
@@ -706,8 +739,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":10,
- "nextobjectid":32,
+ "nextlayerid":11,
+ "nextobjectid":34,
  "orientation":"orthogonal",
  "properties":[
         {
