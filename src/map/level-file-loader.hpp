@@ -50,6 +50,9 @@ namespace bramblefore
         void parseFallingRockTrapLayer(Context & t_context, const nlohmann::json & t_json);
         void parseLavaDripTrapLayer(Context & t_context, const nlohmann::json & t_json);
 
+        void parseWaterLayer(
+            Context & t_context, const nlohmann::json & t_json, const bool isSurface);
+
         template <typename Layer_t>
         void parseLayerOfRects(Context & t_context, const nlohmann::json & t_json)
         {

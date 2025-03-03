@@ -5,8 +5,8 @@
 //
 #include "map/tile-layer.hpp"
 #include "subsystem/harm-collision-manager.hpp"
-#include "util/sfml-defaults.hpp"
 
+#include <string_view>
 #include <vector>
 
 #include <SFML/Graphics/Rect.hpp>
@@ -26,12 +26,61 @@ namespace bramblefore
 
     //
 
+    enum class WaterType : std::size_t
+    {
+        Surface1 = 0,
+        Surface2,
+        Basin1,
+        Basin2,
+        Count
+    };
+
+    [[nodiscard]] constexpr std::string_view toFilename(const WaterType t_type) noexcept
+    {
+        // clang-format off
+        switch (t_type)
+        {
+            case WaterType::Surface1: { return "water-surface1.png"; }
+            case WaterType::Surface2: { return "water-surface2.png"; }
+            case WaterType::Basin1:   { return "water-basin1.png";   }
+            case WaterType::Basin2:   { return "water-basin2.png";   }
+            case WaterType::Count:    [[fallthrough]];
+            default:             { return "Error_unknown_WaterType"; }
+        }
+        // clang-format on
+    }
+
+    //
+
+    struct WaterTypeRect
+    {
+        WaterTypeRect(const bool t_isSurface, const sf::FloatRect & t_rect)
+            : is_surface{ t_isSurface }
+            , rect{ t_rect }
+        {}
+
+        bool is_surface;
+        sf::FloatRect rect;
+    };
+
+    //
+
     struct WaterAnim
     {
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
-        float elapsed_time_sec{ 0.0f };
-        float time_per_frame_sec{ 0.0f };
-        std::size_t frame_index{ 0 };
+        WaterAnim(
+            const WaterType t_type, const sf::Texture & t_texture, const float t_timePerFrameSec)
+            : type(t_type)
+            , sprite(t_texture)
+            , elapsed_time_sec{ 0.0f }
+            , time_per_frame_sec{ t_timePerFrameSec }
+            , frame_index{ 0 }
+        {}
+
+        WaterType type;
+        sf::Sprite sprite;
+        float elapsed_time_sec;
+        float time_per_frame_sec;
+        std::size_t frame_index;
     };
 
     //
@@ -41,7 +90,7 @@ namespace bramblefore
         , public IHarmCollisionOwner
     {
       public:
-        WaterAnimationLayer(Context & t_context, const std::vector<sf::FloatRect> & t_rects);
+        WaterAnimationLayer(Context & t_context, const std::vector<WaterTypeRect> & t_typeRects);
         virtual ~WaterAnimationLayer() override;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
@@ -64,11 +113,14 @@ namespace bramblefore
             avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) override;
 
       private:
-        [[nodiscard]] std::size_t frameCount() const noexcept;
-        [[nodiscard]] sf::IntRect textureRect(const std::size_t frame) const noexcept;
+        [[nodiscard]] const sf::Texture & getTexture(const WaterType t_type) const;
+        [[nodiscard]] std::size_t frameCount(const WaterType t_type) const;
+
+        [[nodiscard]] sf::IntRect
+            textureRect(const WaterType t_type, const std::size_t frame) const;
 
       private:
-        sf::Texture m_texture;
+        std::vector<sf::Texture> m_textures;
         std::vector<WaterAnim> m_anims;
     };
 

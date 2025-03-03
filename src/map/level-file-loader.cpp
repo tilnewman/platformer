@@ -303,9 +303,13 @@ namespace bramblefore
             {
                 parseLayerOfRects<FlamingSkullAnimationLayer>(t_context, jsonLayer);
             }
-            else if (layerName == "water-anim")
+            else if (layerName == "water-anim-surface")
             {
-                parseLayerOfRects<WaterAnimationLayer>(t_context, jsonLayer);
+                parseWaterLayer(t_context, jsonLayer, true);
+            }
+            else if (layerName == "water-anim-basin")
+            {
+                parseWaterLayer(t_context, jsonLayer, false);
             }
             else if (layerName == "lightning-anim")
             {
@@ -662,6 +666,21 @@ namespace bramblefore
 
         t_context.level.tile_layers.push_back(
             std::make_unique<LavaDripAnimationLayer>(t_context, rectSizes));
+    }
+
+    void LevelFileLoader::parseWaterLayer(
+        Context & t_context, const nlohmann::json & t_json, const bool isSurface)
+    {
+        std::vector<WaterTypeRect> typeRects;
+        typeRects.reserve(64); // harmless guess based on what I know is in the maps
+
+        for (const nlohmann::json & trapJson : t_json["objects"])
+        {
+            typeRects.emplace_back(isSurface, parseAndConvertRect(t_context, trapJson));
+        }
+
+        t_context.level.tile_layers.push_back(
+            std::make_unique<WaterAnimationLayer>(t_context, typeRects));
     }
 
 } // namespace bramblefore

@@ -22,24 +22,59 @@ namespace bramblefore
 {
 
     WaterAnimationLayer::WaterAnimationLayer(
-        Context & t_context, const std::vector<sf::FloatRect> & t_rects)
-        : m_texture{}
+        Context & t_context, const std::vector<WaterTypeRect> & t_typeRects)
+        : m_textures{}
         , m_anims{}
     {
         HarmCollisionManager::instance().addOwner(*this);
 
-        util::TextureLoader::load(
-            m_texture, (t_context.settings.media_path / "image/anim/water-surface1.png"));
+        //
 
-        m_anims.reserve(t_rects.size());
+        m_textures.resize(static_cast<std::size_t>(WaterType::Count));
 
-        for (const sf::FloatRect & rect : t_rects)
+        for (std::size_t index{ 0 }; index < static_cast<std::size_t>(WaterType::Count); ++index)
         {
-            WaterAnim & anim{ m_anims.emplace_back() };
-            anim.time_per_frame_sec = t_context.random.fromTo(0.3f, 2.0f);
-            anim.sprite.setTexture(m_texture);
-            anim.sprite.setTextureRect(textureRect(0));
-            util::fitAndCenterInside(anim.sprite, rect);
+            util::TextureLoader::load(
+                m_textures.at(index),
+                (t_context.settings.media_path / "image/anim" /
+                 toFilename(static_cast<WaterType>(index))));
+        }
+
+        //
+
+        m_anims.reserve(t_typeRects.size());
+        for (const WaterTypeRect & typeRect : t_typeRects)
+        {
+            const WaterType type = [&]() {
+                if (typeRect.is_surface)
+                {
+                    if (t_context.random.boolean())
+                    {
+                        return WaterType::Surface1;
+                    }
+                    else
+                    {
+                        return WaterType::Surface2;
+                    }
+                }
+                else
+                {
+                    if (t_context.random.boolean())
+                    {
+                        return WaterType::Basin1;
+                    }
+                    else
+                    {
+                        return WaterType::Basin2;
+                    }
+                }
+            }();
+
+            WaterAnim & anim{ m_anims.emplace_back(
+                type, getTexture(type), t_context.random.fromTo(0.3f, 2.0f)) };
+
+            anim.sprite.setTextureRect(textureRect(type, 0));
+            util::fitAndCenterInside(anim.sprite, typeRect.rect);
         }
     }
 
@@ -70,11 +105,24 @@ namespace bramblefore
         }
     }
 
-    std::size_t WaterAnimationLayer::frameCount() const noexcept
+    const sf::Texture & WaterAnimationLayer::getTexture(const WaterType t_type) const
     {
-        if (m_texture.getSize().y > 0)
+        const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
+
+        M_CHECK(
+            (typeIndex < m_textures.size()),
+            "typeIndex=" << typeIndex << " >= texture.size()=" << m_textures.size());
+
+        return m_textures.at(typeIndex);
+    }
+
+    std::size_t WaterAnimationLayer::frameCount(const WaterType t_type) const
+    {
+        const sf::Texture & texture{ getTexture(t_type) };
+
+        if (texture.getSize().y > 0)
         {
-            return static_cast<std::size_t>(m_texture.getSize().x / m_texture.getSize().y);
+            return static_cast<std::size_t>(texture.getSize().x / texture.getSize().y);
         }
         else
         {
@@ -82,10 +130,13 @@ namespace bramblefore
         }
     }
 
-    sf::IntRect WaterAnimationLayer::textureRect(const std::size_t t_frame) const noexcept
+    sf::IntRect
+        WaterAnimationLayer::textureRect(const WaterType t_type, const std::size_t t_frame) const
     {
+        const sf::Texture & texture{ getTexture(t_type) };
+
         sf::IntRect rect;
-        rect.size.x     = static_cast<int>(m_texture.getSize().y);
+        rect.size.x     = static_cast<int>(texture.getSize().y);
         rect.size.y     = rect.size.x;
         rect.position.y = 0;
         rect.position.x = (static_cast<int>(t_frame) * rect.size.x);
@@ -103,12 +154,12 @@ namespace bramblefore
                 anim.elapsed_time_sec -= anim.time_per_frame_sec;
 
                 ++anim.frame_index;
-                if (anim.frame_index >= frameCount())
+                if (anim.frame_index >= frameCount(anim.type))
                 {
                     anim.frame_index = 0;
                 }
 
-                anim.sprite.setTextureRect(textureRect(anim.frame_index));
+                anim.sprite.setTextureRect(textureRect(anim.type, anim.frame_index));
             }
         }
     }
