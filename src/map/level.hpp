@@ -42,6 +42,7 @@ namespace bramblefore
         sf::Vector2f tile_size_texture;
         std::vector<sf::FloatRect> collisions;
         std::vector<sf::FloatRect> kill_collisions;
+        std::vector<sf::FloatRect> layer_collisions;
         std::vector<sf::FloatRect> ladders;
         sf::FloatRect enter_rect;
         sf::FloatRect exit_rect;

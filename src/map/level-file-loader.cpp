@@ -19,6 +19,7 @@
 #include "anim-layer-saw.hpp"
 #include "anim-layer-spike-trap.hpp"
 #include "anim-layer-trap.hpp"
+#include "anim-layer-water-rock.hpp"
 #include "anim-layer-water.hpp"
 #include "bramblefore/settings.hpp"
 #include "map-textures.hpp"
@@ -368,6 +369,10 @@ namespace bramblefore
             {
                 parseLayerOfRects<FirewallAnimationLayer>(t_context, jsonLayer);
             }
+            else if (layerName == "water-rock")
+            {
+                parseWaterRockLayer(t_context, jsonLayer);
+            }
             else
             {
                 util::log() << "While parsing level file \"" << m_pathStr
@@ -701,6 +706,21 @@ namespace bramblefore
 
         t_context.level.tile_layers.push_back(
             std::make_unique<WaterAnimationLayer>(t_context, typeRects));
+    }
+
+    void LevelFileLoader::parseWaterRockLayer(Context & t_context, const nlohmann::json & t_json)
+    {
+        std::vector<WaterRockRect> rockRects;
+        rockRects.reserve(16); // harmless guess based on what I know is in the maps
+
+        for (const nlohmann::json & trapJson : t_json["objects"])
+        {
+            rockRects.emplace_back(
+                fromString(trapJson["name"]), parseAndConvertRect(t_context, trapJson));
+        }
+
+        t_context.level.tile_layers.push_back(
+            std::make_unique<WaterRockAnimationLayer>(t_context, rockRects));
     }
 
 } // namespace bramblefore

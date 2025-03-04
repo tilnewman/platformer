@@ -413,6 +413,11 @@ namespace bramblefore
 
         std::vector<sf::FloatRect> rects{ t_context.level.collisions };
         t_context.level.monsters.appendCollisionRects(rects);
+        
+        for (const sf::FloatRect & rect : t_context.level.layer_collisions)
+        {
+            rects.push_back(rect);
+        }
 
         bool hasHitSomething{ false };
         for (const sf::FloatRect & collRect : rects)

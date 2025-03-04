@@ -631,6 +631,72 @@
         }, 
         {
          "draworder":"topdown",
+         "id":11,
+         "name":"water-rock",
+         "objects":[
+                {
+                 "height":32,
+                 "id":34,
+                 "name":"flat1",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":64,
+                 "x":0,
+                 "y":1344
+                }, 
+                {
+                 "height":32,
+                 "id":35,
+                 "name":"flat2",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":64,
+                 "x":64,
+                 "y":1344
+                }, 
+                {
+                 "height":32,
+                 "id":36,
+                 "name":"medium1",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":64,
+                 "x":128,
+                 "y":1344
+                }, 
+                {
+                 "height":32,
+                 "id":37,
+                 "name":"medium2",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":64,
+                 "x":192,
+                 "y":1344
+                }, 
+                {
+                 "height":96,
+                 "id":38,
+                 "name":"pillar",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":64,
+                 "x":256,
+                 "y":1280
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":8,
          "name":"ladder",
          "objects":[
@@ -739,8 +805,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":11,
- "nextobjectid":34,
+ "nextlayerid":12,
+ "nextobjectid":39,
  "orientation":"orthogonal",
  "properties":[
         {

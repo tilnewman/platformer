@@ -29,6 +29,7 @@ namespace bramblefore
         , tile_size_texture{}
         , collisions{}
         , kill_collisions{}
+        , layer_collisions{}
         , ladders{}
         , enter_rect{}
         , exit_rect{}
@@ -44,6 +45,7 @@ namespace bramblefore
         tile_layers.reserve(32);
         collisions.reserve(1024);
         kill_collisions.reserve(32);
+        layer_collisions.reserve(32);
     }
 
     void Level::reset()
@@ -51,6 +53,7 @@ namespace bramblefore
         tile_layers.clear();
         collisions.clear();
         kill_collisions.clear();
+        layer_collisions.clear();
         ladders.clear();
         monsters.clear();
         farthest_horiz_traveled  = 0.0f;
@@ -84,6 +87,11 @@ namespace bramblefore
         }
 
         for (sf::FloatRect & rect : kill_collisions)
+        {
+            rect.position.x += t_amount;
+        }
+
+        for (sf::FloatRect & rect : layer_collisions)
         {
             rect.position.x += t_amount;
         }
