@@ -126,6 +126,11 @@ namespace bramblefore
 
                 Dart & dart{ m_darts.emplace_back(shooter.is_left, m_dartTexture, shooter.region) };
 
+                const float dartScale{ t_context.layout.calScaleBasedOnResolution(
+                    t_context, 1.1f) };
+
+                dart.sprite.setScale({ dartScale, dartScale });
+
                 if (dart.is_left)
                 {
                     dart.sprite.scale({ -1.0f, 1.0f });
