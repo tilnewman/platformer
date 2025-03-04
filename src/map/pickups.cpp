@@ -38,7 +38,6 @@ namespace bramblefore
         m_scale.y = scale;
 
         m_textures.reserve(static_cast<std::size_t>(Pickup::Count));
-
         for (std::size_t i(0); i < static_cast<std::size_t>(Pickup::Count); ++i)
         {
             const Pickup pickup{ static_cast<Pickup>(i) };

@@ -71,10 +71,12 @@ namespace bramblefore
             const float collLengthRatio{ 0.5f };
             const float collWidthRatio{ 0.3f };
 
-            FlamesAnim & upAnim{ m_anims.emplace_back() };
-            upAnim.direction            = FlameDirection::Up;
+            //
+
+            FlamesAnim & upAnim{ m_anims.emplace_back(
+                getTexture(FlameDirection::Up), FlameDirection::Up) };
+
             upAnim.time_between_flaming = t_context.random.fromTo(spawnSecMin, spawnSecMax);
-            upAnim.sprite.setTexture(getTexture(upAnim.direction));
             upAnim.sprite.setTextureRect(textureRect(getTexture(upAnim.direction), 0));
             upAnim.sprite.setScale({ m_scale, m_scale });
 
@@ -85,10 +87,12 @@ namespace bramblefore
             upAnim.coll_rect = util::scaleRectInPlaceCopy(
                 upAnim.sprite.getGlobalBounds(), { collWidthRatio, collLengthRatio });
 
-            FlamesAnim & downAnim{ m_anims.emplace_back() };
-            downAnim.direction            = FlameDirection::Down;
+            //
+
+            FlamesAnim & downAnim{ m_anims.emplace_back(
+                getTexture(FlameDirection::Down), FlameDirection::Down) };
+
             downAnim.time_between_flaming = t_context.random.fromTo(spawnSecMin, spawnSecMax);
-            downAnim.sprite.setTexture(getTexture(downAnim.direction));
             downAnim.sprite.setTextureRect(textureRect(getTexture(downAnim.direction), 0));
             downAnim.sprite.setScale({ m_scale, m_scale });
 
@@ -99,10 +103,12 @@ namespace bramblefore
             downAnim.coll_rect = util::scaleRectInPlaceCopy(
                 downAnim.sprite.getGlobalBounds(), { collWidthRatio, collLengthRatio });
 
-            FlamesAnim & leftAnim{ m_anims.emplace_back() };
-            leftAnim.direction            = FlameDirection::Left;
+            //
+
+            FlamesAnim & leftAnim{ m_anims.emplace_back(
+                getTexture(FlameDirection::Left), FlameDirection::Left) };
+
             leftAnim.time_between_flaming = t_context.random.fromTo(spawnSecMin, spawnSecMax);
-            leftAnim.sprite.setTexture(getTexture(leftAnim.direction));
             leftAnim.sprite.setTextureRect(textureRect(getTexture(leftAnim.direction), 0));
             leftAnim.sprite.setScale({ m_scale, m_scale });
 
@@ -113,10 +119,12 @@ namespace bramblefore
             leftAnim.coll_rect = util::scaleRectInPlaceCopy(
                 leftAnim.sprite.getGlobalBounds(), { collLengthRatio, collWidthRatio });
 
-            FlamesAnim & rightAnim{ m_anims.emplace_back() };
-            rightAnim.direction            = FlameDirection::Right;
+            //
+
+            FlamesAnim & rightAnim{ m_anims.emplace_back(
+                getTexture(FlameDirection::Right), FlameDirection::Right) };
+
             rightAnim.time_between_flaming = t_context.random.fromTo(spawnSecMin, spawnSecMax);
-            rightAnim.sprite.setTexture(getTexture(rightAnim.direction));
             rightAnim.sprite.setTextureRect(textureRect(getTexture(rightAnim.direction), 0));
             rightAnim.sprite.setScale({ m_scale, m_scale });
 

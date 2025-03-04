@@ -64,13 +64,13 @@ namespace bramblefore
 
     struct FlameTrapRectDir
     {
-        FlameTrapRectDir(const sf::FloatRect & t_rect, const TrapDirection t_direction)
+        explicit FlameTrapRectDir(const sf::FloatRect & t_rect, const TrapDirection t_direction)
             : rect{ t_rect }
             , direction{ t_direction }
         {}
 
-        sf::FloatRect rect{};
-        TrapDirection direction{ TrapDirection::Up }; // any will work here
+        sf::FloatRect rect;
+        TrapDirection direction;
     };
 
     //

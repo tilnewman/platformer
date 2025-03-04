@@ -60,9 +60,15 @@ namespace bramblefore
 
     struct ChestAnim
     {
-        Chest chest{ Chest::Chest1 }; // anything works here
-        bool is_open{ false };
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
+        explicit ChestAnim(const sf::Texture & t_texture, const Chest t_chest)
+            : chest{ t_chest }
+            , is_open{ false }
+            , sprite{ t_texture }
+        {}
+
+        Chest chest;
+        bool is_open;
+        sf::Sprite sprite;
     };
 
     //

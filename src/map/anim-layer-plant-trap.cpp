@@ -32,8 +32,7 @@ namespace bramblefore
 
         for (const sf::FloatRect & rect : t_rects)
         {
-            PlantTrapAnim & anim{ m_anims.emplace_back() };
-            anim.sprite.setTexture(m_texture);
+            PlantTrapAnim & anim{ m_anims.emplace_back(m_texture) };
             anim.sprite.setTextureRect(textureRect(0));
 
             const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.5f) };

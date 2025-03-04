@@ -5,7 +5,6 @@
 //
 #include "map/tile-layer.hpp"
 #include "subsystem/harm-collision-manager.hpp"
-#include "util/sfml-defaults.hpp"
 
 #include <string>
 #include <string_view>
@@ -75,40 +74,74 @@ namespace bramblefore
         DripSize size{ DripSize::Small }; // any works here
     };
 
+    //
+
     struct LavaDripperAnim
     {
-        bool is_dripping{ false };
-        DripSize size{ DripSize::Small }; // any works here
-        float elapsed_time_sec{ 0.0f };
-        float time_between_drips{ 0.0f };
-        float time_between_frames_sec{ 0.15f };
-        std::size_t frame_index{ 0 };
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
+        explicit LavaDripperAnim(const sf::Texture & t_texture, const DripSize t_size)
+            : is_dripping{ false }
+            , size{ t_size }
+            , elapsed_time_sec{ 0.0f }
+            , time_between_drips{ 0.0f }
+            , time_between_frames_sec{ 0.15f }
+            , frame_index{ 0 }
+            , sprite{ t_texture }
+            , region{}
+        {}
+
+        bool is_dripping;
+        DripSize size;
+        float elapsed_time_sec;
+        float time_between_drips;
+        float time_between_frames_sec;
+        std::size_t frame_index;
+        sf::Sprite sprite;
 
         // the rect drawn on the map that includes the vert distance the drops will travel
         // given to drops so they know how far to fall, see below
-        sf::FloatRect region{};
+        sf::FloatRect region;
     };
+
+    //
 
     struct LavaSplatAnim
     {
-        bool is_alive{ true };
-        DripSize size{ DripSize::Small }; // any works here
-        float elapsed_time_sec{ 0.0f };
-        float time_between_frames_sec{ 0.1f };
-        std::size_t frame_index{ 0 };
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
+        explicit LavaSplatAnim(const sf::Texture & t_texture, const DripSize t_size)
+            : is_alive{ true }
+            , size{ t_size }
+            , elapsed_time_sec{ 0.0f }
+            , time_between_frames_sec{ 0.1f }
+            , frame_index{ 0 }
+            , sprite{ t_texture }
+        {}
+
+        bool is_alive;
+        DripSize size;
+        float elapsed_time_sec;
+        float time_between_frames_sec;
+        std::size_t frame_index;
+        sf::Sprite sprite;
     };
+
+    //
 
     struct LavaDripAnim
     {
-        bool is_alive{ true };
-        DripSize size{ DripSize::Small }; // any works here
-        float velocity{ 0.0f };
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
+        explicit LavaDripAnim(const sf::Texture & t_texture, const DripSize t_size)
+            : is_alive{ true }
+            , size{ t_size }
+            , velocity{ 0.0f }
+            , sprite{ t_texture }
+            , region{}
+        {}
+
+        bool is_alive;
+        DripSize size;
+        float velocity;
+        sf::Sprite sprite;
 
         // the rect drawn on the map that includes the vert distance this drop will travel
-        sf::FloatRect region{};
+        sf::FloatRect region;
     };
 
     //

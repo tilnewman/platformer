@@ -113,7 +113,6 @@ namespace bramblefore
 
         void move(const Context & t_context, const float t_amount) override;
         void dumpInfo() const override {}
-
         void update(Context & t_context, const float t_frameTimeSec) override;
 
         void appendVertLayer(

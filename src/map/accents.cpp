@@ -29,13 +29,12 @@ namespace bramblefore
 
     void AccentAnimations::setup(const Context & t_context)
     {
+        // one same scale for all accent images
         const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 2.4f) };
         m_scale.x = scale;
         m_scale.y = scale;
 
-        // prevent reallocations
-        m_textures.reserve(static_cast<std::size_t>(Accent::Count));
-
+        m_textures.reserve(static_cast<std::size_t>(Accent::Count)); // prevent reallocations
         for (std::size_t accentIndex(0); accentIndex < static_cast<std::size_t>(Accent::Count);
              ++accentIndex)
         {
@@ -129,9 +128,11 @@ namespace bramblefore
     void AccentAnimations::draw(
         const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
+        const sf::FloatRect wholeScreenRect{ t_context.layout.wholeRect() };
+
         for (const AccentAnim & anim : m_anims)
         {
-            if (t_context.layout.wholeRect().findIntersection(anim.sprite.getGlobalBounds()))
+            if (wholeScreenRect.findIntersection(anim.sprite.getGlobalBounds()))
             {
                 t_target.draw(anim.sprite, t_states);
             }

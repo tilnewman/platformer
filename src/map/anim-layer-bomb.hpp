@@ -5,7 +5,6 @@
 //
 #include "map/tile-layer.hpp"
 #include "subsystem/harm-collision-manager.hpp"
-#include "util/sfml-defaults.hpp"
 
 #include <vector>
 
@@ -28,14 +27,23 @@ namespace bramblefore
 
     struct BombAnim
     {
-        bool has_exploded{ false };
-        float elapsed_time_sec{ 0.0f };
-        float time_between_frames_sec{ 0.1f };
-        std::size_t frame_index{ 0 };
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
+        explicit BombAnim(const sf::Texture & t_texture)
+            : has_exploded{ false }
+            , elapsed_time_sec{ 0.0f }
+            , time_between_frames_sec{ 0.1f }
+            , frame_index{ 0 }
+            , sprite{ t_texture }
+            , coll_rect{}
+        {}
+
+        bool has_exploded;
+        float elapsed_time_sec;
+        float time_between_frames_sec;
+        std::size_t frame_index;
+        sf::Sprite sprite;
 
         // the rect drawn on the map is the collision rect
-        sf::FloatRect coll_rect{};
+        sf::FloatRect coll_rect;
     };
 
     //

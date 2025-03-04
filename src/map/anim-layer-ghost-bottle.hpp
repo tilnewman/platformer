@@ -5,7 +5,6 @@
 //
 #include "map/tile-layer.hpp"
 #include "subsystem/harm-collision-manager.hpp"
-#include "util/sfml-defaults.hpp"
 
 #include <vector>
 
@@ -28,12 +27,21 @@ namespace bramblefore
 
     struct GhostBottleAnim
     {
-        bool has_emerged{ false };
-        float elapsed_time_sec{ 0.0f };
-        float time_between_frames_sec{ 0.175f };
-        std::size_t frame_index{ 0 };
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
-        sf::FloatRect coll_rect{};
+        explicit GhostBottleAnim(const sf::Texture & t_texture)
+            : has_emerged{ false }
+            , elapsed_time_sec{ 0.0f }
+            , time_between_frames_sec{ 0.175f }
+            , frame_index{ 0 }
+            , sprite{t_texture}
+            , coll_rect{}
+        {}
+
+        bool has_emerged;
+        float elapsed_time_sec;
+        float time_between_frames_sec;
+        std::size_t frame_index;
+        sf::Sprite sprite;
+        sf::FloatRect coll_rect;
     };
 
     //

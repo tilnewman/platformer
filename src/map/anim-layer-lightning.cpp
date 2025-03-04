@@ -28,14 +28,17 @@ namespace bramblefore
     {
         HarmCollisionManager::instance().addOwner(*this);
 
+        //
+
         util::TextureLoader::load(
             m_texture, (t_context.settings.media_path / "image/anim/lightning.png"), true);
+
+        //
 
         m_anims.reserve(t_rects.size());
         for (const sf::FloatRect & rect : t_rects)
         {
-            LightningAnim & anim{ m_anims.emplace_back() };
-            anim.sprite.setTexture(m_texture);
+            LightningAnim & anim{ m_anims.emplace_back(m_texture) };
             anim.sprite.setTextureRect(textureRect(0));
 
             const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.0f) };
@@ -46,9 +49,6 @@ namespace bramblefore
                   (util::bottom(rect) - anim.sprite.getGlobalBounds().size.y) });
 
             anim.time_between_anim_sec = t_context.random.fromTo(2.0f, 6.0f);
-            anim.is_animating          = false;
-            anim.elapsed_time_sec      = 0.0f;
-            anim.frame_index           = 0;
         }
     }
 

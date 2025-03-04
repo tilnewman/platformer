@@ -5,7 +5,6 @@
 //
 #include "map/tile-layer.hpp"
 #include "subsystem/harm-collision-manager.hpp"
-#include "util/sfml-defaults.hpp"
 
 #include <vector>
 
@@ -28,11 +27,19 @@ namespace bramblefore
 
     struct LightningAnim
     {
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
-        bool is_animating{ false };
-        std::size_t frame_index{ 0 };
-        float elapsed_time_sec{ 0.0f };
-        float time_between_anim_sec{ 0.0f };
+        explicit LightningAnim(const sf::Texture & t_texture)
+            : sprite{ t_texture }
+            , is_animating{ false }
+            , frame_index{ 0 }
+            , elapsed_time_sec{ 0.0f }
+            , time_between_anim_sec{ 0.0f }
+        {}
+
+        sf::Sprite sprite;
+        bool is_animating;
+        std::size_t frame_index;
+        float elapsed_time_sec;
+        float time_between_anim_sec;
     };
 
     //

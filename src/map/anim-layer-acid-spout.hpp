@@ -5,7 +5,6 @@
 //
 #include "map/tile-layer.hpp"
 #include "subsystem/harm-collision-manager.hpp"
-#include "util/sfml-defaults.hpp"
 
 #include <vector>
 
@@ -28,39 +27,64 @@ namespace bramblefore
 
     struct AcidSplashAnim
     {
-        bool is_alive{ true };
-        float elapsed_time_sec{ 0.0f };
-        float time_between_frames_sec{ 0.1f };
-        std::size_t frame_index{ 0 };
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
+        explicit AcidSplashAnim(const sf::Texture & t_texture)
+            : is_alive{ true }
+            , elapsed_time_sec{ 0.0f }
+            , time_between_frames_sec{ 0.1f }
+            , frame_index{ 0 }
+            , sprite{ t_texture }
+        {}
+
+        bool is_alive;
+        float elapsed_time_sec;
+        float time_between_frames_sec;
+        std::size_t frame_index;
+        sf::Sprite sprite;
     };
 
     //
 
     struct AcidDropAnim
     {
-        bool is_alive{ true };
-        float velocity{ 0.0f };
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
+        explicit AcidDropAnim(const sf::Texture & t_texture)
+            : is_alive{ true }
+            , velocity{ 0.0f }
+            , sprite{ t_texture }
+            , region{}
+        {}
+
+        bool is_alive;
+        float velocity;
+        sf::Sprite sprite;
 
         // the rect drawn on the map that includes the vert distance this drop will travel
-        sf::FloatRect region{};
+        sf::FloatRect region;
     };
 
     //
 
     struct AcidSpoutAnim
     {
-        bool is_dripping{ false };
-        float elapsed_time_sec{ 0.0f };
-        float time_between_drips{ 0.0f };
-        float time_between_frames_sec{ 0.15f };
-        std::size_t frame_index{ 0 };
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
+        explicit AcidSpoutAnim(const sf::Texture & t_texture)
+            : is_dripping{ false }
+            , elapsed_time_sec{ 0.0f }
+            , time_between_drips{ 0.0f }
+            , time_between_frames_sec{ 0.15f }
+            , frame_index{ 0 }
+            , sprite{ t_texture }
+            , region{}
+        {}
+
+        bool is_dripping;
+        float elapsed_time_sec;
+        float time_between_drips;
+        float time_between_frames_sec;
+        std::size_t frame_index;
+        sf::Sprite sprite;
 
         // the rect drawn on the map that includes the vert distance the drops will travel
         // given to drops so they know how far to fall, see above
-        sf::FloatRect region{};
+        sf::FloatRect region;
     };
 
     //

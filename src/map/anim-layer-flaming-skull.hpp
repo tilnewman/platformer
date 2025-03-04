@@ -5,7 +5,6 @@
 //
 #include "map/tile-layer.hpp"
 #include "subsystem/harm-collision-manager.hpp"
-#include "util/sfml-defaults.hpp"
 
 #include <vector>
 
@@ -38,14 +37,25 @@ namespace bramblefore
 
     struct FlamesAnim
     {
-        float elapsed_time_sec{ 0.0f };
-        float time_between_flaming{ 0.0f };
-        float time_between_frames_sec{ 0.15f };
-        std::size_t frame_index{ 0 };
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
-        bool is_flaming{ false };
-        FlameDirection direction{ FlameDirection::Up }; // anything works here
-        sf::FloatRect coll_rect{};
+        explicit FlamesAnim(const sf::Texture & t_texture, const FlameDirection t_dir)
+            : elapsed_time_sec{ 0.0f }
+            , time_between_flaming{ 0.0f }
+            , time_between_frames_sec{ 0.15f }
+            , frame_index{ 0 }
+            , sprite{ t_texture }
+            , is_flaming{ false }
+            , direction{ t_dir }
+            , coll_rect{}
+        {}
+
+        float elapsed_time_sec;
+        float time_between_flaming;
+        float time_between_frames_sec;
+        std::size_t frame_index;
+        sf::Sprite sprite;
+        bool is_flaming;
+        FlameDirection direction;
+        sf::FloatRect coll_rect;
     };
 
     //

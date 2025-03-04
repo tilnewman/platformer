@@ -5,7 +5,6 @@
 //
 #include "map/tile-layer.hpp"
 #include "subsystem/harm-collision-manager.hpp"
-#include "util/sfml-defaults.hpp"
 
 #include <string>
 #include <string_view>
@@ -77,40 +76,67 @@ namespace bramblefore
 
     struct RockShatterAnim
     {
-        bool is_alive{ true };
-        float elapsed_time_sec{ 0.0f };
-        float time_between_frames_sec{ 0.1f };
-        std::size_t frame_index{ 0 };
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
-        sf::FloatRect coll_rect{};
-        Rock rock{ Rock::Rock1 }; // any works here
+        explicit RockShatterAnim(const sf::Sprite & t_sprite, const Rock t_rock)
+            : is_alive{ true }
+            , elapsed_time_sec{ 0.0f }
+            , time_between_frames_sec{ 0.1f }
+            , frame_index{ 0 }
+            , sprite{ t_sprite }
+            , coll_rect{}
+            , rock{ t_rock }
+        {}
+
+        bool is_alive;
+        float elapsed_time_sec;
+        float time_between_frames_sec;
+        std::size_t frame_index;
+        sf::Sprite sprite;
+        sf::FloatRect coll_rect;
+        Rock rock;
     };
 
     //
 
     struct RockDropAnim
     {
-        bool is_alive{ true };
-        float velocity{ 0.0f };
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
-        Rock rock{ Rock::Rock1 }; // any works here
+        explicit RockDropAnim(
+            const sf::Sprite & t_sprite, const Rock t_rock, const sf::FloatRect & t_rect)
+            : is_alive{ true }
+            , velocity{ 0.0f }
+            , sprite{ t_sprite }
+            , rock{ t_rock }
+            , fall_region{ t_rect }
+        {}
+
+        bool is_alive;
+        float velocity;
+        sf::Sprite sprite;
+        Rock rock;
 
         // the rect drawn on the map that includes the vert distance this drop will travel
-        sf::FloatRect fall_region{};
+        sf::FloatRect fall_region;
     };
 
     //
 
     struct RockHangingAnim
     {
-        bool has_dropped{ false };
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
-        sf::FloatRect trigger_region{};
-        Rock rock{ Rock::Rock1 }; // any works here
+        explicit RockHangingAnim(const sf::Texture & t_texture, const Rock t_rock)
+            : has_dropped{ false }
+            , sprite{ t_texture }
+            , trigger_region{}
+            , rock{ t_rock }
+            , fall_region{}
+        {}
+
+        bool has_dropped;
+        sf::Sprite sprite;
+        sf::FloatRect trigger_region;
+        Rock rock;
 
         // the rect drawn on the map that includes the vert distance the falling rocks will travel
         // given to RockDropAnim so they know how far to fall, see above
-        sf::FloatRect fall_region{};
+        sf::FloatRect fall_region;
     };
 
     //

@@ -32,6 +32,8 @@ namespace bramblefore
     {
         HarmCollisionManager::instance().addOwner(*this);
 
+        //
+
         util::TextureLoader::load(
             m_spoutTexture, (t_context.settings.media_path / "image/anim/acid-spout.png"));
 
@@ -41,12 +43,13 @@ namespace bramblefore
         util::TextureLoader::load(
             m_splashTexture, (t_context.settings.media_path / "image/anim/acid-spout-splash.png"));
 
+        //
+
         for (const sf::FloatRect & rect : t_rects)
         {
-            AcidSpoutAnim & anim{ m_spoutAnims.emplace_back() };
+            AcidSpoutAnim & anim{ m_spoutAnims.emplace_back(m_spoutTexture) };
             anim.region             = rect;
             anim.time_between_drips = t_context.random.fromTo(1.0f, 4.0f);
-            anim.sprite.setTexture(m_spoutTexture);
             anim.sprite.setTextureRect(textureRect(m_spoutTexture, 0));
             anim.sprite.scale({ m_scale, m_scale });
 
@@ -148,9 +151,8 @@ namespace bramblefore
                     anim.elapsed_time_sec = 0.0f;
                     anim.is_dripping      = true;
 
-                    AcidDropAnim & drop{ m_dropAnims.emplace_back() };
+                    AcidDropAnim & drop{ m_dropAnims.emplace_back(m_dropTexture) };
                     drop.region = anim.region;
-                    drop.sprite.setTexture(m_dropTexture, true);
                     drop.sprite.scale({ m_scale, m_scale });
 
                     drop.sprite.setPosition({ (util::center(anim.region).x -
@@ -174,8 +176,7 @@ namespace bramblefore
                 didAnyDropsLand = true;
                 anim.is_alive   = false;
 
-                AcidSplashAnim & splash{ m_splashAnims.emplace_back() };
-                splash.sprite.setTexture(m_splashTexture);
+                AcidSplashAnim & splash{ m_splashAnims.emplace_back(m_splashTexture) };
                 splash.sprite.setTextureRect(textureRect(m_splashTexture, 0));
 
                 const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.0f) };

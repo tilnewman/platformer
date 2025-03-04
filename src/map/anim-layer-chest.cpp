@@ -45,10 +45,7 @@ namespace bramblefore
 
         const sf::Texture & texture{ m_textureSets.at(static_cast<std::size_t>(chest)).closed };
 
-        ChestAnim & anim{ m_animations.emplace_back() };
-        anim.chest   = chest;
-        anim.is_open = false;
-        anim.sprite.setTexture(texture, true);
+        ChestAnim & anim{ m_animations.emplace_back(texture, chest) };
 
         const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 2.5f) };
         anim.sprite.setScale({ scale, scale });

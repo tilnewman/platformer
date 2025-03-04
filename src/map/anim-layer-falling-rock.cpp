@@ -51,9 +51,10 @@ namespace bramblefore
 
         for (const RectRock & rectRock : t_rectRocks)
         {
-            RockHangingAnim & anim{ m_hangingAnims.emplace_back() };
+            RockHangingAnim & anim{ m_hangingAnims.emplace_back(
+                texture(rectRock.rock), rectRock.rock) };
+
             anim.fall_region = rectRock.rect;
-            anim.rock        = rectRock.rock;
 
             anim.trigger_region.size.y = t_context.avatar.collisionRect().size.y;
 
@@ -65,7 +66,6 @@ namespace bramblefore
             anim.trigger_region.position.x =
                 (util::center(anim.fall_region).x - (anim.trigger_region.size.x * 0.5f));
 
-            anim.sprite.setTexture(texture(rectRock.rock));
             anim.sprite.setTextureRect(textureRect(texture(rectRock.rock), 0));
 
             anim.sprite.scale({ m_scale, m_scale });
@@ -155,10 +155,7 @@ namespace bramblefore
             haveAnyDropped   = true;
             anim.has_dropped = true;
 
-            RockDropAnim & dropAnim{ m_dropAnims.emplace_back() };
-            dropAnim.sprite      = anim.sprite;
-            dropAnim.fall_region = anim.fall_region;
-            dropAnim.rock        = anim.rock;
+            m_dropAnims.emplace_back(anim.sprite, anim.rock, anim.fall_region);
         }
 
         if (haveAnyDropped)
@@ -188,9 +185,7 @@ namespace bramblefore
             didAnyRocksLand = true;
             anim.is_alive   = false;
 
-            RockShatterAnim & shatterAnim{ m_shatterAnims.emplace_back() };
-            shatterAnim.sprite = anim.sprite;
-            shatterAnim.rock   = anim.rock;
+            RockShatterAnim & shatterAnim{ m_shatterAnims.emplace_back(anim.sprite, anim.rock) };
 
             shatterAnim.coll_rect =
                 util::scaleRectInPlaceCopy(anim.sprite.getGlobalBounds(), 0.75f);

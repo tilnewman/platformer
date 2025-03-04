@@ -27,14 +27,16 @@ namespace bramblefore
     {
         HarmCollisionManager::instance().addOwner(*this);
 
+        //
+
         util::TextureLoader::load(
             m_texture, (t_context.settings.media_path / "image/anim/trap.png"));
 
+        //
+
         for (const sf::FloatRect & rect : t_rects)
         {
-            TrapAnim & anim{ m_anims.emplace_back() };
-            anim.time_between_springs_sec = 2.0f;
-            anim.sprite.setTexture(m_texture);
+            TrapAnim & anim{ m_anims.emplace_back(m_texture) };
             anim.sprite.setTextureRect(textureRect(0));
 
             const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.5f) };

@@ -75,11 +75,11 @@ namespace bramblefore
 
         for (const LavaRectSize & rectSize : t_rectSizes)
         {
-            LavaDripperAnim & anim{ m_dripperAnims.emplace_back() };
+            LavaDripperAnim & anim{ m_dripperAnims.emplace_back(
+                dripperTexture(rectSize.size), rectSize.size) };
+
             anim.region             = rectSize.rect;
-            anim.size               = rectSize.size;
             anim.time_between_drips = t_context.random.fromTo(1.0f, 4.0f);
-            anim.sprite.setTexture(dripperTexture(rectSize.size));
             anim.sprite.setTextureRect(textureRect(dripperTexture(rectSize.size), 0));
             anim.sprite.scale({ m_scale, m_scale });
 
@@ -200,10 +200,10 @@ namespace bramblefore
                     anim.elapsed_time_sec = 0.0f;
                     anim.is_dripping      = true;
 
-                    LavaDripAnim & drip{ m_dripAnims.emplace_back() };
+                    LavaDripAnim & drip{ m_dripAnims.emplace_back(
+                        dripTexture(anim.size), anim.size) };
+
                     drip.region = anim.region;
-                    drip.size   = anim.size;
-                    drip.sprite.setTexture(dripTexture(drip.size), true);
                     drip.sprite.scale({ m_scale, m_scale });
 
                     drip.sprite.setPosition({ (util::center(anim.region).x -
@@ -230,12 +230,8 @@ namespace bramblefore
             didAnyDripsLand = true;
             anim.is_alive   = false;
 
-            LavaSplatAnim & splash{ m_splatAnims.emplace_back() };
-            splash.size = anim.size;
-
-            const sf::Texture & texture{ splatTexture(anim.size) };
-            splash.sprite.setTexture(texture);
-            splash.sprite.setTextureRect(textureRect(texture, 0));
+            LavaSplatAnim & splash{ m_splatAnims.emplace_back(splatTexture(anim.size), anim.size) };
+            splash.sprite.setTextureRect(textureRect(splatTexture(anim.size), 0));
 
             const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.0f) };
             splash.sprite.scale({ scale, scale });
