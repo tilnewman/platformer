@@ -20,6 +20,31 @@
 namespace bramblefore
 {
 
+    MimicAnim::MimicAnim(
+        const sf::Texture & t_texture,
+        const sf::IntRect & t_textureRect,
+        const float t_scale,
+        const sf::FloatRect & t_screenRect)
+        : is_resetting{ false }
+        , is_springing{ false }
+        , elapsed_time_sec{ 0.0f }
+        , time_between_springs_sec{ 2.0f }
+        , time_between_frames_sec{ 0.1f }
+        , frame_index{ 0 }
+        , sprite{ t_texture, t_textureRect }
+        , coll_rect{}
+    {
+        sprite.scale({ t_scale, t_scale });
+
+        sprite.setPosition(
+            { (util::center(t_screenRect).x - (sprite.getGlobalBounds().size.x * 0.5f)),
+              (util::bottom(t_screenRect) - (sprite.getGlobalBounds().size.y * 0.85f)) });
+
+        coll_rect = util::scaleRectInPlaceCopy(sprite.getGlobalBounds(), 0.65f);
+    }
+
+    //
+
     MimicAnimationLayer::MimicAnimationLayer(
         Context & t_context, const std::vector<sf::FloatRect> & t_rects)
         : m_texture{}
@@ -27,27 +52,17 @@ namespace bramblefore
     {
         HarmCollisionManager::instance().addOwner(*this);
 
-        //
-
         util::TextureLoader::load(
             m_texture, (t_context.settings.media_path / "image/anim/mimic.png"));
-
-        //
 
         m_anims.reserve(t_rects.size());
         for (const sf::FloatRect & rect : t_rects)
         {
-            MimicAnim & anim{ m_anims.emplace_back(m_texture) };
-            anim.sprite.setTextureRect(textureRect(0));
-
-            const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.8f) };
-            anim.sprite.scale({ scale, scale });
-
-            anim.sprite.setPosition(
-                { (util::center(rect).x - (anim.sprite.getGlobalBounds().size.x * 0.5f)),
-                  (util::bottom(rect) - (anim.sprite.getGlobalBounds().size.y * 0.85f)) });
-
-            anim.coll_rect = util::scaleRectInPlaceCopy(anim.sprite.getGlobalBounds(), 0.65f);
+            m_anims.emplace_back(
+                m_texture,
+                textureRect(0),
+                t_context.layout.calScaleBasedOnResolution(t_context, 1.8f),
+                rect);
         }
     }
 
