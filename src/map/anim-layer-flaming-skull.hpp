@@ -37,19 +37,16 @@ namespace bramblefore
 
     struct FlamesAnim
     {
-        explicit FlamesAnim(const sf::Texture & t_texture, const FlameDirection t_dir)
-            : elapsed_time_sec{ 0.0f }
-            , time_between_flaming{ 0.0f }
-            , time_between_frames_sec{ 0.15f }
-            , frame_index{ 0 }
-            , sprite{ t_texture }
-            , is_flaming{ false }
-            , direction{ t_dir }
-            , coll_rect{}
-        {}
+        explicit FlamesAnim(
+            const sf::Texture & t_texture,
+            const sf::IntRect & t_textureRect,
+            const FlameDirection t_dir,
+            const float t_timeBetweenFlamingSec,
+            const float t_scale,
+            const sf::FloatRect & t_screenRect);
 
         float elapsed_time_sec;
-        float time_between_flaming;
+        float time_between_flaming_sec;
         float time_between_frames_sec;
         std::size_t frame_index;
         sf::Sprite sprite;
@@ -95,7 +92,6 @@ namespace bramblefore
         [[nodiscard]] const sf::Texture & getTexture(const FlameDirection t_direction) const;
 
       private:
-        float m_scale;
         sf::Texture m_skullBlockTexture;
         sf::Texture m_flamesUpTexture;
         sf::Texture m_flamesDownTexture;

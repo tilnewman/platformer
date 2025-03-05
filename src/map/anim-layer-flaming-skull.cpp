@@ -20,10 +20,70 @@
 namespace bramblefore
 {
 
+    FlamesAnim::FlamesAnim(
+        const sf::Texture & t_texture,
+        const sf::IntRect & t_textureRect,
+        const FlameDirection t_dir,
+        const float t_timeBetweenFlamingSec,
+        const float t_scale,
+        const sf::FloatRect & t_screenRect)
+        : elapsed_time_sec{ 0.0f }
+        , time_between_flaming_sec{ t_timeBetweenFlamingSec }
+        , time_between_frames_sec{ 0.15f }
+        , frame_index{ 0 }
+        , sprite{ t_texture, t_textureRect }
+        , is_flaming{ false }
+        , direction{ t_dir }
+        , coll_rect{}
+    {
+        sprite.setScale({ t_scale, t_scale });
+
+        const float collLengthRatio{ 0.5f };
+        const float collWidthRatio{ 0.3f };
+
+        if (FlameDirection::Up == direction)
+        {
+            sprite.setPosition(
+                { (util::center(t_screenRect).x - (sprite.getGlobalBounds().size.x * 0.5f)),
+                  (t_screenRect.position.y - (sprite.getGlobalBounds().size.y * 0.8f)) });
+
+            coll_rect = util::scaleRectInPlaceCopy(
+                sprite.getGlobalBounds(), { collWidthRatio, collLengthRatio });
+        }
+        else if (FlameDirection::Down == direction)
+        {
+            sprite.setPosition(
+                { (util::center(t_screenRect).x - (sprite.getGlobalBounds().size.x * 0.5f)),
+                  (util::bottom(t_screenRect) - (sprite.getGlobalBounds().size.y * 0.2f)) });
+
+            coll_rect = util::scaleRectInPlaceCopy(
+                sprite.getGlobalBounds(), { collWidthRatio, collLengthRatio });
+        }
+        else if (FlameDirection::Left == direction)
+        {
+            sprite.setPosition(
+                { (t_screenRect.position.x - (sprite.getGlobalBounds().size.x * 0.8f)),
+                  (util::center(t_screenRect).y - (sprite.getGlobalBounds().size.y * 0.5f)) });
+
+            coll_rect = util::scaleRectInPlaceCopy(
+                sprite.getGlobalBounds(), { collLengthRatio, collWidthRatio });
+        }
+        else if (FlameDirection::Right == direction)
+        {
+            sprite.setPosition(
+                { (util::right(t_screenRect) - (sprite.getGlobalBounds().size.x * 0.2f)),
+                  (util::center(t_screenRect).y - (sprite.getGlobalBounds().size.y * 0.5f)) });
+
+            coll_rect = util::scaleRectInPlaceCopy(
+                sprite.getGlobalBounds(), { collLengthRatio, collWidthRatio });
+        }
+    }
+
+    //
+
     FlamingSkullAnimationLayer::FlamingSkullAnimationLayer(
         Context & t_context, const std::vector<sf::FloatRect> & t_rects)
-        : m_scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.8f) }
-        , m_skullBlockTexture{}
+        : m_skullBlockTexture{}
         , m_flamesUpTexture{}
         , m_flamesDownTexture{}
         , m_flamesLeftTexture{}
@@ -56,84 +116,53 @@ namespace bramblefore
 
         //
 
+        const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.8f) };
+
+        const float spawnSecMin{ 1.5f };
+        const float spawnSecMax{ 4.0f };
+
         for (const sf::FloatRect & rect : t_rects)
         {
             sf::Sprite & blockSprite{ m_skullBlockSprites.emplace_back(m_skullBlockTexture) };
-            blockSprite.scale({ m_scale, m_scale });
+            blockSprite.scale({ scale, scale });
 
             blockSprite.setPosition(
                 { (util::center(rect).x - (blockSprite.getGlobalBounds().size.x * 0.5f)),
                   (util::center(rect).y - (blockSprite.getGlobalBounds().size.y * 0.5f)) });
 
-            const float spawnSecMin{ 1.5f };
-            const float spawnSecMax{ 4.0f };
-
-            const float collLengthRatio{ 0.5f };
-            const float collWidthRatio{ 0.3f };
-
             //
 
-            FlamesAnim & upAnim{ m_anims.emplace_back(
-                getTexture(FlameDirection::Up), FlameDirection::Up) };
+            m_anims.emplace_back(
+                getTexture(FlameDirection::Up),
+                textureRect(getTexture(FlameDirection::Up), 0),
+                FlameDirection::Up,
+                t_context.random.fromTo(spawnSecMin, spawnSecMax),
+                scale,
+                rect);
 
-            upAnim.time_between_flaming = t_context.random.fromTo(spawnSecMin, spawnSecMax);
-            upAnim.sprite.setTextureRect(textureRect(getTexture(upAnim.direction), 0));
-            upAnim.sprite.setScale({ m_scale, m_scale });
+            m_anims.emplace_back(
+                getTexture(FlameDirection::Down),
+                textureRect(getTexture(FlameDirection::Down), 0),
+                FlameDirection::Down,
+                t_context.random.fromTo(spawnSecMin, spawnSecMax),
+                scale,
+                rect);
 
-            upAnim.sprite.setPosition(
-                { (util::center(rect).x - (upAnim.sprite.getGlobalBounds().size.x * 0.5f)),
-                  (rect.position.y - (upAnim.sprite.getGlobalBounds().size.y * 0.8f)) });
+            m_anims.emplace_back(
+                getTexture(FlameDirection::Left),
+                textureRect(getTexture(FlameDirection::Left), 0),
+                FlameDirection::Left,
+                t_context.random.fromTo(spawnSecMin, spawnSecMax),
+                scale,
+                rect);
 
-            upAnim.coll_rect = util::scaleRectInPlaceCopy(
-                upAnim.sprite.getGlobalBounds(), { collWidthRatio, collLengthRatio });
-
-            //
-
-            FlamesAnim & downAnim{ m_anims.emplace_back(
-                getTexture(FlameDirection::Down), FlameDirection::Down) };
-
-            downAnim.time_between_flaming = t_context.random.fromTo(spawnSecMin, spawnSecMax);
-            downAnim.sprite.setTextureRect(textureRect(getTexture(downAnim.direction), 0));
-            downAnim.sprite.setScale({ m_scale, m_scale });
-
-            downAnim.sprite.setPosition(
-                { (util::center(rect).x - (downAnim.sprite.getGlobalBounds().size.x * 0.5f)),
-                  (util::bottom(rect) - (downAnim.sprite.getGlobalBounds().size.y * 0.2f)) });
-
-            downAnim.coll_rect = util::scaleRectInPlaceCopy(
-                downAnim.sprite.getGlobalBounds(), { collWidthRatio, collLengthRatio });
-
-            //
-
-            FlamesAnim & leftAnim{ m_anims.emplace_back(
-                getTexture(FlameDirection::Left), FlameDirection::Left) };
-
-            leftAnim.time_between_flaming = t_context.random.fromTo(spawnSecMin, spawnSecMax);
-            leftAnim.sprite.setTextureRect(textureRect(getTexture(leftAnim.direction), 0));
-            leftAnim.sprite.setScale({ m_scale, m_scale });
-
-            leftAnim.sprite.setPosition(
-                { (rect.position.x - (leftAnim.sprite.getGlobalBounds().size.x * 0.8f)),
-                  (util::center(rect).y - (leftAnim.sprite.getGlobalBounds().size.y * 0.5f)) });
-
-            leftAnim.coll_rect = util::scaleRectInPlaceCopy(
-                leftAnim.sprite.getGlobalBounds(), { collLengthRatio, collWidthRatio });
-
-            //
-
-            FlamesAnim & rightAnim{ m_anims.emplace_back(
-                getTexture(FlameDirection::Right), FlameDirection::Right) };
-
-            rightAnim.time_between_flaming = t_context.random.fromTo(spawnSecMin, spawnSecMax);
-            rightAnim.sprite.setTextureRect(textureRect(getTexture(rightAnim.direction), 0));
-            rightAnim.sprite.setScale({ m_scale, m_scale });
-
-            rightAnim.sprite.setPosition(
-                { (util::right(rect) - (rightAnim.sprite.getGlobalBounds().size.x * 0.2f)),
-                  (util::center(rect).y - (rightAnim.sprite.getGlobalBounds().size.y * 0.5f)) });
-
-            rightAnim.coll_rect = util::scaleRectInPlaceCopy(
-                rightAnim.sprite.getGlobalBounds(), { collLengthRatio, collWidthRatio });
+            m_anims.emplace_back(
+                getTexture(FlameDirection::Right),
+                textureRect(getTexture(FlameDirection::Right), 0),
+                FlameDirection::Right,
+                t_context.random.fromTo(spawnSecMin, spawnSecMax),
+                scale,
+                rect);
         }
     }
 
@@ -207,7 +236,7 @@ namespace bramblefore
             else
             {
                 anim.elapsed_time_sec += t_frameTimeSec;
-                if (anim.elapsed_time_sec > anim.time_between_flaming)
+                if (anim.elapsed_time_sec > anim.time_between_flaming_sec)
                 {
                     anim.elapsed_time_sec = 0.0f;
                     anim.is_flaming       = true;
