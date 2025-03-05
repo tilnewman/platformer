@@ -21,6 +21,30 @@
 namespace bramblefore
 {
 
+    WaterTypeRect::WaterTypeRect(const bool t_isSurface, const sf::FloatRect & t_rect)
+        : is_surface{ t_isSurface }
+        , rect{ t_rect }
+    {}
+
+    //
+
+    WaterAnim::WaterAnim(
+        const WaterType t_type,
+        const sf::Texture & t_texture,
+        const sf::IntRect & t_textureRect,
+        const float t_timePerFrameSec,
+        const sf::FloatRect & t_screenRect)
+        : type{ t_type }
+        , sprite{ t_texture, t_textureRect }
+        , elapsed_time_sec{ 0.0f }
+        , time_per_frame_sec{ t_timePerFrameSec }
+        , frame_index{ 0 }
+    {
+        util::fitAndCenterInside(sprite, t_screenRect);
+    }
+
+    //
+
     WaterAnimationLayer::WaterAnimationLayer(
         Context & t_context, const std::vector<WaterTypeRect> & t_typeRects)
         : m_textures{}
@@ -31,7 +55,6 @@ namespace bramblefore
         //
 
         m_textures.resize(static_cast<std::size_t>(WaterType::Count));
-
         for (std::size_t index{ 0 }; index < static_cast<std::size_t>(WaterType::Count); ++index)
         {
             util::TextureLoader::load(
@@ -70,11 +93,12 @@ namespace bramblefore
                 }
             }();
 
-            WaterAnim & anim{ m_anims.emplace_back(
-                type, getTexture(type), t_context.random.fromTo(0.3f, 2.0f)) };
-
-            anim.sprite.setTextureRect(textureRect(type, 0));
-            util::fitAndCenterInside(anim.sprite, typeRect.rect);
+            m_anims.emplace_back(
+                type,
+                getTexture(type),
+                textureRect(type, 0),
+                t_context.random.fromTo(0.3f, 2.0f),
+                typeRect.rect);
         }
     }
 

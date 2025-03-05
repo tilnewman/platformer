@@ -99,15 +99,11 @@ namespace bramblefore
     {
         HarmCollisionManager::instance().addOwner(*this);
 
-        //
-
         util::TextureLoader::load(
             m_shooterTexture, (t_context.settings.media_path / "image/anim/dart-shooter.png"));
 
         util::TextureLoader::load(
             m_dartTexture, (t_context.settings.media_path / "image/anim/dart.png"));
-
-        //
 
         m_shooters.reserve(t_rectDirs.size());
         for (const DartRectDir & rectDir : t_rectDirs)
