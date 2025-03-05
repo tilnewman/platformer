@@ -985,7 +985,18 @@
          "draworder":"topdown",
          "id":16,
          "name":"ghost-bottle",
-         "objects":[],
+         "objects":[
+                {
+                 "height":16,
+                 "id":153,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":976,
+                 "y":1264
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -1488,7 +1499,7 @@
          "y":0
         }],
  "nextlayerid":19,
- "nextobjectid":153,
+ "nextobjectid":154,
  "orientation":"orthogonal",
  "properties":[
         {

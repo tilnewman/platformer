@@ -27,14 +27,11 @@ namespace bramblefore
 
     struct GhostBottleAnim
     {
-        explicit GhostBottleAnim(const sf::Texture & t_texture)
-            : has_emerged{ false }
-            , elapsed_time_sec{ 0.0f }
-            , time_between_frames_sec{ 0.175f }
-            , frame_index{ 0 }
-            , sprite{t_texture}
-            , coll_rect{}
-        {}
+        explicit GhostBottleAnim(
+            const sf::Texture & t_texture,
+            const sf::IntRect & t_textureRect,
+            const sf::FloatRect & t_screenRect,
+            const float t_scale);
 
         bool has_emerged;
         float elapsed_time_sec;
