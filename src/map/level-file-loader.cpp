@@ -496,8 +496,15 @@ namespace bramblefore
 
         for (const nlohmann::json & accentJson : t_json["objects"])
         {
-            chestAnimLayerUPtr->add(
-                t_context, accentJson["name"], parseAndConvertRect(t_context, accentJson));
+            const std::string nameStr{ accentJson["name"] };
+            const Chest chest{ chestFromString(nameStr) };
+
+            M_CHECK(
+                (chest != Chest::Count),
+                "Error Parsing Level File " << m_pathStr << ":  Chest layer name is invalid \""
+                                            << nameStr << "\"");
+
+            chestAnimLayerUPtr->add(t_context, chest, parseAndConvertRect(t_context, accentJson));
         }
 
         t_context.level.tile_layers.push_back(std::move(chestAnimLayerUPtr));

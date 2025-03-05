@@ -21,6 +21,24 @@
 namespace bramblefore
 {
 
+    ChestAnim::ChestAnim(
+        const sf::Texture & t_texture,
+        const Chest t_chest,
+        const float t_scale,
+        const sf::FloatRect & t_screenRect)
+        : chest{ t_chest }
+        , is_open{ false }
+        , sprite{ t_texture }
+    {
+        sprite.setScale({ t_scale, t_scale });
+
+        sprite.setPosition(
+            { (util::center(t_screenRect).x - (sprite.getGlobalBounds().size.x * 0.5f)),
+              (util::bottom(t_screenRect) - (sprite.getGlobalBounds().size.y) * 0.9f) });
+    }
+
+    //
+
     ChestAnimationLayer::ChestAnimationLayer(Context & t_context)
         : m_textureSets{}
         , m_animations{}
@@ -35,24 +53,13 @@ namespace bramblefore
     }
 
     void ChestAnimationLayer::add(
-        Context & t_context, const std::string & t_name, const sf::FloatRect & t_rect)
+        Context & t_context, const Chest t_chest, const sf::FloatRect & t_rect)
     {
-        const Chest chest{ chestFromName(t_name) };
-
-        M_CHECK(
-            (Chest::Count != chest),
-            "Error parsing map - Unknown chest name: \"" << t_name << "\"");
-
-        const sf::Texture & texture{ m_textureSets.at(static_cast<std::size_t>(chest)).closed };
-
-        ChestAnim & anim{ m_animations.emplace_back(texture, chest) };
-
-        const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 2.5f) };
-        anim.sprite.setScale({ scale, scale });
-
-        anim.sprite.setPosition(
-            { (util::center(t_rect).x - (anim.sprite.getGlobalBounds().size.x * 0.5f)),
-              (util::bottom(t_rect) - (anim.sprite.getGlobalBounds().size.y) * 0.9f) });
+        m_animations.emplace_back(
+            m_textureSets.at(static_cast<std::size_t>(t_chest)).closed,
+            t_chest,
+            t_context.layout.calScaleBasedOnResolution(t_context, 2.5f),
+            t_rect);
     }
 
     void ChestAnimationLayer::draw(

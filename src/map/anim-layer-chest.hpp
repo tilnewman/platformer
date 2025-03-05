@@ -36,7 +36,7 @@ namespace bramblefore
         Count
     };
 
-    [[nodiscard]] inline constexpr Chest chestFromName(const std::string_view name) noexcept
+    [[nodiscard]] inline constexpr Chest chestFromString(const std::string_view name) noexcept
     {
         // clang-format off
         if      ("chest1" == name) { return Chest::Chest1; }
@@ -60,11 +60,11 @@ namespace bramblefore
 
     struct ChestAnim
     {
-        explicit ChestAnim(const sf::Texture & t_texture, const Chest t_chest)
-            : chest{ t_chest }
-            , is_open{ false }
-            , sprite{ t_texture }
-        {}
+        explicit ChestAnim(
+            const sf::Texture & t_texture,
+            const Chest t_chest,
+            const float t_scale,
+            const sf::FloatRect & t_screenRect);
 
         Chest chest;
         bool is_open;
@@ -83,7 +83,7 @@ namespace bramblefore
         ChestAnimationLayer(Context & t_context);
         virtual ~ChestAnimationLayer() override;
 
-        void add(Context & t_context, const std::string & t_name, const sf::FloatRect & t_rect);
+        void add(Context & t_context, const Chest t_chest, const sf::FloatRect & t_rect);
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const final;
