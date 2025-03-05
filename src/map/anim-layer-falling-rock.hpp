@@ -63,28 +63,21 @@ namespace bramblefore
 
     struct RectRock
     {
-        RectRock(const sf::FloatRect & t_rect, const Rock t_rock)
+        explicit RectRock(const sf::FloatRect & t_rect, const Rock t_rock)
             : rect{ t_rect }
             , rock{ t_rock }
         {}
 
-        sf::FloatRect rect{};
-        Rock rock{ Rock::Rock1 }; // any works here
+        sf::FloatRect rect;
+        Rock rock;
     };
 
     //
 
     struct RockShatterAnim
     {
-        explicit RockShatterAnim(const sf::Sprite & t_sprite, const Rock t_rock)
-            : is_alive{ true }
-            , elapsed_time_sec{ 0.0f }
-            , time_between_frames_sec{ 0.1f }
-            , frame_index{ 0 }
-            , sprite{ t_sprite }
-            , coll_rect{}
-            , rock{ t_rock }
-        {}
+        explicit RockShatterAnim(
+            const sf::Sprite & t_sprite, const Rock t_rock, const sf::FloatRect & t_collRect);
 
         bool is_alive;
         float elapsed_time_sec;
@@ -100,20 +93,12 @@ namespace bramblefore
     struct RockDropAnim
     {
         explicit RockDropAnim(
-            const sf::Sprite & t_sprite, const Rock t_rock, const sf::FloatRect & t_rect)
-            : is_alive{ true }
-            , velocity{ 0.0f }
-            , sprite{ t_sprite }
-            , rock{ t_rock }
-            , fall_region{ t_rect }
-        {}
+            const sf::Sprite & t_sprite, const Rock t_rock, const sf::FloatRect & t_rect);
 
         bool is_alive;
         float velocity;
         sf::Sprite sprite;
         Rock rock;
-
-        // the rect drawn on the map that includes the vert distance this drop will travel
         sf::FloatRect fall_region;
     };
 
@@ -121,21 +106,18 @@ namespace bramblefore
 
     struct RockHangingAnim
     {
-        explicit RockHangingAnim(const sf::Texture & t_texture, const Rock t_rock)
-            : has_dropped{ false }
-            , sprite{ t_texture }
-            , trigger_region{}
-            , rock{ t_rock }
-            , fall_region{}
-        {}
+        explicit RockHangingAnim(
+            const Context & t_context,
+            const sf::Texture & t_texture,
+            const sf::IntRect & t_textureRect,
+            const Rock t_rock,
+            const sf::FloatRect & t_rect,
+            const float t_scale);
 
         bool has_dropped;
         sf::Sprite sprite;
         sf::FloatRect trigger_region;
         Rock rock;
-
-        // the rect drawn on the map that includes the vert distance the falling rocks will travel
-        // given to RockDropAnim so they know how far to fall, see above
         sf::FloatRect fall_region;
     };
 
@@ -182,7 +164,6 @@ namespace bramblefore
         [[nodiscard]] Harm makeHarm(const sf::FloatRect & t_rect) const noexcept;
 
       private:
-        float m_scale;
         sf::Texture m_texture1;
         sf::Texture m_texture2;
         sf::Texture m_texture3;

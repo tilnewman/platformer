@@ -20,10 +20,76 @@
 namespace bramblefore
 {
 
+    RockShatterAnim::RockShatterAnim(
+        const sf::Sprite & t_sprite, const Rock t_rock, const sf::FloatRect & t_collRect)
+        : is_alive{ true }
+        , elapsed_time_sec{ 0.0f }
+        , time_between_frames_sec{ 0.1f }
+        , frame_index{ 0 }
+        , sprite{ t_sprite }
+        , coll_rect{ t_collRect }
+        , rock{ t_rock }
+    {}
+
+    //
+
+    RockDropAnim::RockDropAnim(
+        const sf::Sprite & t_sprite, const Rock t_rock, const sf::FloatRect & t_rect)
+        : is_alive{ true }
+        , velocity{ 0.0f }
+        , sprite{ t_sprite }
+        , rock{ t_rock }
+        , fall_region{ t_rect }
+    {}
+
+    //
+
+    RockHangingAnim::RockHangingAnim(
+        const Context & t_context,
+        const sf::Texture & t_texture,
+        const sf::IntRect & t_textureRect,
+        const Rock t_rock,
+        const sf::FloatRect & t_rect,
+        const float t_scale)
+        : has_dropped{ false }
+        , sprite{ t_texture, t_textureRect }
+        , trigger_region{}
+        , rock{ t_rock }
+        , fall_region{ t_rect }
+    {
+        trigger_region.size.y     = t_context.avatar.collisionRect().size.y;
+        trigger_region.position.y = (util::bottom(fall_region) - trigger_region.size.y);
+        trigger_region.size.x     = (fall_region.size.y * 0.5f);
+        trigger_region.position.x = (util::center(fall_region).x - (trigger_region.size.x * 0.5f));
+
+        sprite.scale({ t_scale, t_scale });
+
+        sprite.setPosition({ (util::center(t_rect).x - (sprite.getGlobalBounds().size.x * 0.5f)),
+                             (t_rect.position.y - (sprite.getGlobalBounds().size.y * 0.25f)) });
+
+        if (rock == Rock::Rock1)
+        {
+            sprite.move({ 0.0f, -(sprite.getGlobalBounds().size.y * 0.1f) });
+        }
+        else if (rock == Rock::Rock2)
+        {
+            sprite.move({ 0.0f, -(sprite.getGlobalBounds().size.y * 0.15f) });
+        }
+        else if (rock == Rock::Rock3)
+        {
+            sprite.move({ 0.0f, -(sprite.getGlobalBounds().size.y * 0.15f) });
+        }
+        else if (rock == Rock::Rock4)
+        {
+            sprite.move({ 0.0f, -(sprite.getGlobalBounds().size.y * 0.25f) });
+        }
+    }
+
+    //
+
     FallingRockAnimationLayer::FallingRockAnimationLayer(
         Context & t_context, const std::vector<RectRock> & t_rectRocks)
-        : m_scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.5f) }
-        , m_texture1{}
+        : m_texture1{}
         , m_texture2{}
         , m_texture3{}
         , m_texture4{}
@@ -51,28 +117,13 @@ namespace bramblefore
 
         for (const RectRock & rectRock : t_rectRocks)
         {
-            RockHangingAnim & anim{ m_hangingAnims.emplace_back(
-                texture(rectRock.rock), rectRock.rock) };
-
-            anim.fall_region = rectRock.rect;
-
-            anim.trigger_region.size.y = t_context.avatar.collisionRect().size.y;
-
-            anim.trigger_region.position.y =
-                (util::bottom(anim.fall_region) - anim.trigger_region.size.y);
-
-            anim.trigger_region.size.x = (anim.fall_region.size.y * 0.5f);
-
-            anim.trigger_region.position.x =
-                (util::center(anim.fall_region).x - (anim.trigger_region.size.x * 0.5f));
-
-            anim.sprite.setTextureRect(textureRect(texture(rectRock.rock), 0));
-
-            anim.sprite.scale({ m_scale, m_scale });
-
-            anim.sprite.setPosition(
-                { (util::center(rectRock.rect).x - (anim.sprite.getGlobalBounds().size.x * 0.5f)),
-                  (rectRock.rect.position.y - (anim.sprite.getGlobalBounds().size.y * 0.25f)) });
+            m_hangingAnims.emplace_back(
+                t_context,
+                texture(rectRock.rock),
+                textureRect(texture(rectRock.rock), 0),
+                rectRock.rock,
+                rectRock.rect,
+                t_context.layout.calScaleBasedOnResolution(t_context, 1.5f));
         }
     }
 
@@ -185,10 +236,10 @@ namespace bramblefore
             didAnyRocksLand = true;
             anim.is_alive   = false;
 
-            RockShatterAnim & shatterAnim{ m_shatterAnims.emplace_back(anim.sprite, anim.rock) };
-
-            shatterAnim.coll_rect =
-                util::scaleRectInPlaceCopy(anim.sprite.getGlobalBounds(), 0.75f);
+            m_shatterAnims.emplace_back(
+                anim.sprite,
+                anim.rock,
+                util::scaleRectInPlaceCopy(anim.sprite.getGlobalBounds(), 0.75f));
 
             if (wholeScreenRect.findIntersection(anim.sprite.getGlobalBounds()))
             {
