@@ -19,6 +19,26 @@
 
 namespace bramblefore
 {
+    BombAnim::BombAnim(
+        const sf::Texture & t_texture,
+        const sf::IntRect & t_textureRect,
+        const sf::FloatRect & t_rect,
+        const float t_scale)
+        : has_exploded{ false }
+        , elapsed_time_sec{ 0.0f }
+        , time_between_frames_sec{ 0.1f }
+        , frame_index{ 0 }
+        , sprite{ t_texture, t_textureRect }
+        , coll_rect{ t_rect }
+    {
+        sprite.setScale({ t_scale, t_scale });
+
+        sprite.setPosition(
+            { (util::center(coll_rect).x - (sprite.getGlobalBounds().size.x * 0.5f)),
+              (util::bottom(coll_rect) - (sprite.getGlobalBounds().size.y * 0.6f)) });
+    }
+
+    //
 
     BombAnimationLayer::BombAnimationLayer(
         Context & t_context, const std::vector<sf::FloatRect> & t_rects)
@@ -32,16 +52,11 @@ namespace bramblefore
 
         for (const sf::FloatRect & rect : t_rects)
         {
-            BombAnim & anim{ m_anims.emplace_back(m_texture) };
-            anim.coll_rect = rect;
-            anim.sprite.setTextureRect(textureRect(0));
-
-            const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.0f) };
-            anim.sprite.setScale({ scale, scale });
-
-            anim.sprite.setPosition(
-                { (util::center(rect).x - (anim.sprite.getGlobalBounds().size.x * 0.5f)),
-                  (util::bottom(rect) - (anim.sprite.getGlobalBounds().size.y * 0.6f)) });
+            m_anims.emplace_back(
+                m_texture,
+                textureRect(0),
+                rect,
+                t_context.layout.calScaleBasedOnResolution(t_context, 1.0f));
         }
     }
 

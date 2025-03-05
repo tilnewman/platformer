@@ -27,22 +27,17 @@ namespace bramblefore
 
     struct BombAnim
     {
-        explicit BombAnim(const sf::Texture & t_texture)
-            : has_exploded{ false }
-            , elapsed_time_sec{ 0.0f }
-            , time_between_frames_sec{ 0.1f }
-            , frame_index{ 0 }
-            , sprite{ t_texture }
-            , coll_rect{}
-        {}
+        explicit BombAnim(
+            const sf::Texture & t_texture,
+            const sf::IntRect & t_textureRect,
+            const sf::FloatRect & t_rect,
+            const float t_scale);
 
         bool has_exploded;
         float elapsed_time_sec;
         float time_between_frames_sec;
         std::size_t frame_index;
         sf::Sprite sprite;
-
-        // the rect drawn on the map is the collision rect
         sf::FloatRect coll_rect;
     };
 
