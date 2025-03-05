@@ -20,6 +20,87 @@
 namespace bramblefore
 {
 
+    LavaDripperAnim::LavaDripperAnim(
+        const DripSize t_size,
+        const sf::Texture & t_texture,
+        const sf::IntRect & t_textureRect,
+        const sf::FloatRect & t_screenRect,
+        const float t_timeBetweenDripSec,
+        const float t_scale)
+        : is_dripping{ false }
+        , size{ t_size }
+        , elapsed_time_sec{ 0.0f }
+        , time_between_drip_sec{ t_timeBetweenDripSec }
+        , time_between_frames_sec{ 0.15f }
+        , frame_index{ 0 }
+        , sprite{ t_texture, t_textureRect }
+        , region{ t_screenRect }
+    {
+        sprite.scale({ t_scale, t_scale });
+
+        if (DripSize::Small == size)
+        {
+            sprite.setPosition(
+                { (util::center(t_screenRect).x - (sprite.getGlobalBounds().size.x * 0.5f)),
+                  (t_screenRect.position.y - (sprite.getGlobalBounds().size.x * 0.5f)) });
+        }
+        else if (DripSize::Medium == size)
+        {
+            sprite.setPosition(
+                { (util::center(t_screenRect).x - (sprite.getGlobalBounds().size.x * 0.5f)),
+                  t_screenRect.position.y });
+        }
+        else
+        {
+            sprite.setPosition(
+                { (util::center(t_screenRect).x - (sprite.getGlobalBounds().size.x * 0.5f)),
+                  (t_screenRect.position.y - (sprite.getGlobalBounds().size.x * 0.5f)) });
+        }
+    }
+
+    //
+
+    LavaSplatAnim::LavaSplatAnim(
+        const DripSize t_size,
+        const sf::Texture & t_texture,
+        const sf::IntRect & t_textureRect,
+        const float t_scale,
+        const sf::FloatRect & t_screenRect)
+        : is_alive{ true }
+        , size{ t_size }
+        , elapsed_time_sec{ 0.0f }
+        , time_between_frames_sec{ 0.1f }
+        , frame_index{ 0 }
+        , sprite{ t_texture, t_textureRect }
+    {
+        sprite.scale({ t_scale, t_scale });
+
+        sprite.setPosition(
+            { (util::center(t_screenRect).x - (sprite.getGlobalBounds().size.x * 0.5f)),
+              (util::bottom(t_screenRect) - (sprite.getGlobalBounds().size.y * 0.7f)) });
+    }
+
+    //
+
+    LavaDripAnim::LavaDripAnim(
+        const DripSize t_size,
+        const sf::Texture & t_texture,
+        const sf::FloatRect & t_screenRect,
+        const float t_scale)
+        : is_alive{ true }
+        , size{ t_size }
+        , velocity{ 0.0f }
+        , sprite{ t_texture }
+        , region{ t_screenRect }
+    {
+        sprite.scale({ t_scale, t_scale });
+
+        sprite.setPosition({ (util::center(region).x - (sprite.getGlobalBounds().size.x * 0.5f)),
+                             region.position.y });
+    }
+
+    //
+
     LavaDripAnimationLayer::LavaDripAnimationLayer(
         Context & t_context, const std::vector<LavaRectSize> & t_rectSizes)
         : m_scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.5f) }
@@ -76,34 +157,13 @@ namespace bramblefore
         m_dripperAnims.reserve(t_rectSizes.size());
         for (const LavaRectSize & rectSize : t_rectSizes)
         {
-            LavaDripperAnim & anim{ m_dripperAnims.emplace_back(
-                dripperTexture(rectSize.size), rectSize.size) };
-
-            anim.region             = rectSize.rect;
-            anim.time_between_drips = t_context.random.fromTo(1.0f, 4.0f);
-            anim.sprite.setTextureRect(textureRect(dripperTexture(rectSize.size), 0));
-            anim.sprite.scale({ m_scale, m_scale });
-
-            if (DripSize::Small == anim.size)
-            {
-                anim.sprite.setPosition(
-                    { (util::center(rectSize.rect).x -
-                       (anim.sprite.getGlobalBounds().size.x * 0.5f)),
-                      (rectSize.rect.position.y - (anim.sprite.getGlobalBounds().size.x * 0.5f)) });
-            }
-            else if (DripSize::Medium == anim.size)
-            {
-                anim.sprite.setPosition({ (util::center(rectSize.rect).x -
-                                           (anim.sprite.getGlobalBounds().size.x * 0.5f)),
-                                          rectSize.rect.position.y });
-            }
-            else
-            {
-                anim.sprite.setPosition(
-                    { (util::center(rectSize.rect).x -
-                       (anim.sprite.getGlobalBounds().size.x * 0.5f)),
-                      (rectSize.rect.position.y - (anim.sprite.getGlobalBounds().size.x * 0.5f)) });
-            }
+            m_dripperAnims.emplace_back(
+                rectSize.size,
+                dripperTexture(rectSize.size),
+                textureRect(dripperTexture(rectSize.size), 0),
+                rectSize.rect,
+                t_context.random.fromTo(1.0f, 4.0f),
+                m_scale);
         }
     }
 
@@ -196,20 +256,13 @@ namespace bramblefore
             else
             {
                 anim.elapsed_time_sec += t_frameTimeSec;
-                if (anim.elapsed_time_sec > anim.time_between_drips)
+                if (anim.elapsed_time_sec > anim.time_between_drip_sec)
                 {
                     anim.elapsed_time_sec = 0.0f;
                     anim.is_dripping      = true;
 
-                    LavaDripAnim & drip{ m_dripAnims.emplace_back(
-                        dripTexture(anim.size), anim.size) };
-
-                    drip.region = anim.region;
-                    drip.sprite.scale({ m_scale, m_scale });
-
-                    drip.sprite.setPosition({ (util::center(anim.region).x -
-                                               (drip.sprite.getGlobalBounds().size.x * 0.5f)),
-                                              anim.region.position.y });
+                    m_dripAnims.emplace_back(
+                        anim.size, dripTexture(anim.size), anim.region, m_scale);
                 }
             }
         }
@@ -231,17 +284,13 @@ namespace bramblefore
             didAnyDripsLand = true;
             anim.is_alive   = false;
 
-            LavaSplatAnim & splash{ m_splatAnims.emplace_back(splatTexture(anim.size), anim.size) };
-            splash.sprite.setTextureRect(textureRect(splatTexture(anim.size), 0));
+            LavaSplatAnim & splashAnim{ m_splatAnims.emplace_back(
+                anim.size,
+                splatTexture(anim.size),
+                textureRect(splatTexture(anim.size), 0),
+                t_context.layout.calScaleBasedOnResolution(t_context, 1.0f),anim.region) };
 
-            const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.0f) };
-            splash.sprite.scale({ scale, scale });
-
-            splash.sprite.setPosition(
-                { (util::center(anim.region).x - (splash.sprite.getGlobalBounds().size.x * 0.5f)),
-                  (util::bottom(anim.region) - (splash.sprite.getGlobalBounds().size.y * 0.7f)) });
-
-            if (t_context.layout.wholeRect().findIntersection(splash.sprite.getGlobalBounds()))
+            if (t_context.layout.wholeRect().findIntersection(splashAnim.sprite.getGlobalBounds()))
             {
                 t_context.sfx.play("splat");
             }

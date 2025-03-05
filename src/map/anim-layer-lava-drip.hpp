@@ -78,27 +78,21 @@ namespace bramblefore
 
     struct LavaDripperAnim
     {
-        explicit LavaDripperAnim(const sf::Texture & t_texture, const DripSize t_size)
-            : is_dripping{ false }
-            , size{ t_size }
-            , elapsed_time_sec{ 0.0f }
-            , time_between_drips{ 0.0f }
-            , time_between_frames_sec{ 0.15f }
-            , frame_index{ 0 }
-            , sprite{ t_texture }
-            , region{}
-        {}
+        explicit LavaDripperAnim(
+            const DripSize t_size,
+            const sf::Texture & t_texture,
+            const sf::IntRect & t_textureRect,
+            const sf::FloatRect & t_screenRect,
+            const float t_timeBetweenDripSec,
+            const float t_scale);
 
         bool is_dripping;
         DripSize size;
         float elapsed_time_sec;
-        float time_between_drips;
+        float time_between_drip_sec;
         float time_between_frames_sec;
         std::size_t frame_index;
         sf::Sprite sprite;
-
-        // the rect drawn on the map that includes the vert distance the drops will travel
-        // given to drops so they know how far to fall, see below
         sf::FloatRect region;
     };
 
@@ -106,14 +100,12 @@ namespace bramblefore
 
     struct LavaSplatAnim
     {
-        explicit LavaSplatAnim(const sf::Texture & t_texture, const DripSize t_size)
-            : is_alive{ true }
-            , size{ t_size }
-            , elapsed_time_sec{ 0.0f }
-            , time_between_frames_sec{ 0.1f }
-            , frame_index{ 0 }
-            , sprite{ t_texture }
-        {}
+        explicit LavaSplatAnim(
+            const DripSize t_size,
+            const sf::Texture & t_texture,
+            const sf::IntRect & t_textureRect,
+            const float t_scale,
+            const sf::FloatRect & t_screenRect);
 
         bool is_alive;
         DripSize size;
@@ -127,20 +119,16 @@ namespace bramblefore
 
     struct LavaDripAnim
     {
-        explicit LavaDripAnim(const sf::Texture & t_texture, const DripSize t_size)
-            : is_alive{ true }
-            , size{ t_size }
-            , velocity{ 0.0f }
-            , sprite{ t_texture }
-            , region{}
-        {}
+        explicit LavaDripAnim(
+            const DripSize t_size,
+            const sf::Texture & t_texture,
+            const sf::FloatRect & t_screenRect,
+            const float t_scale);
 
         bool is_alive;
         DripSize size;
         float velocity;
         sf::Sprite sprite;
-
-        // the rect drawn on the map that includes the vert distance this drop will travel
         sf::FloatRect region;
     };
 
