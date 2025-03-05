@@ -394,6 +394,28 @@
         }, 
         {
          "draworder":"topdown",
+         "id":14,
+         "name":"spike-trap",
+         "objects":[
+                {
+                 "height":16,
+                 "id":32,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":128,
+                 "x":2432,
+                 "y":816
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":5,
          "name":"spawn",
          "objects":[
@@ -502,8 +524,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":14,
- "nextobjectid":32,
+ "nextlayerid":15,
+ "nextobjectid":33,
  "orientation":"orthogonal",
  "properties":[
         {
