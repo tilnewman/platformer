@@ -3,8 +3,6 @@
 //
 // pickups.hpp
 //
-#include "util/sfml-defaults.hpp"
-
 #include <string_view>
 #include <vector>
 
@@ -85,18 +83,28 @@ namespace bramblefore
 
     struct PickupAnim
     {
-        bool is_alive{ true };
-        Pickup which{ Pickup::Arrow }; // anything works here
-        std::size_t anim_index{ 0 };
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
+        explicit PickupAnim(
+            const Pickup t_pickup,
+            const sf::Texture & t_texture,
+            const sf::IntRect & t_textureRect,
+            const std::size_t t_frameIndex,
+            const float t_scale,
+            const sf::FloatRect & t_screenRect);
+
+        bool is_alive;
+        Pickup which;
+        std::size_t frame_index;
+        sf::Sprite sprite;
     };
 
     //
 
     struct PickupFlareAnim
     {
-        bool is_alive{ true };
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
+        explicit PickupFlareAnim(const sf::Sprite & t_sprite, const sf::IntRect & t_textureRect);
+
+        bool is_alive;
+        sf::Sprite sprite;
     };
 
     //
@@ -130,7 +138,6 @@ namespace bramblefore
         std::vector<PickupFlareAnim> m_flareAnims;
         float m_elapsedTimeSec;
         float m_timePerFrameSec;
-        sf::Vector2f m_scale;
     };
 
 } // namespace bramblefore

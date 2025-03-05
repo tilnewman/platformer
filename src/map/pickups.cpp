@@ -18,13 +18,40 @@
 namespace bramblefore
 {
 
+    PickupAnim::PickupAnim(
+        const Pickup t_pickup,
+        const sf::Texture & t_texture,
+        const sf::IntRect & t_textureRect,
+        const std::size_t t_frameIndex,
+        const float t_scale,
+        const sf::FloatRect & t_screenRect)
+        : is_alive{ true }
+        , which{ t_pickup }
+        , frame_index{ t_frameIndex }
+        , sprite{ t_texture, t_textureRect }
+    {
+        sprite.setScale({ t_scale, t_scale });
+        util::setOriginToCenter(sprite);
+        sprite.setPosition(util::center(t_screenRect));
+    }
+
+    //
+
+    PickupFlareAnim::PickupFlareAnim(const sf::Sprite & t_sprite, const sf::IntRect & t_textureRect)
+        : is_alive{ true }
+        , sprite{ t_sprite }
+    {
+        sprite.setTextureRect(t_textureRect);
+    }
+
+    //
+
     PickupAnimations::PickupAnimations()
         : m_textures{}
         , m_anims{}
         , m_flareAnims{}
         , m_elapsedTimeSec{ 0.0f }
         , m_timePerFrameSec{ 0.1f }
-        , m_scale{}
     {
         // these are just harmless guesses about what is in the average map
         m_anims.reserve(64);
@@ -33,10 +60,6 @@ namespace bramblefore
 
     void PickupAnimations::setup(const Context & t_context)
     {
-        const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 2.0f) };
-        m_scale.x = scale;
-        m_scale.y = scale;
-
         m_textures.reserve(static_cast<std::size_t>(Pickup::Count));
         for (std::size_t i(0); i < static_cast<std::size_t>(Pickup::Count); ++i)
         {
@@ -53,17 +76,15 @@ namespace bramblefore
         const Context & t_context, const sf::FloatRect & t_rect, const std::string & t_name)
     {
         const Pickup pickup{ stringToPickup(t_name) };
-
         M_CHECK((Pickup::Count != pickup), "t_name=\"" << t_name << "\" which is an unknown name.");
 
-        PickupAnim & anim{ m_anims.emplace_back() };
-        anim.which      = pickup;
-        anim.anim_index = t_context.random.zeroToOneLessThan(frameCount(anim.which));
-        anim.sprite.setTexture(m_textures.at(static_cast<std::size_t>(pickup)), true);
-        anim.sprite.setTextureRect(textureRect(pickup, 0));
-        anim.sprite.setScale(m_scale);
-        util::setOriginToCenter(anim.sprite);
-        anim.sprite.setPosition(util::center(t_rect));
+        m_anims.emplace_back(
+            pickup,
+            m_textures.at(static_cast<std::size_t>(pickup)),
+            textureRect(pickup, 0),
+            t_context.random.zeroToOneLessThan(frameCount(pickup)),
+            t_context.layout.calScaleBasedOnResolution(t_context, 2.0f),
+            t_rect);
     }
 
     std::size_t PickupAnimations::frameCount(const Pickup which) const
@@ -102,13 +123,13 @@ namespace bramblefore
 
             for (PickupAnim & anim : m_anims)
             {
-                ++anim.anim_index;
-                if (anim.anim_index >= frameCount(anim.which))
+                ++anim.frame_index;
+                if (anim.frame_index >= frameCount(anim.which))
                 {
-                    anim.anim_index = 0;
+                    anim.frame_index = 0;
                 }
 
-                anim.sprite.setTextureRect(textureRect(anim.which, anim.anim_index));
+                anim.sprite.setTextureRect(textureRect(anim.which, anim.frame_index));
             }
         }
 
@@ -188,10 +209,7 @@ namespace bramblefore
             wereAnyPickedUp = true;
             anim.is_alive   = false;
 
-            PickupFlareAnim & flare{ m_flareAnims.emplace_back() };
-            flare.is_alive = true;
-            flare.sprite   = anim.sprite;
-            flare.sprite.setTextureRect(textureRect(anim.which, 0));
+            m_flareAnims.emplace_back(anim.sprite, textureRect(anim.which, 0));
 
             if (Pickup::Bottle == anim.which)
             {
