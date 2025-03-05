@@ -27,17 +27,11 @@ namespace bramblefore
 
     struct PukeTrapAnim
     {
-        explicit PukeTrapAnim(const sf::Texture & t_texture)
-            : is_resetting{ false }
-            , is_springing{ false }
-            , elapsed_time_sec{ 0.0f }
-            , time_between_springs_sec{ 2.0f }
-            , time_between_frames_sec{ 0.1f }
-            , frame_index{ 0 }
-            , sprite{ t_texture }
-            , spring_rect{}
-            , coll_rect{}
-        {}
+        explicit PukeTrapAnim(
+            const sf::Texture & t_texture,
+            const sf::IntRect & t_textureRect,
+            const float t_scale,
+            const sf::FloatRect & t_screenRect);
 
         bool is_resetting;
         bool is_springing;

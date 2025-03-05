@@ -763,6 +763,28 @@
         }, 
         {
          "draworder":"topdown",
+         "id":9,
+         "name":"puke-trap",
+         "objects":[
+                {
+                 "height":80,
+                 "id":58,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":160,
+                 "x":784,
+                 "y":1248
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":6,
          "name":"pickup-anim",
          "objects":[
@@ -860,8 +882,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":9,
- "nextobjectid":57,
+ "nextlayerid":10,
+ "nextobjectid":59,
  "orientation":"orthogonal",
  "properties":[
         {
