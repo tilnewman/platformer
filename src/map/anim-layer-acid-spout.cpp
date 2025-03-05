@@ -20,6 +20,67 @@
 namespace bramblefore
 {
 
+    AcidSplashAnim::AcidSplashAnim(
+        const Context & t_context,
+        const sf::Texture & t_texture,
+        const sf::IntRect & t_textureRect,
+        const sf::FloatRect & t_screenRect)
+        : is_alive{ true }
+        , elapsed_time_sec{ 0.0f }
+        , time_between_frames_sec{ 0.1f }
+        , frame_index{ 0 }
+        , sprite{ t_texture, t_textureRect }
+    {
+        const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.0f) };
+        sprite.scale({ scale, scale });
+
+        sprite.setPosition(
+            { (util::center(t_screenRect).x - (sprite.getGlobalBounds().size.x * 0.5f)),
+              (util::bottom(t_screenRect) - (sprite.getGlobalBounds().size.y * 0.7f)) });
+    }
+
+    //
+
+    AcidDropAnim::AcidDropAnim(
+        const sf::Texture & t_texture,
+        const sf::FloatRect & t_screenRect,
+        const sf::Vector2f & t_scale)
+        : is_alive{ true }
+        , velocity{ 0.0f }
+        , sprite{ t_texture }
+        , region{ t_screenRect }
+    {
+        sprite.setScale(t_scale);
+
+        sprite.setPosition({ (util::center(region).x - (sprite.getGlobalBounds().size.x * 0.5f)),
+                             region.position.y });
+    }
+
+    //
+
+    AcidSpoutAnim::AcidSpoutAnim(
+        const Context & t_context,
+        const sf::Texture & t_texture,
+        const sf::IntRect & t_textureRect,
+        const sf::FloatRect & t_screenRect,
+        const sf::Vector2f & t_scale)
+        : is_dripping{ false }
+        , elapsed_time_sec{ 0.0f }
+        , time_between_drip_sec{ t_context.random.fromTo(1.0f, 4.0f) }
+        , time_between_frames_sec{ 0.15f }
+        , frame_index{ 0 }
+        , sprite{ t_texture, t_textureRect }
+        , region{ t_screenRect }
+    {
+        sprite.setScale(t_scale);
+
+        sprite.setPosition(
+            { (util::center(t_screenRect).x - (sprite.getGlobalBounds().size.x * 0.5f)),
+              t_screenRect.position.y });
+    }
+
+    //
+
     AcidSpoutAnimationLayer::AcidSpoutAnimationLayer(
         Context & t_context, const std::vector<sf::FloatRect> & t_rects)
         : m_scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.5f) }
@@ -47,15 +108,12 @@ namespace bramblefore
 
         for (const sf::FloatRect & rect : t_rects)
         {
-            AcidSpoutAnim & anim{ m_spoutAnims.emplace_back(m_spoutTexture) };
-            anim.region             = rect;
-            anim.time_between_drips = t_context.random.fromTo(1.0f, 4.0f);
-            anim.sprite.setTextureRect(textureRect(m_spoutTexture, 0));
-            anim.sprite.scale({ m_scale, m_scale });
-
-            anim.sprite.setPosition(
-                { (util::center(rect).x - (anim.sprite.getGlobalBounds().size.x * 0.5f)),
-                  rect.position.y });
+            m_spoutAnims.emplace_back(
+                t_context,
+                m_spoutTexture,
+                textureRect(m_spoutTexture, 0),
+                rect,
+                sf::Vector2f{ m_scale, m_scale });
         }
     }
 
@@ -146,18 +204,13 @@ namespace bramblefore
             else
             {
                 anim.elapsed_time_sec += t_frameTimeSec;
-                if (anim.elapsed_time_sec > anim.time_between_drips)
+                if (anim.elapsed_time_sec > anim.time_between_drip_sec)
                 {
                     anim.elapsed_time_sec = 0.0f;
                     anim.is_dripping      = true;
 
-                    AcidDropAnim & drop{ m_dropAnims.emplace_back(m_dropTexture) };
-                    drop.region = anim.region;
-                    drop.sprite.scale({ m_scale, m_scale });
-
-                    drop.sprite.setPosition({ (util::center(anim.region).x -
-                                               (drop.sprite.getGlobalBounds().size.x * 0.5f)),
-                                              anim.region.position.y });
+                    m_dropAnims.emplace_back(
+                        m_dropTexture, anim.region, sf::Vector2f{ m_scale, m_scale });
                 }
             }
         }
@@ -176,16 +229,8 @@ namespace bramblefore
                 didAnyDropsLand = true;
                 anim.is_alive   = false;
 
-                AcidSplashAnim & splash{ m_splashAnims.emplace_back(m_splashTexture) };
-                splash.sprite.setTextureRect(textureRect(m_splashTexture, 0));
-
-                const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.0f) };
-                splash.sprite.scale({ scale, scale });
-
-                splash.sprite.setPosition({ (util::center(anim.region).x -
-                                             (splash.sprite.getGlobalBounds().size.x * 0.5f)),
-                                            (util::bottom(anim.region) -
-                                             (splash.sprite.getGlobalBounds().size.y * 0.7f)) });
+                AcidSplashAnim & splash{ m_splashAnims.emplace_back(
+                    t_context, m_splashTexture, textureRect(m_splashTexture, 0), anim.region) };
 
                 if (t_context.layout.wholeRect().findIntersection(splash.sprite.getGlobalBounds()))
                 {
