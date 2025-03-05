@@ -337,7 +337,7 @@ namespace bramblefore
             const sf::FloatRect rockRect{ anim.sprite.getGlobalBounds() };
             if (t_avatarRect.findIntersection(rockRect))
             {
-                return makeHarm(rockRect);
+                return makeHarm(anim.rock, rockRect);
             }
         }
 
@@ -348,19 +348,36 @@ namespace bramblefore
 
             if (t_avatarRect.findIntersection(shatterRect))
             {
-                return makeHarm(shatterRect);
+                return makeHarm(anim.rock, shatterRect);
             }
         }
 
         return Harm{};
     }
 
-    Harm FallingRockAnimationLayer::makeHarm(const sf::FloatRect & t_rect) const noexcept
+    Harm FallingRockAnimationLayer::makeHarm(
+        const Rock t_rock, const sf::FloatRect & t_rect) const noexcept
     {
         Harm harm;
-        harm.rect   = t_rect;
-        harm.damage = 12;
-        harm.sfx    = "";
+        harm.rect = t_rect;
+        harm.sfx  = "";
+
+        if (t_rock == Rock::Rock1)
+        {
+            harm.damage = 20;
+        }
+        else if (t_rock == Rock::Rock2)
+        {
+            harm.damage = 16;
+        }
+        else if (t_rock == Rock::Rock3)
+        {
+            harm.damage = 12;
+        }
+        else
+        {
+            harm.damage = 8;
+        }
 
         return harm;
     }
