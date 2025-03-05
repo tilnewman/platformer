@@ -74,9 +74,9 @@ namespace bramblefore
 
         //
 
-        m_emitterSprites.reserve(t_rectDirs.size());
         m_anims.reserve(t_rectDirs.size());
-
+        m_emitterSprites.reserve(t_rectDirs.size());
+        
         for (const FlameTrapRectDir & rectDir : t_rectDirs)
         {
             sf::Sprite & emitterSprite{ m_emitterSprites.emplace_back(

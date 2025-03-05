@@ -34,6 +34,7 @@ namespace bramblefore
 
         //
 
+        m_anims.reserve(t_rects.size());
         for (const sf::FloatRect & rect : t_rects)
         {
             SpikeTrapAnim & anim{ m_anims.emplace_back(m_texture) };

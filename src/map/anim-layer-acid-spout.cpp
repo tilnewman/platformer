@@ -106,6 +106,7 @@ namespace bramblefore
 
         //
 
+        m_spoutAnims.reserve(t_rects.size());
         for (const sf::FloatRect & rect : t_rects)
         {
             m_spoutAnims.emplace_back(

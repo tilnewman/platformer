@@ -115,6 +115,7 @@ namespace bramblefore
 
         //
 
+        m_hangingAnims.reserve(t_rectRocks.size());
         for (const RectRock & rectRock : t_rectRocks)
         {
             m_hangingAnims.emplace_back(

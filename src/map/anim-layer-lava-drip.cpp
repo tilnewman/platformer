@@ -73,6 +73,7 @@ namespace bramblefore
 
         //
 
+        m_dripperAnims.reserve(t_rectSizes.size());
         for (const LavaRectSize & rectSize : t_rectSizes)
         {
             LavaDripperAnim & anim{ m_dripperAnims.emplace_back(

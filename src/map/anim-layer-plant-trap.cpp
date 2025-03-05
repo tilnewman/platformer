@@ -27,9 +27,14 @@ namespace bramblefore
     {
         HarmCollisionManager::instance().addOwner(*this);
 
+        //
+
         util::TextureLoader::load(
             m_texture, (t_context.settings.media_path / "image/anim/plant-trap.png"));
 
+        //
+
+        m_anims.reserve(t_rects.size());
         for (const sf::FloatRect & rect : t_rects)
         {
             PlantTrapAnim & anim{ m_anims.emplace_back(m_texture) };

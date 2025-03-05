@@ -121,6 +121,8 @@ namespace bramblefore
         const float spawnSecMin{ 1.5f };
         const float spawnSecMax{ 4.0f };
 
+        m_anims.reserve(t_rects.size() * 4);
+        m_skullBlockSprites.reserve(t_rects.size());
         for (const sf::FloatRect & rect : t_rects)
         {
             sf::Sprite & blockSprite{ m_skullBlockSprites.emplace_back(m_skullBlockTexture) };
