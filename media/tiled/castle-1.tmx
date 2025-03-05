@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="300" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="31">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="300" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="32">
  <editorsettings>
   <export target="../map/castle-1.json" format="json"/>
  </editorsettings>
@@ -226,6 +226,9 @@
   <object id="28" x="2000" y="832" width="2800" height="192"/>
   <object id="29" x="1808" y="896" width="192" height="128"/>
   <object id="30" x="1840" y="768" width="128" height="16"/>
+ </objectgroup>
+ <objectgroup id="13" name="metal-trap">
+  <object id="31" x="2160" y="816" width="96" height="16"/>
  </objectgroup>
  <objectgroup id="5" name="spawn">
   <object id="2" name="exit" x="4768" y="304" width="32" height="528"/>

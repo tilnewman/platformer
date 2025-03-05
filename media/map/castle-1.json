@@ -372,6 +372,28 @@
         }, 
         {
          "draworder":"topdown",
+         "id":13,
+         "name":"metal-trap",
+         "objects":[
+                {
+                 "height":16,
+                 "id":31,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":96,
+                 "x":2160,
+                 "y":816
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":5,
          "name":"spawn",
          "objects":[
@@ -480,8 +502,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":13,
- "nextobjectid":31,
+ "nextlayerid":14,
+ "nextobjectid":32,
  "orientation":"orthogonal",
  "properties":[
         {
