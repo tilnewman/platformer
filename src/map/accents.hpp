@@ -3,8 +3,6 @@
 //
 // accents.hpp
 //
-#include "util/sfml-defaults.hpp"
-
 #include <string_view>
 #include <vector>
 
@@ -127,11 +125,19 @@ namespace bramblefore
 
     struct AccentAnim
     {
-        Accent which{ Accent::Vine1 }; // anything works here
-        std::size_t anim_index{ 0 };
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
-        float elapsed_time_sec{ 0.0f };
-        float time_per_frame_sec{ 0.0f };
+        explicit AccentAnim(
+            const Context & t_context,
+            const Accent t_accent,
+            const sf::Texture & t_texture,
+            const sf::IntRect & t_textureRect,
+            const sf::FloatRect & t_screenRect,
+            const std::size_t t_frameIndex);
+
+        Accent which;
+        std::size_t frame_index;
+        sf::Sprite sprite;
+        float elapsed_time_sec;
+        float time_per_frame_sec;
     };
 
     //
@@ -145,7 +151,7 @@ namespace bramblefore
 
         // add() with no remove() because lamps and vines never leave the map
         void add(
-            const Context & t_context, const sf::FloatRect & t_rect, const std::string & t_name);
+            const Context & t_context, const sf::FloatRect & t_rect, const Accent t_accent);
 
         void update(Context & t_context, const float t_frameTimeSec);
 
@@ -164,7 +170,6 @@ namespace bramblefore
       private:
         std::vector<sf::Texture> m_textures;
         std::vector<AccentAnim> m_anims;
-        sf::Vector2f m_scale;
     };
 
 } // namespace bramblefore

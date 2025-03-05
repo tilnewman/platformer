@@ -19,21 +19,51 @@
 namespace bramblefore
 {
 
+    AccentAnim::AccentAnim(
+        const Context & t_context,
+        const Accent t_accent,
+        const sf::Texture & t_texture,
+        const sf::IntRect & t_textureRect,
+        const sf::FloatRect & t_screenRect,
+        const std::size_t t_frameIndex)
+        : which{ t_accent }
+        , frame_index{ t_frameIndex }
+        , sprite{ t_texture, t_textureRect }
+        , elapsed_time_sec{ 0.0f }
+        , time_per_frame_sec{ 0.0f }
+    {
+        const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 2.4f) };
+        sprite.setScale({ scale, scale });
+
+        if (isVine(which))
+        {
+            time_per_frame_sec = t_context.random.fromTo(0.35f, 0.8f);
+
+            sprite.setPosition(
+                { (util::center(t_screenRect).x - (sprite.getGlobalBounds().size.x * 0.5f)),
+                  t_screenRect.position.y });
+        }
+        else
+        {
+            time_per_frame_sec = t_context.random.fromTo(0.08f, 0.18f);
+
+            sprite.setPosition(
+                { (util::center(t_screenRect).x - (sprite.getGlobalBounds().size.x * 0.5f)),
+                  (util::bottom(t_screenRect) - sprite.getGlobalBounds().size.y) });
+        }
+    }
+
+    //
+
     AccentAnimations::AccentAnimations()
         : m_textures{}
         , m_anims{}
-        , m_scale{}
     {
         m_anims.reserve(32); // just a harmless guess based on knowledge of maps
     }
 
     void AccentAnimations::setup(const Context & t_context)
     {
-        // one same scale for all accent images
-        const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 2.4f) };
-        m_scale.x = scale;
-        m_scale.y = scale;
-
         m_textures.reserve(static_cast<std::size_t>(Accent::Count)); // prevent reallocations
         for (std::size_t accentIndex(0); accentIndex < static_cast<std::size_t>(Accent::Count);
              ++accentIndex)
@@ -48,34 +78,15 @@ namespace bramblefore
     }
 
     void AccentAnimations::add(
-        const Context & t_context, const sf::FloatRect & t_rect, const std::string & t_name)
+        const Context & t_context, const sf::FloatRect & t_rect, const Accent t_accent)
     {
-        const Accent accent{ stringToAccent(t_name) };
-        M_CHECK((Accent::Count != accent), "\"" << t_name << "\" is an unknown Accent name");
-
-        AccentAnim & anim{ m_anims.emplace_back() };
-        anim.which      = accent;
-        anim.anim_index = t_context.random.zeroToOneLessThan(frameCount(anim.which));
-        anim.sprite.setTexture(m_textures.at(static_cast<std::size_t>(accent)), true);
-        anim.sprite.setTextureRect(textureRect(accent, 0));
-        anim.sprite.setScale(m_scale);
-
-        if (isVine(accent))
-        {
-            anim.time_per_frame_sec = t_context.random.fromTo(0.35f, 0.8f);
-
-            anim.sprite.setPosition(
-                { (util::center(t_rect).x - (anim.sprite.getGlobalBounds().size.x * 0.5f)),
-                  t_rect.position.y });
-        }
-        else
-        {
-            anim.time_per_frame_sec = t_context.random.fromTo(0.08f, 0.18f);
-
-            anim.sprite.setPosition(
-                { (util::center(t_rect).x - (anim.sprite.getGlobalBounds().size.x * 0.5f)),
-                  (util::bottom(t_rect) - anim.sprite.getGlobalBounds().size.y) });
-        }
+        m_anims.emplace_back(
+            t_context,
+            t_accent,
+            m_textures.at(static_cast<std::size_t>(t_accent)),
+            textureRect(t_accent, 0),
+            t_rect,
+            t_context.random.zeroToOneLessThan(frameCount(t_accent)));
     }
 
     std::size_t AccentAnimations::frameCount(const Accent t_which) const
@@ -114,13 +125,13 @@ namespace bramblefore
             {
                 anim.elapsed_time_sec -= anim.time_per_frame_sec;
 
-                ++anim.anim_index;
-                if (anim.anim_index >= frameCount(anim.which))
+                ++anim.frame_index;
+                if (anim.frame_index >= frameCount(anim.which))
                 {
-                    anim.anim_index = 0;
+                    anim.frame_index = 0;
                 }
 
-                anim.sprite.setTextureRect(textureRect(anim.which, anim.anim_index));
+                anim.sprite.setTextureRect(textureRect(anim.which, anim.frame_index));
             }
         }
     }

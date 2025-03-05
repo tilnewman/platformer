@@ -478,8 +478,15 @@ namespace bramblefore
     {
         for (const nlohmann::json & accentJson : t_json["objects"])
         {
-            t_context.accent.add(
-                t_context, parseAndConvertRect(t_context, accentJson), accentJson["name"]);
+            const std::string nameStr{ accentJson["name"] };
+            const Accent accent{ stringToAccent(nameStr) };
+
+            M_CHECK(
+                (accent != Accent::Count),
+                "Error Parsing Level File " << m_pathStr << ":  Accent layer name is invalid \""
+                                            << nameStr << "\"");
+
+            t_context.accent.add(t_context, parseAndConvertRect(t_context, accentJson), accent);
         }
     }
 
