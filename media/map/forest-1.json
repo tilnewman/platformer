@@ -773,8 +773,30 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":160,
-                 "x":784,
+                 "width":112,
+                 "x":848,
+                 "y":1248
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":10,
+         "name":"plant-trap",
+         "objects":[
+                {
+                 "height":80,
+                 "id":59,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":96,
+                 "x":720,
                  "y":1248
                 }],
          "opacity":1,
@@ -882,8 +904,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":10,
- "nextobjectid":59,
+ "nextlayerid":11,
+ "nextobjectid":60,
  "orientation":"orthogonal",
  "properties":[
         {
