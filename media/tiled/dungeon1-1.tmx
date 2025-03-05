@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="400" height="88" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="154">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="400" height="88" tilewidth="16" tileheight="16" infinite="0" nextlayerid="20" nextobjectid="158">
  <editorsettings>
   <export target="../map/dungeon1-1.json" format="json"/>
  </editorsettings>
@@ -403,5 +403,11 @@
  <objectgroup id="5" name="spawn">
   <object id="6" name="enter" x="112" y="1024" width="32" height="32"/>
   <object id="7" name="exit" x="2800" y="688" width="16" height="496"/>
+ </objectgroup>
+ <objectgroup id="19" name="flame-trap">
+  <object id="154" name="up" x="528" y="1040" width="48" height="16"/>
+  <object id="155" name="left" x="512" y="1056" width="16" height="48"/>
+  <object id="156" name="right" x="576" y="1056" width="16" height="48"/>
+  <object id="157" name="down" x="528" y="1104" width="48" height="16"/>
  </objectgroup>
 </map>

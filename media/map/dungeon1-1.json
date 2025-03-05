@@ -1497,9 +1497,64 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":19,
+         "name":"flame-trap",
+         "objects":[
+                {
+                 "height":16,
+                 "id":154,
+                 "name":"up",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":48,
+                 "x":528,
+                 "y":1040
+                }, 
+                {
+                 "height":48,
+                 "id":155,
+                 "name":"left",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":512,
+                 "y":1056
+                }, 
+                {
+                 "height":48,
+                 "id":156,
+                 "name":"right",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":576,
+                 "y":1056
+                }, 
+                {
+                 "height":16,
+                 "id":157,
+                 "name":"down",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":48,
+                 "x":528,
+                 "y":1104
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":19,
- "nextobjectid":154,
+ "nextlayerid":20,
+ "nextobjectid":158,
  "orientation":"orthogonal",
  "properties":[
         {

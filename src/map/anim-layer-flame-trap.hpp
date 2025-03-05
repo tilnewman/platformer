@@ -5,11 +5,10 @@
 //
 #include "map/tile-layer.hpp"
 #include "subsystem/harm-collision-manager.hpp"
-#include "util/sfml-defaults.hpp"
 
-#include <vector>
 #include <string>
 #include <string_view>
+#include <vector>
 
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -64,10 +63,7 @@ namespace bramblefore
 
     struct FlameTrapRectDir
     {
-        explicit FlameTrapRectDir(const sf::FloatRect & t_rect, const TrapDirection t_direction)
-            : rect{ t_rect }
-            , direction{ t_direction }
-        {}
+        explicit FlameTrapRectDir(const sf::FloatRect & t_rect, const TrapDirection t_direction);
 
         sf::FloatRect rect;
         TrapDirection direction;
@@ -77,14 +73,23 @@ namespace bramblefore
 
     struct FlameAnim
     {
-        float elapsed_time_sec{ 0.0f };
-        float time_between_flaming_sec{ 0.0f };
-        float time_between_frames_sec{ 0.15f };
-        std::size_t frame_index{ 0 };
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
-        bool is_flaming{ false };
-        TrapDirection direction{ TrapDirection::Up }; // anything works here
-        sf::FloatRect coll_rect{};
+        explicit FlameAnim(
+            const TrapDirection t_dir,
+            const sf::Texture & t_texture,
+            const sf::IntRect & t_textureRect,
+            const float t_timeBetweenFlamingSec,
+            const float t_scale,
+            const sf::FloatRect & t_screenRect,
+            const sf::FloatRect & t_emitterRect);
+
+        float elapsed_time_sec;
+        float time_between_flaming_sec;
+        float time_between_frames_sec;
+        std::size_t frame_index;
+        sf::Sprite sprite;
+        bool is_flaming;
+        TrapDirection direction;
+        sf::FloatRect coll_rect;
     };
 
     //
