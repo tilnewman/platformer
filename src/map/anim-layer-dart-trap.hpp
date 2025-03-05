@@ -27,11 +27,7 @@ namespace bramblefore
 
     struct DartRectDir
     {
-        explicit DartRectDir(const bool t_isLeft, const sf::FloatRect & t_rect)
-            : is_left{ t_isLeft }
-            , rect{ t_rect }
-
-        {}
+        explicit DartRectDir(const bool t_isLeft, const sf::FloatRect & t_rect);
 
         bool is_left;
         sf::FloatRect rect;
@@ -45,13 +41,8 @@ namespace bramblefore
             const bool t_isLeft,
             const sf::Texture & t_texture,
             const sf::FloatRect & t_rect,
-            const float t_timeBetweenShotsSec)
-            : is_left{ t_isLeft }
-            , sprite{ t_texture }
-            , region{ t_rect }
-            , time_between_shots_sec{ t_timeBetweenShotsSec }
-            , elapsed_time_sec{ 0.0 }
-        {}
+            const float t_timeBetweenShotsSec,
+            const float t_scale);
 
         bool is_left;
         sf::Sprite sprite;
@@ -65,12 +56,11 @@ namespace bramblefore
     struct Dart
     {
         explicit Dart(
-            const bool t_isLeft, const sf::Texture & t_texture, const sf::FloatRect & t_rect)
-            : is_alive{ true }
-            , is_left{ t_isLeft }
-            , sprite{ t_texture }
-            , region{ t_rect }
-        {}
+            const bool t_isLeft,
+            const sf::Texture & t_texture,
+            const sf::FloatRect & t_rect,
+            const float t_scale,
+            const sf::FloatRect & t_shooterGlobalBounds);
 
         bool is_alive;
         bool is_left;

@@ -20,6 +20,76 @@
 namespace bramblefore
 {
 
+    DartRectDir::DartRectDir(const bool t_isLeft, const sf::FloatRect & t_rect)
+        : is_left{ t_isLeft }
+        , rect{ t_rect }
+    {}
+
+    //
+
+    Shooter::Shooter(
+        const bool t_isLeft,
+        const sf::Texture & t_texture,
+        const sf::FloatRect & t_rect,
+        const float t_timeBetweenShotsSec,
+        const float t_scale)
+        : is_left{ t_isLeft }
+        , sprite{ t_texture }
+        , region{ t_rect }
+        , time_between_shots_sec{ t_timeBetweenShotsSec }
+        , elapsed_time_sec{ 0.0 }
+    {
+        sprite.setScale({ t_scale, t_scale });
+
+        if (is_left)
+        {
+            sprite.scale({ -1.0f, 1.0f });
+
+            sprite.setPosition(
+                { (util::right(t_rect) + (sprite.getGlobalBounds().size.x * 0.5f)),
+                  (util::center(t_rect).y - (sprite.getGlobalBounds().size.y * 0.5f)) });
+        }
+        else
+        {
+            sprite.setPosition(
+                { (t_rect.position.x - (sprite.getGlobalBounds().size.x * 0.5f)),
+                  (util::center(t_rect).y - (sprite.getGlobalBounds().size.y * 0.5f)) });
+        }
+    }
+
+    //
+
+    Dart::Dart(
+        const bool t_isLeft,
+        const sf::Texture & t_texture,
+        const sf::FloatRect & t_rect,
+        const float t_scale,
+        const sf::FloatRect & t_shooterGlobalBounds)
+        : is_alive{ true }
+        , is_left{ t_isLeft }
+        , sprite{ t_texture }
+        , region{ t_rect }
+    {
+        sprite.setScale({ t_scale, t_scale });
+
+        if (is_left)
+        {
+            sprite.scale({ -1.0f, 1.0f });
+
+            sprite.setPosition(
+                { (t_shooterGlobalBounds.position.x + sprite.getGlobalBounds().size.x),
+                  (util::center(region).y - (sprite.getGlobalBounds().size.y * 0.5f)) });
+        }
+        else
+        {
+            sprite.setPosition(
+                { (util::right(t_shooterGlobalBounds) - sprite.getGlobalBounds().size.x),
+                  (util::center(region).y - (sprite.getGlobalBounds().size.y * 0.5f)) });
+        }
+    }
+
+    //
+
     DartTrapAnimationLayer::DartTrapAnimationLayer(
         Context & t_context, const std::vector<DartRectDir> & t_rectDirs)
         : m_shooterTexture{}
@@ -39,35 +109,15 @@ namespace bramblefore
 
         //
 
-        const float shooterScale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.5f) };
-
         m_shooters.reserve(t_rectDirs.size());
         for (const DartRectDir & rectDir : t_rectDirs)
         {
-            Shooter & shooter{ m_shooters.emplace_back(
+            m_shooters.emplace_back(
                 rectDir.is_left,
                 m_shooterTexture,
                 rectDir.rect,
-                t_context.random.fromTo(3.5f, 6.5f)) };
-
-            shooter.sprite.setScale({ shooterScale, shooterScale });
-
-            if (rectDir.is_left)
-            {
-                shooter.sprite.scale({ -1.0f, 1.0f });
-
-                shooter.sprite.setPosition({ (util::right(rectDir.rect) +
-                                              (shooter.sprite.getGlobalBounds().size.x * 0.5f)),
-                                             (util::center(rectDir.rect).y -
-                                              (shooter.sprite.getGlobalBounds().size.y * 0.5f)) });
-            }
-            else
-            {
-                shooter.sprite.setPosition(
-                    { (rectDir.rect.position.x - (shooter.sprite.getGlobalBounds().size.x * 0.5f)),
-                      (util::center(rectDir.rect).y -
-                       (shooter.sprite.getGlobalBounds().size.y * 0.5f)) });
-            }
+                t_context.random.fromTo(3.5f, 6.5f),
+                t_context.layout.calScaleBasedOnResolution(t_context, 1.5f));
         }
     }
 
@@ -124,29 +174,12 @@ namespace bramblefore
             {
                 shooter.elapsed_time_sec -= shooter.time_between_shots_sec;
 
-                Dart & dart{ m_darts.emplace_back(shooter.is_left, m_dartTexture, shooter.region) };
-
-                const float dartScale{ t_context.layout.calScaleBasedOnResolution(
-                    t_context, 1.1f) };
-
-                dart.sprite.setScale({ dartScale, dartScale });
-
-                if (dart.is_left)
-                {
-                    dart.sprite.scale({ -1.0f, 1.0f });
-
-                    dart.sprite.setPosition({ (shooter.sprite.getGlobalBounds().position.x +
-                                               dart.sprite.getGlobalBounds().size.x),
-                                              (util::center(dart.region).y -
-                                               (dart.sprite.getGlobalBounds().size.y * 0.5f)) });
-                }
-                else
-                {
-                    dart.sprite.setPosition({ (util::right(shooter.sprite.getGlobalBounds()) -
-                                               dart.sprite.getGlobalBounds().size.x),
-                                              (util::center(dart.region).y -
-                                               (dart.sprite.getGlobalBounds().size.y * 0.5f)) });
-                }
+                m_darts.emplace_back(
+                    shooter.is_left,
+                    m_dartTexture,
+                    shooter.region,
+                    t_context.layout.calScaleBasedOnResolution(t_context, 1.1f),
+                    shooter.sprite.getGlobalBounds());
 
                 if (wholeScreenRect.findIntersection(shooter.sprite.getGlobalBounds()))
                 {
