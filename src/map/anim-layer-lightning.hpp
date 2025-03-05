@@ -27,13 +27,12 @@ namespace bramblefore
 
     struct LightningAnim
     {
-        explicit LightningAnim(const sf::Texture & t_texture)
-            : sprite{ t_texture }
-            , is_animating{ false }
-            , frame_index{ 0 }
-            , elapsed_time_sec{ 0.0f }
-            , time_between_anim_sec{ 0.0f }
-        {}
+        explicit LightningAnim(
+            const sf::Texture & t_texture,
+            const sf::IntRect & t_textureRect,
+            const float t_scale,
+            const float t_timeBetweenAnimSec,
+            const sf::FloatRect & t_screenRect);
 
         sf::Sprite sprite;
         bool is_animating;

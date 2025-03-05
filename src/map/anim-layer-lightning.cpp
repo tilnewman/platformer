@@ -19,6 +19,26 @@
 namespace bramblefore
 {
 
+    LightningAnim::LightningAnim(
+        const sf::Texture & t_texture,
+        const sf::IntRect & t_textureRect,
+        const float t_scale,
+        const float t_timeBetweenAnimSec,
+        const sf::FloatRect & t_screenRect)
+        : sprite{ t_texture, t_textureRect }
+        , is_animating{ false }
+        , frame_index{ 0 }
+        , elapsed_time_sec{ 0.0f }
+        , time_between_anim_sec{ t_timeBetweenAnimSec }
+    {
+        sprite.scale({ t_scale, t_scale });
+
+        sprite.setPosition({ (util::center(t_screenRect).x - sprite.getGlobalBounds().size.x),
+                             (util::bottom(t_screenRect) - sprite.getGlobalBounds().size.y) });
+    }
+
+    //
+
     LightningAnimationLayer::LightningAnimationLayer(
         Context & t_context, const std::vector<sf::FloatRect> & t_rects)
         : m_texture{}
@@ -28,27 +48,18 @@ namespace bramblefore
     {
         HarmCollisionManager::instance().addOwner(*this);
 
-        //
-
         util::TextureLoader::load(
             m_texture, (t_context.settings.media_path / "image/anim/lightning.png"), true);
-
-        //
 
         m_anims.reserve(t_rects.size());
         for (const sf::FloatRect & rect : t_rects)
         {
-            LightningAnim & anim{ m_anims.emplace_back(m_texture) };
-            anim.sprite.setTextureRect(textureRect(0));
-
-            const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.0f) };
-            anim.sprite.scale({ scale, scale });
-
-            anim.sprite.setPosition(
-                { (util::center(rect).x - anim.sprite.getGlobalBounds().size.x),
-                  (util::bottom(rect) - anim.sprite.getGlobalBounds().size.y) });
-
-            anim.time_between_anim_sec = t_context.random.fromTo(2.0f, 6.0f);
+            m_anims.emplace_back(
+                m_texture,
+                textureRect(0),
+                t_context.layout.calScaleBasedOnResolution(t_context, 1.0f),
+                t_context.random.fromTo(2.0f, 6.0f),
+                rect);
         }
     }
 
