@@ -69,10 +69,7 @@ namespace bramblefore
 
     struct WaterRockRect
     {
-        WaterRockRect(const WaterRock t_rock, const sf::FloatRect & t_rect)
-            : rock{ t_rock }
-            , rect{ t_rect }
-        {}
+        explicit WaterRockRect(const WaterRock t_rock, const sf::FloatRect & t_rect);
 
         WaterRock rock;
         sf::FloatRect rect;
@@ -83,13 +80,12 @@ namespace bramblefore
     struct WaterRockAnim
     {
         explicit WaterRockAnim(
-            const WaterRock t_rock, const sf::Texture & t_texture, const float t_timePerFrameSec)
-            : rock{ t_rock }
-            , sprite{ t_texture }
-            , elapsed_time_sec{ 0.0f }
-            , time_per_frame_sec{ t_timePerFrameSec }
-            , frame_index{ 0 }
-        {}
+            const WaterRock t_rock,
+            const sf::Texture & t_texture,
+            const sf::IntRect & t_textureRect,
+            const float t_timePerFrameSec,
+            const float t_scale,
+            const sf::FloatRect & t_screenRect);
 
         WaterRock rock;
         sf::Sprite sprite;

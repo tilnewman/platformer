@@ -20,6 +20,48 @@
 namespace bramblefore
 {
 
+    WaterRockRect::WaterRockRect(const WaterRock t_rock, const sf::FloatRect & t_rect)
+        : rock{ t_rock }
+        , rect{ t_rect }
+    {}
+
+    //
+
+    WaterRockAnim::WaterRockAnim(
+        const WaterRock t_rock,
+        const sf::Texture & t_texture,
+        const sf::IntRect & t_textureRect,
+        const float t_timePerFrameSec,
+        const float t_scale,
+        const sf::FloatRect & t_screenRect)
+        : rock{ t_rock }
+        , sprite{ t_texture, t_textureRect }
+        , elapsed_time_sec{ 0.0f }
+        , time_per_frame_sec{ t_timePerFrameSec }
+        , frame_index{ 0 }
+    {
+        sprite.setScale({ t_scale, t_scale });
+
+        sprite.setPosition(
+            { (util::center(t_screenRect).x - (sprite.getGlobalBounds().size.x * 0.5f)),
+              (util::bottom(t_screenRect) - sprite.getGlobalBounds().size.y) });
+
+        if (WaterRock::Flat2 == rock)
+        {
+            sprite.move({ 0.0f, (sprite.getGlobalBounds().size.y * 0.2f) });
+        }
+        else if (WaterRock::Medium1 == rock)
+        {
+            sprite.move({ 0.0f, (sprite.getGlobalBounds().size.y * 0.02f) });
+        }
+        else if (WaterRock::Pillar == rock)
+        {
+            sprite.move({ 0.0f, (sprite.getGlobalBounds().size.y * 0.125f) });
+        }
+    }
+
+    //
+
     WaterRockAnimationLayer::WaterRockAnimationLayer(
         Context & t_context, const std::vector<WaterRockRect> & t_rockRects)
         : m_textures{}
@@ -45,32 +87,13 @@ namespace bramblefore
         m_rockAnims.reserve(t_rockRects.size());
         for (const WaterRockRect & rockRect : t_rockRects)
         {
-            WaterRockAnim & anim{ m_rockAnims.emplace_back(
-                rockRect.rock, getTexture(rockRect.rock), t_context.random.fromTo(0.5f, 1.25f)) };
-
-            anim.sprite.setTextureRect(textureRect(rockRect.rock, 0));
-            anim.sprite.setScale({ rockScale, rockScale });
-
-            //
-
-            anim.sprite.setPosition(
-                { (util::center(rockRect.rect).x - (anim.sprite.getGlobalBounds().size.x * 0.5f)),
-                  (util::bottom(rockRect.rect) - anim.sprite.getGlobalBounds().size.y) });
-
-            if (rockRect.rock == WaterRock::Flat2)
-            {
-                anim.sprite.move({ 0.0f, (anim.sprite.getGlobalBounds().size.y * 0.2f) });
-            }
-            else if (rockRect.rock == WaterRock::Medium1)
-            {
-                anim.sprite.move({ 0.0f, (anim.sprite.getGlobalBounds().size.y * 0.02f) });
-            }
-            else if (rockRect.rock == WaterRock::Pillar)
-            {
-                anim.sprite.move({ 0.0f, (anim.sprite.getGlobalBounds().size.y * 0.125f) });
-            }
-
-            //
+            WaterRockAnim anim{ m_rockAnims.emplace_back(
+                rockRect.rock,
+                getTexture(rockRect.rock),
+                textureRect(rockRect.rock, 0),
+                t_context.random.fromTo(0.5f, 1.25f),
+                rockScale,
+                rockRect.rect) };
 
             sf::FloatRect collRect{ anim.sprite.getGlobalBounds() };
             if (rockRect.rock == WaterRock::Flat1)
