@@ -371,7 +371,7 @@ namespace bramblefore
             const sf::FloatRect acidRect{ anim.sprite.getGlobalBounds() };
             if (t_avatarRect.findIntersection(acidRect))
             {
-                return makeHarm(acidRect);
+                return makeHarm(anim.size, acidRect);
             }
         }
 
@@ -382,19 +382,32 @@ namespace bramblefore
 
             if (t_avatarRect.findIntersection(acidRect))
             {
-                return makeHarm(acidRect);
+                return makeHarm(anim.size, acidRect);
             }
         }
 
         return Harm{};
     }
 
-    Harm LavaDripAnimationLayer::makeHarm(const sf::FloatRect & t_rect) const noexcept
+    Harm LavaDripAnimationLayer::makeHarm(
+        const DripSize t_size, const sf::FloatRect & t_rect) const noexcept
     {
         Harm harm;
-        harm.rect   = t_rect;
-        harm.damage = 18;
-        harm.sfx    = "acid";
+        harm.rect = t_rect;
+        harm.sfx  = "acid";
+
+        if (t_size == DripSize::Large)
+        {
+            harm.damage = 24;
+        }
+        else if (t_size == DripSize::Medium)
+        {
+            harm.damage = 18;
+        }
+        else
+        {
+            harm.damage = 14;
+        }
 
         return harm;
     }

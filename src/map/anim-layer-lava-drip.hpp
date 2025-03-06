@@ -172,7 +172,8 @@ namespace bramblefore
         [[nodiscard]] sf::IntRect
             textureRect(const sf::Texture & t_texture, const std::size_t t_frame) const noexcept;
 
-        [[nodiscard]] Harm makeHarm(const sf::FloatRect & t_rect) const noexcept;
+        [[nodiscard]] Harm
+            makeHarm(const DripSize t_size, const sf::FloatRect & t_rect) const noexcept;
 
         [[nodiscard]] inline const sf::Texture & dripperTexture(const DripSize t_size) noexcept
         {
