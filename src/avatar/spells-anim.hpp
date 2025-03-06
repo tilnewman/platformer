@@ -4,7 +4,6 @@
 // spells-anim.hpp
 //
 #include "player/player-info.hpp"
-#include "util/sfml-defaults.hpp"
 
 #include <vector>
 
@@ -28,12 +27,19 @@ namespace bramblefore
 
     struct SpellAnim
     {
-        bool is_alive{ true };
-        Spell spell{ Spell::Comet }; // anything works here
-        std::size_t frame_index{ 0 };
-        float elapsed_time_sec{ 0.0f };
-        float time_per_frame_sec{ 0.0f };
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
+        explicit SpellAnim(
+            const Spell t_spell,
+            const sf::Texture & t_texture,
+            const float t_timePerFrameSec,
+            const sf::Vector2f & t_scale,
+            const sf::Vector2f & t_position);
+
+        bool is_alive;
+        Spell spell;
+        std::size_t frame_index;
+        float elapsed_time_sec;
+        float time_per_frame_sec;
+        sf::Sprite sprite;
     };
 
     //
