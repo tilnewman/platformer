@@ -15,6 +15,7 @@
 #include "subsystem/font.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "util/check-macros.hpp"
+#include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
 #include "util/texture-loader.hpp"
 
@@ -132,7 +133,7 @@ namespace bramblefore
 
         m_titleText.setPosition(
             { (util::center(screenRect).x - (m_titleText.getGlobalBounds().size.x * 0.5f)),
-              ((screenRect.size.y - m_titleText.getGlobalBounds().size.y) - (vertPad * 0.5f)) });
+              screenRect.size.y });
 
         m_credits.reserve(16);
 
@@ -142,7 +143,7 @@ namespace bramblefore
             0.25f,
             "Ziesche Til Newman",
             "Software, C++, SFML, CMake",
-            screenRect.size.y);
+            (util::bottom(m_titleText) + vertPad));
 
         m_credits.emplace_back(
             t_context,
