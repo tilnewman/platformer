@@ -469,8 +469,15 @@ namespace bramblefore
     {
         for (const nlohmann::json & pickupJson : t_json["objects"])
         {
-            t_context.pickup.add(
-                t_context, parseAndConvertRect(t_context, pickupJson), pickupJson["name"]);
+            const std::string nameStr{ pickupJson["name"] };
+            const Pickup pickup{ stringToPickup(nameStr) };
+
+            M_CHECK(
+                (pickup != Pickup::Count),
+                "Error Parsing Level File " << m_pathStr << ":  Invalid pickup layer name=\""
+                                            << nameStr << "\"");
+
+            t_context.pickup.add(t_context, parseAndConvertRect(t_context, pickupJson), pickup);
         }
     }
 
@@ -699,8 +706,14 @@ namespace bramblefore
 
         for (const nlohmann::json & trapJson : t_json["objects"])
         {
-            rectDirs.emplace_back(
-                (trapJson["name"] == "left"), parseAndConvertRect(t_context, trapJson));
+            const std::string nameStr{ trapJson["name"] };
+
+            M_CHECK(
+                ((nameStr == "left") || (nameStr == "right")),
+                "Error Parsing Level File " << m_pathStr << ":  Dart Trap layer name is invalid \""
+                                            << nameStr << "\".  Should be left or right.");
+
+            rectDirs.emplace_back((nameStr == "left"), parseAndConvertRect(t_context, trapJson));
         }
 
         t_context.level.tile_layers.push_back(

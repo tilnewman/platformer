@@ -73,16 +73,13 @@ namespace bramblefore
     }
 
     void PickupAnimations::add(
-        const Context & t_context, const sf::FloatRect & t_rect, const std::string & t_name)
+        const Context & t_context, const sf::FloatRect & t_rect, const Pickup t_pickup)
     {
-        const Pickup pickup{ stringToPickup(t_name) };
-        M_CHECK((Pickup::Count != pickup), "t_name=\"" << t_name << "\" which is an unknown name.");
-
         m_anims.emplace_back(
-            pickup,
-            m_textures.at(static_cast<std::size_t>(pickup)),
-            textureRect(pickup, 0),
-            t_context.random.zeroToOneLessThan(frameCount(pickup)),
+            t_pickup,
+            m_textures.at(static_cast<std::size_t>(t_pickup)),
+            textureRect(t_pickup, 0),
+            t_context.random.zeroToOneLessThan(frameCount(t_pickup)),
             t_context.layout.calScaleBasedOnResolution(t_context, 2.0f),
             t_rect);
     }
