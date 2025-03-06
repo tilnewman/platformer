@@ -70,8 +70,10 @@ namespace bramblefore
 
     struct LavaRectSize
     {
-        sf::FloatRect rect{};
-        DripSize size{ DripSize::Small }; // any works here
+        explicit LavaRectSize(const sf::FloatRect & t_rect, const DripSize t_size);
+
+        sf::FloatRect rect;
+        DripSize size;
     };
 
     //

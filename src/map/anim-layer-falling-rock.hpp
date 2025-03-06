@@ -29,10 +29,10 @@ namespace bramblefore
 
     enum class Rock
     {
-        Rock1,
+        Rock1, // largest
         Rock2,
         Rock3,
-        Rock4
+        Rock4 // smallest
     };
 
     [[nodiscard]] inline constexpr std::string_view toString(const Rock t_rock) noexcept

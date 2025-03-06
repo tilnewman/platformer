@@ -13,6 +13,7 @@
 
 namespace bramblefore
 {
+
     struct Context;
 
     //

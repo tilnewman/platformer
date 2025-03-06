@@ -20,6 +20,13 @@
 namespace bramblefore
 {
 
+    LavaRectSize::LavaRectSize(const sf::FloatRect & t_rect, const DripSize t_size)
+        : rect{ t_rect }
+        , size{ t_size }
+    {}
+
+    //
+
     LavaDripperAnim::LavaDripperAnim(
         const DripSize t_size,
         const sf::Texture & t_texture,
@@ -288,7 +295,8 @@ namespace bramblefore
                 anim.size,
                 splatTexture(anim.size),
                 textureRect(splatTexture(anim.size), 0),
-                t_context.layout.calScaleBasedOnResolution(t_context, 1.0f),anim.region) };
+                t_context.layout.calScaleBasedOnResolution(t_context, 1.0f),
+                anim.region) };
 
             if (t_context.layout.wholeRect().findIntersection(splashAnim.sprite.getGlobalBounds()))
             {
