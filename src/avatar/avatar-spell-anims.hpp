@@ -4,7 +4,6 @@
 // avatar-spell-anims.hpp
 //
 #include "avatar/avatar-textures.hpp"
-#include "util/sfml-defaults.hpp"
 
 #include <filesystem>
 #include <vector>
@@ -29,13 +28,21 @@ namespace bramblefore
 
     struct AvatarSpellAnim
     {
-        bool is_alive{ true };
-        AvatarType type{ AvatarType::Count }; // anything works here
-        bool is_first_anim{ true };
-        std::size_t frame_index{ 0 };
-        float elapsed_time_sec{ 0.0f };
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
-        bool is_moving_right{ true };
+        explicit AvatarSpellAnim(
+            const AvatarType t_type,
+            const sf::Texture & t_texture,
+            const bool t_isFirstAnim,
+            const bool t_isMovingRight,
+            const sf::Vector2f & t_scale,
+            const sf::Vector2f & t_position);
+
+        bool is_alive;
+        AvatarType type;
+        bool is_first_anim;
+        std::size_t frame_index;
+        float elapsed_time_sec;
+        sf::Sprite sprite;
+        bool is_moving_right;
     };
 
     //

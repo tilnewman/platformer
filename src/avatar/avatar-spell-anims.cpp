@@ -8,16 +8,43 @@
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "util/texture-loader.hpp"
 #include "util/check-macros.hpp"
 #include "util/filesystem-util.hpp"
 #include "util/random.hpp"
 #include "util/sfml-util.hpp"
+#include "util/texture-loader.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
 namespace bramblefore
 {
+
+    AvatarSpellAnim::AvatarSpellAnim(
+        const AvatarType t_type,
+        const sf::Texture & t_texture,
+        const bool t_isFirstAnim,
+        const bool t_isMovingRight,
+        const sf::Vector2f & t_scale,
+        const sf::Vector2f & t_position)
+        : is_alive{ true }
+        , type{ t_type }
+        , is_first_anim{ t_isFirstAnim }
+        , frame_index{ 0 }
+        , elapsed_time_sec{ 0.0f }
+        , sprite{ t_texture }
+        , is_moving_right{ t_isMovingRight }
+    {
+        util::setOriginToCenter(sprite);
+        sprite.scale(t_scale);
+        sprite.setPosition(t_position);
+
+        if (!t_isMovingRight)
+        {
+            sprite.scale({ -1.0f, 1.0f });
+        }
+    }
+
+    //
 
     AvatarSpellAnimations::AvatarSpellAnimations()
         : m_druidTextures{}
@@ -73,20 +100,13 @@ namespace bramblefore
             return;
         }
 
-        AvatarSpellAnim & anim{ m_anims.emplace_back() };
-        anim.is_first_anim   = t_isFirstAttack;
-        anim.type            = t_type;
-        anim.is_moving_right = t_isFacingRight;
-        anim.sprite.setTexture(getTextures(t_type, t_isFirstAttack).at(0), true);
-        util::setOriginToCenter(anim.sprite);
-        anim.sprite.scale(m_scale);
-        anim.sprite.setPosition(t_pos);
-
-        if (!t_isFacingRight)
-        {
-            anim.sprite.scale({ -1.0f, 1.0f });
-            // TODO need to slide the images horiz to correct when facing/moving left
-        }
+        m_anims.emplace_back(
+            t_type,
+            getTextures(t_type, t_isFirstAttack).at(0),
+            t_isFirstAttack,
+            t_isFacingRight,
+            m_scale,
+            t_pos);
     }
 
     void AvatarSpellAnimations::update(const float t_frameTimeSec)
