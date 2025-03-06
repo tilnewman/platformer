@@ -228,7 +228,7 @@ namespace bramblefore
             anim.velocity += (t_frameTimeSec * 50.0f);
             anim.sprite.move({ 0.0f, anim.velocity });
 
-            if (util::bottom(util::scaleRectInPlaceCopy(anim.sprite.getGlobalBounds(), 0.5f)) <
+            if (util::bottom(util::scaleRectInPlaceCopy(anim.sprite.getGlobalBounds(), 0.4f)) <
                 util::bottom(anim.fall_region))
             {
                 continue;
