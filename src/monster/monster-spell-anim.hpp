@@ -3,8 +3,6 @@
 //
 // monster-spell-anim.hpp
 //
-#include "util/sfml-defaults.hpp"
-
 #include <string_view>
 #include <vector>
 
@@ -87,12 +85,18 @@ namespace bramblefore
 
     struct MonsterSpellAnim
     {
-        bool is_alive{ true };
-        MonsterSpell spell{ MonsterSpell::Count }; // anything works here
-        std::size_t frame_index{ 0 };
-        float elapsed_time_sec{ 0.0f };
-        bool is_moving_right{ true };
-        sf::Sprite sprite{ util::SfmlDefaults::instance().texture() };
+        explicit MonsterSpellAnim(
+            const MonsterSpell t_spell,
+            const bool t_isFacingRight,
+            const sf::Vector2f & t_scale,
+            const sf::Vector2f & t_position);
+
+        bool is_alive;
+        MonsterSpell spell;
+        std::size_t frame_index;
+        float elapsed_time_sec;
+        bool is_moving_right;
+        sf::Sprite sprite;
     };
 
     //

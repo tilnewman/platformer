@@ -11,6 +11,7 @@
 #include "util/check-macros.hpp"
 #include "util/filesystem-util.hpp"
 #include "util/random.hpp"
+#include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
 #include "util/texture-loader.hpp"
 
@@ -125,6 +126,31 @@ namespace bramblefore
 
     //
 
+    MonsterSpellAnim::MonsterSpellAnim(
+        const MonsterSpell t_spell,
+        const bool t_isFacingRight,
+        const sf::Vector2f & t_scale,
+        const sf::Vector2f & t_position)
+        : is_alive{ true }
+        , spell{ t_spell }
+        , frame_index{ 0 }
+        , elapsed_time_sec{ 0.0f }
+        , is_moving_right{ t_isFacingRight }
+        , sprite{ util::SfmlDefaults::instance().texture() }
+    {
+        MonsterSpellTextureManager::instance().set(sprite, t_spell, 0);
+        sprite.setScale(t_scale);
+        util::setOriginToCenter(sprite);
+        sprite.setPosition(t_position);
+
+        if (!t_isFacingRight)
+        {
+            sprite.scale({ -1.0f, 1.0f });
+        }
+    }
+
+    //
+
     MonsterSpellAnimations::MonsterSpellAnimations()
         : m_anims{}
         , m_timePerFrameSec{ 0.1f }
@@ -133,17 +159,7 @@ namespace bramblefore
     void MonsterSpellAnimations::add(
         const sf::Vector2f & t_pos, const MonsterSpell t_spell, const bool t_isFacingRight)
     {
-        MonsterSpellAnim & anim{ m_anims.emplace_back() };
-        anim.is_moving_right = t_isFacingRight;
-        anim.spell           = t_spell;
-        MonsterSpellTextureManager::instance().set(anim.sprite, t_spell, 0);
-        util::setOriginToCenter(anim.sprite);
-        anim.sprite.setPosition(t_pos);
-
-        if (!t_isFacingRight)
-        {
-            anim.sprite.scale({ -1.0f, 1.0f });
-        }
+        m_anims.emplace_back(t_spell, t_isFacingRight, sf::Vector2f{ 1.0f, 1.0f }, t_pos);
     }
 
     void MonsterSpellAnimations::update(const float t_frameTimeSec)

@@ -5,7 +5,6 @@
 //
 #include "map/tile-layer.hpp"
 #include "subsystem/harm-collision-manager.hpp"
-#include "util/sfml-defaults.hpp"
 
 #include <vector>
 
