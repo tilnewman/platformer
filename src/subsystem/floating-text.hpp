@@ -3,8 +3,6 @@
 //
 // floating-text.hpp
 //
-#include "util/sfml-defaults.hpp"
-
 #include <vector>
 
 #include <SFML/Graphics/Color.hpp>
@@ -25,8 +23,10 @@ namespace bramblefore
 
     struct FloatingTextAnim
     {
-        bool is_alive{ true };
-        sf::Text text{ util::SfmlDefaults::instance().font() };
+        explicit FloatingTextAnim(const sf::Text & t_text, const sf::Vector2f & t_position);
+
+        bool is_alive;
+        sf::Text text;
     };
 
     //

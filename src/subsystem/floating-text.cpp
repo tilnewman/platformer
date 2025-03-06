@@ -14,6 +14,16 @@
 namespace bramblefore
 {
 
+    FloatingTextAnim::FloatingTextAnim(const sf::Text & t_text, const sf::Vector2f & t_position)
+        : is_alive{ true }
+        , text{ t_text }
+    {
+        text.setPosition({ (t_position.x - (text.getGlobalBounds().size.x * 0.5f)),
+                           (t_position.y - (text.getGlobalBounds().size.y * 0.5f)) });
+    }
+
+    //
+
     FloatingText::FloatingText()
         : m_animations()
     {
@@ -27,11 +37,8 @@ namespace bramblefore
         const sf::Color & t_color,
         const sf::Vector2f & t_pos)
     {
-        FloatingTextAnim & anim{ m_animations.emplace_back() };
-        anim.text = t_context.font.makeText(Font::Title, FontSize::Medium, t_message, t_color);
-
-        anim.text.setPosition({ (t_pos.x - (anim.text.getGlobalBounds().size.x * 0.5f)),
-                                (t_pos.y - (anim.text.getGlobalBounds().size.y * 0.5f)) });
+        m_animations.emplace_back(
+            t_context.font.makeText(Font::Title, FontSize::Medium, t_message, t_color), t_pos);
     }
 
     void FloatingText::update(Context &, const float t_frameTimeSec)
