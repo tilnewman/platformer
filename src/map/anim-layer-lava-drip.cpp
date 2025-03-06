@@ -49,19 +49,19 @@ namespace bramblefore
         {
             sprite.setPosition(
                 { (util::center(t_screenRect).x - (sprite.getGlobalBounds().size.x * 0.5f)),
-                  (t_screenRect.position.y - (sprite.getGlobalBounds().size.x * 0.5f)) });
+                  (t_screenRect.position.y - (sprite.getGlobalBounds().size.x * 0.33f)) });
         }
         else if (DripSize::Medium == size)
         {
             sprite.setPosition(
                 { (util::center(t_screenRect).x - (sprite.getGlobalBounds().size.x * 0.5f)),
-                  t_screenRect.position.y });
+                  t_screenRect.position.y - (sprite.getGlobalBounds().size.x * 0.15f) });
         }
         else
         {
             sprite.setPosition(
                 { (util::center(t_screenRect).x - (sprite.getGlobalBounds().size.x * 0.5f)),
-                  (t_screenRect.position.y - (sprite.getGlobalBounds().size.x * 0.5f)) });
+                  (t_screenRect.position.y - (sprite.getGlobalBounds().size.x * 0.25f)) });
         }
     }
 
