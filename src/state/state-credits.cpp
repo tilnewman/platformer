@@ -12,9 +12,9 @@
 #include "subsystem/background-images.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/floating-text.hpp"
+#include "subsystem/font.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "util/check-macros.hpp"
-#include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
 #include "util/texture-loader.hpp"
 
@@ -33,8 +33,10 @@ namespace bramblefore
         const float t_vertPos)
         : texture{}
         , sprite{ texture }
-        , name{ util::SfmlDefaults::instance().font() }
-        , description{ util::SfmlDefaults::instance().font() }
+        , name{ t_context.font.makeText(
+              Font::Title, FontSize::Large, t_name, sf::Color(220, 220, 220)) }
+        , description{ t_context.font.makeText(
+              Font::General, FontSize::Small, t_description, sf::Color(160, 160, 160)) }
     {
         util::TextureLoader::load(texture, t_imageFilePath, true);
 
@@ -53,16 +55,8 @@ namespace bramblefore
         // this is the vertical empty space between images and lines of text
         const float vertPad{ screenRect.size.y * 0.025f };
 
-        name = t_context.font.makeText(
-            Font::Title, FontSize::Large, t_name, sf::Color(220, 220, 220));
-
         name.setPosition({ (util::center(screenRect).x - (name.getGlobalBounds().size.x * 0.5f)),
                            (util::bottom(sprite) + vertPad) });
-
-        //
-
-        description = t_context.font.makeText(
-            Font::General, FontSize::Small, t_description, sf::Color(160, 160, 160));
 
         description.setPosition(
             { (util::center(screenRect).x - (description.getGlobalBounds().size.x * 0.5f)),
