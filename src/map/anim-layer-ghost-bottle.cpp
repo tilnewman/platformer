@@ -160,4 +160,9 @@ namespace bramblefore
         return harm;
     }
 
+    void GhostBottleAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tGhost Bottle Trap Animation Layer: x" << m_anims.size() << '\n';
+    }
+
 } // namespace bramblefore

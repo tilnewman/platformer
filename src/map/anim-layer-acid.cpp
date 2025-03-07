@@ -131,4 +131,9 @@ namespace bramblefore
         return harm;
     }
 
+    void AcidAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tAcid Animation Layer: " << m_sprites.size() << '\n';
+    }
+
 } // namespace bramblefore

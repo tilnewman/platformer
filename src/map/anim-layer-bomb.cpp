@@ -160,4 +160,9 @@ namespace bramblefore
         return harm;
     }
 
+    void BombAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tBomb Trap Animation Layer: x" << m_anims.size() << '\n';
+    }
+
 } // namespace bramblefore

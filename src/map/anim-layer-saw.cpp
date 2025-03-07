@@ -102,4 +102,9 @@ namespace bramblefore
         return harm;
     }
 
+    void SawAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tSaw Trap Animation Layer: x" << m_anims.size() << '\n';
+    }
+
 } // namespace bramblefore

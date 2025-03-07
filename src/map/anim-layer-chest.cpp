@@ -143,4 +143,9 @@ namespace bramblefore
         }
     }
 
+    void ChestAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tChest Animation Layer: x" << m_animations.size() << '\n';
+    }
+
 } // namespace bramblefore

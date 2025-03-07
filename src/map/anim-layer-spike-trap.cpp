@@ -194,4 +194,9 @@ namespace bramblefore
         return harm;
     }
 
+    void SpikeTrapAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tSpike Trap Animation Layer: x" << m_anims.size() << '\n';
+    }
+
 } // namespace bramblefore

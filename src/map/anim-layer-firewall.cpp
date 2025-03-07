@@ -123,4 +123,9 @@ namespace bramblefore
         return harm;
     }
 
+    void FirewallAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tFirewall Animation Layer: x" << m_sprites.size() << '\n';
+    }
+
 } // namespace bramblefore

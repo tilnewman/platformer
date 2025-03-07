@@ -318,4 +318,9 @@ namespace bramblefore
         }
     }
 
+    void FlamingSkullAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tFlaming Skull Trap Animation Layer: x" << m_skullBlockSprites.size() << '\n';
+    }
+
 } // namespace bramblefore

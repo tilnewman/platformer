@@ -50,26 +50,26 @@ namespace bramblefore
       public:
         LightningAnimationLayer(Context & t_context, const std::vector<sf::FloatRect> & t_rects);
 
-        virtual ~LightningAnimationLayer() override;
+        virtual ~LightningAnimationLayer() final;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
-            const override;
+            const final;
 
-        void move(const Context & t_context, const float t_amount) override;
-        void dumpInfo() const override {}
+        void move(const Context & t_context, const float t_amount) final;
+        void dumpInfo() const final;
 
-        void update(Context & t_context, const float t_frameTimeSec) override;
+        void update(Context & t_context, const float t_frameTimeSec) final;
 
-        void appendVertLayer(
+        inline void appendVertLayer(
             const Context &,
             const sf::Vector2f &,
             const sf::Vector2i &,
             const sf::Vector2i &,
-            const sf::Vector2f &) override
+            const sf::Vector2f &) final
         {}
 
         [[nodiscard]] Harm
-            avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) override;
+            avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
 
       private:
         [[nodiscard]] sf::IntRect textureRect(const std::size_t frame) const noexcept;

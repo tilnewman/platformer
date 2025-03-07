@@ -194,4 +194,9 @@ namespace bramblefore
         return harm;
     }
 
+    void PlantTrapAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tPlant Trap Animation Layer: x" << m_anims.size() << '\n';
+    }
+
 } // namespace bramblefore

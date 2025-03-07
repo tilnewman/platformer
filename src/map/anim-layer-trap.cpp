@@ -192,4 +192,9 @@ namespace bramblefore
         return harm;
     }
 
+    void TrapAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tBear Trap Animation Layer: x" << m_anims.size() << '\n';
+    }
+
 } // namespace bramblefore

@@ -80,7 +80,7 @@ namespace bramblefore
     {
       public:
         ChestAnimationLayer(Context & t_context);
-        virtual ~ChestAnimationLayer() override;
+        virtual ~ChestAnimationLayer() final;
 
         void add(Context & t_context, const Chest t_chest, const sf::FloatRect & t_rect);
 
@@ -88,7 +88,7 @@ namespace bramblefore
             const final;
 
         void move(const Context & t_context, const float t_amount) final;
-        void dumpInfo() const final {}
+        void dumpInfo() const final;
         void update(Context &, const float) final {}
 
         void appendVertLayer(

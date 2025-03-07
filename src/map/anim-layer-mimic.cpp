@@ -179,4 +179,9 @@ namespace bramblefore
         return harm;
     }
 
+    void MimicAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tMimic Trap Animation Layer: x" << m_anims.size() << '\n';
+    }
+
 } // namespace bramblefore

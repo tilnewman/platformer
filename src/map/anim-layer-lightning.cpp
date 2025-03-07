@@ -170,4 +170,9 @@ namespace bramblefore
         return harm;
     }
 
+    void LightningAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tLightning Trap Animation Layer: x" << m_anims.size() << '\n';
+    }
+
 } // namespace bramblefore

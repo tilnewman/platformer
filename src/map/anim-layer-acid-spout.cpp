@@ -333,4 +333,9 @@ namespace bramblefore
         return harm;
     }
 
+    void AcidSpoutAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tAcid Spout Trap Animation Layer: x" << m_spoutAnims.size() << '\n';
+    }
+
 } // namespace bramblefore

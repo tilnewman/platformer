@@ -412,4 +412,9 @@ namespace bramblefore
         return harm;
     }
 
+    void LavaDripAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tLava Drip Trap Animation Layer: x" << m_dripperAnims.size() << '\n';
+    }
+
 } // namespace bramblefore

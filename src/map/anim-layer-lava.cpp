@@ -130,4 +130,9 @@ namespace bramblefore
         return harm;
     }
 
+    void LavaAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tLava Animation Layer: x" << m_sprites.size() << '\n';
+    }
+
 } // namespace bramblefore

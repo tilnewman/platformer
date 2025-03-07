@@ -208,4 +208,9 @@ namespace bramblefore
         return harm;
     }
 
+    void WaterAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tWater Animation Layer: x" << m_anims.size() << '\n';
+    }
+
 } // namespace bramblefore

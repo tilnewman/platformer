@@ -102,21 +102,21 @@ namespace bramblefore
         WaterRockAnimationLayer(
             Context & t_context, const std::vector<WaterRockRect> & t_rockRects);
 
-        virtual ~WaterRockAnimationLayer() override;
+        virtual ~WaterRockAnimationLayer() final;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
-            const override;
+            const final;
 
-        void move(const Context & t_context, const float t_amount) override;
-        void dumpInfo() const override {}
-        void update(Context & t_context, const float t_frameTimeSec) override;
+        void move(const Context & t_context, const float t_amount) final;
+        void dumpInfo() const final;
+        void update(Context & t_context, const float t_frameTimeSec) final;
 
-        void appendVertLayer(
+        inline void appendVertLayer(
             const Context &,
             const sf::Vector2f &,
             const sf::Vector2i &,
             const sf::Vector2i &,
-            const sf::Vector2f &) override
+            const sf::Vector2f &) final
         {}
 
       private:

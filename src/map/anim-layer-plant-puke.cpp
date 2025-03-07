@@ -196,4 +196,9 @@ namespace bramblefore
         return harm;
     }
 
+    void PukeTrapAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tPlant Puke Trap Animation Layer: x" << m_anims.size() << '\n';
+    }
+
 } // namespace bramblefore

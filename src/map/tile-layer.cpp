@@ -58,7 +58,7 @@ namespace bramblefore
 
     void TileLayer::dumpInfo() const
     {
-        std::clog << "\tLayer Tiles:  " << m_image << ", possible=" << m_indexes.size()
+        std::clog << "\tTilLayer:  " << m_image << ", possible=" << m_indexes.size()
                   << ", actual=" << (m_verts.size() / util::verts_per_quad)
                   << ", visible=" << (m_visibleVerts.size() / util::verts_per_quad) << '\n';
     }

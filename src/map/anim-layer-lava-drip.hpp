@@ -142,13 +142,13 @@ namespace bramblefore
     {
       public:
         LavaDripAnimationLayer(Context & t_context, const std::vector<LavaRectSize> & t_rectSizes);
-        virtual ~LavaDripAnimationLayer() override;
+        virtual ~LavaDripAnimationLayer() final;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const final;
 
         void move(const Context & t_context, const float t_amount) final;
-        inline void dumpInfo() const final {}
+        void dumpInfo() const final;
 
         void update(Context & t_context, const float t_frameTimeSec) final;
 

@@ -63,13 +63,13 @@ namespace bramblefore
     {
       public:
         FlamingSkullAnimationLayer(Context & t_context, const std::vector<sf::FloatRect> & t_rects);
-        virtual ~FlamingSkullAnimationLayer() override;
+        virtual ~FlamingSkullAnimationLayer() final;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const final;
 
         void move(const Context & t_context, const float t_amount) final;
-        inline void dumpInfo() const final {}
+        void dumpInfo() const final;
 
         void update(Context & t_context, const float t_frameTimeSec) final;
 

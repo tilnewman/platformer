@@ -382,4 +382,9 @@ namespace bramblefore
         return harm;
     }
 
+    void FallingRockAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tFalling Rock Trap Animation Layer: x" << m_hangingAnims.size() << '\n';
+    }
+
 } // namespace bramblefore

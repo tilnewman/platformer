@@ -204,4 +204,9 @@ namespace bramblefore
         }
     }
 
+    void WaterRockAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tWater Rock Animation Layer: x" << m_rockAnims.size() << '\n';
+    }
+
 } // namespace bramblefore

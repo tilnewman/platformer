@@ -358,4 +358,9 @@ namespace bramblefore
         return harm;
     }
 
+    void FlameTrapAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tFlame Trap Animation Layer: x" << m_emitterSprites.size() << '\n';
+    }
+
 } // namespace bramblefore

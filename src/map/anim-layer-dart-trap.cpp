@@ -256,4 +256,9 @@ namespace bramblefore
         return harm;
     }
 
+    void DartTrapAnimationLayer::dumpInfo() const
+    {
+        std::clog << "\tDart Trap Animation Layer: x" << m_shooters.size() << '\n';
+    }
+
 } // namespace bramblefore

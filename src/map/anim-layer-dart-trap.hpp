@@ -76,25 +76,25 @@ namespace bramblefore
     {
       public:
         DartTrapAnimationLayer(Context & t_context, const std::vector<DartRectDir> & t_rectDirs);
-        virtual ~DartTrapAnimationLayer() override;
+        virtual ~DartTrapAnimationLayer() final;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
-            const override;
+            const final;
 
-        void move(const Context & t_context, const float t_amount) override;
-        void dumpInfo() const override {}
+        void move(const Context & t_context, const float t_amount) final;
+        void dumpInfo() const final;
 
-        void update(Context & t_context, const float t_frameTimeSec) override;
+        void update(Context & t_context, const float t_frameTimeSec) final;
 
         void appendVertLayer(
             const Context &,
             const sf::Vector2f &,
             const sf::Vector2i &,
             const sf::Vector2i &,
-            const sf::Vector2f &) override
+            const sf::Vector2f &) final
         {}
 
-        Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) override;
+        Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
 
       private:
         sf::Texture m_shooterTexture;
