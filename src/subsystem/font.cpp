@@ -14,6 +14,26 @@
 namespace bramblefore
 {
 
+    TextDetails::TextDetails()
+        : font{ Font::General }
+        , size{ FontSize::Medium }
+        , color{ sf::Color::White }
+        , style{ sf::Text::Regular }
+    {}
+
+    TextDetails::TextDetails(
+        const Font t_font,
+        const FontSize t_size,
+        const sf::Color & t_color ,
+        const sf::Text::Style t_style)
+        : font{ t_font }
+        , size{ t_size }
+        , color{ t_color }
+        , style{ t_style }
+    {}
+
+    //
+
     FontManager::FontManager()
         : m_titleFont{}
         , m_generalFont{}

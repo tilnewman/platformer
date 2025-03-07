@@ -38,23 +38,13 @@ namespace bramblefore
 
     struct TextDetails
     {
-        TextDetails()
-            : font{ Font::General }
-            , size{ FontSize::Medium }
-            , color{ sf::Color::White }
-            , style{ sf::Text::Regular }
-        {}
+        TextDetails();
 
         TextDetails(
             const Font t_font,
             const FontSize t_size,
             const sf::Color & t_color     = sf::Color::White,
-            const sf::Text::Style t_style = sf::Text::Regular)
-            : font{ t_font }
-            , size{ t_size }
-            , color{ t_color }
-            , style{ t_style }
-        {}
+            const sf::Text::Style t_style = sf::Text::Regular);
 
         Font font;
         FontSize size;
@@ -72,10 +62,10 @@ namespace bramblefore
 
     struct FontExtentSet
     {
-        FontExtent small;
-        FontExtent medium;
-        FontExtent large;
-        FontExtent huge;
+        FontExtent small{};
+        FontExtent medium{};
+        FontExtent large{};
+        FontExtent huge{};
     };
 
     //
