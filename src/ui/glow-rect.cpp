@@ -15,7 +15,7 @@ namespace bramblefore
     GlowRect::GlowRect()
         : m_verts{}
     {
-        m_verts.reserve(util::verts_per_quad);
+        m_verts.reserve(9 * util::verts_per_quad);
     }
 
     void GlowRect::setup(

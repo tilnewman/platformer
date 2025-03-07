@@ -66,7 +66,7 @@ namespace bramblefore
         GuiWindowInfo m_info;
         sf::FloatRect m_innerRect;
         sf::FloatRect m_outerRect;
-        //
+        
         sf::Texture m_borderTopLeftTexture;
         sf::Texture m_borderTopRightTexture;
         sf::Texture m_borderBotLeftTexture;
@@ -75,7 +75,7 @@ namespace bramblefore
         sf::Texture m_borderBotTexture;
         sf::Texture m_borderLeftTexture;
         sf::Texture m_borderRightTexture;
-        //
+        
         sf::Texture m_smallBorderTopLeftTexture;
         sf::Texture m_smallBorderTopRightTexture;
         sf::Texture m_smallBorderBotLeftTexture;
@@ -84,7 +84,7 @@ namespace bramblefore
         sf::Texture m_smallBorderBotTexture;
         sf::Texture m_smallBorderLeftTexture;
         sf::Texture m_smallBorderRightTexture;
-        //
+        
         sf::Texture m_bgTopLeftTexture;
         sf::Texture m_bgTopRightTexture;
         sf::Texture m_bgBotLeftTexture;
@@ -93,11 +93,11 @@ namespace bramblefore
         sf::Texture m_bgBotTexture;
         sf::Texture m_bgLeftTexture;
         sf::Texture m_bgRightTexture;
-        //
+        
         sf::Texture m_tapeLeftTexture;
         sf::Texture m_tapeRightTexture;
         sf::Texture m_tapeMiddleTexture;
-
+        
         sf::Color m_bgColor;
         sf::FloatRect m_bgCenterRect;
         std::vector<sf::Vertex> m_bgCenterVerts;
