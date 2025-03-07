@@ -25,15 +25,9 @@ namespace bramblefore
 
     struct SlidingImageInfo
     {
-        SlidingImageInfo()
-            : move_ratio{ 0.0f }
-            , path{}
-        {}
-
-        SlidingImageInfo(const float t_moveRatio, const std::filesystem::path & t_filePath)
-            : move_ratio{ t_moveRatio }
-            , path{ t_filePath }
-        {}
+        SlidingImageInfo();
+        explicit SlidingImageInfo(
+            const float t_moveRatio, const std::filesystem::path & t_filePath);
 
         float move_ratio;
         std::filesystem::path path;
@@ -43,16 +37,11 @@ namespace bramblefore
 
     struct BackgroundImagesInfo
     {
-        BackgroundImagesInfo(
+        explicit BackgroundImagesInfo(
             const std::uint8_t t_fadeAlpha,
             const std::filesystem::path & t_backgroundPath,
             const std::vector<SlidingImageInfo> & t_slidingImages,
-            const std::filesystem::path & t_overlayPath)
-            : fade_alpha{ t_fadeAlpha }
-            , background_path{ t_backgroundPath }
-            , sliding_images{ t_slidingImages }
-            , overlay_path{ t_overlayPath }
-        {}
+            const std::filesystem::path & t_overlayPath);
 
         std::uint8_t fade_alpha;
         std::filesystem::path background_path;
@@ -64,10 +53,13 @@ namespace bramblefore
 
     struct SlidingImage
     {
-        SlidingImageInfo info{};
-        sf::Texture texture{};
-        sf::Sprite sprite_left{ texture };
-        sf::Sprite sprite_right{ texture };
+        explicit SlidingImage(
+            const SlidingImageInfo & t_info, const sf::FloatRect & t_wholeScreenRect);
+
+        SlidingImageInfo info;
+        sf::Texture texture;
+        sf::Sprite sprite_left;
+        sf::Sprite sprite_right;
     };
 
     //

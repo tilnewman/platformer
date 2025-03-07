@@ -17,6 +17,49 @@
 namespace bramblefore
 {
 
+    SlidingImageInfo::SlidingImageInfo()
+        : move_ratio{ 0.0f }
+        , path{}
+    {}
+
+    SlidingImageInfo::SlidingImageInfo(
+        const float t_moveRatio, const std::filesystem::path & t_filePath)
+        : move_ratio{ t_moveRatio }
+        , path{ t_filePath }
+    {}
+
+    //
+
+    BackgroundImagesInfo::BackgroundImagesInfo(
+        const std::uint8_t t_fadeAlpha,
+        const std::filesystem::path & t_backgroundPath,
+        const std::vector<SlidingImageInfo> & t_slidingImages,
+        const std::filesystem::path & t_overlayPath)
+        : fade_alpha{ t_fadeAlpha }
+        , background_path{ t_backgroundPath }
+        , sliding_images{ t_slidingImages }
+        , overlay_path{ t_overlayPath }
+    {}
+
+    //
+
+    SlidingImage::SlidingImage(
+        const SlidingImageInfo & t_info, const sf::FloatRect & t_wholeScreenRect)
+        : info{ t_info }
+        , texture{}
+        , sprite_left{ texture }
+        , sprite_right{ texture }
+    {
+        util::TextureLoader::load(texture, info.path);
+        sprite_left.setTexture(texture, true);
+        sprite_right.setTexture(texture, true);
+        util::scaleAndCenterInside(sprite_left, t_wholeScreenRect);
+        util::scaleAndCenterInside(sprite_right, t_wholeScreenRect);
+        sprite_right.move({ sprite_left.getGlobalBounds().size.x, 0.0f });
+    }
+
+    //
+
     BackgroundImages::BackgroundImages()
         : m_loadedSetName{}
         , m_backgroundTexture{}
@@ -47,7 +90,7 @@ namespace bramblefore
             m_backgroundSprite.setTexture(m_backgroundTexture, true);
             util::scaleAndCenterInside(m_backgroundSprite, t_context.layout.wholeRect());
         }
-        
+
         // there won't always be a static overlay image
         if (!infoPack.overlay_path.empty())
         {
@@ -57,26 +100,14 @@ namespace bramblefore
         }
 
         //
-       
+
+        const sf::FloatRect wholeScreenRect{ t_context.layout.wholeRect() };
+
         m_slidingImages.clear();
         m_slidingImages.reserve(16); // prevents reallocation
-
         for (const SlidingImageInfo & info : infoPack.sliding_images)
         {
-            M_CHECK(
-                std::filesystem::exists(info.path),
-                "Error:  BackgroundImages::setup() given a path that doesn't exist: " << info.path);
-
-            SlidingImage & slidingImage{ m_slidingImages.emplace_back() };
-            slidingImage.info = info;
-            util::TextureLoader::load(slidingImage.texture, info.path);
-            slidingImage.sprite_left.setTexture(slidingImage.texture, true);
-            slidingImage.sprite_right.setTexture(slidingImage.texture, true);
-            util::scaleAndCenterInside(slidingImage.sprite_left, t_context.layout.wholeRect());
-            util::scaleAndCenterInside(slidingImage.sprite_right, t_context.layout.wholeRect());
-
-            slidingImage.sprite_right.move(
-                { slidingImage.sprite_left.getGlobalBounds().size.x, 0.0f });
+            m_slidingImages.emplace_back(info, wholeScreenRect);
         }
 
         //
@@ -85,7 +116,7 @@ namespace bramblefore
         if (infoPack.fade_alpha > 0)
         {
             util::appendTriangleVerts(
-                t_context.layout.wholeRect(), m_fadeVerts, sf::Color(0, 0, 0, infoPack.fade_alpha));
+                wholeScreenRect, m_fadeVerts, sf::Color(0, 0, 0, infoPack.fade_alpha));
         }
     }
 
@@ -135,23 +166,20 @@ namespace bramblefore
         {
             std::vector<SlidingImageInfo> slidingImages;
 
-            slidingImages.push_back(
-                { 0.2f,
-                  (t_context.settings.media_path / "image/background/forest/clouds-back.png") });
+            slidingImages.emplace_back(
+                0.2f, (t_context.settings.media_path / "image/background/forest/clouds-back.png"));
 
-            slidingImages.push_back(
-                { 0.4f,
-                  (t_context.settings.media_path / "image/background/forest/clouds-front.png") });
+            slidingImages.emplace_back(
+                0.4f, (t_context.settings.media_path / "image/background/forest/clouds-front.png"));
 
-            slidingImages.push_back(
-                { 0.6f,
-                  (t_context.settings.media_path / "image/background/forest/mountains.png") });
+            slidingImages.emplace_back(
+                0.6f, (t_context.settings.media_path / "image/background/forest/mountains.png"));
 
-            slidingImages.push_back(
-                { 0.7f, (t_context.settings.media_path / "image/background/forest/mist.png") });
+            slidingImages.emplace_back(
+                0.7f, (t_context.settings.media_path / "image/background/forest/mist.png"));
 
-            slidingImages.push_back(
-                { 0.8f, (t_context.settings.media_path / "image/background/forest/trees.png") });
+            slidingImages.emplace_back(
+                0.8f, (t_context.settings.media_path / "image/background/forest/trees.png"));
 
             BackgroundImagesInfo info(
                 fadeAlpha,
@@ -165,24 +193,20 @@ namespace bramblefore
         {
             std::vector<SlidingImageInfo> slidingImages;
 
-            slidingImages.push_back(
-                { 0.2f,
-                  (t_context.settings.media_path / "image/background/dungeon/ruins-back.png") });
+            slidingImages.emplace_back(
+                0.2f, (t_context.settings.media_path / "image/background/dungeon/ruins-back.png"));
 
-            slidingImages.push_back(
-                { 0.4f,
-                  (t_context.settings.media_path / "image/background/dungeon/ruins-front.png") });
+            slidingImages.emplace_back(
+                0.4f, (t_context.settings.media_path / "image/background/dungeon/ruins-front.png"));
 
-            slidingImages.push_back(
-                { 0.6f,
-                  (t_context.settings.media_path / "image/background/dungeon/floor-back.png") });
+            slidingImages.emplace_back(
+                0.6f, (t_context.settings.media_path / "image/background/dungeon/floor-back.png"));
 
-            slidingImages.push_back(
-                { 0.8f,
-                  (t_context.settings.media_path / "image/background/dungeon/floor-front.png") });
+            slidingImages.emplace_back(
+                0.8f, (t_context.settings.media_path / "image/background/dungeon/floor-front.png"));
 
-            slidingImages.push_back(
-                { 0.8f, (t_context.settings.media_path / "image/background/dungeon/chains.png") });
+            slidingImages.emplace_back(
+                0.8f, (t_context.settings.media_path / "image/background/dungeon/chains.png"));
 
             BackgroundImagesInfo info(
                 fadeAlpha,
@@ -196,23 +220,20 @@ namespace bramblefore
         {
             std::vector<SlidingImageInfo> slidingImages;
 
-            slidingImages.push_back(
-                { 0.2f, (t_context.settings.media_path / "image/background/cave/rock-back.png") });
+            slidingImages.emplace_back(
+                0.2f, (t_context.settings.media_path / "image/background/cave/rock-back.png"));
 
-            slidingImages.push_back(
-                { 0.4f,
-                  (t_context.settings.media_path / "image/background/cave/rock-middle.png") });
+            slidingImages.emplace_back(
+                0.4f, (t_context.settings.media_path / "image/background/cave/rock-middle.png"));
 
-            slidingImages.push_back(
-                { 0.6f, (t_context.settings.media_path / "image/background/cave/mist.png") });
+            slidingImages.emplace_back(
+                0.6f, (t_context.settings.media_path / "image/background/cave/mist.png"));
 
-            slidingImages.push_back(
-                { 0.8f,
-                  (t_context.settings.media_path / "image/background/cave/rock-front1.png") });
+            slidingImages.emplace_back(
+                0.8f, (t_context.settings.media_path / "image/background/cave/rock-front1.png"));
 
-            slidingImages.push_back(
-                { 0.8f,
-                  (t_context.settings.media_path / "image/background/cave/rock-front2.png") });
+            slidingImages.emplace_back(
+                0.8f, (t_context.settings.media_path / "image/background/cave/rock-front2.png"));
 
             BackgroundImagesInfo info(
                 fadeAlpha,
@@ -226,28 +247,25 @@ namespace bramblefore
         {
             std::vector<SlidingImageInfo> slidingImages;
 
-            slidingImages.push_back(
-                { 0.1f,
-                  (t_context.settings.media_path / "image/background/mountain/clouds1.png") });
+            slidingImages.emplace_back(
+                0.1f, (t_context.settings.media_path / "image/background/mountain/clouds1.png"));
 
-            slidingImages.push_back(
-                { 0.2f,
-                  (t_context.settings.media_path / "image/background/mountain/clouds2.png") });
+            slidingImages.emplace_back(
+                0.2f, (t_context.settings.media_path / "image/background/mountain/clouds2.png"));
 
-            slidingImages.push_back(
-                { 0.4f,
-                  (t_context.settings.media_path / "image/background/mountain/rocks-back.png") });
+            slidingImages.emplace_back(
+                0.4f, (t_context.settings.media_path / "image/background/mountain/rocks-back.png"));
 
-            slidingImages.push_back(
-                { 0.6f,
-                  (t_context.settings.media_path / "image/background/mountain/rocks-middle.png") });
+            slidingImages.emplace_back(
+                0.6f,
+                (t_context.settings.media_path / "image/background/mountain/rocks-middle.png"));
 
-            slidingImages.push_back(
-                { 0.7f, (t_context.settings.media_path / "image/background/mountain/mist.png") });
+            slidingImages.emplace_back(
+                0.7f, (t_context.settings.media_path / "image/background/mountain/mist.png"));
 
-            slidingImages.push_back(
-                { 0.8f,
-                  (t_context.settings.media_path / "image/background/mountain/rocks-front.png") });
+            slidingImages.emplace_back(
+                0.8f,
+                (t_context.settings.media_path / "image/background/mountain/rocks-front.png"));
 
             BackgroundImagesInfo info(
                 fadeAlpha,
@@ -261,20 +279,20 @@ namespace bramblefore
         {
             std::vector<SlidingImageInfo> slidingImages;
 
-            slidingImages.push_back(
-                { 0.1f, (t_context.settings.media_path / "image/background/castle/sky.png") });
+            slidingImages.emplace_back(
+                0.1f, (t_context.settings.media_path / "image/background/castle/sky.png"));
 
-            slidingImages.push_back(
-                { 0.2f, (t_context.settings.media_path / "image/background/castle/trees.png") });
+            slidingImages.emplace_back(
+                0.2f, (t_context.settings.media_path / "image/background/castle/trees.png"));
 
-            slidingImages.push_back(
-                { 0.4f, (t_context.settings.media_path / "image/background/castle/wall.png") });
+            slidingImages.emplace_back(
+                0.4f, (t_context.settings.media_path / "image/background/castle/wall.png"));
 
-            slidingImages.push_back(
-                { 0.6f, (t_context.settings.media_path / "image/background/castle/floor.png") });
+            slidingImages.emplace_back(
+                0.6f, (t_context.settings.media_path / "image/background/castle/floor.png"));
 
-            slidingImages.push_back(
-                { 0.8f, (t_context.settings.media_path / "image/background/castle/pillars.png") });
+            slidingImages.emplace_back(
+                0.8f, (t_context.settings.media_path / "image/background/castle/pillars.png"));
 
             BackgroundImagesInfo info(fadeAlpha, {}, slidingImages, {});
 
