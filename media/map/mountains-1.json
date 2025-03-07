@@ -870,9 +870,42 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":15,
+         "name":"spiked-ball",
+         "objects":[
+                {
+                 "height":16,
+                 "id":49,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":208,
+                 "x":320,
+                 "y":1088
+                }, 
+                {
+                 "height":240,
+                 "id":50,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":416,
+                 "y":976
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":15,
- "nextobjectid":49,
+ "nextlayerid":16,
+ "nextobjectid":51,
  "orientation":"orthogonal",
  "properties":[
         {

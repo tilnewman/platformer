@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="150" height="88" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="49">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="150" height="88" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="51">
  <editorsettings>
   <export target="../map/mountains-1.json" format="json"/>
  </editorsettings>
@@ -428,5 +428,9 @@
  </objectgroup>
  <objectgroup id="7" name="monster">
   <object id="24" name="skeleton" x="368" y="1184" width="432" height="128"/>
+ </objectgroup>
+ <objectgroup id="15" name="spiked-ball">
+  <object id="49" x="320" y="1088" width="208" height="16"/>
+  <object id="50" x="416" y="976" width="16" height="240"/>
  </objectgroup>
 </map>

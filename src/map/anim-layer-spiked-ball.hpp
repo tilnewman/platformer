@@ -1,10 +1,11 @@
-#ifndef ANIM_LAYER_ACID_HPP_INCLUDED
-#define ANIM_LAYER_ACID_HPP_INCLUDED
+#ifndef ANIM_LAYER_SPIKED_BALL_HPP_INCLUDED
+#define ANIM_LAYER_SPIKED_BALL_HPP_INCLUDED
 //
-// anim-layer-acid.hpp
+// anim-layer-spiked-ball.hpp
 //
 #include "map/tile-layer.hpp"
 #include "subsystem/harm-collision-manager.hpp"
+#include "util/sliders.hpp"
 
 #include <vector>
 
@@ -25,13 +26,27 @@ namespace bramblefore
 
     //
 
-    class AcidAnimationLayer
+    struct SpikedBallAnim
+    {
+        explicit SpikedBallAnim(
+            const sf::Texture & t_texture, const sf::FloatRect & t_rect, const float t_speed);
+
+        [[nodiscard]] inline bool isHoriz() const { return (region.size.x > region.size.y); }
+
+        sf::Sprite sprite;
+        sf::FloatRect region;
+        util::SliderOscillator<float, float> slider;
+    };
+
+    //
+
+    class SpikedBallAnimationLayer
         : public ITileLayer
         , public IHarmCollisionOwner
     {
       public:
-        AcidAnimationLayer(Context & t_context, const std::vector<sf::FloatRect> & t_rects);
-        virtual ~AcidAnimationLayer() final;
+        SpikedBallAnimationLayer(Context & t_context, const std::vector<sf::FloatRect> & t_rects);
+        virtual ~SpikedBallAnimationLayer() final;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const final;
@@ -51,17 +66,11 @@ namespace bramblefore
         Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
 
       private:
-        [[nodiscard]] std::size_t frameCount() const noexcept;
-        [[nodiscard]] sf::IntRect textureRect(const std::size_t t_frame) const noexcept;
-
-      private:
+        float m_speed;
         sf::Texture m_texture;
-        std::vector<sf::Sprite> m_sprites;
-        float m_elapsedTimeSec;
-        float m_timePerFrameSec;
-        std::size_t m_frameIndex;
+        std::vector<SpikedBallAnim> m_anims;
     };
 
 } // namespace bramblefore
 
-#endif // ANIM_LAYER_ACID_HPP_INCLUDED
+#endif // ANIM_LAYER_SPIKED_BALL_HPP_INCLUDED

@@ -2,30 +2,31 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "map/level-file-loader.hpp"
 
-#include "anim-layer-acid-spout.hpp"
-#include "anim-layer-acid.hpp"
-#include "anim-layer-bomb.hpp"
-#include "anim-layer-dart-trap.hpp"
-#include "anim-layer-falling-rock.hpp"
-#include "anim-layer-firewall.hpp"
-#include "anim-layer-flame-trap.hpp"
-#include "anim-layer-flaming-skull.hpp"
-#include "anim-layer-ghost-bottle.hpp"
-#include "anim-layer-lava-drip.hpp"
-#include "anim-layer-lava.hpp"
-#include "anim-layer-lightning.hpp"
-#include "anim-layer-plant-puke.hpp"
-#include "anim-layer-plant-trap.hpp"
-#include "anim-layer-saw.hpp"
-#include "anim-layer-spike-trap.hpp"
-#include "anim-layer-trap.hpp"
-#include "anim-layer-water-rock.hpp"
-#include "anim-layer-water.hpp"
 #include "bramblefore/settings.hpp"
-#include "map-textures.hpp"
 #include "map/accents.hpp"
+#include "map/anim-layer-acid-spout.hpp"
+#include "map/anim-layer-acid.hpp"
+#include "map/anim-layer-bomb.hpp"
 #include "map/anim-layer-chest.hpp"
+#include "map/anim-layer-dart-trap.hpp"
+#include "map/anim-layer-falling-rock.hpp"
+#include "map/anim-layer-firewall.hpp"
+#include "map/anim-layer-flame-trap.hpp"
+#include "map/anim-layer-flaming-skull.hpp"
+#include "map/anim-layer-ghost-bottle.hpp"
+#include "map/anim-layer-lava-drip.hpp"
+#include "map/anim-layer-lava.hpp"
+#include "map/anim-layer-lightning.hpp"
 #include "map/anim-layer-mimic.hpp"
+#include "map/anim-layer-plant-puke.hpp"
+#include "map/anim-layer-plant-trap.hpp"
+#include "map/anim-layer-saw.hpp"
+#include "map/anim-layer-spike-trap.hpp"
+#include "map/anim-layer-spiked-ball.hpp"
+#include "map/anim-layer-trap.hpp"
+#include "map/anim-layer-water-rock.hpp"
+#include "map/anim-layer-water.hpp"
+#include "map/map-textures.hpp"
 #include "map/pickups.hpp"
 #include "monster/monster-baby-dragon.hpp"
 #include "monster/monster-bear.hpp"
@@ -367,6 +368,10 @@ namespace bramblefore
             else if (layerName == "water-rock")
             {
                 parseWaterRockLayer(t_context, jsonLayer);
+            }
+            else if (layerName == "spiked-ball")
+            {
+                parseLayerOfRects<SpikedBallAnimationLayer>(t_context, jsonLayer);
             }
             else
             {
