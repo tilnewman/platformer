@@ -113,12 +113,10 @@ namespace bramblefore
             (totalCount == m_indexes.size()),
             "index_count=" << m_indexes.size() << " does not equal tile_count=" << totalCount);
 
-        const sf::Vector2i sizeOnScreenI{ t_sizeOnScreen };
-
         std::size_t textureIndex{ 0 };
         for (int y{ 0 }; y < t_count.y; ++y)
         {
-            const float posY{ static_cast<float>(y * sizeOnScreenI.y) };
+            const float posY{ static_cast<float>(y) * t_sizeOnScreen.y };
 
             for (int x{ 0 }; x < t_count.x; ++x)
             {
@@ -128,7 +126,7 @@ namespace bramblefore
                     continue; // zero means no tile image at this location
                 }
 
-                const float posX{ static_cast<float>(x * sizeOnScreenI.x) };
+                const float posX{ static_cast<float>(x) * t_sizeOnScreen.x };
 
                 const int index{ textureIndexOrig - tileTexture.gid };
 

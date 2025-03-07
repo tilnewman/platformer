@@ -109,16 +109,11 @@ namespace bramblefore
 
         t_context.level.tile_size_screen = (sf::Vector2f{ t_context.level.tile_size } * scale);
 
-        t_context.level.tile_size_screen.x = floorf(t_context.level.tile_size_screen.x);
-        t_context.level.tile_size_screen.y = floorf(t_context.level.tile_size_screen.y);
-
         // calc map position offset
-        const sf::Vector2f tileCountF{ t_context.level.tile_count };
-        const sf::Vector2f mapSizeOrig{ t_context.level.tile_size_screen * tileCountF };
+        const sf::Vector2f mapSizeOrig{ t_context.level.tile_size_screen *
+                                        sf::Vector2f{ t_context.level.tile_count } };
 
-        const float heightOffset{ (t_context.layout.wholeRect().position.y +
-                                   t_context.layout.wholeRect().size.y) -
-                                  mapSizeOrig.y };
+        const float heightOffset{ util::bottom(t_context.layout.wholeRect()) - mapSizeOrig.y };
 
         t_context.level.map_position_offset = { 0.0f, heightOffset };
     }
