@@ -67,7 +67,7 @@ namespace bramblefore
         appendVertLayers(t_context);
         t_context.avatar.setPosition(enter_rect);
         farthest_horiz_map_pixel = exit_rect.position.x;
-        dumpInfo(t_filename);
+        //dumpInfo(t_filename);
     }
 
     bool Level::move(const Context & t_context, const float t_amount)
