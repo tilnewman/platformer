@@ -24,7 +24,7 @@ namespace bramblefore
         const sf::Sprite & t_sprite, const Rock t_rock, const sf::FloatRect & t_collRect)
         : is_alive{ true }
         , elapsed_time_sec{ 0.0f }
-        , time_between_frames_sec{ 0.1f }
+        , time_between_frames_sec{ 0.05f }
         , frame_index{ 0 }
         , sprite{ t_sprite }
         , coll_rect{ t_collRect }
