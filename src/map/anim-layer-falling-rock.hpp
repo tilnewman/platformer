@@ -136,7 +136,6 @@ namespace bramblefore
 
         void move(const Context & t_context, const float t_amount) final;
         void dumpInfo() const final;
-
         void update(Context & t_context, const float t_frameTimeSec) final;
 
         inline void appendVertLayer(
@@ -155,7 +154,6 @@ namespace bramblefore
         void updateShatteringRocks(const Context & t_context, const float t_frameTimeSec);
 
         [[nodiscard]] const sf::Texture & texture(const Rock t_rock) const;
-
         [[nodiscard]] std::size_t frameCount(const sf::Texture & t_texture) const noexcept;
 
         [[nodiscard]] sf::IntRect
