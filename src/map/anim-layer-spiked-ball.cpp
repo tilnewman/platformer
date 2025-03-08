@@ -21,11 +21,15 @@ namespace bramblefore
 {
 
     SpikedBallAnim::SpikedBallAnim(
-        const sf::Texture & t_texture, const sf::FloatRect & t_rect, const float t_speed)
+        const sf::Texture & t_texture,
+        const sf::FloatRect & t_rect,
+        const float t_speed,
+        const float t_scale)
         : sprite{ t_texture }
         , region{ t_rect }
         , slider{}
     {
+        sprite.setScale({ t_scale, t_scale });
         util::setOriginToCenter(sprite);
 
         if (isHoriz())
@@ -53,6 +57,7 @@ namespace bramblefore
     SpikedBallAnimationLayer::SpikedBallAnimationLayer(
         Context & t_context, const std::vector<sf::FloatRect> & t_rects)
         : m_speed{ 1.5f }
+        , m_scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.0f) }
         , m_texture{}
         , m_anims{}
     {
@@ -64,7 +69,7 @@ namespace bramblefore
         m_anims.reserve(t_rects.size());
         for (const sf::FloatRect & rect : t_rects)
         {
-            m_anims.emplace_back(m_texture, rect, m_speed);
+            m_anims.emplace_back(m_texture, rect, m_speed, m_scale);
         }
     }
 

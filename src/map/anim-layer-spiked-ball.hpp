@@ -29,7 +29,10 @@ namespace bramblefore
     struct SpikedBallAnim
     {
         explicit SpikedBallAnim(
-            const sf::Texture & t_texture, const sf::FloatRect & t_rect, const float t_speed);
+            const sf::Texture & t_texture,
+            const sf::FloatRect & t_rect,
+            const float t_speed,
+            const float t_scale);
 
         [[nodiscard]] inline bool isHoriz() const { return (region.size.x > region.size.y); }
 
@@ -67,6 +70,7 @@ namespace bramblefore
 
       private:
         float m_speed;
+        float m_scale;
         sf::Texture m_texture;
         std::vector<SpikedBallAnim> m_anims;
     };
