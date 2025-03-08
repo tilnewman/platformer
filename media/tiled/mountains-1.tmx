@@ -430,7 +430,7 @@
   <object id="24" name="skeleton" x="368" y="1184" width="432" height="128"/>
  </objectgroup>
  <objectgroup id="15" name="spiked-ball">
-  <object id="49" x="320" y="1088" width="208" height="16"/>
-  <object id="50" x="416" y="976" width="16" height="240"/>
+  <object id="49" x="752" y="1088" width="208" height="16"/>
+  <object id="50" x="848" y="928" width="16" height="240"/>
  </objectgroup>
 </map>

@@ -34,8 +34,7 @@ namespace bramblefore
                 { region.position.x,
                   (util::center(region).y - (sprite.getGlobalBounds().size.y * 0.5f)) });
 
-            slider = util::SliderOscillator<float, float>(
-                region.position.x, util::right(region), t_speed);
+            slider = util::SliderOscillator<float, float>(0.0f, region.size.x, t_speed);
         }
         else
         {
@@ -94,15 +93,6 @@ namespace bramblefore
         {
             anim.sprite.move({ t_amount, 0.0f });
             anim.region.position.x += t_amount;
-
-            if (anim.isHoriz())
-            {
-                anim.slider = util::SliderOscillator<float, float>(
-                    (anim.slider.from() + t_amount),
-                    (anim.slider.to() + t_amount),
-                    m_speed,
-                    (anim.slider.value() + t_amount));
-            }
         }
     }
 
@@ -114,7 +104,8 @@ namespace bramblefore
 
             if (anim.isHoriz())
             {
-                anim.sprite.setPosition({ newPos, anim.sprite.getPosition().y });
+                anim.sprite.setPosition(
+                    { (anim.region.position.x + newPos), anim.sprite.getPosition().y });
             }
             else
             {
