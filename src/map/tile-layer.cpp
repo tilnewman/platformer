@@ -116,25 +116,21 @@ namespace bramblefore
         std::size_t textureIndex{ 0 };
         for (int y{ 0 }; y < t_count.y; ++y)
         {
-            const float posY{ static_cast<float>(y) * t_sizeOnScreen.y };
-
             for (int x{ 0 }; x < t_count.x; ++x)
             {
-                const int textureIndexOrig{ m_indexes[textureIndex++] };
-                if (textureIndexOrig == 0)
+                const int textureValue{ m_indexes[textureIndex++] };
+                if (textureValue == 0)
                 {
                     continue; // zero means no tile image at this location
                 }
 
-                const float posX{ static_cast<float>(x) * t_sizeOnScreen.x };
-
-                const int index{ textureIndexOrig - tileTexture.gid };
-
+                const int index{ textureValue - tileTexture.gid };
                 const int texturePosX{ (index % textureTileCount.x) * t_size.x };
                 const int texturePosY{ (index / textureTileCount.x) * t_size.y };
-
                 const sf::IntRect textureRect{ { texturePosX, texturePosY }, t_size };
 
+                const float posX{ static_cast<float>(x) * t_sizeOnScreen.x };
+                const float posY{ static_cast<float>(y) * t_sizeOnScreen.y };
                 const sf::Vector2f screenPos{ sf::Vector2f(posX, posY) + t_mapPositionOffset };
                 const sf::FloatRect screenRect{ screenPos, t_sizeOnScreen };
 
