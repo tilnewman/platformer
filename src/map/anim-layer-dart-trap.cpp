@@ -234,7 +234,9 @@ namespace bramblefore
         bool didAnyDartsHitThePlayer{ false };
         for (Dart & dart : m_darts)
         {
-            const sf::FloatRect dartRect{ dart.sprite.getGlobalBounds() };
+            const sf::FloatRect dartRect{ util::scaleRectInPlaceCopy(
+                dart.sprite.getGlobalBounds(), { 1.0f, 0.5f }) };
+
             if (t_avatarRect.findIntersection(dartRect))
             {
                 harm.rect   = dartRect;
