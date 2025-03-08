@@ -55,9 +55,21 @@ message( ${CMAKE_CXX_COMPILER_ID} " Compile Flags: " ${custom_compile_flags})
 message( ${CMAKE_CXX_COMPILER_ID} " Link Flags: " ${custom_link_flags})
 
 
-#on windows we build sfml from source, otherwise just use find_package()
+#on windows and linux we build sfml from source, otherwise just use find_package()
 if(WIN32)
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+	option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
+
+	include(FetchContent)
+	FetchContent_Declare(SFML
+		GIT_REPOSITORY https://github.com/SFML/SFML.git
+		GIT_TAG 3.0.0
+		GIT_SHALLOW ON)
+	FetchContent_MakeAvailable(SFML)
+	
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 	option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
 	include(FetchContent)
