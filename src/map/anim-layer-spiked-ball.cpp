@@ -131,6 +131,7 @@ namespace bramblefore
                 harm.rect   = ballRect;
                 harm.damage = 10;
                 harm.sfx    = "";
+
                 break;
             }
         }

@@ -44,7 +44,6 @@ namespace bramblefore
 
         void clear() noexcept { m_animations.clear(); }
         void update(Context & t_context, const float t_frameTimeSec);
-
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
         void move(const float t_amount);
 

@@ -26,6 +26,7 @@ namespace bramblefore
     struct SlidingImageInfo
     {
         SlidingImageInfo();
+
         explicit SlidingImageInfo(
             const float t_moveRatio, const std::filesystem::path & t_filePath);
 
