@@ -35,9 +35,10 @@ namespace bramblefore
 
         m_sprite.setTexture(m_texture, true);
 
-        sf::FloatRect wholeScreenRect{ t_context.layout.wholeRect() };
-        util::scaleRectInPlace(wholeScreenRect, 0.4f);
-        util::fitAndCenterInside(m_sprite, wholeScreenRect);
+        const sf::FloatRect imageRect{ util::scaleRectInPlaceCopy(
+            t_context.layout.wholeRect(), 0.4f) };
+
+        util::fitAndCenterInside(m_sprite, imageRect);
 
         m_sprite.setPosition(
             { m_sprite.getPosition().x, (t_context.layout.wholeRect().size.y * 0.15f) });
@@ -45,7 +46,7 @@ namespace bramblefore
         m_text = t_context.font.makeText(
             Font::Title, FontSize::Huge, "Bramblefore", t_context.settings.off_white_color);
 
-        m_text.setScale({1.5f, 1.5f});
+        m_text.setScale({ 1.5f, 1.5f });
         util::centerInside(m_text, t_context.layout.wholeRect());
         m_text.setPosition({ m_text.getPosition().x, util::bottom(m_sprite) });
     }

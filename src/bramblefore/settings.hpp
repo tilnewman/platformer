@@ -14,7 +14,7 @@ namespace bramblefore
     struct Settings
     {
         // see main.cpp for where this is really set
-        std::filesystem::path media_path = { "./media" };
+        std::filesystem::path media_path{ "./media" };
 
         int player_lives_per_level = 3;
 
