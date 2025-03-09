@@ -185,7 +185,7 @@ namespace bramblefore
         //
 
         m_pauseText = t_context.font.makeText(
-            Font::Title, FontSize::Huge, "PAUSED", sf::Color(220, 220, 220));
+            Font::Title, FontSize::Huge, "PAUSED", t_context.settings.off_white_color);
 
         const sf::FloatRect screenRect{ t_context.layout.wholeRect() };
         util::centerInside(m_pauseText, screenRect);

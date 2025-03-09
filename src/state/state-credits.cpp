@@ -35,7 +35,7 @@ namespace bramblefore
         : texture{}
         , sprite{ texture }
         , name{ t_context.font.makeText(
-              Font::Title, FontSize::Large, t_name, sf::Color(220, 220, 220)) }
+              Font::Title, FontSize::Large, t_name, t_context.settings.off_white_color) }
         , description{ t_context.font.makeText(
               Font::General, FontSize::Small, t_description, sf::Color(160, 160, 160)) }
     {
@@ -129,7 +129,7 @@ namespace bramblefore
         const float vertPad{ screenRect.size.y * 0.15f };
 
         m_titleText = t_context.font.makeText(
-            Font::Title, FontSize::Huge, "Credits", sf::Color(220, 220, 220));
+            Font::Title, FontSize::Huge, "Credits", t_context.settings.off_white_color);
 
         m_titleText.setPosition(
             { (util::center(screenRect).x - (m_titleText.getGlobalBounds().size.x * 0.5f)),

@@ -145,7 +145,7 @@ namespace bramblefore
     void CharacterSelectState::onEnter(Context & t_context)
     {
         m_titleText = t_context.font.makeText(
-            Font::Title, FontSize::Huge, "Character Selection", sf::Color(220, 220, 220));
+            Font::Title, FontSize::Huge, "Character Selection", t_context.settings.off_white_color);
 
         m_titleText.setPosition({ (util::center(t_context.layout.wholeRect()).x -
                                    (m_titleText.getGlobalBounds().size.x * 0.5f)),

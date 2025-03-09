@@ -41,7 +41,7 @@ namespace bramblefore
         //
 
         m_text = t_context.font.makeText(
-            Font::Title, FontSize::Huge, "You Died", sf::Color(220, 220, 220));
+            Font::Title, FontSize::Huge, "You Died", t_context.settings.off_white_color);
 
         m_text.setPosition({ ((wholeRect.size.x * 0.5f) - (m_text.getGlobalBounds().size.x * 0.5f)),
                              (util::bottom(m_sprite) + (wholeRect.size.y * 0.015f)) });

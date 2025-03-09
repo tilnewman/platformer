@@ -5,6 +5,7 @@
 //
 #include <filesystem>
 
+#include <SFML/Graphics/Color.hpp>
 #include <SFML/Window/VideoMode.hpp>
 
 namespace bramblefore
@@ -20,7 +21,8 @@ namespace bramblefore
         float death_delay_sec = 4.0f;
         float idle_delay_sec  = 10.0f;
 
-        sf::VideoMode video_mode    = sf::VideoMode(sf::Vector2u{ 1920u, 1080u }, 32u );
+        sf::VideoMode video_mode{ { 1920u, 1080u }, 32u };
+
         float frame_rate            = 60; // change at your own risk
         bool will_log_fps           = false;
         bool will_display_fps_graph = true;
@@ -38,6 +40,8 @@ namespace bramblefore
         float jump_acc         = 600.0f;
         float high_jump_acc    = 750.0f;
         float ladder_speed     = 60.0f;
+
+        sf::Color off_white_color{ 220, 220, 220 };
     };
 
 } // namespace bramblefore
