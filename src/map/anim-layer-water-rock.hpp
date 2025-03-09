@@ -29,7 +29,7 @@ namespace bramblefore
 
     enum class WaterRock : std::size_t
     {
-        Flat1,
+        Flat1 = 0,
         Flat2,
         Medium1,
         Medium2,

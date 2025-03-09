@@ -25,7 +25,7 @@ namespace bramblefore
 
     //
 
-    enum class Chest
+    enum class Chest : std::size_t
     {
         Chest1 = 0,
         Chest2,
