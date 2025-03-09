@@ -98,25 +98,25 @@ namespace bramblefore
     void TileLayer::appendVertLayer(
         const Context & t_context,
         const sf::Vector2f & t_mapPositionOffset,
-        const sf::Vector2i & t_count,
-        const sf::Vector2i & t_size,
-        const sf::Vector2f & t_sizeOnScreen)
+        const sf::Vector2i & t_tileCount,
+        const sf::Vector2i & t_tileSize,
+        const sf::Vector2f & t_tileSizeOnScreen)
     {
         const TileTexture & tileTexture{ MapTextureManager::instance().get(m_image) };
 
-        const sf::Vector2i textureTileCount{ tileTexture.size / t_size };
+        const sf::Vector2i textureTileCount{ tileTexture.size / t_tileSize };
 
-        const std::size_t totalCount{ static_cast<std::size_t>(t_count.x) *
-                                      static_cast<std::size_t>(t_count.y) };
+        const std::size_t totalTileCount{ static_cast<std::size_t>(t_tileCount.x) *
+                                          static_cast<std::size_t>(t_tileCount.y) };
 
         M_CHECK(
-            (totalCount == m_indexes.size()),
-            "index_count=" << m_indexes.size() << " does not equal tile_count=" << totalCount);
+            (totalTileCount == m_indexes.size()),
+            "index_count=" << m_indexes.size() << " does not equal tile_count=" << totalTileCount);
 
         std::size_t textureIndex{ 0 };
-        for (int y{ 0 }; y < t_count.y; ++y)
+        for (int y{ 0 }; y < t_tileCount.y; ++y)
         {
-            for (int x{ 0 }; x < t_count.x; ++x)
+            for (int x{ 0 }; x < t_tileCount.x; ++x)
             {
                 const int textureValue{ m_indexes[textureIndex++] };
                 if (textureValue == 0)
@@ -125,14 +125,14 @@ namespace bramblefore
                 }
 
                 const int index{ textureValue - tileTexture.gid };
-                const int texturePosX{ (index % textureTileCount.x) * t_size.x };
-                const int texturePosY{ (index / textureTileCount.x) * t_size.y };
-                const sf::IntRect textureRect{ { texturePosX, texturePosY }, t_size };
+                const int texturePosX{ (index % textureTileCount.x) * t_tileSize.x };
+                const int texturePosY{ (index / textureTileCount.x) * t_tileSize.y };
+                const sf::IntRect textureRect{ { texturePosX, texturePosY }, t_tileSize };
 
-                const float posX{ static_cast<float>(x) * t_sizeOnScreen.x };
-                const float posY{ static_cast<float>(y) * t_sizeOnScreen.y };
+                const float posX{ static_cast<float>(x) * t_tileSizeOnScreen.x };
+                const float posY{ static_cast<float>(y) * t_tileSizeOnScreen.y };
                 const sf::Vector2f screenPos{ sf::Vector2f(posX, posY) + t_mapPositionOffset };
-                const sf::FloatRect screenRect{ screenPos, t_sizeOnScreen };
+                const sf::FloatRect screenRect{ screenPos, t_tileSizeOnScreen };
 
                 util::appendTriangleVerts(screenRect, textureRect, m_verts);
             }

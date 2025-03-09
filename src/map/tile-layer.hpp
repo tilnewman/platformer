@@ -37,9 +37,9 @@ namespace bramblefore
         virtual void appendVertLayer(
             const Context & t_context,
             const sf::Vector2f & t_mapPositionOffset,
-            const sf::Vector2i & t_count,
-            const sf::Vector2i & t_size,
-            const sf::Vector2f & t_sizeOnScreen) = 0;
+            const sf::Vector2i & t_tileCount,
+            const sf::Vector2i & t_tileSize,
+            const sf::Vector2f & t_tileSizeOnScreen) = 0;
     };
 
     //
