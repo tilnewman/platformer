@@ -94,6 +94,7 @@ namespace bramblefore
         [[nodiscard]] sf::FloatRect collisionRect() const;
         [[nodiscard]] sf::FloatRect attackRect() const;
         void triggerDeath(Context & t_context);
+        void triggerIdle();
 
         // TODO remove after testing
         void changeType(Context & t_context);

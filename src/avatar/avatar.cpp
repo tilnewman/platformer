@@ -413,7 +413,7 @@ namespace bramblefore
 
         std::vector<sf::FloatRect> rects{ t_context.level.collisions };
         t_context.level.monsters.appendCollisionRects(rects);
-        
+
         for (const sf::FloatRect & rect : t_context.level.layer_collisions)
         {
             rects.push_back(rect);
@@ -661,11 +661,14 @@ namespace bramblefore
         }
         else
         {
-            m_velocity.x = 0.0f;
-            m_state      = AvatarState::Still;
-            m_anim       = AvatarAnim::Walk;
-            restartAnim();
-            t_context.sfx.stop("walk");
+            if (AvatarState::Idle != m_state)
+            {
+                m_velocity.x = 0.0f;
+                m_state      = AvatarState::Still;
+                m_anim       = AvatarAnim::Walk;
+                restartAnim();
+                t_context.sfx.stop("walk");
+            }
         }
     }
 
@@ -731,6 +734,18 @@ namespace bramblefore
 
         t_context.sfx.stop("walk");
         t_context.map_coord.deathBeforeDelay(t_context);
+    }
+
+    void Avatar::triggerIdle()
+    {
+        if (AvatarState::Still != m_state)
+        {
+            return;
+        }
+
+        m_state = AvatarState::Idle;
+        m_anim  = AvatarAnim::Idle;
+        restartAnim();
     }
 
     bool Avatar::handleDeath(Context & t_context, const float t_frameTimeSec)

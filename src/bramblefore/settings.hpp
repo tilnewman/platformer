@@ -18,6 +18,7 @@ namespace bramblefore
         int player_lives_per_level = 3;
 
         float death_delay_sec = 4.0f;
+        float idle_delay_sec  = 10.0f;
 
         sf::VideoMode video_mode    = sf::VideoMode(sf::Vector2u{ 1920u, 1080u }, 32u );
         float frame_rate            = 60; // change at your own risk

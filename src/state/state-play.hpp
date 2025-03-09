@@ -51,6 +51,8 @@ namespace bramblefore
 
         bool m_isQuitting;
         GuiWindow m_quitWindow;
+
+        float m_idleTimeSec;
     };
 
 } // namespace bramblefore

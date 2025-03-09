@@ -7,6 +7,7 @@
 
 #include "avatar/avatar.hpp"
 #include "avatar/spells-anim.hpp"
+#include "bramblefore/settings.hpp"
 #include "map/accents.hpp"
 #include "map/level.hpp"
 #include "map/pickups.hpp"
@@ -37,6 +38,7 @@ namespace bramblefore
         , m_pauseFadeVerts{}
         , m_isQuitting{ false }
         , m_quitWindow{}
+        , m_idleTimeSec{ 0.0f }
     {
         m_pauseFadeVerts.reserve(util::verts_per_quad);
     }
@@ -45,11 +47,11 @@ namespace bramblefore
     {
         if (m_isPaused || m_isQuitting)
         {
+            m_idleTimeSec = 0.0f;
             return;
         }
 
         t_context.avatar.update(t_context, t_frameTimeSec);
-
         if (!t_context.state.isChangePending())
         {
             t_context.player.update(t_context, t_frameTimeSec);
@@ -59,6 +61,13 @@ namespace bramblefore
             t_context.spell.update(t_context, t_frameTimeSec);
             t_context.float_text.update(t_context, t_frameTimeSec);
             m_spellSelectMenu.update(t_context, t_frameTimeSec);
+        }
+
+        m_idleTimeSec += t_frameTimeSec;
+        if (m_idleTimeSec > t_context.settings.idle_delay_sec)
+        {
+            m_idleTimeSec = 0.0f;
+            t_context.avatar.triggerIdle();
         }
     }
 
@@ -98,6 +107,8 @@ namespace bramblefore
     {
         if (const auto * const keyPtr = t_event.getIf<sf::Event::KeyPressed>())
         {
+            m_idleTimeSec = 0.0f;
+
             // leave the quitting popup
             if (m_isQuitting)
             {
@@ -140,7 +151,8 @@ namespace bramblefore
                 t_context.sfx.stop("walk");
                 t_context.sfx.play("ui-select-thock-slide");
             }
-            else if (keyPtr->scancode == sf::Keyboard::Scancode::T) // TOOD remove this after testing
+            else if (keyPtr->scancode == sf::Keyboard::Scancode::T) // TOOD remove this after
+                                                                    // testing
             {
                 std::size_t temp{ static_cast<std::size_t>(t_context.player.avatarType()) };
 
