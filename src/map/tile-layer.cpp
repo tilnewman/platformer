@@ -113,20 +113,20 @@ namespace bramblefore
             (totalTileCount == m_indexes.size()),
             "index_count=" << m_indexes.size() << " does not equal tile_count=" << totalTileCount);
 
-        std::size_t textureIndex{ 0 };
+        std::size_t tileIndex{ 0 };
         for (int y{ 0 }; y < t_tileCount.y; ++y)
         {
             for (int x{ 0 }; x < t_tileCount.x; ++x)
             {
-                const int textureValue{ m_indexes[textureIndex++] };
-                if (textureValue == 0)
+                const int tileValueRaw{ m_indexes[tileIndex++] };
+                if (tileValueRaw == 0)
                 {
                     continue; // zero means no tile image at this location
                 }
 
-                const int index{ textureValue - tileTexture.gid };
-                const int texturePosX{ (index % textureTileCount.x) * t_tileSize.x };
-                const int texturePosY{ (index / textureTileCount.x) * t_tileSize.y };
+                const int tileValue{ tileValueRaw - tileTexture.gid };
+                const int texturePosX{ (tileValue % textureTileCount.x) * t_tileSize.x };
+                const int texturePosY{ (tileValue / textureTileCount.x) * t_tileSize.y };
                 const sf::IntRect textureRect{ { texturePosX, texturePosY }, t_tileSize };
 
                 const float posX{ static_cast<float>(x) * t_tileSizeOnScreen.x };
