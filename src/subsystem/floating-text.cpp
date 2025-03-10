@@ -46,17 +46,17 @@ namespace bramblefore
         bool areAnyAnimationsFinished{ false };
         for (FloatingTextAnim & anim : m_animations)
         {
-            anim.text.move({ 0.0f, -(t_frameTimeSec * 60.0f) });
+            anim.text.move({ 0.0f, -(t_frameTimeSec * 80.0f) });
 
             std::uint8_t alpha{ anim.text.getFillColor().a };
-            if (alpha < 5)
+            if (alpha < 4)
             {
                 anim.is_alive            = false;
                 areAnyAnimationsFinished = true;
             }
             else
             {
-                alpha -= 3;
+                alpha -= 2;
             }
 
             sf::Color color{ anim.text.getFillColor() };
