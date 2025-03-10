@@ -4,6 +4,7 @@
 // state-splash.hpp
 //
 #include "state/states.hpp"
+#include "util/sliders.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -37,6 +38,7 @@ namespace bramblefore
         sf::Sprite m_sprite;
         sf::Text m_text;
         float m_elpasedTimeSec;
+        util::SliderFromTo<float, float> m_fadeSlider;
     };
 
 } // namespace bramblefore

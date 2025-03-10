@@ -26,6 +26,7 @@ namespace bramblefore
         , m_sprite{ m_texture }
         , m_text{ util::SfmlDefaults::instance().font() }
         , m_elpasedTimeSec{ 0.0f }
+        , m_fadeSlider{ 0.0f, 255.0f, 1.0f }
     {}
 
     void SplashState::onEnter(Context & t_context)
@@ -43,16 +44,25 @@ namespace bramblefore
         m_sprite.setPosition(
             { m_sprite.getPosition().x, (t_context.layout.wholeRect().size.y * 0.15f) });
 
+        m_sprite.setColor(sf::Color::Transparent);
+        //
+
         m_text = t_context.font.makeText(
             Font::Title, FontSize::Huge, "Bramblefore", t_context.settings.off_white_color);
 
         m_text.setScale({ 1.5f, 1.5f });
         util::centerInside(m_text, t_context.layout.wholeRect());
         m_text.setPosition({ m_text.getPosition().x, util::bottom(m_sprite) });
+        m_text.setFillColor(sf::Color::Transparent);
     }
 
     void SplashState::update(Context & t_context, const float t_frameTimeSec)
     {
+        const std::uint8_t alpha{ static_cast<std::uint8_t>(m_fadeSlider.update(t_frameTimeSec)) };
+        const sf::Color color{ 255, 255, 255, alpha };
+        m_text.setFillColor(color);
+        m_sprite.setColor(color);
+
         m_elpasedTimeSec += t_frameTimeSec;
         if (m_elpasedTimeSec > 4.0f)
         {
