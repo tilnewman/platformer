@@ -8,7 +8,6 @@
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "util/check-macros.hpp"
 #include "util/random.hpp"
 #include "util/sfml-util.hpp"
 #include "util/texture-loader.hpp"

@@ -5,9 +5,7 @@
 //
 #include "anim-layer-water.hpp"
 
-#include "avatar/avatar.hpp"
 #include "bramblefore/settings.hpp"
-#include "map/level.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "util/check-macros.hpp"

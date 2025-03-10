@@ -7,10 +7,8 @@
 
 #include "avatar/avatar.hpp"
 #include "bramblefore/settings.hpp"
-#include "map/level.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "util/check-macros.hpp"
 #include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"

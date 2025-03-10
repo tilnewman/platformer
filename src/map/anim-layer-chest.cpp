@@ -10,7 +10,6 @@
 #include "subsystem/context.hpp"
 #include "subsystem/floating-text.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "util/check-macros.hpp"
 #include "util/random.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
