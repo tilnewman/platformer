@@ -1,5 +1,5 @@
-#ifndef TILELAYER_HPP_INCLUDED
-#define TILELAYER_HPP_INCLUDED
+#ifndef TILE_LAYER_HPP_INCLUDED
+#define TILE_LAYER_HPP_INCLUDED
 //
 // tile-layer.hpp
 //
@@ -78,4 +78,4 @@ namespace bramblefore
 
 } // namespace bramblefore
 
-#endif // TILELAYER_HPP_INCLUDED
+#endif // TILE_LAYER_HPP_INCLUDED
