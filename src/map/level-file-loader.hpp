@@ -34,7 +34,7 @@ namespace bramblefore
             Context & t_context, const TileImage image, const nlohmann::json & t_json);
 
         void parseRectLayer(
-            Context & t_context,
+            const Context & t_context,
             const nlohmann::json & t_json,
             std::vector<sf::FloatRect> & t_rects);
 
@@ -42,21 +42,21 @@ namespace bramblefore
             parseAndConvertRect(const Context & t_context, const nlohmann::json & t_json);
 
         void parseSpawnLayer(Context & t_context, const nlohmann::json & t_json);
-        void parsePickupAnimLayer(Context & t_context, const nlohmann::json & t_json);
-        void parseAccentAnimLayer(Context & t_context, const nlohmann::json & t_json);
-        void parseChestAnimLayer(Context & t_context, const nlohmann::json & t_json);
+        void parsePickupAnimLayer(const Context & t_context, const nlohmann::json & t_json);
+        void parseAccentAnimLayer(const Context & t_context, const nlohmann::json & t_json);
+        void parseChestAnimLayer(const Context & t_context, const nlohmann::json & t_json);
         void parseMonsterLayer(Context & t_context, const nlohmann::json & t_json);
-        void parseFlameTrapLayer(Context & t_context, const nlohmann::json & t_json);
-        void parseFallingRockTrapLayer(Context & t_context, const nlohmann::json & t_json);
-        void parseLavaDripTrapLayer(Context & t_context, const nlohmann::json & t_json);
-        void parseDartTrapLayer(Context & t_context, const nlohmann::json & t_json);
-        void parseWaterRockLayer(Context & t_context, const nlohmann::json & t_json);
+        void parseFlameTrapLayer(const Context & t_context, const nlohmann::json & t_json);
+        void parseFallingRockTrapLayer(const Context & t_context, const nlohmann::json & t_json);
+        void parseLavaDripTrapLayer(const Context & t_context, const nlohmann::json & t_json);
+        void parseDartTrapLayer(const Context & t_context, const nlohmann::json & t_json);
+        void parseWaterRockLayer(const Context & t_context, const nlohmann::json & t_json);
 
         void parseWaterLayer(
-            Context & t_context, const nlohmann::json & t_json, const bool isSurface);
+            const Context & t_context, const nlohmann::json & t_json, const bool isSurface);
 
         template <typename Layer_t>
-        void parseLayerOfRects(Context & t_context, const nlohmann::json & t_json)
+        void parseLayerOfRects(const Context & t_context, const nlohmann::json & t_json)
         {
             std::vector<sf::FloatRect> rects;
             rects.reserve(128); // harmless guess based on knowledge of maps in the game

@@ -396,7 +396,7 @@ namespace bramblefore
     }
 
     void LevelFileLoader::parseRectLayer(
-        Context & t_context, const nlohmann::json & t_json, std::vector<sf::FloatRect> & t_rects)
+        const Context & t_context, const nlohmann::json & t_json, std::vector<sf::FloatRect> & t_rects)
     {
         t_rects.clear();
 
@@ -465,7 +465,7 @@ namespace bramblefore
             "Error Parsing Level File " << m_pathStr << ":  Failed to find exit location.");
     }
 
-    void LevelFileLoader::parsePickupAnimLayer(Context & t_context, const nlohmann::json & t_json)
+    void LevelFileLoader::parsePickupAnimLayer(const Context & t_context, const nlohmann::json & t_json)
     {
         for (const nlohmann::json & pickupJson : t_json["objects"])
         {
@@ -481,7 +481,7 @@ namespace bramblefore
         }
     }
 
-    void LevelFileLoader::parseAccentAnimLayer(Context & t_context, const nlohmann::json & t_json)
+    void LevelFileLoader::parseAccentAnimLayer(const Context & t_context, const nlohmann::json & t_json)
     {
         for (const nlohmann::json & accentJson : t_json["objects"])
         {
@@ -497,7 +497,7 @@ namespace bramblefore
         }
     }
 
-    void LevelFileLoader::parseChestAnimLayer(Context & t_context, const nlohmann::json & t_json)
+    void LevelFileLoader::parseChestAnimLayer(const Context & t_context, const nlohmann::json & t_json)
     {
         auto chestAnimLayerUPtr{ std::make_unique<ChestAnimationLayer>(t_context) };
 
@@ -517,7 +517,8 @@ namespace bramblefore
         t_context.level.tile_layers.push_back(std::move(chestAnimLayerUPtr));
     }
 
-    void LevelFileLoader::parseMonsterLayer(Context & t_context, const nlohmann::json & t_json)
+    void
+        LevelFileLoader::parseMonsterLayer(Context & t_context, const nlohmann::json & t_json)
     {
         for (const nlohmann::json & monsterJson : t_json["objects"])
         {
@@ -653,7 +654,8 @@ namespace bramblefore
         }
     }
 
-    void LevelFileLoader::parseFlameTrapLayer(Context & t_context, const nlohmann::json & t_json)
+    void LevelFileLoader::parseFlameTrapLayer(
+        const Context & t_context, const nlohmann::json & t_json)
     {
         std::vector<FlameTrapRectDir> rectDirs;
         rectDirs.reserve(16); // harmless guess based on what I know is in the maps
@@ -669,7 +671,7 @@ namespace bramblefore
     }
 
     void LevelFileLoader::parseFallingRockTrapLayer(
-        Context & t_context, const nlohmann::json & t_json)
+        const Context & t_context, const nlohmann::json & t_json)
     {
         std::vector<RectRock> rectRocks;
         rectRocks.reserve(32); // harmless guess based on what I know is in the maps
@@ -684,7 +686,8 @@ namespace bramblefore
             std::make_unique<FallingRockAnimationLayer>(t_context, rectRocks));
     }
 
-    void LevelFileLoader::parseLavaDripTrapLayer(Context & t_context, const nlohmann::json & t_json)
+    void LevelFileLoader::parseLavaDripTrapLayer(
+        const Context & t_context, const nlohmann::json & t_json)
     {
         std::vector<LavaRectSize> rectSizes;
         rectSizes.reserve(16); // harmless guess based on what I know is in the maps
@@ -699,7 +702,8 @@ namespace bramblefore
             std::make_unique<LavaDripAnimationLayer>(t_context, rectSizes));
     }
 
-    void LevelFileLoader::parseDartTrapLayer(Context & t_context, const nlohmann::json & t_json)
+    void LevelFileLoader::parseDartTrapLayer(
+        const Context & t_context, const nlohmann::json & t_json)
     {
         std::vector<DartRectDir> rectDirs;
         rectDirs.reserve(16); // harmless guess based on what I know is in the maps
@@ -721,7 +725,7 @@ namespace bramblefore
     }
 
     void LevelFileLoader::parseWaterLayer(
-        Context & t_context, const nlohmann::json & t_json, const bool isSurface)
+        const Context & t_context, const nlohmann::json & t_json, const bool isSurface)
     {
         std::vector<WaterTypeRect> typeRects;
         typeRects.reserve(64); // harmless guess based on what I know is in the maps
@@ -735,7 +739,8 @@ namespace bramblefore
             std::make_unique<WaterAnimationLayer>(t_context, typeRects));
     }
 
-    void LevelFileLoader::parseWaterRockLayer(Context & t_context, const nlohmann::json & t_json)
+    void LevelFileLoader::parseWaterRockLayer(
+        const Context & t_context, const nlohmann::json & t_json)
     {
         std::vector<WaterRockRect> rockRects;
         rockRects.reserve(16); // harmless guess based on what I know is in the maps
