@@ -7,7 +7,6 @@
 
 #include "subsystem/context.hpp"
 #include "util/sfml-util.hpp"
-#include "util/sound-player.hpp"
 
 namespace bramblefore
 {
