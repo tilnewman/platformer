@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    Orc::Orc(Context & t_context, const sf::FloatRect & t_region)
+    Orc::Orc(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::Orc, t_region, 0.75f } }
     {}
 

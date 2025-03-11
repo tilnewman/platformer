@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    Spider::Spider(Context & t_context, const sf::FloatRect & t_region)
+    Spider::Spider(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::Spider, t_region, 0.8f } }
     {}
 

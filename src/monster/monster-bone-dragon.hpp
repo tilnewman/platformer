@@ -17,7 +17,7 @@ namespace bramblefore
     class BoneDragon : public Monster
     {
       public:
-        BoneDragon(Context & t_context, const sf::FloatRect & t_region);
+        BoneDragon(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~BoneDragon() override = default;
 
         sf::FloatRect collisionRect() const final;

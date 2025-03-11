@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    Bear::Bear(Context & t_context, const sf::FloatRect & t_region)
+    Bear::Bear(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::Bear, t_region, 0.6f, 1.2f } }
     {}
 

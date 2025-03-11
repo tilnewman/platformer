@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    Demon::Demon(Context & t_context, const sf::FloatRect & t_region)
+    Demon::Demon(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::Demon, t_region, 0.75f } }
     {}
 

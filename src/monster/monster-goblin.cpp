@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    Goblin::Goblin(Context & t_context, const sf::FloatRect & t_region)
+    Goblin::Goblin(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::Goblin, t_region, 0.8f } }
     {}
 

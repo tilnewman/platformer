@@ -17,7 +17,7 @@ namespace bramblefore
     class Dino : public Monster
     {
       public:
-        Dino(Context & t_context, const sf::FloatRect & t_region);
+        Dino(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Dino() override = default;
 
         sf::FloatRect collisionRect() const final;

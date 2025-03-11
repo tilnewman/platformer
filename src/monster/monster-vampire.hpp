@@ -17,7 +17,7 @@ namespace bramblefore
     class Vampire : public Monster
     {
       public:
-        Vampire(Context & t_context, const sf::FloatRect & t_region);
+        Vampire(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Vampire() override = default;
 
         sf::FloatRect collisionRect() const final;

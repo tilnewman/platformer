@@ -17,7 +17,7 @@ namespace bramblefore
     class Snake : public Monster
     {
       public:
-        Snake(Context & t_context, const sf::FloatRect & t_region);
+        Snake(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Snake() override = default;
 
         sf::FloatRect collisionRect() const final;

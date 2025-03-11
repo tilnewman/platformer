@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    Dino::Dino(Context & t_context, const sf::FloatRect & t_region)
+    Dino::Dino(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::Dino, t_region, 0.8f } }
     {}
 

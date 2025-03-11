@@ -17,7 +17,7 @@ namespace bramblefore
     class Salamander : public Monster
     {
       public:
-        Salamander(Context & t_context, const sf::FloatRect & t_region);
+        Salamander(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Salamander() override = default;
 
         sf::FloatRect collisionRect() const final;

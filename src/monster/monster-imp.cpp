@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    Imp::Imp(Context & t_context, const sf::FloatRect & t_region)
+    Imp::Imp(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::Imp, t_region, 0.875f } }
     {}
 

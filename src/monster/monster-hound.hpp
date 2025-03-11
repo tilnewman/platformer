@@ -17,7 +17,7 @@ namespace bramblefore
     class Hound : public Monster
     {
       public:
-        Hound(Context & t_context, const sf::FloatRect & t_region);
+        Hound(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Hound() override = default;
 
         // IMonster functions

@@ -69,7 +69,7 @@ namespace bramblefore
         void setup(const Settings & t_settings);
         void teardown();
 
-        void acquire(Context & t_context, const MonsterSpell t_spell);
+        void acquire(const Context & t_context, const MonsterSpell t_spell);
         void release(const MonsterSpell t_spell);
 
         void

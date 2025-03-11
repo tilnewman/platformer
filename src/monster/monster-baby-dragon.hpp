@@ -17,7 +17,7 @@ namespace bramblefore
     class BabyDragon : public Monster
     {
       public:
-        BabyDragon(Context & t_context, const sf::FloatRect & t_region);
+        BabyDragon(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~BabyDragon() override = default;
 
         sf::FloatRect collisionRect() const final;

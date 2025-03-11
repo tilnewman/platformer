@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    Hound::Hound(Context & t_context, const sf::FloatRect & t_region)
+    Hound::Hound(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::Hound, t_region, 0.755f, 0.7f } }
     {}
 

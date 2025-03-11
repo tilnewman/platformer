@@ -518,7 +518,7 @@ namespace bramblefore
     }
 
     void
-        LevelFileLoader::parseMonsterLayer(Context & t_context, const nlohmann::json & t_json)
+        LevelFileLoader::parseMonsterLayer(const Context & t_context, const nlohmann::json & t_json)
     {
         for (const nlohmann::json & monsterJson : t_json["objects"])
         {

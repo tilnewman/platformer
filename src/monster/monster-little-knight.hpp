@@ -17,7 +17,7 @@ namespace bramblefore
     class LittleKnight : public Monster
     {
       public:
-        LittleKnight(Context & t_context, const sf::FloatRect & t_region);
+        LittleKnight(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~LittleKnight() override = default;
 
         // IMonster functions

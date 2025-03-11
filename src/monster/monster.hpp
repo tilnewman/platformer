@@ -51,7 +51,7 @@ namespace bramblefore
     class Monster : public IMonster
     {
       public:
-        Monster(Context & t_context, const MonsterSetupInfo & t_setupInfo);
+        Monster(const Context & t_context, const MonsterSetupInfo & t_setupInfo);
         virtual ~Monster() override;
 
         // IMonster functions
@@ -79,7 +79,7 @@ namespace bramblefore
         void resetAnimation();
 
         void initialSpriteSetup(
-            Context & t_context, const float t_imageHeightOffsetRatio, const float t_imageScale);
+            const Context & t_context, const float t_imageHeightOffsetRatio, const float t_imageScale);
 
         void turnToFacePlayer(Context & t_context);
 

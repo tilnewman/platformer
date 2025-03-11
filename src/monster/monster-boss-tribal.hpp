@@ -17,7 +17,7 @@ namespace bramblefore
     class BossTribal : public Monster
     {
       public:
-        BossTribal(Context & t_context, const sf::FloatRect & t_region);
+        BossTribal(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~BossTribal() override = default;
 
         sf::FloatRect collisionRect() const final;

@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    FireImp::FireImp(Context & t_context, const sf::FloatRect & t_region)
+    FireImp::FireImp(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::FireImp, t_region, 0.875f } }
     {}
 

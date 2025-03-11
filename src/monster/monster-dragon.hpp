@@ -17,7 +17,7 @@ namespace bramblefore
     class Dragon : public Monster
     {
       public:
-        Dragon(Context & t_context, const sf::FloatRect & t_region);
+        Dragon(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Dragon() override = default;
 
         sf::FloatRect collisionRect() const final;

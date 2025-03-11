@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    Djinn::Djinn(Context & t_context, const sf::FloatRect & t_region)
+    Djinn::Djinn(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::Djinn, t_region, 0.65f } }
     {}
 

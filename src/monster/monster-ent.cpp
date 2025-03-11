@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    Ent::Ent(Context & t_context, const sf::FloatRect & t_region)
+    Ent::Ent(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::Ent, t_region, 0.8f } }
     {}
 

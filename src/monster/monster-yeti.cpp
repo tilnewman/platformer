@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    Yeti::Yeti(Context & t_context, const sf::FloatRect & t_region)
+    Yeti::Yeti(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::Yeti, t_region, 0.78f, 1.2f } }
     {}
 

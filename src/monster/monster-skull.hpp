@@ -17,7 +17,7 @@ namespace bramblefore
     class Skull : public Monster
     {
       public:
-        Skull(Context & t_context, const sf::FloatRect & t_region);
+        Skull(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Skull() override = default;
 
         sf::FloatRect collisionRect() const final;

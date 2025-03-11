@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    BossKnight::BossKnight(Context & t_context, const sf::FloatRect & t_region)
+    BossKnight::BossKnight(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::BossKnight, t_region, 0.7f } }
     {}
 

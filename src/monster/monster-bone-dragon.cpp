@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    BoneDragon::BoneDragon(Context & t_context, const sf::FloatRect & t_region)
+    BoneDragon::BoneDragon(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::BoneDragon, t_region, 0.87f } }
     {}
 

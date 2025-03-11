@@ -17,7 +17,7 @@ namespace bramblefore
     class Goblin : public Monster
     {
       public:
-        Goblin(Context & t_context, const sf::FloatRect & t_region);
+        Goblin(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Goblin() override = default;
 
         // IMonster functions

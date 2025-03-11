@@ -17,7 +17,7 @@ namespace bramblefore
     class Medusa : public Monster
     {
       public:
-        Medusa(Context & t_context, const sf::FloatRect & t_region);
+        Medusa(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Medusa() override = default;
 
         // IMonster functions

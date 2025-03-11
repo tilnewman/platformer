@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    Dwarf::Dwarf(Context & t_context, const sf::FloatRect & t_region)
+    Dwarf::Dwarf(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::Dwarf, t_region, 0.8f } }
     {}
 

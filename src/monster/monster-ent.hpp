@@ -17,7 +17,7 @@ namespace bramblefore
     class Ent : public Monster
     {
       public:
-        Ent(Context & t_context, const sf::FloatRect & t_region);
+        Ent(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Ent() override = default;
 
         sf::FloatRect collisionRect() const final;

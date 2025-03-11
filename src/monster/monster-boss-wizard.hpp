@@ -17,7 +17,7 @@ namespace bramblefore
     class BossWizard : public Monster
     {
       public:
-        BossWizard(Context & t_context, const sf::FloatRect & t_region);
+        BossWizard(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~BossWizard() override = default;
 
         sf::FloatRect collisionRect() const final;

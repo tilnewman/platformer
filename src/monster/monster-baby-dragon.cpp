@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    BabyDragon::BabyDragon(Context & t_context, const sf::FloatRect & t_region)
+    BabyDragon::BabyDragon(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::BabyDragon, t_region, 0.85f } }
     {}
 

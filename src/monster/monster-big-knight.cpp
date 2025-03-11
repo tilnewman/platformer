@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    BigKnight::BigKnight(Context & t_context, const sf::FloatRect & t_region)
+    BigKnight::BigKnight(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::BigKnight, t_region, 0.835f } }
     {}
 

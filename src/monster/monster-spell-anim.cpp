@@ -38,7 +38,7 @@ namespace bramblefore
 
     void MonsterSpellTextureManager::teardown() { m_textureSets.clear(); }
 
-    void MonsterSpellTextureManager::acquire(Context & t_context, const MonsterSpell t_spell)
+    void MonsterSpellTextureManager::acquire(const Context & t_context, const MonsterSpell t_spell)
     {
         const std::size_t spellIndex{ static_cast<std::size_t>(t_spell) };
 

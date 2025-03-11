@@ -17,7 +17,7 @@ namespace bramblefore
     class BigKnight : public Monster
     {
       public:
-        BigKnight(Context & t_context, const sf::FloatRect & t_region);
+        BigKnight(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~BigKnight() override = default;
 
         sf::FloatRect collisionRect() const final;

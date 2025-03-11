@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    BossWizard::BossWizard(Context & t_context, const sf::FloatRect & t_region)
+    BossWizard::BossWizard(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::BossWizard, t_region, 0.75f } }
     {}
 

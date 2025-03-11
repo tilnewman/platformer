@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    Snake::Snake(Context & t_context, const sf::FloatRect & t_region)
+    Snake::Snake(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::Snake, t_region, 0.86f, 0.75f } }
     {}
 

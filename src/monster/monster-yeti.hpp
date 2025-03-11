@@ -17,7 +17,7 @@ namespace bramblefore
     class Yeti : public Monster
     {
       public:
-        Yeti(Context & t_context, const sf::FloatRect & t_region);
+        Yeti(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Yeti() override = default;
 
         sf::FloatRect collisionRect() const final;

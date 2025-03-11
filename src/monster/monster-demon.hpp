@@ -17,7 +17,7 @@ namespace bramblefore
     class Demon : public Monster
     {
       public:
-        Demon(Context & t_context, const sf::FloatRect & t_region);
+        Demon(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Demon() override = default;
 
         sf::FloatRect collisionRect() const final;

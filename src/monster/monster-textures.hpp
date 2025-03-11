@@ -36,7 +36,7 @@ namespace bramblefore
         void setup(const Settings & t_settings);
         void teardown();
 
-        void acquire(Context & t_context, const MonsterType t_type);
+        void acquire(const Context & t_context, const MonsterType t_type);
         void release(const MonsterType t_type);
 
         void setTexture(

@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    Skull::Skull(Context & t_context, const sf::FloatRect & t_region)
+    Skull::Skull(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::Skull, t_region, 0.85f } }
     {}
 

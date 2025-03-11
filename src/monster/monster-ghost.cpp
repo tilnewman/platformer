@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    Ghost::Ghost(Context & t_context, const sf::FloatRect & t_region)
+    Ghost::Ghost(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::Ghost, t_region, 0.7f } }
     {}
 

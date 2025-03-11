@@ -17,7 +17,7 @@ namespace bramblefore
     class Lizard : public Monster
     {
       public:
-        Lizard(Context & t_context, const sf::FloatRect & t_region);
+        Lizard(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Lizard() override = default;
 
         // IMonster functions

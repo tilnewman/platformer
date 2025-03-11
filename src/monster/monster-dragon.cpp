@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    Dragon::Dragon(Context & t_context, const sf::FloatRect & t_region)
+    Dragon::Dragon(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context,
                    { MonsterType::Dragon, t_region, 0.75f, 1.0f, MonsterSpell::DragonFire } }
     {}

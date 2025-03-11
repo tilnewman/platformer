@@ -17,7 +17,7 @@ namespace bramblefore
     class Ghost : public Monster
     {
       public:
-        Ghost(Context & t_context, const sf::FloatRect & t_region);
+        Ghost(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Ghost() override = default;
 
         sf::FloatRect collisionRect() const final;

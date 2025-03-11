@@ -17,7 +17,7 @@ namespace bramblefore
     class Bear : public Monster
     {
       public:
-        Bear(Context & t_context, const sf::FloatRect & t_region);
+        Bear(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Bear() override = default;
 
         sf::FloatRect collisionRect() const final;

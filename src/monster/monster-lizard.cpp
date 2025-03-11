@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    Lizard::Lizard(Context & t_context, const sf::FloatRect & t_region)
+    Lizard::Lizard(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::Lizard, t_region, 0.88f } }
     {}
 

@@ -17,7 +17,7 @@ namespace bramblefore
     class Imp : public Monster
     {
       public:
-        Imp(Context & t_context, const sf::FloatRect & t_region);
+        Imp(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Imp() override = default;
 
         // IMonster functions

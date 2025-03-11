@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    FireKnight::FireKnight(Context & t_context, const sf::FloatRect & t_region)
+    FireKnight::FireKnight(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::FireKnight, t_region, 0.8f } }
     {}
 

@@ -17,7 +17,7 @@ namespace bramblefore
     class Dwarf : public Monster
     {
       public:
-        Dwarf(Context & t_context, const sf::FloatRect & t_region);
+        Dwarf(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Dwarf() override = default;
 
         sf::FloatRect collisionRect() const final;

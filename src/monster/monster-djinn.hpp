@@ -17,7 +17,7 @@ namespace bramblefore
     class Djinn : public Monster
     {
       public:
-        Djinn(Context & t_context, const sf::FloatRect & t_region);
+        Djinn(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Djinn() override = default;
 
         sf::FloatRect collisionRect() const final;

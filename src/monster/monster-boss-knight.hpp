@@ -17,7 +17,7 @@ namespace bramblefore
     class BossKnight : public Monster
     {
       public:
-        BossKnight(Context & t_context, const sf::FloatRect & t_region);
+        BossKnight(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~BossKnight() override = default;
 
         sf::FloatRect collisionRect() const final;

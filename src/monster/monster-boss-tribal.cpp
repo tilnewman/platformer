@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    BossTribal::BossTribal(Context & t_context, const sf::FloatRect & t_region)
+    BossTribal::BossTribal(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::BossTribal, t_region, 0.7f } }
     {}
 

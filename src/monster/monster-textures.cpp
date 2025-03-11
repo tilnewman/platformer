@@ -51,7 +51,7 @@ namespace bramblefore
         m_textureSets.clear();
     }
 
-    void MonsterTextureManager::acquire(Context & t_context, const MonsterType t_type)
+    void MonsterTextureManager::acquire(const Context & t_context, const MonsterType t_type)
     {
         const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
 

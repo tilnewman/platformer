@@ -17,7 +17,7 @@ namespace bramblefore
     class FireImp : public Monster
     {
       public:
-        FireImp(Context & t_context, const sf::FloatRect & t_region);
+        FireImp(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~FireImp() override = default;
 
         sf::FloatRect collisionRect() const final;

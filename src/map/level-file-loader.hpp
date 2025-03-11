@@ -45,7 +45,7 @@ namespace bramblefore
         void parsePickupAnimLayer(const Context & t_context, const nlohmann::json & t_json);
         void parseAccentAnimLayer(const Context & t_context, const nlohmann::json & t_json);
         void parseChestAnimLayer(const Context & t_context, const nlohmann::json & t_json);
-        void parseMonsterLayer(Context & t_context, const nlohmann::json & t_json);
+        void parseMonsterLayer(const Context & t_context, const nlohmann::json & t_json);
         void parseFlameTrapLayer(const Context & t_context, const nlohmann::json & t_json);
         void parseFallingRockTrapLayer(const Context & t_context, const nlohmann::json & t_json);
         void parseLavaDripTrapLayer(const Context & t_context, const nlohmann::json & t_json);

@@ -17,7 +17,7 @@ namespace bramblefore
     class Orc : public Monster
     {
       public:
-        Orc(Context & t_context, const sf::FloatRect & t_region);
+        Orc(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Orc() override = default;
 
         sf::FloatRect collisionRect() const final;

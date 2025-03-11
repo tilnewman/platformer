@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    LittleKnight::LittleKnight(Context & t_context, const sf::FloatRect & t_region)
+    LittleKnight::LittleKnight(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::LittleKnight, t_region, 0.85f } }
     {}
 

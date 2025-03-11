@@ -17,7 +17,7 @@ namespace bramblefore
     class FireKnight : public Monster
     {
       public:
-        FireKnight(Context & t_context, const sf::FloatRect & t_region);
+        FireKnight(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~FireKnight() override = default;
 
         sf::FloatRect collisionRect() const final;

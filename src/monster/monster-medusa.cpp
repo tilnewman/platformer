@@ -11,7 +11,7 @@
 namespace bramblefore
 {
 
-    Medusa::Medusa(Context & t_context, const sf::FloatRect & t_region)
+    Medusa::Medusa(const Context & t_context, const sf::FloatRect & t_region)
         : Monster{ t_context, { MonsterType::Medusa, t_region, 0.75f, 1.1f } }
     {}
 

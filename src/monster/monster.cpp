@@ -21,7 +21,7 @@
 namespace bramblefore
 {
 
-    Monster::Monster(Context & t_context, const MonsterSetupInfo & t_setupInfo)
+    Monster::Monster(const Context & t_context, const MonsterSetupInfo & t_setupInfo)
         : m_type{ t_setupInfo.type }
         , m_spell{ t_setupInfo.spell } // Count means this monster does not cast spells
         , m_region{ t_setupInfo.region }
@@ -383,7 +383,7 @@ namespace bramblefore
     }
 
     void Monster::initialSpriteSetup(
-        Context & t_context, const float t_imageHeightOffsetRatio, const float t_imageScale)
+        const Context & t_context, const float t_imageHeightOffsetRatio, const float t_imageScale)
     {
         MonsterTextureManager::instance().setTexture(m_sprite, m_type, m_anim, m_animFrame);
 
