@@ -80,7 +80,7 @@ namespace bramblefore
     //
 
     FlamingSkullAnimationLayer::FlamingSkullAnimationLayer(
-        Context & t_context, const std::vector<sf::FloatRect> & t_rects)
+        const Context & t_context, const std::vector<sf::FloatRect> & t_rects)
         : m_skullBlockTexture{}
         , m_flamesUpTexture{}
         , m_flamesDownTexture{}
@@ -318,7 +318,8 @@ namespace bramblefore
 
     void FlamingSkullAnimationLayer::dumpInfo() const
     {
-        std::clog << "\tFlaming Skull Trap Animation Layer: x" << m_skullBlockSprites.size() << '\n';
+        std::clog << "\tFlaming Skull Trap Animation Layer: x" << m_skullBlockSprites.size()
+                  << '\n';
     }
 
 } // namespace bramblefore

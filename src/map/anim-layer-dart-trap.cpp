@@ -89,7 +89,7 @@ namespace bramblefore
     //
 
     DartTrapAnimationLayer::DartTrapAnimationLayer(
-        Context & t_context, const std::vector<DartRectDir> & t_rectDirs)
+        const Context & t_context, const std::vector<DartRectDir> & t_rectDirs)
         : m_shooterTexture{}
         , m_dartTexture{}
         , m_shooters{}

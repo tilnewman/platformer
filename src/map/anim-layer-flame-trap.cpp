@@ -77,7 +77,7 @@ namespace bramblefore
     //
 
     FlameTrapAnimationLayer::FlameTrapAnimationLayer(
-        Context & t_context, const std::vector<FlameTrapRectDir> & t_rectDirs)
+        const Context & t_context, const std::vector<FlameTrapRectDir> & t_rectDirs)
         : m_emitterScale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.8f) }
         , m_emitterUpTexture{}
         , m_emitterDownTexture{}

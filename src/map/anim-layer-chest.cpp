@@ -38,7 +38,7 @@ namespace bramblefore
 
     //
 
-    ChestAnimationLayer::ChestAnimationLayer(Context & t_context)
+    ChestAnimationLayer::ChestAnimationLayer(const Context & t_context)
         : m_textureSets{}
         , m_animations{}
     {
@@ -52,7 +52,7 @@ namespace bramblefore
     }
 
     void ChestAnimationLayer::add(
-        Context & t_context, const Chest t_chest, const sf::FloatRect & t_rect)
+       const Context & t_context, const Chest t_chest, const sf::FloatRect & t_rect)
     {
         m_animations.emplace_back(
             m_textureSets.at(static_cast<std::size_t>(t_chest)).closed,
@@ -118,7 +118,7 @@ namespace bramblefore
         return Harm{};
     }
 
-    void ChestAnimationLayer::loadTextures(Context & t_context)
+    void ChestAnimationLayer::loadTextures(const Context & t_context)
     {
         // this reserve call needed to prevent reallocations
         m_textureSets.reserve(static_cast<std::size_t>(Chest::Count));

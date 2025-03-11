@@ -79,10 +79,10 @@ namespace bramblefore
         , public IHarmCollisionOwner
     {
       public:
-        ChestAnimationLayer(Context & t_context);
+        ChestAnimationLayer(const Context & t_context);
         virtual ~ChestAnimationLayer() final;
 
-        void add(Context & t_context, const Chest t_chest, const sf::FloatRect & t_rect);
+        void add(const Context & t_context, const Chest t_chest, const sf::FloatRect & t_rect);
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const final;
@@ -102,7 +102,7 @@ namespace bramblefore
         Harm avatarCollide(Context &, const sf::FloatRect & t_avatarRect) override;
 
       private:
-        void loadTextures(Context & t_context);
+        void loadTextures(const Context & t_context);
 
       private:
         std::vector<ChestTextures> m_textureSets;

@@ -141,7 +141,9 @@ namespace bramblefore
         , public IHarmCollisionOwner
     {
       public:
-        LavaDripAnimationLayer(Context & t_context, const std::vector<LavaRectSize> & t_rectSizes);
+        LavaDripAnimationLayer(
+            const Context & t_context, const std::vector<LavaRectSize> & t_rectSizes);
+
         virtual ~LavaDripAnimationLayer() final;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)

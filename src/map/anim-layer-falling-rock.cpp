@@ -86,7 +86,7 @@ namespace bramblefore
     //
 
     FallingRockAnimationLayer::FallingRockAnimationLayer(
-        Context & t_context, const std::vector<RectRock> & t_rectRocks)
+        const Context & t_context, const std::vector<RectRock> & t_rectRocks)
         : m_texture1{}
         , m_texture2{}
         , m_texture3{}

@@ -106,7 +106,7 @@ namespace bramblefore
     //
 
     LavaDripAnimationLayer::LavaDripAnimationLayer(
-        Context & t_context, const std::vector<LavaRectSize> & t_rectSizes)
+        const Context & t_context, const std::vector<LavaRectSize> & t_rectSizes)
         : m_scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.5f) }
         , m_dripperTexture1{}
         , m_dripperTexture2{}

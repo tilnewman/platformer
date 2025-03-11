@@ -48,7 +48,7 @@ namespace bramblefore
         , public IHarmCollisionOwner
     {
       public:
-        BombAnimationLayer(Context & t_context, const std::vector<sf::FloatRect> & t_rects);
+        BombAnimationLayer(const Context & t_context, const std::vector<sf::FloatRect> & t_rects);
         virtual ~BombAnimationLayer() final;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)

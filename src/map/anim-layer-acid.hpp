@@ -30,7 +30,7 @@ namespace bramblefore
         , public IHarmCollisionOwner
     {
       public:
-        AcidAnimationLayer(Context & t_context, const std::vector<sf::FloatRect> & t_rects);
+        AcidAnimationLayer(const Context & t_context, const std::vector<sf::FloatRect> & t_rects);
         virtual ~AcidAnimationLayer() final;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)

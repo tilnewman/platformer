@@ -30,7 +30,7 @@ namespace bramblefore
         , public IHarmCollisionOwner
     {
       public:
-        SawAnimationLayer(Context & t_context, const std::vector<sf::FloatRect> & t_rects);
+        SawAnimationLayer(const Context & t_context, const std::vector<sf::FloatRect> & t_rects);
         virtual ~SawAnimationLayer() final;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)

@@ -100,7 +100,7 @@ namespace bramblefore
     {
       public:
         WaterRockAnimationLayer(
-            Context & t_context, const std::vector<WaterRockRect> & t_rockRects);
+            const Context & t_context, const std::vector<WaterRockRect> & t_rockRects);
 
         virtual ~WaterRockAnimationLayer() final;
 

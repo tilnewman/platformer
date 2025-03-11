@@ -75,7 +75,9 @@ namespace bramblefore
         , public IHarmCollisionOwner
     {
       public:
-        DartTrapAnimationLayer(Context & t_context, const std::vector<DartRectDir> & t_rectDirs);
+        DartTrapAnimationLayer(
+            const Context & t_context, const std::vector<DartRectDir> & t_rectDirs);
+
         virtual ~DartTrapAnimationLayer() final;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)

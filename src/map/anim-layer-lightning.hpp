@@ -48,7 +48,8 @@ namespace bramblefore
         , public IHarmCollisionOwner
     {
       public:
-        LightningAnimationLayer(Context & t_context, const std::vector<sf::FloatRect> & t_rects);
+        LightningAnimationLayer(
+            const Context & t_context, const std::vector<sf::FloatRect> & t_rects);
 
         virtual ~LightningAnimationLayer() final;
 

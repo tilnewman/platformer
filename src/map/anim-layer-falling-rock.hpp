@@ -128,7 +128,9 @@ namespace bramblefore
         , public IHarmCollisionOwner
     {
       public:
-        FallingRockAnimationLayer(Context & t_context, const std::vector<RectRock> & t_rectRocks);
+        FallingRockAnimationLayer(
+            const Context & t_context, const std::vector<RectRock> & t_rectRocks);
+
         virtual ~FallingRockAnimationLayer() final;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)

@@ -100,7 +100,7 @@ namespace bramblefore
     {
       public:
         FlameTrapAnimationLayer(
-            Context & t_context, const std::vector<FlameTrapRectDir> & t_rectDirs);
+            const Context & t_context, const std::vector<FlameTrapRectDir> & t_rectDirs);
 
         virtual ~FlameTrapAnimationLayer() final;
 

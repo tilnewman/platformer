@@ -51,7 +51,7 @@ namespace bramblefore
         , public IHarmCollisionOwner
     {
       public:
-        TrapAnimationLayer(Context & t_context, const std::vector<sf::FloatRect> & t_rects);
+        TrapAnimationLayer(const Context & t_context, const std::vector<sf::FloatRect> & t_rects);
         virtual ~TrapAnimationLayer() final;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)

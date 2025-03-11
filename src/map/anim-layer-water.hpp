@@ -85,7 +85,9 @@ namespace bramblefore
         , public IHarmCollisionOwner
     {
       public:
-        WaterAnimationLayer(Context & t_context, const std::vector<WaterTypeRect> & t_typeRects);
+        WaterAnimationLayer(
+            const Context & t_context, const std::vector<WaterTypeRect> & t_typeRects);
+
         virtual ~WaterAnimationLayer() final;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)

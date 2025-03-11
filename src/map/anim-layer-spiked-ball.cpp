@@ -52,7 +52,7 @@ namespace bramblefore
     //
 
     SpikedBallAnimationLayer::SpikedBallAnimationLayer(
-        Context & t_context, const std::vector<sf::FloatRect> & t_rects)
+        const Context & t_context, const std::vector<sf::FloatRect> & t_rects)
         : m_speed{ 1.5f }
         , m_scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.0f) }
         , m_texture{}

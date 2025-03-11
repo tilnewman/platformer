@@ -63,7 +63,7 @@ namespace bramblefore
     //
 
     WaterRockAnimationLayer::WaterRockAnimationLayer(
-        Context & t_context, const std::vector<WaterRockRect> & t_rockRects)
+        const Context & t_context, const std::vector<WaterRockRect> & t_rockRects)
         : m_textures{}
         , m_rockAnims{}
     {

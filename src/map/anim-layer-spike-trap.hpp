@@ -51,7 +51,9 @@ namespace bramblefore
         , public IHarmCollisionOwner
     {
       public:
-        SpikeTrapAnimationLayer(Context & t_context, const std::vector<sf::FloatRect> & t_rects);
+        SpikeTrapAnimationLayer(
+            const Context & t_context, const std::vector<sf::FloatRect> & t_rects);
+
         virtual ~SpikeTrapAnimationLayer() final;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)

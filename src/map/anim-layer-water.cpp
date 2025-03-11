@@ -44,7 +44,7 @@ namespace bramblefore
     //
 
     WaterAnimationLayer::WaterAnimationLayer(
-        Context & t_context, const std::vector<WaterTypeRect> & t_typeRects)
+        const Context & t_context, const std::vector<WaterTypeRect> & t_typeRects)
         : m_textures{}
         , m_anims{}
     {

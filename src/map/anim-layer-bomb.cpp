@@ -39,7 +39,7 @@ namespace bramblefore
     //
 
     BombAnimationLayer::BombAnimationLayer(
-        Context & t_context, const std::vector<sf::FloatRect> & t_rects)
+        const Context & t_context, const std::vector<sf::FloatRect> & t_rects)
         : m_texture{}
         , m_anims{}
     {
