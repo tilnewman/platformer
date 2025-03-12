@@ -45,12 +45,14 @@ namespace bramblefore
         , m_hasHitEnemy{ false }
         , m_spellAnim{}
         , m_movement{}
+        , m_runParticleEffect{}
     {}
 
     Avatar::~Avatar() { AvatarTextureManager::instance().release(m_type); }
 
     void Avatar::setup(const Context & t_context)
     {
+        m_runParticleEffect.setup(t_context);
         m_spellAnim.setup(t_context);
 
         m_type  = t_context.player.avatarType();
@@ -71,6 +73,8 @@ namespace bramblefore
 
     void Avatar::update(Context & t_context, const float t_frameTimeSec)
     {
+        m_runParticleEffect.update(t_context, t_frameTimeSec);
+
         m_spellAnim.update(t_frameTimeSec);
 
         // this handleDeath() call must happen first
@@ -105,10 +109,17 @@ namespace bramblefore
         // these two must happen last
         killIfOutOfBounds(t_context);
         animate(t_context, t_frameTimeSec);
+
+        if ((AvatarState::Run != m_state) && (AvatarState::Jump != m_state) &&
+            (AvatarState::JumpHigh != m_state))
+        {
+            m_runParticleEffect.stop();
+        }
     }
 
     void Avatar::draw(sf::RenderTarget & t_target, sf::RenderStates t_states)
     {
+        m_runParticleEffect.draw(t_target, t_states);
         t_target.draw(m_sprite, t_states);
         // util::drawRectangleShape(t_target, collisionRect(), false, sf::Color::Red);
         m_spellAnim.draw(t_target, t_states);
@@ -375,6 +386,7 @@ namespace bramblefore
         if (t_context.level.move(t_context, moveX))
         {
             m_sprite.move({ moveX, 0.0f });
+            m_runParticleEffect.move(moveX);
         }
     }
 
@@ -593,6 +605,8 @@ namespace bramblefore
 
                 m_state = AvatarState::Run;
                 m_anim  = AvatarAnim::Run;
+
+                m_runParticleEffect.start();
             }
             else
             {
@@ -635,6 +649,8 @@ namespace bramblefore
 
                 m_state = AvatarState::Run;
                 m_anim  = AvatarAnim::Run;
+
+                m_runParticleEffect.start();
             }
             else
             {

@@ -7,6 +7,7 @@
 #include "avatar/avatar-textures.hpp"
 #include "player/player-info.hpp"
 #include "subsystem/harm.hpp"
+#include "subsystem/run-particle-effect.hpp"
 
 #include <string_view>
 #include <vector>
@@ -137,6 +138,7 @@ namespace bramblefore
         bool m_hasHitEnemy;
         AvatarSpellAnimations m_spellAnim;
         MovementDetails m_movement;
+        RunParticleEffect m_runParticleEffect;
     };
 
 } // namespace bramblefore
