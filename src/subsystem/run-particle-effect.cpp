@@ -8,6 +8,7 @@
 #include "avatar/avatar.hpp"
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
+#include "subsystem/screen-layout.hpp"
 #include "util/random.hpp"
 #include "util/sfml-util.hpp"
 #include "util/texture-loader.hpp"
@@ -25,7 +26,9 @@ namespace bramblefore
     {
         util::setOriginToCenter(sprite);
 
-        const float scale{ t_context.random.fromTo(0.1f, 0.25f) };
+        const float scale{ t_context.layout.calScaleBasedOnResolution(
+            t_context, t_context.random.fromTo(0.1f, 0.25f)) };
+
         sprite.setScale({ scale, scale });
 
         sprite.rotate(sf::degrees(t_context.random.fromTo(0.0f, 360.0f)));
@@ -57,22 +60,22 @@ namespace bramblefore
     void RunParticleEffect::setup(const Context & t_context)
     {
         util::TextureLoader::load(
-            m_star1Texture, (t_context.settings.media_path / "image/particle/star1.png"));
+            m_star1Texture, (t_context.settings.media_path / "image/particle/star/star1.png"));
 
         util::TextureLoader::load(
-            m_star2Texture, (t_context.settings.media_path / "image/particle/star2.png"));
+            m_star2Texture, (t_context.settings.media_path / "image/particle/star/star2.png"));
 
         util::TextureLoader::load(
-            m_star3Texture, (t_context.settings.media_path / "image/particle/star3.png"));
+            m_star3Texture, (t_context.settings.media_path / "image/particle/star/star3.png"));
 
         util::TextureLoader::load(
-            m_star4Texture, (t_context.settings.media_path / "image/particle/star4.png"));
+            m_star4Texture, (t_context.settings.media_path / "image/particle/star/star4.png"));
 
         util::TextureLoader::load(
-            m_star5Texture, (t_context.settings.media_path / "image/particle/star5.png"));
+            m_star5Texture, (t_context.settings.media_path / "image/particle/star/star5.png"));
 
         util::TextureLoader::load(
-            m_star6Texture, (t_context.settings.media_path / "image/particle/star6.png"));
+            m_star6Texture, (t_context.settings.media_path / "image/particle/star/star6.png"));
 
         m_particles.reserve(64);
     }
