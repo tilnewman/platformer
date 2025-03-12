@@ -884,17 +884,17 @@ namespace bramblefore
         m_anim  = AvatarAnim::Hurt;
         restartAnim();
 
-        const float recoilSpeed{ 3.5f };
-        m_velocity.y = -recoilSpeed;
+        const sf::Vector2f recoilSpeed{ 2.25f, 3.5f };
+        m_velocity.y = -recoilSpeed.y;
 
         const float collisionRectCenterHoriz{ util::center(t_harm.rect).x };
         if (collisionRectCenterHoriz < util::center(collisionRect()).x)
         {
-            m_velocity.x = recoilSpeed;
+            m_velocity.x = recoilSpeed.x;
         }
         else
         {
-            m_velocity.x = -recoilSpeed;
+            m_velocity.x = -recoilSpeed.x;
         }
 
         t_context.player.healthAdjust(t_context, -t_harm.damage);
