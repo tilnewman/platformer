@@ -332,7 +332,9 @@ namespace bramblefore
     {
         for (const RockDropAnim & anim : m_dropAnims)
         {
-            const sf::FloatRect rockRect{ anim.sprite.getGlobalBounds() };
+            const sf::FloatRect rockRect{ util::scaleRectInPlaceCopy(
+                anim.sprite.getGlobalBounds(), { 0.35f, 0.75f }) };
+
             if (t_avatarRect.findIntersection(rockRect))
             {
                 return makeHarm(anim.rock, rockRect);
