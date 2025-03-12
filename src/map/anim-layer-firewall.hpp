@@ -25,6 +25,37 @@ namespace bramblefore
 
     //
 
+    struct SmokeParticle
+    {
+        explicit SmokeParticle(
+            const Context & t_context,
+            const sf::Texture & t_texture,
+            const sf::Vector2f & t_position);
+
+        [[nodiscard]] bool isAlive() const { return (age_sec < age_limit_sec); }
+
+        sf::Sprite sprite;
+        sf::Vector2f velocity;
+        float rotation_speed;
+        float shrink_scale;
+        float age_sec;
+        float age_limit_sec;
+    };
+
+    //
+
+    struct SmokeEffect
+    {
+        explicit SmokeEffect(const sf::FloatRect & t_region);
+
+        void update(Context & t_context, const float t_frameTimeSec);
+
+        sf::FloatRect region;
+        std::vector<SmokeParticle> particles;
+    };
+
+    //
+
     class FirewallAnimationLayer
         : public ITileLayer
         , public IHarmCollisionOwner
@@ -53,11 +84,15 @@ namespace bramblefore
         Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
 
       private:
-        std::vector<sf::Texture> m_textures;
-        std::vector<sf::Sprite> m_sprites;
-        float m_elapsedTimeSec;
-        float m_timePerFrameSec;
-        std::size_t m_frameIndex;
+        std::vector<sf::Texture> m_fireTextures;
+        std::vector<sf::Sprite> m_fireSprites;
+        float m_fireElapsedTimeSec;
+        float m_fireTimePerFrameSec;
+        std::size_t m_fireFrameIndex;
+        std::vector<SmokeEffect> m_smokeEffects;
+        float m_smokeElapsedTimeSec;
+        float m_smokeTimePerSpawnSec;
+        std::vector<sf::Texture> m_smokeTextures;
     };
 
 } // namespace bramblefore
