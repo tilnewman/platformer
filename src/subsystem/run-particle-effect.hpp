@@ -15,9 +15,9 @@ namespace bramblefore
 
     //
 
-    struct Particle
+    struct RunParticle
     {
-        explicit Particle(const Context & t_context, const sf::Texture & t_texture);
+        explicit RunParticle(const Context & t_context, const sf::Texture & t_texture);
 
         [[nodiscard]] bool isAlive() const { return (sprite.getScale().x > 0.05f); }
 
@@ -52,7 +52,7 @@ namespace bramblefore
         sf::Texture m_star4Texture;
         sf::Texture m_star5Texture;
         sf::Texture m_star6Texture;
-        std::vector<Particle> m_particles;
+        std::vector<RunParticle> m_particles;
         float m_timePerSpawnSec;
         float m_elapsedTimeSec;
     };

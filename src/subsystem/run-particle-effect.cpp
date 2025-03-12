@@ -17,7 +17,7 @@
 namespace bramblefore
 {
 
-    Particle::Particle(const Context & t_context, const sf::Texture & t_texture)
+    RunParticle::RunParticle(const Context & t_context, const sf::Texture & t_texture)
         : sprite{ t_texture }
         , velocity{ 0.0f, 0.0f }
         , rotation_speed{ t_context.random.fromTo(50.0f, 100.0f) }
@@ -90,7 +90,7 @@ namespace bramblefore
             }
         }
 
-        for (Particle & particle : m_particles)
+        for (RunParticle & particle : m_particles)
         {
             particle.velocity.y += 0.333f;
             particle.sprite.move(particle.velocity * t_frameTimeSec);
@@ -98,14 +98,14 @@ namespace bramblefore
             particle.sprite.scale({ particle.shrink_scale, particle.shrink_scale });
         }
 
-        std::erase_if(m_particles, [](const Particle & p) { return !p.isAlive(); });
+        std::erase_if(m_particles, [](const RunParticle & p) { return !p.isAlive(); });
     }
 
     void RunParticleEffect::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
         t_states.blendMode = sf::BlendAdd;
 
-        for (const Particle & particle : m_particles)
+        for (const RunParticle & particle : m_particles)
         {
             t_target.draw(particle.sprite, t_states);
         }
@@ -127,7 +127,7 @@ namespace bramblefore
 
     void RunParticleEffect::move(const float t_amount)
     {
-        for (Particle & particle : m_particles)
+        for (RunParticle & particle : m_particles)
         {
             particle.sprite.move({ t_amount, 0.0f });
         }
