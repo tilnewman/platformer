@@ -25,6 +25,25 @@ namespace bramblefore
 
     //
 
+    struct SparkParticle
+    {
+        explicit SparkParticle(
+            const Context & t_context,
+            const sf::Texture & t_texture,
+            const sf::Vector2f & t_position);
+
+        [[nodiscard]] bool isAlive() const { return (age_sec < age_limit_sec); }
+
+        sf::Sprite sprite;
+        sf::Vector2f velocity;
+        float rotation_speed;
+        float scale_ratio;
+        float age_sec;
+        float age_limit_sec;
+    };
+
+    //
+
     struct LightningAnim
     {
         explicit LightningAnim(
@@ -39,6 +58,7 @@ namespace bramblefore
         std::size_t frame_index;
         float elapsed_time_sec;
         float time_between_anim_sec;
+        std::vector<SparkParticle> particles;
     };
 
     //
@@ -75,10 +95,13 @@ namespace bramblefore
         [[nodiscard]] sf::IntRect textureRect(const std::size_t frame) const noexcept;
 
       private:
-        sf::Texture m_texture;
+        sf::Texture m_lightningTexture;
         std::vector<LightningAnim> m_anims;
         float m_timebetweenFrames;
         std::size_t m_frameCount;
+        sf::Texture m_sparkTexture;
+        float m_sparkElapsedTimeSec;
+        float m_sparkTimePerSpawnSec;
     };
 
 } // namespace bramblefore
