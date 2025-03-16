@@ -32,7 +32,7 @@ namespace bramblefore
             const sf::Texture & t_texture,
             const sf::Vector2f & t_position);
 
-        [[nodiscard]] bool isAlive() const { return (age_sec < age_limit_sec); }
+        [[nodiscard]] bool isAlive() const noexcept { return (age_sec < age_limit_sec); }
 
         sf::Sprite sprite;
         sf::Vector2f velocity;
