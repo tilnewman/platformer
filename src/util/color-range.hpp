@@ -9,12 +9,9 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
-#include <cstddef>
-#include <cstdlib>
 #include <vector>
 
 #include <SFML/Graphics/Color.hpp>
-#include <SFML/Window.hpp>
 
 namespace colors
 {

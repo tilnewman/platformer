@@ -3,13 +3,12 @@
 //
 // keys.hpp
 //
-#include <cassert>
 #include <optional>
 #include <ostream>
-#include <string>
+#include <type_traits>
+#include <utility>
 #include <vector>
 
-#include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Keyboard.hpp>
 
 namespace util::keys
@@ -68,8 +67,7 @@ namespace util::keys
         return ((isHoriz(t_first) && isVert(t_second)) || (isHoriz(t_second) && isVert(t_first)));
     }
 
-    [[nodiscard]] inline constexpr std::
-        pair<sf::Keyboard::Scancode, sf::Keyboard::Scancode>
+    [[nodiscard]] inline constexpr std::pair<sf::Keyboard::Scancode, sf::Keyboard::Scancode>
         lateralPair(const sf::Keyboard::Scancode t_dir) noexcept
     {
         if (isHoriz(t_dir))
@@ -125,8 +123,7 @@ namespace util::keys
         return os;
     }
 
-    [[nodiscard]] inline constexpr bool
-        isNumberKey(const sf::Keyboard::Scancode t_key) noexcept
+    [[nodiscard]] inline constexpr bool isNumberKey(const sf::Keyboard::Scancode t_key) noexcept
     {
         return (
             (sf::Keyboard::Scancode::Num0 == t_key) || (sf::Keyboard::Scancode::Num1 == t_key) ||

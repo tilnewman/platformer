@@ -6,6 +6,7 @@
 #include "util/random.hpp"
 
 #include <filesystem>
+#include <initializer_list>
 #include <memory>
 #include <string>
 #include <vector>

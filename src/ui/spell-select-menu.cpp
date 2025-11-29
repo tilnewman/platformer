@@ -14,8 +14,6 @@
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
 
-#include <limits>
-
 #include <SFML/Graphics/RenderTarget.hpp>
 
 namespace bramblefore

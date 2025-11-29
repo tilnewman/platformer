@@ -3,7 +3,7 @@
 //
 // font.hpp
 //
-#include <cstddef>
+#include <string>
 
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Font.hpp>

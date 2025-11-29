@@ -3,10 +3,10 @@
 //
 // floating-text.hpp
 //
+#include <string>
 #include <vector>
 
 #include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Text.hpp>
 
 namespace sf

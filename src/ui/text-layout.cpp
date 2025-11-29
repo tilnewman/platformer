@@ -5,13 +5,10 @@
 //
 #include "text-layout.hpp"
 
-#include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
-#include "subsystem/screen-layout.hpp"
 #include "util/sfml-util.hpp"
 
 #include <algorithm>
-#include <iostream>
 #include <iterator>
 #include <sstream>
 

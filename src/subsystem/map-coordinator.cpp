@@ -11,10 +11,11 @@
 #include "map/pickups.hpp"
 #include "player/player-info.hpp"
 #include "state/state-manager.hpp"
-#include "subsystem/background-images.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/floating-text.hpp"
 #include "util/sound-player.hpp"
+
+#include <iterator>
 
 namespace bramblefore
 {

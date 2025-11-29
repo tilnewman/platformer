@@ -4,15 +4,16 @@
 // util.hpp
 //
 #include <algorithm>
-#include <cmath>
-#include <cstddef>
-#include <exception>
 #include <iomanip>
+#include <ios>
 #include <iostream>
+#include <limits>
+#include <locale>
 #include <numbers>
 #include <source_location>
 #include <sstream>
 #include <string>
+#include <type_traits>
 
 //
 

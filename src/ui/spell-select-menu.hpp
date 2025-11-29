@@ -5,13 +5,13 @@
 //
 #include "glow-rect.hpp"
 #include "gui-window.hpp"
-#include "player/player-info.hpp"
 #include "util/sliders.hpp"
 
 #include <vector>
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Text.hpp>
 
 namespace sf
 {

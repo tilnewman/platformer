@@ -5,9 +5,7 @@
 //
 #include "subsystem/harm-collision-manager.hpp"
 
-#include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
-#include "subsystem/screen-layout.hpp"
 
 namespace bramblefore
 {

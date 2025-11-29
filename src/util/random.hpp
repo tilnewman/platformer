@@ -6,7 +6,8 @@
 #include "util/util.hpp"
 
 #include <algorithm>
-#include <cstdlib>
+#include <initializer_list>
+#include <iterator>
 #include <limits>
 #include <random>
 #include <stdexcept>

@@ -4,7 +4,6 @@
 // screen-layout.hpp
 //
 #include <SFML/Graphics/Rect.hpp>
-#include <SFML/Graphics/Vertex.hpp>
 
 namespace bramblefore
 {

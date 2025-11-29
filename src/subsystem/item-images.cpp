@@ -6,7 +6,6 @@
 #include "item-images.hpp"
 
 #include "bramblefore/settings.hpp"
-#include "subsystem/context.hpp"
 #include "util/texture-loader.hpp"
 
 namespace bramblefore

@@ -4,7 +4,6 @@
 // gui-window-paper.hpp
 //
 #include "gui-window.hpp"
-#include "subsystem/font.hpp"
 
 #include <vector>
 
@@ -14,7 +13,6 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Vertex.hpp>
-#include <SFML/System/Vector2.hpp>
 
 namespace sf
 {

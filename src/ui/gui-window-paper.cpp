@@ -10,7 +10,6 @@
 #include "subsystem/font.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "ui/text-layout.hpp"
-#include "util/check-macros.hpp"
 #include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
 #include "util/texture-loader.hpp"

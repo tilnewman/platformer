@@ -9,8 +9,6 @@
 #include "util/check-macros.hpp"
 #include "util/sfml-util.hpp"
 
-#include <iostream>
-
 namespace bramblefore
 {
 

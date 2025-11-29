@@ -5,17 +5,28 @@
 //
 #include "util/util.hpp"
 
+#include <algorithm>
+#include <cmath>
+#include <initializer_list>
+#include <iterator>
+#include <ostream>
 #include <sstream>
 #include <string>
+#include <tuple>
+#include <type_traits>
+#include <vector>
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/PrimitiveType.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Vertex.hpp>
+#include <SFML/Graphics/VertexArray.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <SFML/Window/VideoMode.hpp>
 
 namespace sf

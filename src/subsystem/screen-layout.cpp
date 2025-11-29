@@ -7,7 +7,6 @@
 
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
-#include "util/sfml-util.hpp"
 
 namespace bramblefore
 {

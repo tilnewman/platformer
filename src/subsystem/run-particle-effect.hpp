@@ -19,7 +19,7 @@ namespace bramblefore
     {
         explicit RunParticle(const Context & t_context, const sf::Texture & t_texture);
 
-        [[nodiscard]] bool isAlive() const { return (sprite.getScale().x > 0.05f); }
+        [[nodiscard]] inline bool isAlive() const { return (sprite.getScale().x > 0.05f); }
 
         sf::Sprite sprite;
         sf::Vector2f velocity;
