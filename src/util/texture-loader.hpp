@@ -5,14 +5,21 @@
 //
 #include <filesystem>
 #include <iostream>
+#include <map>
 #include <sstream>
 #include <string>
 
-#include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Image.hpp>
+#include <SFML/Graphics/Texture.hpp>
 
 namespace util
 {
+
+    struct Counts
+    {
+        std::size_t loads{ 0 };
+        std::size_t bytes{ 0 };
+    };
 
     class TextureLoader
     {
@@ -32,16 +39,18 @@ namespace util
             {
                 t_texture.setSmooth(t_willSmooth);
 
-                ++m_fileCount;
-
-                m_byteCount +=
+                const std::size_t byteCount =
                     static_cast<std::size_t>(t_texture.getSize().x * t_texture.getSize().y * 4u);
+
+                Counts & counts = m_pathCountMap[t_pathStr];
+                counts.bytes    = byteCount;
+                ++counts.loads;
             }
             else
             {
                 // SFML already prints a very nice message including paths upon failure
 
-                static const sf::Image image({64,64}, sf::Color::Red);
+                static const sf::Image image({ 64, 64 }, sf::Color::Red);
                 if (!t_texture.loadFromImage(image))
                 {
                     std::clog << "Not even the default solid red image could be loaded!\n";
@@ -49,20 +58,26 @@ namespace util
             }
         }
 
-        static inline std::size_t filesLoaded() { return m_fileCount; }
-        static inline std::size_t bytesLoaded() { return m_byteCount; }
-
         static void dumpInfo()
         {
+            std::size_t totalLoadCount{ 0 };
+            std::size_t uniqueByteCount{ 0 };
+            for (const auto & pathCountPair : m_pathCountMap)
+            {
+                totalLoadCount += pathCountPair.second.loads;
+                uniqueByteCount += pathCountPair.second.bytes;
+            }
+
             std::ostringstream ss;
-            ss.imbue(std::locale("")); // this is only to put commas in the big numbers
-            ss << m_fileCount << " texture files loaded for a total of " << m_byteCount << " bytes.";
+            ss.imbue(std::locale("")); // this is only to put commas in big numbers
+            ss << m_pathCountMap.size() << " texture files (" << uniqueByteCount
+               << "bytes) loaded a total of " << totalLoadCount << " times.  ";
+
             std::clog << ss.str() << '\n';
         }
 
       private:
-        static inline std::size_t m_fileCount{ 0 };
-        static inline std::size_t m_byteCount{ 0 };
+        static inline std::map<std::string, Counts> m_pathCountMap;
     };
 
 } // namespace util
