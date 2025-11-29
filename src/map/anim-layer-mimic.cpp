@@ -9,7 +9,6 @@
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "util/sfml-util.hpp"
-#include "util/sound-player.hpp"
 #include "util/texture-loader.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>

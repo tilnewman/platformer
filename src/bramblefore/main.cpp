@@ -6,7 +6,7 @@
 #include <filesystem>
 #include <iostream>
 #include <memory>
-#include <stdexcept>
+#include <exception>
 
 int main(const int argc, const char * const argv[])
 {

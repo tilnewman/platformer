@@ -5,7 +5,6 @@
 //
 #include "anim-layer-acid-spout.hpp"
 
-#include "avatar/avatar.hpp"
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"

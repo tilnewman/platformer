@@ -3,11 +3,12 @@
 //
 // monster-manager.hpp
 //
-#include "monster/monster.hpp"
+#include "monster/imonster.hpp"
 #include "subsystem/harm.hpp"
 
 #include <memory>
 #include <vector>
+#include <utility>
 
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderStates.hpp>

@@ -5,7 +5,6 @@
 //
 #include "anim-layer-dart-trap.hpp"
 
-#include "avatar/avatar.hpp"
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"

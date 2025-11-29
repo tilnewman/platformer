@@ -6,6 +6,7 @@
 #include "player/player-info.hpp"
 #include "state/states.hpp"
 
+#include <string>
 #include <vector>
 
 #include <SFML/Graphics/RenderStates.hpp>
@@ -62,10 +63,10 @@ namespace bramblefore
         std::vector<sf::Sprite> m_avatarPoseSprites;
         sf::Texture m_buttonNextTexture;
         sf::Texture m_buttonNextTextureAlt;
-        sf::Sprite  m_buttonNextSprite;
+        sf::Sprite m_buttonNextSprite;
         sf::Texture m_buttonPrevTexture;
         sf::Texture m_buttonPrevTextureAlt;
-        sf::Sprite  m_buttonPrevSprite;
+        sf::Sprite m_buttonPrevSprite;
     };
 
 } // namespace bramblefore

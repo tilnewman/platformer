@@ -10,7 +10,6 @@
 #include "subsystem/screen-layout.hpp"
 #include "util/check-macros.hpp"
 #include "util/filesystem-util.hpp"
-#include "util/random.hpp"
 #include "util/sfml-util.hpp"
 #include "util/texture-loader.hpp"
 

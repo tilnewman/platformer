@@ -9,8 +9,8 @@
 #include "subsystem/context.hpp"
 #include "util/check-macros.hpp"
 #include "util/filesystem-util.hpp"
-#include "util/sfml-util.hpp"
 #include "util/texture-loader.hpp"
+#include "util/util.hpp"
 
 namespace bramblefore
 {

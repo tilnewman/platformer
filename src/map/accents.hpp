@@ -3,12 +3,12 @@
 //
 // accents.hpp
 //
+#include <string>
 #include <string_view>
 #include <vector>
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
-#include <SFML/System/Vector2.hpp>
 
 namespace sf
 {
@@ -150,8 +150,7 @@ namespace bramblefore
         void setup(const Context & t_context);
 
         // add() with no remove() because lamps and vines never leave the map
-        void add(
-            const Context & t_context, const sf::FloatRect & t_rect, const Accent t_accent);
+        void add(const Context & t_context, const sf::FloatRect & t_rect, const Accent t_accent);
 
         void update(Context & t_context, const float t_frameTimeSec);
 

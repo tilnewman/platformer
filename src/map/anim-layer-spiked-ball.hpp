@@ -5,6 +5,7 @@
 //
 #include "map/tile-layer.hpp"
 #include "subsystem/harm-collision-manager.hpp"
+#include "subsystem/harm.hpp"
 #include "util/sliders.hpp"
 
 #include <vector>

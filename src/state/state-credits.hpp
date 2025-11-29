@@ -4,12 +4,14 @@
 // state-credits.hpp
 //
 #include "state/states.hpp"
-#include "ui/spell-select-menu.hpp"
 
+#include <string>
 #include <vector>
 
 #include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Texture.hpp>
 
 namespace sf
 {

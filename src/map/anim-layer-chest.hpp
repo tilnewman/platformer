@@ -5,7 +5,9 @@
 //
 #include "map/tile-layer.hpp"
 #include "subsystem/harm-collision-manager.hpp"
+#include "subsystem/harm.hpp"
 
+#include <string_view>
 #include <vector>
 
 #include <SFML/Graphics/Rect.hpp>

@@ -4,7 +4,6 @@
 // anim-layer-water-rock.hpp
 //
 #include "map/tile-layer.hpp"
-#include "subsystem/harm-collision-manager.hpp"
 
 #include <string>
 #include <string_view>

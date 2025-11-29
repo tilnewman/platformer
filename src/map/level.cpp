@@ -7,8 +7,6 @@
 
 #include "avatar/avatar.hpp"
 #include "avatar/spells-anim.hpp"
-#include "bramblefore/settings.hpp"
-#include "map-textures.hpp"
 #include "map/accents.hpp"
 #include "map/level-file-loader.hpp"
 #include "map/pickups.hpp"
@@ -16,7 +14,7 @@
 #include "subsystem/context.hpp"
 #include "subsystem/floating-text.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "util/sfml-util.hpp"
+#include "util/util.hpp"
 
 #include <iostream>
 
@@ -67,7 +65,7 @@ namespace bramblefore
         appendVertLayers(t_context);
         t_context.avatar.setPosition(enter_rect);
         farthest_horiz_map_pixel = exit_rect.position.x;
-        //dumpInfo(t_filename);
+        // dumpInfo(t_filename);
     }
 
     bool Level::move(const Context & t_context, const float t_amount)

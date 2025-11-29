@@ -6,7 +6,6 @@
 #include <string_view>
 #include <vector>
 
-#include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/Vector2.hpp>

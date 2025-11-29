@@ -11,7 +11,6 @@
 #include "util/check-macros.hpp"
 #include "util/random.hpp"
 #include "util/sfml-util.hpp"
-#include "util/sound-player.hpp"
 #include "util/texture-loader.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>

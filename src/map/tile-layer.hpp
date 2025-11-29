@@ -5,7 +5,6 @@
 //
 #include "map/tile-image.hpp"
 
-#include <memory>
 #include <vector>
 
 #include <SFML/Graphics/Rect.hpp>

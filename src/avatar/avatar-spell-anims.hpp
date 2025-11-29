@@ -3,12 +3,11 @@
 //
 // avatar-spell-anims.hpp
 //
-#include "avatar/avatar-textures.hpp"
+#include "player/player-info.hpp"
 
 #include <filesystem>
 #include <vector>
 
-#include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>

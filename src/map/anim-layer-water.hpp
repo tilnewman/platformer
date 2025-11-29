@@ -1,10 +1,11 @@
 #ifndef WATER_ANIM_LAYER_HPP_INCLUDED
 #define WATER_ANIM_LAYER_HPP_INCLUDED
 //
-// water-anim-layer.hpp
+// anim-layer-water.hpp
 //
 #include "map/tile-layer.hpp"
 #include "subsystem/harm-collision-manager.hpp"
+#include "subsystem/harm.hpp"
 
 #include <string_view>
 #include <vector>

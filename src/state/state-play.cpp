@@ -11,7 +11,6 @@
 #include "map/accents.hpp"
 #include "map/level.hpp"
 #include "map/pickups.hpp"
-#include "monster/monster-manager.hpp"
 #include "player/player-info-display.hpp"
 #include "state/state-manager.hpp"
 #include "subsystem/background-images.hpp"

@@ -8,7 +8,6 @@
 #include "subsystem/context.hpp"
 #include "util/json-wrapper.hpp"
 
-#include <memory>
 #include <string>
 #include <vector>
 

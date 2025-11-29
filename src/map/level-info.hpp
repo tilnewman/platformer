@@ -5,9 +5,6 @@
 //
 #include "bramblefore/settings.hpp"
 
-#include <SFML/Graphics/Font.hpp>
-#include <SFML/Graphics/Text.hpp>
-
 namespace bramblefore
 {
 

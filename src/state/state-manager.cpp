@@ -12,7 +12,7 @@
 #include "state/state-play.hpp"
 #include "state/state-splash.hpp"
 
-#include <exception>
+#include <stdexcept>
 
 namespace bramblefore
 {
