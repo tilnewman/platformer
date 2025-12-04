@@ -35,7 +35,7 @@ namespace bramblefore
         Count
     };
 
-    inline constexpr std::string_view toString(const AvatarAnim t_anim)
+    inline constexpr std::string_view toString(const AvatarAnim t_anim) noexcept
     {
         // clang-format off
         switch (t_anim)
@@ -57,7 +57,7 @@ namespace bramblefore
         // clang-format on
     }
 
-    inline constexpr float avatarTimePerFrameSec(const AvatarAnim t_anim)
+    inline constexpr float avatarTimePerFrameSec(const AvatarAnim t_anim) noexcept
     {
         // clang-format off
         switch (t_anim)
@@ -79,7 +79,7 @@ namespace bramblefore
         // clang-format on
     }
 
-    inline constexpr bool doesAnimLoop(const AvatarAnim t_anim)
+    inline constexpr bool doesAnimLoop(const AvatarAnim t_anim) noexcept
     {
         return (
             (t_anim == AvatarAnim::Climb) || (t_anim == AvatarAnim::Idle) ||

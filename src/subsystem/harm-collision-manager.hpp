@@ -20,7 +20,7 @@ namespace bramblefore
     {
         virtual ~IHarmCollisionOwner() = default;
 
-        [[nodiscard]] virtual Harm
+        [[nodiscard]] virtual const Harm
             avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) = 0;
     };
 
@@ -33,7 +33,9 @@ namespace bramblefore
 
         void addOwner(IHarmCollisionOwner & t_owner);
         void removeOwner(IHarmCollisionOwner & t_owner);
-        [[nodiscard]] Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect);
+
+        [[nodiscard]] const Harm
+            avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect);
 
       private:
         HarmCollisionManager();

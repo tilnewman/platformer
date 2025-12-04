@@ -17,7 +17,7 @@ namespace bramblefore
 
     struct RunParticle
     {
-        explicit RunParticle(const Context & t_context, const sf::Texture & t_texture);
+        RunParticle(const Context & t_context, const sf::Texture & t_texture);
 
         [[nodiscard]] inline bool isAlive() const { return (sprite.getScale().x > 0.05f); }
 

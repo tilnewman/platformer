@@ -38,7 +38,7 @@ namespace bramblefore
 
     struct FlamesAnim
     {
-        explicit FlamesAnim(
+        FlamesAnim(
             const sf::Texture & t_texture,
             const sf::IntRect & t_textureRect,
             const FlameDirection t_dir,
@@ -83,12 +83,12 @@ namespace bramblefore
             const sf::Vector2f &) final
         {}
 
-        Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
+        const Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
 
       private:
         [[nodiscard]] std::size_t frameCount(const sf::Texture & t_texture) const noexcept;
 
-        [[nodiscard]] sf::IntRect
+        [[nodiscard]] const sf::IntRect
             textureRect(const sf::Texture & t_texture, const std::size_t t_frame) const noexcept;
 
         [[nodiscard]] const sf::Texture & getTexture(const FlameDirection t_direction) const;

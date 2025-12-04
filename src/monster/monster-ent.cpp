@@ -15,7 +15,7 @@ namespace bramblefore
         : Monster{ t_context, { MonsterType::Ent, t_region, 0.8f } }
     {}
 
-    sf::FloatRect Ent::collisionRect() const
+    const sf::FloatRect Ent::collisionRect() const
     {
         if (MonsterAnim::Death == m_anim)
         {
@@ -29,7 +29,7 @@ namespace bramblefore
         }
     }
 
-    sf::FloatRect Ent::attackCollisionRect() const
+    const sf::FloatRect Ent::attackCollisionRect() const
     {
         sf::FloatRect rect{ collisionRect() };
 

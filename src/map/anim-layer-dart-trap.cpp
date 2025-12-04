@@ -224,7 +224,7 @@ namespace bramblefore
         }
     }
 
-    Harm DartTrapAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm DartTrapAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

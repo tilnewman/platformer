@@ -23,7 +23,7 @@ namespace bramblefore
         void deathBeforeDelay(Context & t_context);
         void deathAfterDelay(Context & t_context);
 
-        [[nodiscard]] std::string mapName() const;
+        [[nodiscard]] const std::string mapName() const;
         void mapNameAdvance();
 
       private:

@@ -15,7 +15,7 @@ namespace bramblefore
         : Monster{ t_context, { MonsterType::Yeti, t_region, 0.78f, 1.2f } }
     {}
 
-    sf::FloatRect Yeti::collisionRect() const
+    const sf::FloatRect Yeti::collisionRect() const
     {
         if (MonsterAnim::Death == m_anim)
         {
@@ -29,7 +29,7 @@ namespace bramblefore
         }
     }
 
-    sf::FloatRect Yeti::attackCollisionRect() const
+    const sf::FloatRect Yeti::attackCollisionRect() const
     {
         sf::FloatRect rect{ collisionRect() };
 

@@ -33,7 +33,7 @@ namespace bramblefore
             });
     }
 
-    Harm
+    const Harm
         HarmCollisionManager::avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect)
     {
         for (auto & ownerRefWrapper : m_owners)

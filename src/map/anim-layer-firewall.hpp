@@ -28,12 +28,12 @@ namespace bramblefore
 
     struct SmokeParticle
     {
-        explicit SmokeParticle(
+        SmokeParticle(
             const Context & t_context,
             const sf::Texture & t_texture,
             const sf::Vector2f & t_position);
 
-        [[nodiscard]] bool isAlive() const noexcept { return (age_sec < age_limit_sec); }
+        [[nodiscard]] constexpr bool isAlive() const noexcept { return (age_sec < age_limit_sec); }
 
         sf::Sprite sprite;
         sf::Vector2f velocity;
@@ -82,7 +82,7 @@ namespace bramblefore
             const sf::Vector2f &) final
         {}
 
-        Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
+        const Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
 
       private:
         std::vector<sf::Texture> m_fireTextures;

@@ -119,7 +119,7 @@ namespace bramblefore
         }
     }
 
-    sf::IntRect BombAnimationLayer::textureRect(const std::size_t frame) const noexcept
+    const sf::IntRect BombAnimationLayer::textureRect(const std::size_t frame) const noexcept
     {
         sf::IntRect rect;
         rect.size.x     = static_cast<int>(m_texture.getSize().y);
@@ -130,7 +130,7 @@ namespace bramblefore
         return rect;
     }
 
-    Harm BombAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm BombAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

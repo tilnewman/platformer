@@ -52,7 +52,7 @@ namespace bramblefore
     }
 
     void ChestAnimationLayer::add(
-       const Context & t_context, const Chest t_chest, const sf::FloatRect & t_rect)
+        const Context & t_context, const Chest t_chest, const sf::FloatRect & t_rect)
     {
         m_animations.emplace_back(
             m_textureSets.at(static_cast<std::size_t>(t_chest)).closed,
@@ -83,7 +83,8 @@ namespace bramblefore
         }
     }
 
-    Harm ChestAnimationLayer::avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect)
+    const Harm
+        ChestAnimationLayer::avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect)
     {
         for (ChestAnim & anim : m_animations)
         {

@@ -169,7 +169,7 @@ namespace bramblefore
         }
     }
 
-    sf::IntRect WaterRockAnimationLayer::textureRect(
+    const sf::IntRect WaterRockAnimationLayer::textureRect(
         const WaterRock t_rock, const std::size_t frame) const noexcept
     {
         const sf::Texture & texture{ getTexture(t_rock) };

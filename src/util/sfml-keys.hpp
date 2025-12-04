@@ -15,8 +15,7 @@ namespace util::keys
 {
     static const sf::Keyboard::Scancode not_a_key{ sf::Keyboard::Scancode::Unknown };
 
-    [[nodiscard]] inline constexpr std::string_view
-        toString(const sf::Keyboard::Scancode t_dir) noexcept
+    [[nodiscard]] constexpr std::string_view toString(const sf::Keyboard::Scancode t_dir) noexcept
     {
         // clang-format off
         if      (t_dir == sf::Keyboard::Scancode::Up)    { return "Down";  }
@@ -27,23 +26,23 @@ namespace util::keys
         // clang-format on
     }
 
-    [[nodiscard]] inline constexpr bool isHoriz(const sf::Keyboard::Scancode t_dir) noexcept
+    [[nodiscard]] constexpr bool isHoriz(const sf::Keyboard::Scancode t_dir) noexcept
     {
         return (
             (t_dir == sf::Keyboard::Scancode::Left) || (t_dir == sf::Keyboard::Scancode::Right));
     }
 
-    [[nodiscard]] inline constexpr bool isVert(const sf::Keyboard::Scancode t_dir) noexcept
+    [[nodiscard]] constexpr bool isVert(const sf::Keyboard::Scancode t_dir) noexcept
     {
         return ((t_dir == sf::Keyboard::Scancode::Up) || (t_dir == sf::Keyboard::Scancode::Down));
     }
 
-    [[nodiscard]] inline constexpr bool isArrow(const sf::Keyboard::Scancode t_dir) noexcept
+    [[nodiscard]] constexpr bool isArrow(const sf::Keyboard::Scancode t_dir) noexcept
     {
         return (isHoriz(t_dir) || isVert(t_dir));
     }
 
-    [[nodiscard]] inline constexpr sf::Keyboard::Scancode
+    [[nodiscard]] constexpr sf::Keyboard::Scancode
         opposite(const sf::Keyboard::Scancode t_dir) noexcept
     {
         // clang-format off
@@ -55,19 +54,19 @@ namespace util::keys
         // clang-format on
     }
 
-    [[nodiscard]] inline constexpr bool isOpposite(
+    [[nodiscard]] constexpr bool isOpposite(
         const sf::Keyboard::Scancode t_first, const sf::Keyboard::Scancode t_second) noexcept
     {
         return (opposite(t_first) == t_second);
     }
 
-    [[nodiscard]] inline constexpr bool isLateral(
+    [[nodiscard]] constexpr bool isLateral(
         const sf::Keyboard::Scancode t_first, const sf::Keyboard::Scancode t_second) noexcept
     {
         return ((isHoriz(t_first) && isVert(t_second)) || (isHoriz(t_second) && isVert(t_first)));
     }
 
-    [[nodiscard]] inline constexpr std::pair<sf::Keyboard::Scancode, sf::Keyboard::Scancode>
+    [[nodiscard]] constexpr std::pair<sf::Keyboard::Scancode, sf::Keyboard::Scancode>
         lateralPair(const sf::Keyboard::Scancode t_dir) noexcept
     {
         if (isHoriz(t_dir))
@@ -123,7 +122,7 @@ namespace util::keys
         return os;
     }
 
-    [[nodiscard]] inline constexpr bool isNumberKey(const sf::Keyboard::Scancode t_key) noexcept
+    [[nodiscard]] constexpr bool isNumberKey(const sf::Keyboard::Scancode t_key) noexcept
     {
         return (
             (sf::Keyboard::Scancode::Num0 == t_key) || (sf::Keyboard::Scancode::Num1 == t_key) ||

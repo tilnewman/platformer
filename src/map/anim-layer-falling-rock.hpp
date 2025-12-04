@@ -36,7 +36,7 @@ namespace bramblefore
         Rock4 // smallest
     };
 
-    [[nodiscard]] inline constexpr std::string_view toString(const Rock t_rock) noexcept
+    [[nodiscard]] constexpr std::string_view toString(const Rock t_rock) noexcept
     {
         // clang-format off
         switch (t_rock)
@@ -64,7 +64,7 @@ namespace bramblefore
 
     struct RectRock
     {
-        explicit RectRock(const sf::FloatRect & t_rect, const Rock t_rock)
+        RectRock(const sf::FloatRect & t_rect, const Rock t_rock)
             : rect{ t_rect }
             , rock{ t_rock }
         {}
@@ -77,7 +77,7 @@ namespace bramblefore
 
     struct RockShatterAnim
     {
-        explicit RockShatterAnim(
+        RockShatterAnim(
             const sf::Sprite & t_sprite, const Rock t_rock, const sf::FloatRect & t_collRect);
 
         bool is_alive;
@@ -93,8 +93,7 @@ namespace bramblefore
 
     struct RockDropAnim
     {
-        explicit RockDropAnim(
-            const sf::Sprite & t_sprite, const Rock t_rock, const sf::FloatRect & t_rect);
+        RockDropAnim(const sf::Sprite & t_sprite, const Rock t_rock, const sf::FloatRect & t_rect);
 
         bool is_alive;
         float velocity;
@@ -107,7 +106,7 @@ namespace bramblefore
 
     struct RockHangingAnim
     {
-        explicit RockHangingAnim(
+        RockHangingAnim(
             const Context & t_context,
             const sf::Texture & t_texture,
             const sf::IntRect & t_textureRect,
@@ -149,7 +148,7 @@ namespace bramblefore
             const sf::Vector2f &) final
         {}
 
-        Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
+        const Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
 
       private:
         void updateHangingRocks(const Context & t_context, const float t_frameTimeSec);
@@ -159,10 +158,11 @@ namespace bramblefore
         [[nodiscard]] const sf::Texture & texture(const Rock t_rock) const;
         [[nodiscard]] std::size_t frameCount(const sf::Texture & t_texture) const noexcept;
 
-        [[nodiscard]] sf::IntRect
+        [[nodiscard]] const sf::IntRect
             textureRect(const sf::Texture & t_texture, const std::size_t t_frame) const noexcept;
 
-        [[nodiscard]] Harm makeHarm(const Rock t_rock, const sf::FloatRect & t_rect) const noexcept;
+        [[nodiscard]] const Harm
+            makeHarm(const Rock t_rock, const sf::FloatRect & t_rect) const noexcept;
 
       private:
         sf::Texture m_texture1;

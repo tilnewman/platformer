@@ -33,7 +33,7 @@ namespace bramblefore
         CharacterSelectState();
         virtual ~CharacterSelectState() override = default;
 
-        State which() const final { return State::CharacterSelect; }
+        [[nodiscard]] State which() const final { return State::CharacterSelect; }
         void update(Context & t_context, const float t_frameTimeSec) final;
 
         void draw(Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
@@ -45,8 +45,8 @@ namespace bramblefore
 
       private:
         void setup(Context & t_context);
-        std::string avatarDescription(const AvatarType type) const;
-        std::string avatarClassDescription(const AvatarType type) const;
+        const std::string avatarDescription(const AvatarType type) const;
+        const std::string avatarClassDescription(const AvatarType type) const;
 
       private:
         sf::Text m_titleText;

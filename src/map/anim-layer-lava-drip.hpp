@@ -35,7 +35,7 @@ namespace bramblefore
         Large
     };
 
-    [[nodiscard]] inline constexpr std::string_view toString(const DripSize t_size) noexcept
+    [[nodiscard]] constexpr std::string_view toString(const DripSize t_size) noexcept
     {
         if (t_size == DripSize::Small)
         {
@@ -71,7 +71,7 @@ namespace bramblefore
 
     struct LavaRectSize
     {
-        explicit LavaRectSize(const sf::FloatRect & t_rect, const DripSize t_size);
+        LavaRectSize(const sf::FloatRect & t_rect, const DripSize t_size);
 
         sf::FloatRect rect;
         DripSize size;
@@ -162,7 +162,7 @@ namespace bramblefore
             const sf::Vector2f &) final
         {}
 
-        Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
+        const Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
 
       private:
         void updateDrippers(const float t_frameTimeSec);
@@ -171,10 +171,10 @@ namespace bramblefore
 
         [[nodiscard]] std::size_t frameCount(const sf::Texture & t_texture) const noexcept;
 
-        [[nodiscard]] sf::IntRect
+        [[nodiscard]] const sf::IntRect
             textureRect(const sf::Texture & t_texture, const std::size_t t_frame) const noexcept;
 
-        [[nodiscard]] Harm
+        [[nodiscard]] const Harm
             makeHarm(const DripSize t_size, const sf::FloatRect & t_rect) const noexcept;
 
         [[nodiscard]] inline const sf::Texture & dripperTexture(const DripSize t_size) noexcept

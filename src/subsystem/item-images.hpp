@@ -84,7 +84,7 @@ namespace bramblefore
         Count
     };
 
-    [[nodiscard]] inline constexpr std::string_view toString(const Item t_item) noexcept
+    [[nodiscard]] constexpr std::string_view toString(const Item t_item) noexcept
     {
         // clang-format off
         switch (t_item)
@@ -243,12 +243,12 @@ namespace bramblefore
 
         void setup(const Settings & t_settings);
 
-        [[nodiscard]] sf::Sprite sprite(const Item t_item) const noexcept
+        [[nodiscard]] const sf::Sprite sprite(const Item t_item) const
         {
             return sf::Sprite(m_iconsTexture, textureRect(t_item));
         }
 
-        [[nodiscard]] sf::Sprite background() const noexcept
+        [[nodiscard]] const sf::Sprite background() const
         {
             return sf::Sprite(m_backgroundTexture);
         }

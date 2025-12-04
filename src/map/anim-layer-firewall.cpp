@@ -241,7 +241,7 @@ namespace bramblefore
         std::erase_if(particles, [](const SmokeParticle & p) { return !p.isAlive(); });
     }
 
-    Harm FirewallAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm FirewallAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

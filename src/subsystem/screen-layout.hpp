@@ -19,8 +19,8 @@ namespace bramblefore
 
         void setup(const sf::Vector2u & t_windowSize);
 
-        [[nodiscard]] inline sf::Vector2f wholeSize() const noexcept { return m_wholeSize; }
-        [[nodiscard]] inline sf::FloatRect wholeRect() const noexcept { return m_wholeRect; }
+        [[nodiscard]] inline const sf::Vector2f wholeSize() const noexcept { return m_wholeSize; }
+        [[nodiscard]] inline const sf::FloatRect wholeRect() const noexcept { return m_wholeRect; }
 
         [[nodiscard]] float
             calScaleBasedOnResolution(const Context & t_context, const float t_originalScale) const;

@@ -43,7 +43,7 @@ namespace bramblefore
         Still
     };
 
-    inline constexpr std::string_view toString(const AvatarState t_state)
+    inline constexpr std::string_view toString(const AvatarState t_state) noexcept
     {
         // clang-format off
         switch (t_state)

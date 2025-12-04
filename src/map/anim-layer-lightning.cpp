@@ -35,7 +35,7 @@ namespace bramblefore
         util::setOriginToCenter(sprite);
         sprite.rotate(sf::degrees(t_context.random.fromTo(0.0f, 360.0f)));
         sprite.setPosition(t_position);
-        sprite.setColor(sf::Color(200,255,255));
+        sprite.setColor(sf::Color(200, 255, 255));
     }
 
     //
@@ -132,7 +132,7 @@ namespace bramblefore
         }
     }
 
-    sf::IntRect LightningAnimationLayer::textureRect(const std::size_t t_frame) const noexcept
+    const sf::IntRect LightningAnimationLayer::textureRect(const std::size_t t_frame) const noexcept
     {
         sf::IntRect rect;
         rect.size.x     = 64;
@@ -218,7 +218,7 @@ namespace bramblefore
         }
     }
 
-    Harm LightningAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm LightningAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

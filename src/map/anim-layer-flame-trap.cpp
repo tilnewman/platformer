@@ -310,7 +310,7 @@ namespace bramblefore
         }
     }
 
-    sf::IntRect FlameTrapAnimationLayer::textureRect(
+    const sf::IntRect FlameTrapAnimationLayer::textureRect(
         const TrapDirection t_direction, const std::size_t frame) const noexcept
     {
         sf::IntRect rect;
@@ -333,7 +333,7 @@ namespace bramblefore
         return rect;
     }
 
-    Harm FlameTrapAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm FlameTrapAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

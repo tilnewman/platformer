@@ -261,7 +261,7 @@ namespace bramblefore
         }
     }
 
-    sf::IntRect FlamingSkullAnimationLayer::textureRect(
+    const sf::IntRect FlamingSkullAnimationLayer::textureRect(
         const sf::Texture & t_texture, const std::size_t frame) const noexcept
     {
         sf::IntRect rect;
@@ -269,10 +269,12 @@ namespace bramblefore
         rect.size.y     = rect.size.x;
         rect.position.y = 0;
         rect.position.x = (static_cast<int>(frame) * rect.size.x);
+
         return rect;
     }
 
-    Harm FlamingSkullAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm
+        FlamingSkullAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

@@ -74,7 +74,7 @@ namespace bramblefore
         }
     }
 
-    Harm SawAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm SawAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
     {
         const sf::Vector2f avatarCenter{ util::center(t_avatarRect) };
 

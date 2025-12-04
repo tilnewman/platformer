@@ -20,8 +20,8 @@ namespace bramblefore
         Spider(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Spider() override = default;
 
-        sf::FloatRect collisionRect() const final;
-        sf::FloatRect attackCollisionRect() const final;
+        const sf::FloatRect collisionRect() const final;
+        const sf::FloatRect attackCollisionRect() const final;
     };
 
 } // namespace bramblefore

@@ -24,7 +24,7 @@ namespace bramblefore
 
         void setChangePending(const State t_newState) noexcept;
 
-        [[nodiscard]] inline bool isChangePending() const noexcept
+        [[nodiscard]] constexpr bool isChangePending() const noexcept
         {
             return m_changePendingOpt.has_value();
         }

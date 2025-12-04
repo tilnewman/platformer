@@ -36,7 +36,7 @@ namespace bramblefore
         Right
     };
 
-    [[nodiscard]] inline constexpr std::string_view toString(const TrapDirection t_dir) noexcept
+    [[nodiscard]] constexpr std::string_view toString(const TrapDirection t_dir) noexcept
     {
         // clang-format off
         switch (t_dir)
@@ -64,7 +64,7 @@ namespace bramblefore
 
     struct FlameTrapRectDir
     {
-        explicit FlameTrapRectDir(const sf::FloatRect & t_rect, const TrapDirection t_direction);
+        FlameTrapRectDir(const sf::FloatRect & t_rect, const TrapDirection t_direction);
 
         sf::FloatRect rect;
         TrapDirection direction;
@@ -74,7 +74,7 @@ namespace bramblefore
 
     struct FlameAnim
     {
-        explicit FlameAnim(
+        FlameAnim(
             const TrapDirection t_dir,
             const sf::Texture & t_texture,
             const sf::IntRect & t_textureRect,
@@ -120,10 +120,10 @@ namespace bramblefore
             const sf::Vector2f &) final
         {}
 
-        Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
+        const Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
 
       private:
-        [[nodiscard]] sf::IntRect
+        [[nodiscard]] const sf::IntRect
             textureRect(const TrapDirection t_direction, const std::size_t t_frame) const noexcept;
 
       private:

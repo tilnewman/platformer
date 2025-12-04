@@ -15,7 +15,7 @@ namespace bramblefore
             : m_playerLives{ t_settings.player_lives_per_level }
         {}
 
-        [[nodiscard]] inline int playerLives() const noexcept { return m_playerLives; }
+        [[nodiscard]] constexpr int playerLives() const noexcept { return m_playerLives; }
 
         inline void playerLivesAdjust(const int t_adjustment) noexcept
         {

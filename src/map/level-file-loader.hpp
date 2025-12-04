@@ -37,7 +37,7 @@ namespace bramblefore
             const nlohmann::json & t_json,
             std::vector<sf::FloatRect> & t_rects);
 
-        [[nodiscard]] sf::FloatRect
+        [[nodiscard]] const sf::FloatRect
             parseAndConvertRect(const Context & t_context, const nlohmann::json & t_json);
 
         void parseSpawnLayer(Context & t_context, const nlohmann::json & t_json);

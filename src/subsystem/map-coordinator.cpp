@@ -65,7 +65,7 @@ namespace bramblefore
         t_context.state.setChangePending(State::LevelDeath);
     }
 
-    std::string MapCoordinator::mapName() const
+    const std::string MapCoordinator::mapName() const
     {
         if (m_mapNameIter != std::end(m_mapNames))
         {

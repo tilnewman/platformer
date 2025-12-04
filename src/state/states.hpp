@@ -32,7 +32,7 @@ namespace bramblefore
         Shutdown
     };
 
-    [[nodiscard]] inline constexpr std::string_view toString(const State state) noexcept
+    [[nodiscard]] constexpr std::string_view toString(const State state) noexcept
     {
         // clang-format off
         switch (state)

@@ -151,7 +151,7 @@ namespace bramblefore
         }
     }
 
-    sf::IntRect
+    const sf::IntRect
         WaterAnimationLayer::textureRect(const WaterType t_type, const std::size_t t_frame) const
     {
         const sf::Texture & texture{ getTexture(t_type) };
@@ -185,7 +185,7 @@ namespace bramblefore
         }
     }
 
-    Harm WaterAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm WaterAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

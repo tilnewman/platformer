@@ -195,7 +195,7 @@ namespace bramblefore
         t_target.draw(m_nameText, t_states);
     }
 
-    GuiWindowInfo SpellSelectMenu::makeGuiWindowInfo(const sf::FloatRect & region) const
+    const GuiWindowInfo SpellSelectMenu::makeGuiWindowInfo(const sf::FloatRect & region) const
     {
         GuiWindowInfo info;
         info.border = GuiWindowBorder::Fancy;

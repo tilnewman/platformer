@@ -54,7 +54,7 @@ namespace bramblefore
         CreditsState();
         virtual ~CreditsState() override = default;
 
-        State which() const final { return State::Credits; }
+        [[nodiscard]] State which() const final { return State::Credits; }
         void update(Context & t_context, const float t_frameTimeSec) final;
 
         void draw(Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)

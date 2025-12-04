@@ -41,7 +41,7 @@ namespace bramblefore
         }
     }
 
-    Harm MonsterManager::avatarCollide(const sf::FloatRect & t_avatarRect)
+    const Harm MonsterManager::avatarCollide(const sf::FloatRect & t_avatarRect)
     {
         for (auto & monsterUPtr : m_monsters)
         {

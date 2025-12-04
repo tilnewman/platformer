@@ -58,7 +58,7 @@ namespace bramblefore
         Count
     };
 
-    inline constexpr std::string_view toString(const MonsterType t_type) noexcept
+    constexpr std::string_view toString(const MonsterType t_type) noexcept
     {
         // clang-format off
         switch (t_type)
@@ -99,7 +99,7 @@ namespace bramblefore
         // clang-format on
     }
 
-    inline constexpr Health_t startingHealth(const MonsterType t_type) noexcept
+    constexpr Health_t startingHealth(const MonsterType t_type) noexcept
     {
         // clang-format off
         switch (t_type)
@@ -140,7 +140,7 @@ namespace bramblefore
         // clang-format on
     }
 
-    inline constexpr float walkSpeed(const MonsterType t_type) noexcept
+    constexpr float walkSpeed(const MonsterType t_type) noexcept
     {
         // clang-format off
         switch (t_type)
@@ -182,7 +182,7 @@ namespace bramblefore
     }
 
     // TODO need real values here
-    inline constexpr Health_t attackDamage(const MonsterType t_type) noexcept
+    constexpr Health_t attackDamage(const MonsterType t_type) noexcept
     {
         // clang-format off
         switch (t_type)
@@ -224,7 +224,7 @@ namespace bramblefore
     }
 
     // TODO need real sound effects here
-    inline constexpr std::string_view hitSfx(const MonsterType t_type) noexcept
+    constexpr std::string_view hitSfx(const MonsterType t_type) noexcept
     {
         // clang-format off
         switch (t_type)
@@ -266,7 +266,7 @@ namespace bramblefore
     }
 
     // TODO need to go and get real sfx here
-    inline constexpr std::string_view attackSfx(const MonsterType t_type) noexcept
+    constexpr std::string_view attackSfx(const MonsterType t_type) noexcept
     {
         // clang-format off
         switch (t_type)
@@ -308,7 +308,7 @@ namespace bramblefore
     }
 
     // TODO need to go and get real sfx here
-    inline constexpr std::string_view hurtSfx(const MonsterType t_type) noexcept
+    constexpr std::string_view hurtSfx(const MonsterType t_type) noexcept
     {
         // clang-format off
         switch (t_type)
@@ -350,7 +350,7 @@ namespace bramblefore
     }
 
     // TODO need to go and get real sfx here
-    inline constexpr std::string_view deathSfx(const MonsterType t_type) noexcept
+    constexpr std::string_view deathSfx(const MonsterType t_type) noexcept
     {
         // clang-format off
         switch (t_type)
@@ -403,7 +403,7 @@ namespace bramblefore
         Count
     };
 
-    inline constexpr std::string_view toString(const MonsterAnim t_anim) noexcept
+    constexpr std::string_view toString(const MonsterAnim t_anim) noexcept
     {
         // clang-format off
         switch (t_anim)
@@ -419,7 +419,7 @@ namespace bramblefore
         // clang-format on
     }
 
-    inline constexpr bool doesAnimLoop(const MonsterAnim t_anim) noexcept
+    constexpr bool doesAnimLoop(const MonsterAnim t_anim) noexcept
     {
         return ((t_anim == MonsterAnim::Walk) || (t_anim == MonsterAnim::Idle));
     }
@@ -446,9 +446,9 @@ namespace bramblefore
         virtual void update(Context & t_context, const float t_frameTimeSec)                 = 0;
         virtual void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const = 0;
         virtual void move(const float t_amount)                                              = 0;
-        virtual Harm avatarCollide(const sf::FloatRect & t_avatarRect)                       = 0;
-        virtual sf::FloatRect collisionRect() const                                          = 0;
-        virtual sf::FloatRect attackCollisionRect() const                                    = 0;
+        virtual const Harm avatarCollide(const sf::FloatRect & t_avatarRect)                 = 0;
+        virtual const sf::FloatRect collisionRect() const                                    = 0;
+        virtual const sf::FloatRect attackCollisionRect() const                              = 0;
         virtual bool avatarAttack(Context & t_context, const AttackInfo & t_attackInfo)      = 0;
     };
 

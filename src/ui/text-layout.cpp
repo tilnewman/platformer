@@ -17,7 +17,7 @@ namespace bramblefore
 
     TextLayout::TextLayout() {}
 
-    std::vector<sf::Text> TextLayout::layout(
+    const std::vector<sf::Text> TextLayout::layout(
         Context & t_context,
         const std::string & t_text,
         const sf::FloatRect & t_rect,
@@ -77,7 +77,7 @@ namespace bramblefore
         return lineTexts;
     }
 
-    std::vector<std::string> TextLayout::splitIntoWords(const std::string & t_text)
+    const std::vector<std::string> TextLayout::splitIntoWords(const std::string & t_text)
     {
         std::vector<std::string> words;
         words.reserve(128); // just a harmless guess

@@ -316,7 +316,7 @@ namespace bramblefore
         }
     }
 
-    sf::IntRect FallingRockAnimationLayer::textureRect(
+    const sf::IntRect FallingRockAnimationLayer::textureRect(
         const sf::Texture & t_texture, const std::size_t frame) const noexcept
     {
         sf::IntRect rect;
@@ -328,7 +328,8 @@ namespace bramblefore
         return rect;
     }
 
-    Harm FallingRockAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm
+        FallingRockAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
     {
         for (const RockDropAnim & anim : m_dropAnims)
         {
@@ -355,7 +356,7 @@ namespace bramblefore
         return Harm{};
     }
 
-    Harm FallingRockAnimationLayer::makeHarm(
+    const Harm FallingRockAnimationLayer::makeHarm(
         const Rock t_rock, const sf::FloatRect & t_rect) const noexcept
     {
         Harm harm;

@@ -38,7 +38,7 @@ namespace bramblefore
         Count
     };
 
-    [[nodiscard]] inline constexpr std::string_view toFilename(const Pickup t_pickup) noexcept
+    [[nodiscard]] constexpr std::string_view toFilename(const Pickup t_pickup) noexcept
     {
         // clang-format off
         switch (t_pickup)
@@ -60,7 +60,7 @@ namespace bramblefore
         // clang-format on
     }
 
-    [[nodiscard]] inline constexpr Pickup stringToPickup(const std::string_view name) noexcept
+    [[nodiscard]] constexpr Pickup stringToPickup(const std::string_view name) noexcept
     {
         // clang-format off
         if      (name == "arrow")    return Pickup::Arrow;
@@ -82,7 +82,7 @@ namespace bramblefore
 
     struct PickupAnim
     {
-        explicit PickupAnim(
+        PickupAnim(
             const Pickup t_pickup,
             const sf::Texture & t_texture,
             const sf::IntRect & t_textureRect,
@@ -100,7 +100,7 @@ namespace bramblefore
 
     struct PickupFlareAnim
     {
-        explicit PickupFlareAnim(const sf::Sprite & t_sprite, const sf::IntRect & t_textureRect);
+        PickupFlareAnim(const sf::Sprite & t_sprite, const sf::IntRect & t_textureRect);
 
         bool is_alive;
         sf::Sprite sprite;
@@ -115,8 +115,7 @@ namespace bramblefore
 
         void setup(const Context & t_context);
 
-        void add(
-            const Context & t_context, const sf::FloatRect & t_rect, const Pickup t_pickup);
+        void add(const Context & t_context, const sf::FloatRect & t_rect, const Pickup t_pickup);
 
         void update(Context & t_context, const float t_frameTimeSec);
 
@@ -124,12 +123,14 @@ namespace bramblefore
             const;
 
         void move(const float amount);
-        inline void clear() noexcept { m_anims.clear(); }
+        constexpr void clear() noexcept { m_anims.clear(); }
         void processCollisionWithAvatar(Context & t_context, const sf::FloatRect & t_avatarRect);
 
       private:
         [[nodiscard]] std::size_t frameCount(const Pickup which) const;
-        [[nodiscard]] sf::IntRect textureRect(const Pickup which, const std::size_t frame) const;
+
+        [[nodiscard]] const sf::IntRect
+            textureRect(const Pickup which, const std::size_t frame) const;
 
       private:
         std::vector<sf::Texture> m_textures;

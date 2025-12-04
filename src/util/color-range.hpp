@@ -32,7 +32,7 @@ namespace colors
         return util::abs(diff<T>(left, right));
     }
 
-    [[nodiscard]] inline constexpr float
+    [[nodiscard]] constexpr float
         diffRatio(const std::uint8_t left, const std::uint8_t right) noexcept
     {
         return (diffAbs<float>(left, right) / 255.0f);
@@ -122,7 +122,7 @@ namespace colors
 
     // blends
 
-    [[nodiscard]] inline constexpr std::uint8_t
+    [[nodiscard]] constexpr std::uint8_t
         blend(const float ratio, const std::uint8_t from, const std::uint8_t to) noexcept
     {
         return static_cast<std::uint8_t>(

@@ -119,7 +119,8 @@ namespace bramblefore
         t_sprite.setTextureRect(getTextureRect(t_type, t_anim, t_frame));
     }
 
-    void MonsterTextureManager::setIconTexture(sf::Sprite & t_sprite, const MonsterType t_type) const
+    void
+        MonsterTextureManager::setIconTexture(sf::Sprite & t_sprite, const MonsterType t_type) const
     {
         const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
 
@@ -167,7 +168,7 @@ namespace bramblefore
         return m_textureSets.at(typeIndex).textures.at(animIndex);
     }
 
-    sf::IntRect MonsterTextureManager::getTextureRect(
+    const sf::IntRect MonsterTextureManager::getTextureRect(
         const MonsterType t_type, const MonsterAnim t_anim, const std::size_t t_frame) const
     {
         const sf::Texture & texture{ getTexture(t_type, t_anim) };

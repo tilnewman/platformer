@@ -42,7 +42,7 @@ namespace bramblefore
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
 
       private:
-        GuiWindowInfo makeGuiWindowInfo(const sf::FloatRect & t_region) const;
+        const GuiWindowInfo makeGuiWindowInfo(const sf::FloatRect & t_region) const;
 
       private:
         bool m_isVisible;

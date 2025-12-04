@@ -20,9 +20,8 @@ namespace bramblefore
         Goblin(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Goblin() override = default;
 
-        // IMonster functions
-        sf::FloatRect collisionRect() const final;
-        sf::FloatRect attackCollisionRect() const final;
+        const sf::FloatRect collisionRect() const final;
+        const sf::FloatRect attackCollisionRect() const final;
     };
 
 } // namespace bramblefore

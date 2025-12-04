@@ -27,7 +27,7 @@ namespace bramblefore
 
     struct AcidSplashAnim
     {
-        explicit AcidSplashAnim(
+        AcidSplashAnim(
             const Context & t_context,
             const sf::Texture & t_texture,
             const sf::IntRect & t_textureRect,
@@ -102,7 +102,7 @@ namespace bramblefore
             const sf::Vector2f &) final
         {}
 
-        Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
+        const Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
 
       private:
         void updateSpouts(const float t_frameTimeSec);
@@ -111,10 +111,10 @@ namespace bramblefore
 
         [[nodiscard]] std::size_t frameCount(const sf::Texture & t_texture) const noexcept;
 
-        [[nodiscard]] sf::IntRect
+        [[nodiscard]] const sf::IntRect
             textureRect(const sf::Texture & t_texture, const std::size_t t_frame) const noexcept;
 
-        [[nodiscard]] Harm makeHarm(const sf::FloatRect & t_rect) const noexcept;
+        [[nodiscard]] const Harm makeHarm(const sf::FloatRect & t_rect) const noexcept;
 
       private:
         float m_scale;

@@ -22,14 +22,15 @@ namespace bramblefore
       public:
         TextLayout();
 
-        [[nodiscard]] static std::vector<sf::Text> layout(
+        [[nodiscard]] static const std::vector<sf::Text> layout(
             Context & t_context,
             const std::string & t_text,
             const sf::FloatRect & t_rect,
             const TextDetails & t_details);
 
       private:
-        [[nodiscard]] static std::vector<std::string> splitIntoWords(const std::string & t_text);
+        [[nodiscard]] static const std::vector<std::string>
+            splitIntoWords(const std::string & t_text);
     };
 
 } // namespace bramblefore

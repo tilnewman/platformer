@@ -29,7 +29,7 @@ namespace bramblefore
 
     struct SpikedBallAnim
     {
-        explicit SpikedBallAnim(
+        SpikedBallAnim(
             const sf::Texture & t_texture,
             const sf::FloatRect & t_rect,
             const float t_speed,
@@ -69,7 +69,7 @@ namespace bramblefore
             const sf::Vector2f &) final
         {}
 
-        Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
+        const Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
 
       private:
         float m_speed;

@@ -53,7 +53,7 @@ namespace bramblefore
         [[nodiscard]] const sf::Texture &
             getTexture(const MonsterType t_type, const MonsterAnim t_anim) const;
 
-        [[nodiscard]] sf::IntRect getTextureRect(
+        [[nodiscard]] const sf::IntRect getTextureRect(
             const MonsterType t_type, const MonsterAnim t_anim, const std::size_t t_frame) const;
 
       private:

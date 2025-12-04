@@ -102,7 +102,8 @@ namespace bramblefore
         }
     }
 
-    sf::IntRect AccentAnimations::textureRect(const Accent t_which, const std::size_t t_frame) const
+    const sf::IntRect
+        AccentAnimations::textureRect(const Accent t_which, const std::size_t t_frame) const
     {
         const sf::Texture & texture{ m_textures.at(static_cast<std::size_t>(t_which)) };
 

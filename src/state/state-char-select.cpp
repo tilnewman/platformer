@@ -358,7 +358,7 @@ namespace bramblefore
             { (util::right(poseSprite3) + poseSpriteHorizPad), poseSprite1.getPosition().y });
     }
 
-    std::string CharacterSelectState::avatarDescription(const AvatarType type) const
+    const std::string CharacterSelectState::avatarDescription(const AvatarType type) const
     {
         if (AvatarType::Assassin == type)
         {
@@ -401,7 +401,7 @@ namespace bramblefore
         }
     }
 
-    std::string CharacterSelectState::avatarClassDescription(const AvatarType type) const
+    const std::string CharacterSelectState::avatarClassDescription(const AvatarType type) const
     {
         if (isWizard(type))
         {

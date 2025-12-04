@@ -28,12 +28,12 @@ namespace bramblefore
 
     struct SparkParticle
     {
-        explicit SparkParticle(
+        SparkParticle(
             const Context & t_context,
             const sf::Texture & t_texture,
             const sf::Vector2f & t_position);
 
-        [[nodiscard]] bool isAlive() const noexcept { return (age_sec < age_limit_sec); }
+        [[nodiscard]] constexpr bool isAlive() const noexcept { return (age_sec < age_limit_sec); }
 
         sf::Sprite sprite;
         sf::Vector2f velocity;
@@ -47,7 +47,7 @@ namespace bramblefore
 
     struct LightningAnim
     {
-        explicit LightningAnim(
+        LightningAnim(
             const sf::Texture & t_texture,
             const sf::IntRect & t_textureRect,
             const float t_scale,
@@ -89,11 +89,11 @@ namespace bramblefore
             const sf::Vector2f &) final
         {}
 
-        [[nodiscard]] Harm
+        [[nodiscard]] const Harm
             avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
 
       private:
-        [[nodiscard]] sf::IntRect textureRect(const std::size_t frame) const noexcept;
+        [[nodiscard]] const sf::IntRect textureRect(const std::size_t frame) const noexcept;
 
       private:
         sf::Texture m_lightningTexture;

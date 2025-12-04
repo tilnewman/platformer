@@ -63,7 +63,7 @@ namespace bramblefore
         void move(const float t_amount) override;
         bool avatarAttack(Context & t_context, const AttackInfo & t_attackInfo) override;
 
-        Harm avatarCollide(const sf::FloatRect & t_avatarRect) override;
+        const Harm avatarCollide(const sf::FloatRect & t_avatarRect) override;
 
       protected:
         bool animate(); // returns true if animation is finished

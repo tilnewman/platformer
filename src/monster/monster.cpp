@@ -201,7 +201,7 @@ namespace bramblefore
         return true;
     }
 
-    Harm Monster::avatarCollide(const sf::FloatRect & t_avatarRect)
+    const Harm Monster::avatarCollide(const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

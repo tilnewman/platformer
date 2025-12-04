@@ -406,7 +406,7 @@ namespace bramblefore
         }
     }
 
-    sf::FloatRect LevelFileLoader::parseAndConvertRect(
+    const sf::FloatRect LevelFileLoader::parseAndConvertRect(
         const Context & t_context, const nlohmann::json & t_json)
     {
         sf::IntRect mapRect;

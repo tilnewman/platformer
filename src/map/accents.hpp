@@ -44,7 +44,7 @@ namespace bramblefore
         Count
     };
 
-    inline constexpr std::string_view toFilename(const Accent t_pickup)
+    inline constexpr std::string_view toFilename(const Accent t_pickup) noexcept
     {
         // clang-format off
         switch (t_pickup)
@@ -71,7 +71,7 @@ namespace bramblefore
         // clang-format on
     }
 
-    inline constexpr bool isVine(const Accent t_accent)
+    inline constexpr bool isVine(const Accent t_accent) noexcept
     {
         // clang-format off
         switch (t_accent)
@@ -158,12 +158,12 @@ namespace bramblefore
             const;
 
         void move(const float t_amount);
-        inline void clear() noexcept { m_anims.clear(); }
+        constexpr void clear() noexcept { m_anims.clear(); }
 
       private:
         [[nodiscard]] std::size_t frameCount(const Accent t_which) const;
 
-        [[nodiscard]] sf::IntRect
+        [[nodiscard]] const sf::IntRect
             textureRect(const Accent t_which, const std::size_t t_frame) const;
 
       private:

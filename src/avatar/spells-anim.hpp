@@ -67,7 +67,7 @@ namespace bramblefore
             return m_textureSets.at(static_cast<std::size_t>(spell)).icon_texture;
         }
 
-        inline void clear() noexcept { m_anims.clear(); }
+        constexpr void clear() noexcept { m_anims.clear(); }
 
       private:
         std::vector<SpellTextures> m_textureSets;

@@ -89,21 +89,21 @@ namespace bramblefore
             }
         }
 
-        [[nodiscard]] sf::Text makeText(
+        [[nodiscard]] const sf::Text makeText(
             const Font t_font,
             const FontSize t_size,
             const std::string & t_text,
             const sf::Color & t_color     = sf::Color::White,
             const sf::Text::Style t_style = sf::Text::Regular) const;
 
-        [[nodiscard]] inline sf::Text
+        [[nodiscard]] inline const sf::Text
             makeText(const std::string & t_text, const TextDetails & t_details) const
         {
             return makeText(
                 t_details.font, t_details.size, t_text, t_details.color, t_details.style);
         }
 
-        [[nodiscard]] FontExtent extent(const Font t_font, const FontSize t_size) const noexcept;
+        [[nodiscard]] const FontExtent extent(const Font t_font, const FontSize t_size) const noexcept;
 
       private:
         void setupFontExtents(

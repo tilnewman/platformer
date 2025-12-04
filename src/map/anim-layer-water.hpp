@@ -55,7 +55,7 @@ namespace bramblefore
 
     struct WaterTypeRect
     {
-        explicit WaterTypeRect(const bool t_isSurface, const sf::FloatRect & t_rect);
+        WaterTypeRect(const bool t_isSurface, const sf::FloatRect & t_rect);
 
         bool is_surface;
         sf::FloatRect rect;
@@ -65,7 +65,7 @@ namespace bramblefore
 
     struct WaterAnim
     {
-        explicit WaterAnim(
+        WaterAnim(
             const WaterType t_type,
             const sf::Texture & t_texture,
             const sf::IntRect & t_textureRect,
@@ -106,14 +106,14 @@ namespace bramblefore
             const sf::Vector2f &) final
         {}
 
-        [[nodiscard]] Harm
+        [[nodiscard]] const Harm
             avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
 
       private:
         [[nodiscard]] const sf::Texture & getTexture(const WaterType t_type) const;
         [[nodiscard]] std::size_t frameCount(const WaterType t_type) const;
 
-        [[nodiscard]] sf::IntRect
+        [[nodiscard]] const sf::IntRect
             textureRect(const WaterType t_type, const std::size_t frame) const;
 
       private:

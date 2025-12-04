@@ -23,7 +23,7 @@ namespace bramblefore
             , rect(t_rect)
         {}
 
-        [[nodiscard]] inline bool isAnyHarmDone() const noexcept
+        [[nodiscard]] constexpr bool isAnyHarmDone() const noexcept
         {
             return ((damage > 0) || !sfx.empty());
         }

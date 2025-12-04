@@ -27,7 +27,7 @@ namespace bramblefore
 
     struct BombAnim
     {
-        explicit BombAnim(
+        BombAnim(
             const sf::Texture & t_texture,
             const sf::IntRect & t_textureRect,
             const sf::FloatRect & t_rect,
@@ -66,11 +66,11 @@ namespace bramblefore
             const sf::Vector2f &) final
         {}
 
-        Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
+        const Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
 
       private:
         [[nodiscard]] std::size_t frameCount() const noexcept;
-        [[nodiscard]] sf::IntRect textureRect(const std::size_t t_frame) const noexcept;
+        [[nodiscard]] const sf::IntRect textureRect(const std::size_t t_frame) const noexcept;
 
       private:
         sf::Texture m_texture;

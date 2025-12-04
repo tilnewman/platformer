@@ -155,7 +155,7 @@ namespace bramblefore
         }
     }
 
-    sf::IntRect SpikeTrapAnimationLayer::textureRect(const std::size_t frame) const noexcept
+    const sf::IntRect SpikeTrapAnimationLayer::textureRect(const std::size_t frame) const noexcept
     {
         sf::IntRect rect;
         rect.size.x     = static_cast<int>(m_texture.getSize().y);
@@ -166,7 +166,7 @@ namespace bramblefore
         return rect;
     }
 
-    Harm SpikeTrapAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm SpikeTrapAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

@@ -16,7 +16,7 @@ namespace bramblefore
                    { MonsterType::Dragon, t_region, 0.75f, 1.0f, MonsterSpell::DragonFire } }
     {}
 
-    sf::FloatRect Dragon::collisionRect() const
+    const sf::FloatRect Dragon::collisionRect() const
     {
         if (MonsterAnim::Death == m_anim)
         {
@@ -41,7 +41,7 @@ namespace bramblefore
         }
     }
 
-    sf::FloatRect Dragon::attackCollisionRect() const
+    const sf::FloatRect Dragon::attackCollisionRect() const
     {
         sf::FloatRect rect{ collisionRect() };
 

@@ -23,7 +23,7 @@ namespace bramblefore
 
     struct FloatingTextAnim
     {
-        explicit FloatingTextAnim(const sf::Text & t_text, const sf::Vector2f & t_position);
+        FloatingTextAnim(const sf::Text & t_text, const sf::Vector2f & t_position);
 
         bool is_alive;
         sf::Text text;

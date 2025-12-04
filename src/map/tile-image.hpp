@@ -24,7 +24,7 @@ namespace bramblefore
         Count
     };
 
-    inline constexpr std::string_view toString(const TileImage image)
+    constexpr std::string_view toString(const TileImage image) noexcept
     {
         // clang-format off
         switch (image)

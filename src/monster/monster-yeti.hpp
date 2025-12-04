@@ -20,8 +20,8 @@ namespace bramblefore
         Yeti(const Context & t_context, const sf::FloatRect & t_region);
         virtual ~Yeti() override = default;
 
-        sf::FloatRect collisionRect() const final;
-        sf::FloatRect attackCollisionRect() const final;
+        const sf::FloatRect collisionRect() const final;
+        const sf::FloatRect attackCollisionRect() const final;
     };
 
 } // namespace bramblefore

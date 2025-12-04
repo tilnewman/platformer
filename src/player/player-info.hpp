@@ -31,7 +31,7 @@ namespace bramblefore
         Count
     };
 
-    [[nodiscard]] inline constexpr std::string_view toString(const AvatarType t_type) noexcept
+    [[nodiscard]] constexpr std::string_view toString(const AvatarType t_type) noexcept
     {
         // clang-format off
         switch (t_type)
@@ -51,7 +51,7 @@ namespace bramblefore
         // clang-format on
     }
 
-    [[nodiscard]] inline constexpr std::string_view toName(const AvatarType t_type) noexcept
+    [[nodiscard]] constexpr std::string_view toName(const AvatarType t_type) noexcept
     {
         // clang-format off
         switch (t_type)
@@ -71,35 +71,35 @@ namespace bramblefore
         // clang-format on
     }
 
-    [[nodiscard]] inline constexpr bool isMale(const AvatarType t_type) noexcept
+    [[nodiscard]] constexpr bool isMale(const AvatarType t_type) noexcept
     {
         return (
             (AvatarType::Druid != t_type) && (AvatarType::Enchantress != t_type) &&
             (AvatarType::Witch != t_type));
     }
 
-    [[nodiscard]] inline constexpr bool isWizard(const AvatarType t_type) noexcept
+    [[nodiscard]] constexpr bool isWizard(const AvatarType t_type) noexcept
     {
         return (
             (AvatarType::Druid == t_type) || (AvatarType::Enchantress == t_type) ||
             (AvatarType::Witch == t_type));
     }
 
-    [[nodiscard]] inline constexpr bool isWarrior(const AvatarType t_type) noexcept
+    [[nodiscard]] constexpr bool isWarrior(const AvatarType t_type) noexcept
     {
         return (
             (AvatarType::BlueKnight == t_type) || (AvatarType::RedKnight == t_type) ||
             (AvatarType::Viking == t_type));
     }
 
-    [[nodiscard]] inline constexpr bool isRaider(const AvatarType t_type) noexcept
+    [[nodiscard]] constexpr bool isRaider(const AvatarType t_type) noexcept
     {
         return (
             (AvatarType::Rogue == t_type) || (AvatarType::Assassin == t_type) ||
             (AvatarType::Ninja == t_type));
     }
 
-    [[nodiscard]] inline constexpr Health_t startingHealth(const AvatarType t_type) noexcept
+    [[nodiscard]] constexpr Health_t startingHealth(const AvatarType t_type) noexcept
     {
         // clang-format off
         switch (t_type)
@@ -119,7 +119,7 @@ namespace bramblefore
         // clang-format on
     }
 
-    [[nodiscard]] inline constexpr Mana_t startingMana(const AvatarType t_type) noexcept
+    [[nodiscard]] constexpr Mana_t startingMana(const AvatarType t_type) noexcept
     {
         if (AvatarType::Witch == t_type)
         {
@@ -139,7 +139,7 @@ namespace bramblefore
         }
     }
 
-    [[nodiscard]] inline constexpr Health_t
+    [[nodiscard]] constexpr Health_t
         startingAttackDamage(const AvatarType t_type, const bool t_isExtraAttack) noexcept
     {
         if (isRaider(t_type))
@@ -206,7 +206,7 @@ namespace bramblefore
         Count
     };
 
-    [[nodiscard]] inline constexpr std::string_view toName(const Spell t_spell) noexcept
+    [[nodiscard]] constexpr std::string_view toName(const Spell t_spell) noexcept
     {
         // clang-format off
         switch (t_spell)
@@ -233,7 +233,7 @@ namespace bramblefore
         // clang-format on
     }
 
-    [[nodiscard]] inline constexpr std::string_view toFilesystemName(const Spell t_spell) noexcept
+    [[nodiscard]] constexpr std::string_view toFilesystemName(const Spell t_spell) noexcept
     {
         // clang-format off
         switch (t_spell)
@@ -261,7 +261,7 @@ namespace bramblefore
     }
 
     // TODO figure out the real values
-    [[nodiscard]] inline constexpr Mana_t toManaCost(const Spell t_spell) noexcept
+    [[nodiscard]] constexpr Mana_t toManaCost(const Spell t_spell) noexcept
     {
         // clang-format off
         switch (t_spell)
@@ -289,7 +289,7 @@ namespace bramblefore
     }
 
     // TODO figure out the real values
-    [[nodiscard]] inline constexpr Mana_t toDamage(const Spell t_spell) noexcept
+    [[nodiscard]] constexpr Mana_t toDamage(const Spell t_spell) noexcept
     {
         // clang-format off
         switch (t_spell)
@@ -316,7 +316,7 @@ namespace bramblefore
         // clang-format on
     }
 
-    [[nodiscard]] inline constexpr float timePerFrameSec(const Spell t_spell) noexcept
+    [[nodiscard]] constexpr float timePerFrameSec(const Spell t_spell) noexcept
     {
         if (Spell::Light == t_spell)
         {
@@ -334,7 +334,7 @@ namespace bramblefore
         }
     }
 
-    [[nodiscard]] inline std::vector<Spell> makeSpellSet(const AvatarType t_type) noexcept
+    [[nodiscard]] inline const std::vector<Spell> makeSpellSet(const AvatarType t_type) noexcept
     {
         if (AvatarType::Witch == t_type)
         {
@@ -379,42 +379,36 @@ namespace bramblefore
         void setup(Context & t_context, const AvatarType t_type);
         void update(Context & t_context, const float frameTimeSec);
 
-        [[nodiscard]] inline constexpr AvatarType avatarType() const noexcept
-        {
-            return m_avatarType;
-        }
+        [[nodiscard]] constexpr AvatarType avatarType() const noexcept { return m_avatarType; }
 
-        [[nodiscard]] inline constexpr Health_t health() const noexcept { return m_health; }
+        [[nodiscard]] constexpr Health_t health() const noexcept { return m_health; }
 
-        [[nodiscard]] inline constexpr Health_t healthMax() const noexcept { return m_healthMax; }
+        [[nodiscard]] constexpr Health_t healthMax() const noexcept { return m_healthMax; }
 
         Health_t healthAdjust(Context & t_context, const Health_t t_adjustment);
         void healthReset(Context & t_context);
 
-        [[nodiscard]] inline constexpr Mana_t mana() const noexcept { return m_mana; }
+        [[nodiscard]] constexpr Mana_t mana() const noexcept { return m_mana; }
 
-        [[nodiscard]] inline constexpr Mana_t manaMax() const noexcept { return m_manaMax; }
+        [[nodiscard]] constexpr Mana_t manaMax() const noexcept { return m_manaMax; }
 
         Mana_t manaAdjust(Context & t_context, const Mana_t t_adjustment);
         void manaReset(Context & t_context);
 
-        [[nodiscard]] inline constexpr Coin_t coin() const noexcept { return m_coins; }
+        [[nodiscard]] constexpr Coin_t coin() const noexcept { return m_coins; }
 
         Coin_t coinAdjust(Context & t_context, const Coin_t t_adjustment);
 
-        [[nodiscard]] inline constexpr Experience_t experience() const noexcept
-        {
-            return m_experience;
-        }
+        [[nodiscard]] constexpr Experience_t experience() const noexcept { return m_experience; }
 
         Experience_t experienceAdjust(const Experience_t adjustment);
 
-        [[nodiscard]] inline constexpr int mapStarCount() const noexcept { return m_mapStarCount; }
+        [[nodiscard]] constexpr int mapStarCount() const noexcept { return m_mapStarCount; }
 
         void mapStarCollect(Context & t_context);
         void mapStarReset(Context & t_context);
 
-        [[nodiscard]] inline constexpr std::size_t currentSpellIndex() const noexcept
+        [[nodiscard]] constexpr std::size_t currentSpellIndex() const noexcept
         {
             return m_currentSpell;
         }

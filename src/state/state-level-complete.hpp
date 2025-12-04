@@ -23,7 +23,7 @@ namespace bramblefore
         LevelCompleteState();
         virtual ~LevelCompleteState() override = default;
 
-        State which() const final { return State::LevelComplete; }
+        [[nodiscard]] State which() const final { return State::LevelComplete; }
         void update(Context & t_context, const float t_frameTimeSec) final;
 
         void draw(Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)

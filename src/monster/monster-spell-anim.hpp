@@ -33,7 +33,7 @@ namespace bramblefore
         Count
     };
 
-    inline constexpr std::string_view toString(const MonsterSpell t_spell)
+    constexpr std::string_view toString(const MonsterSpell t_spell) noexcept
     {
         // clang-format off
         switch (t_spell)
@@ -84,7 +84,7 @@ namespace bramblefore
 
     struct MonsterSpellAnim
     {
-        explicit MonsterSpellAnim(
+        MonsterSpellAnim(
             const MonsterSpell t_spell,
             const bool t_isFacingRight,
             const sf::Vector2f & t_scale,
@@ -111,7 +111,7 @@ namespace bramblefore
         void update(const float t_frameTimeSec);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
         void move(const float t_amount);
-        inline void clear() noexcept { m_anims.clear(); }
+        constexpr void clear() noexcept { m_anims.clear(); }
 
       private:
         std::vector<MonsterSpellAnim> m_anims;

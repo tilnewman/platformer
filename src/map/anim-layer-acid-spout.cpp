@@ -284,7 +284,7 @@ namespace bramblefore
         }
     }
 
-    sf::IntRect AcidSpoutAnimationLayer::textureRect(
+    const sf::IntRect AcidSpoutAnimationLayer::textureRect(
         const sf::Texture & t_texture, const std::size_t frame) const noexcept
     {
         sf::IntRect rect;
@@ -296,7 +296,7 @@ namespace bramblefore
         return rect;
     }
 
-    Harm AcidSpoutAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm AcidSpoutAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
     {
         for (const AcidDropAnim & anim : m_dropAnims)
         {
@@ -321,7 +321,7 @@ namespace bramblefore
         return Harm{};
     }
 
-    Harm AcidSpoutAnimationLayer::makeHarm(const sf::FloatRect & t_rect) const noexcept
+    const Harm AcidSpoutAnimationLayer::makeHarm(const sf::FloatRect & t_rect) const noexcept
     {
         Harm harm;
         harm.rect   = t_rect;

@@ -22,7 +22,7 @@ namespace bramblefore
     TextDetails::TextDetails(
         const Font t_font,
         const FontSize t_size,
-        const sf::Color & t_color ,
+        const sf::Color & t_color,
         const sf::Text::Style t_style)
         : font{ t_font }
         , size{ t_size }
@@ -54,7 +54,7 @@ namespace bramblefore
         setupFontExtents(t_settings, Font::General, m_generalExtents);
     }
 
-    sf::Text FontManager::makeText(
+    const sf::Text FontManager::makeText(
         const Font t_font,
         const FontSize t_size,
         const std::string & t_string,
@@ -69,7 +69,7 @@ namespace bramblefore
         return text;
     }
 
-    FontExtent FontManager::extent(const Font t_font, const FontSize t_size) const noexcept
+    const FontExtent FontManager::extent(const Font t_font, const FontSize t_size) const noexcept
     {
         if (t_font == Font::Title)
         {

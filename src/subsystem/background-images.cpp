@@ -155,7 +155,7 @@ namespace bramblefore
         }
     }
 
-    BackgroundImagesInfo
+    const BackgroundImagesInfo
         BackgroundImages::infoFactory(const Context & t_context, const std::string & t_name)
     {
         // behold the magic number that looked best on screen after many tests

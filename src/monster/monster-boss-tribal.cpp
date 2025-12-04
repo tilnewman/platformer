@@ -15,7 +15,7 @@ namespace bramblefore
         : Monster{ t_context, { MonsterType::BossTribal, t_region, 0.7f } }
     {}
 
-    sf::FloatRect BossTribal::collisionRect() const
+    const sf::FloatRect BossTribal::collisionRect() const
     {
         if (MonsterAnim::Death == m_anim)
         {
@@ -41,7 +41,7 @@ namespace bramblefore
         }
     }
 
-    sf::FloatRect BossTribal::attackCollisionRect() const
+    const sf::FloatRect BossTribal::attackCollisionRect() const
     {
         sf::FloatRect rect{ collisionRect() };
 

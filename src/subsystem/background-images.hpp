@@ -27,8 +27,7 @@ namespace bramblefore
     {
         SlidingImageInfo();
 
-        explicit SlidingImageInfo(
-            const float t_moveRatio, const std::filesystem::path & t_filePath);
+        SlidingImageInfo(const float t_moveRatio, const std::filesystem::path & t_filePath);
 
         float move_ratio;
         std::filesystem::path path;
@@ -38,7 +37,7 @@ namespace bramblefore
 
     struct BackgroundImagesInfo
     {
-        explicit BackgroundImagesInfo(
+        BackgroundImagesInfo(
             const std::uint8_t t_fadeAlpha,
             const std::filesystem::path & t_backgroundPath,
             const std::vector<SlidingImageInfo> & t_slidingImages,
@@ -54,8 +53,7 @@ namespace bramblefore
 
     struct SlidingImage
     {
-        explicit SlidingImage(
-            const SlidingImageInfo & t_info, const sf::FloatRect & t_wholeScreenRect);
+        SlidingImage(const SlidingImageInfo & t_info, const sf::FloatRect & t_wholeScreenRect);
 
         SlidingImageInfo info;
         sf::Texture texture;
@@ -75,7 +73,7 @@ namespace bramblefore
         void move(const float t_amount);
 
       private:
-        [[nodiscard]] BackgroundImagesInfo
+        [[nodiscard]] const BackgroundImagesInfo
             infoFactory(const Context & t_context, const std::string & t_name);
 
       private:

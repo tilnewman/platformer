@@ -77,7 +77,7 @@ namespace bramblefore
         }
     }
 
-    sf::IntRect LavaAnimationLayer::textureRect(const std::size_t frame) const noexcept
+    const sf::IntRect LavaAnimationLayer::textureRect(const std::size_t frame) const noexcept
     {
         sf::IntRect rect;
         rect.size.x     = static_cast<int>(m_texture.getSize().y);
@@ -107,7 +107,7 @@ namespace bramblefore
         }
     }
 
-    Harm LavaAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm LavaAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

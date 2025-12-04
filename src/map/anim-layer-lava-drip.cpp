@@ -349,7 +349,7 @@ namespace bramblefore
         }
     }
 
-    sf::IntRect LavaDripAnimationLayer::textureRect(
+    const sf::IntRect LavaDripAnimationLayer::textureRect(
         const sf::Texture & t_texture, const std::size_t frame) const noexcept
     {
         sf::IntRect rect;
@@ -361,7 +361,7 @@ namespace bramblefore
         return rect;
     }
 
-    Harm LavaDripAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm LavaDripAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
     {
         for (const LavaDripAnim & anim : m_dripAnims)
         {
@@ -386,7 +386,7 @@ namespace bramblefore
         return Harm{};
     }
 
-    Harm LavaDripAnimationLayer::makeHarm(
+    const Harm LavaDripAnimationLayer::makeHarm(
         const DripSize t_size, const sf::FloatRect & t_rect) const noexcept
     {
         Harm harm;

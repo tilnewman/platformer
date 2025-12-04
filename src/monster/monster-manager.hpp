@@ -35,7 +35,7 @@ namespace bramblefore
             m_monsters.push_back(std::move(monster));
         }
 
-        inline void clear() { return m_monsters.clear(); }
+        constexpr void clear() noexcept { return m_monsters.clear(); }
 
         void update(Context & t_context, const float t_frameTimeSec);
 
@@ -43,7 +43,7 @@ namespace bramblefore
             const;
 
         void move(const float t_amount);
-        Harm avatarCollide(const sf::FloatRect & t_avatarRect);
+        const Harm avatarCollide(const sf::FloatRect & t_avatarRect);
         void appendCollisionRects(std::vector<sf::FloatRect> & t_rects) const;
         bool avatarAttack(Context & t_context, const AttackInfo & t_attackInfo);
 

@@ -28,7 +28,7 @@ namespace bramblefore
 
     struct DartRectDir
     {
-        explicit DartRectDir(const bool t_isLeft, const sf::FloatRect & t_rect);
+        DartRectDir(const bool t_isLeft, const sf::FloatRect & t_rect);
 
         bool is_left;
         sf::FloatRect rect;
@@ -96,7 +96,7 @@ namespace bramblefore
             const sf::Vector2f &) final
         {}
 
-        Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
+        const Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
 
       private:
         sf::Texture m_shooterTexture;

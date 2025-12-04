@@ -115,7 +115,8 @@ namespace bramblefore
         }
     }
 
-    Harm SpikedBallAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm
+        SpikedBallAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

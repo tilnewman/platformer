@@ -49,12 +49,12 @@ namespace util
             restart(t_speed, t_startAt);
         }
 
-        [[nodiscard]] inline constexpr T radians() const noexcept { return m_radians; }
-        [[nodiscard]] inline constexpr T value() const noexcept { return m_value; }
-        [[nodiscard]] inline constexpr T speed() const noexcept { return m_speed; }
-        inline constexpr void speed(const T t_newSpeed) noexcept { m_speed = t_newSpeed; }
-        inline constexpr bool isMoving() const noexcept { return m_isMoving; }
-        inline constexpr void stop() noexcept { m_isMoving = false; }
+        [[nodiscard]] constexpr T radians() const noexcept { return m_radians; }
+        [[nodiscard]] constexpr T value() const noexcept { return m_value; }
+        [[nodiscard]] constexpr T speed() const noexcept { return m_speed; }
+        constexpr void speed(const T t_newSpeed) noexcept { m_speed = t_newSpeed; }
+        constexpr bool isMoving() const noexcept { return m_isMoving; }
+        constexpr void stop() noexcept { m_isMoving = false; }
 
         constexpr void restart(const T t_speed, const T t_startAt = T(0))
         {
@@ -88,8 +88,8 @@ namespace util
         T m_speed;
         T m_value;
         T m_radians;
-        inline static constexpr T m_radiansFrom{ std::numbers::pi_v<T> * T(0.5) };
-        inline static constexpr T m_radiansTo{ std::numbers::pi_v<T> * T(1.5) };
+        static constexpr T m_radiansFrom{ std::numbers::pi_v<T> * T(0.5) };
+        static constexpr T m_radiansTo{ std::numbers::pi_v<T> * T(1.5) };
     };
 
     //
@@ -124,23 +124,17 @@ namespace util
             , m_slider{ m_speed }
         {}
 
-        [[nodiscard]] inline constexpr Math_t radians() const noexcept
-        {
-            return m_slider.radians();
-        }
+        [[nodiscard]] constexpr Math_t radians() const noexcept { return m_slider.radians(); }
 
-        [[nodiscard]] inline constexpr Value_t from() const noexcept { return m_from; }
-        [[nodiscard]] inline constexpr Value_t to() const noexcept { return m_to; }
-        [[nodiscard]] inline constexpr Value_t value() const noexcept { return m_value; }
-        [[nodiscard]] inline constexpr Math_t speed() const noexcept { return m_speed; }
+        [[nodiscard]] constexpr Value_t from() const noexcept { return m_from; }
+        [[nodiscard]] constexpr Value_t to() const noexcept { return m_to; }
+        [[nodiscard]] constexpr Value_t value() const noexcept { return m_value; }
+        [[nodiscard]] constexpr Math_t speed() const noexcept { return m_speed; }
 
-        [[nodiscard]] inline constexpr bool isMoving() const noexcept
-        {
-            return m_slider.isMoving();
-        }
+        [[nodiscard]] constexpr bool isMoving() const noexcept { return m_slider.isMoving(); }
 
-        inline constexpr void stop() noexcept { m_slider.stop(); }
-        [[nodiscard]] inline constexpr Math_t ratio() const noexcept { return m_slider.value(); }
+        constexpr void stop() noexcept { m_slider.stop(); }
+        [[nodiscard]] constexpr Math_t ratio() const noexcept { return m_slider.value(); }
 
         constexpr Value_t update(const Math_t t_adjustment) noexcept
         {
@@ -197,28 +191,19 @@ namespace util
             restart(t_from, t_to, t_speed, t_startAt);
         }
 
-        [[nodiscard]] inline constexpr Math_t radians() const noexcept
-        {
-            return m_slider.radians();
-        }
+        [[nodiscard]] constexpr Math_t radians() const noexcept { return m_slider.radians(); }
 
-        [[nodiscard]] inline constexpr Value_t from() const noexcept { return m_from; }
-        [[nodiscard]] inline constexpr Value_t to() const noexcept { return m_to; }
-        [[nodiscard]] inline constexpr Math_t speed() const noexcept { return m_slider.speed(); }
+        [[nodiscard]] constexpr Value_t from() const noexcept { return m_from; }
+        [[nodiscard]] constexpr Value_t to() const noexcept { return m_to; }
+        [[nodiscard]] constexpr Math_t speed() const noexcept { return m_slider.speed(); }
 
-        inline constexpr void speed(const Math_t t_newSpeed) noexcept
-        {
-            m_slider.speed(t_newSpeed);
-        }
+        constexpr void speed(const Math_t t_newSpeed) noexcept { m_slider.speed(t_newSpeed); }
 
-        [[nodiscard]] inline constexpr Value_t value() const noexcept { return m_slider.value(); }
+        [[nodiscard]] constexpr Value_t value() const noexcept { return m_slider.value(); }
 
-        [[nodiscard]] inline constexpr bool isMoving() const noexcept
-        {
-            return m_slider.isMoving();
-        }
+        [[nodiscard]] constexpr bool isMoving() const noexcept { return m_slider.isMoving(); }
 
-        inline constexpr void stop() noexcept { m_slider.stop(); }
+        constexpr void stop() noexcept { m_slider.stop(); }
 
         constexpr Value_t update(const Math_t t_adjustment) noexcept
         {
@@ -302,23 +287,17 @@ namespace util
             }
         }
 
-        [[nodiscard]] inline constexpr Math_t speed() const noexcept { return m_slider.speed(); }
+        [[nodiscard]] constexpr Math_t speed() const noexcept { return m_slider.speed(); }
 
-        inline constexpr void speed(const Math_t t_newSpeed) noexcept
-        {
-            m_slider.speed(t_newSpeed);
-        }
+        constexpr void speed(const Math_t t_newSpeed) noexcept { m_slider.speed(t_newSpeed); }
 
-        [[nodiscard]] inline constexpr Value_t value() const noexcept { return m_slider.value(); }
+        [[nodiscard]] constexpr Value_t value() const noexcept { return m_slider.value(); }
 
-        [[nodiscard]] inline constexpr bool isMoving() const noexcept
-        {
-            return m_slider.isMoving();
-        }
+        [[nodiscard]] constexpr bool isMoving() const noexcept { return m_slider.isMoving(); }
 
-        inline constexpr void stop() noexcept { m_slider.stop(); }
+        constexpr void stop() noexcept { m_slider.stop(); }
 
-        [[nodiscard]] inline constexpr float ratio() const noexcept
+        [[nodiscard]] constexpr float ratio() const noexcept
         {
             return util::mapToRatio(m_slider.value(), m_valueRange.first, m_valueRange.second);
         }

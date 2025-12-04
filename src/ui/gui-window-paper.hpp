@@ -35,8 +35,8 @@ namespace bramblefore
         void setup(const Settings & t_settings);
         void create(Context & t_context, const bool t_useBigPaper, const GuiWindowInfo & t_info);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
-        [[nodiscard]] inline sf::FloatRect innerRect() const noexcept { return m_innerRect; }
-        [[nodiscard]] inline sf::FloatRect outerRect() const noexcept { return m_outerRect; }
+        [[nodiscard]] inline const sf::FloatRect innerRect() const noexcept { return m_innerRect; }
+        [[nodiscard]] inline const sf::FloatRect outerRect() const noexcept { return m_outerRect; }
 
       private:
         GuiWindowInfo m_info;
