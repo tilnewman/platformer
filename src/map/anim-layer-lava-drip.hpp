@@ -136,8 +136,8 @@ namespace bramblefore
     };
 
     //
-
-    class LavaDripAnimationLayer
+    
+    class LavaDripAnimationLayer final
         : public ITileLayer
         , public IHarmCollisionOwner
     {

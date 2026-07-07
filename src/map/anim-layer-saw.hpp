@@ -26,7 +26,7 @@ namespace bramblefore
 
     //
 
-    class SawAnimationLayer
+    class SawAnimationLayer final
         : public ITileLayer
         , public IHarmCollisionOwner
     {

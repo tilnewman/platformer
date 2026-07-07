@@ -57,7 +57,7 @@ namespace bramblefore
 
     //
 
-    class FirewallAnimationLayer
+    class FirewallAnimationLayer final
         : public ITileLayer
         , public IHarmCollisionOwner
     {

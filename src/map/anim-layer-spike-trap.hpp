@@ -47,7 +47,7 @@ namespace bramblefore
 
     //
 
-    class SpikeTrapAnimationLayer
+    class SpikeTrapAnimationLayer final
         : public ITileLayer
         , public IHarmCollisionOwner
     {

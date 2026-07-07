@@ -81,7 +81,7 @@ namespace bramblefore
 
     //
 
-    class WaterAnimationLayer
+    class WaterAnimationLayer final
         : public ITileLayer
         , public IHarmCollisionOwner
     {

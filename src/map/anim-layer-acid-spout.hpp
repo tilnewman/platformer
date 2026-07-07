@@ -77,7 +77,7 @@ namespace bramblefore
 
     //
 
-    class AcidSpoutAnimationLayer
+    class AcidSpoutAnimationLayer final
         : public ITileLayer
         , public IHarmCollisionOwner
     {

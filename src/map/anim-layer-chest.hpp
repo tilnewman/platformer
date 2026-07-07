@@ -76,7 +76,7 @@ namespace bramblefore
 
     // this class inherits from IHarmCollisionOwner even though chests don't harm the player
     // the harm mechanic is just being used as a trigger to know when to open the chests
-    class ChestAnimationLayer
+    class ChestAnimationLayer final
         : public ITileLayer
         , public IHarmCollisionOwner
     {

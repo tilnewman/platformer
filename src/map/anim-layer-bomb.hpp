@@ -43,7 +43,7 @@ namespace bramblefore
 
     //
 
-    class BombAnimationLayer
+    class BombAnimationLayer final
         : public ITileLayer
         , public IHarmCollisionOwner
     {

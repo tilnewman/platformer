@@ -46,7 +46,7 @@ namespace bramblefore
 
     //
 
-    class MimicAnimationLayer
+    class MimicAnimationLayer final
         : public ITileLayer
         , public IHarmCollisionOwner
     {

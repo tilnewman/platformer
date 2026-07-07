@@ -46,7 +46,7 @@ namespace bramblefore
 
     //
 
-    class TrapAnimationLayer
+    class TrapAnimationLayer final
         : public ITileLayer
         , public IHarmCollisionOwner
     {

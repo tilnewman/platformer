@@ -26,7 +26,7 @@ namespace bramblefore
 
     //
 
-    class AcidAnimationLayer
+    class AcidAnimationLayer final
         : public ITileLayer
         , public IHarmCollisionOwner
     {

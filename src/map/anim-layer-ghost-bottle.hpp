@@ -44,7 +44,7 @@ namespace bramblefore
 
     //
 
-    class GhostBottleAnimationLayer
+    class GhostBottleAnimationLayer final
         : public ITileLayer
         , public IHarmCollisionOwner
     {

@@ -95,7 +95,7 @@ namespace bramblefore
 
     //
 
-    class WaterRockAnimationLayer : public ITileLayer
+    class WaterRockAnimationLayer final : public ITileLayer
     {
       public:
         WaterRockAnimationLayer(

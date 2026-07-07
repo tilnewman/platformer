@@ -64,7 +64,7 @@ namespace bramblefore
 
     //
 
-    class LightningAnimationLayer
+    class LightningAnimationLayer final
         : public ITileLayer
         , public IHarmCollisionOwner
     {

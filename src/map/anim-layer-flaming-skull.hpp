@@ -58,7 +58,7 @@ namespace bramblefore
 
     //
 
-    class FlamingSkullAnimationLayer
+    class FlamingSkullAnimationLayer final
         : public ITileLayer
         , public IHarmCollisionOwner
     {

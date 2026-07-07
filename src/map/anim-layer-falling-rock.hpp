@@ -123,7 +123,7 @@ namespace bramblefore
 
     //
 
-    class FallingRockAnimationLayer
+    class FallingRockAnimationLayer final
         : public ITileLayer
         , public IHarmCollisionOwner
     {
