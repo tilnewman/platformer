@@ -74,7 +74,7 @@ namespace bramblefore
         void dumpInfo() const final;
         void update(Context & t_context, const float t_frameTimeSec) final;
 
-        void appendVertLayer(
+        void appendVerts(
             const Context &,
             const sf::Vector2f &,
             const sf::Vector2i &,

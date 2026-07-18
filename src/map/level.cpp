@@ -118,7 +118,7 @@ namespace bramblefore
     {
         for (auto & layerUPtr : tile_layers)
         {
-            layerUPtr->appendVertLayer(
+            layerUPtr->appendVerts(
                 t_context, map_position_offset, tile_count, tile_size, tile_size_screen);
         }
     }

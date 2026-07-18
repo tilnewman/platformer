@@ -93,7 +93,7 @@ namespace bramblefore
         void dumpInfo() const final;
         void update(Context &, const float) final {}
 
-        void appendVertLayer(
+        void appendVerts(
             const Context &,
             const sf::Vector2f &,
             const sf::Vector2i &,

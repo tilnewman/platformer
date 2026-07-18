@@ -95,7 +95,7 @@ namespace bramblefore
         }
     }
 
-    void TileLayer::appendVertLayer(
+    void TileLayer::appendVerts(
         const Context & t_context,
         const sf::Vector2f & t_mapPositionOffset,
         const sf::Vector2i & t_tileCount,

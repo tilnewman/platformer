@@ -33,7 +33,7 @@ namespace bramblefore
         virtual void dumpInfo() const                                                        = 0;
         virtual void update(Context & t_context, const float t_frameTimeSec)                 = 0;
 
-        virtual void appendVertLayer(
+        virtual void appendVerts(
             const Context & t_context,
             const sf::Vector2f & t_mapPositionOffset,
             const sf::Vector2i & t_tileCount,
@@ -58,7 +58,7 @@ namespace bramblefore
         void dumpInfo() const override;
         void update(Context &, const float) override {}
 
-        void appendVertLayer(
+        void appendVerts(
             const Context & t_context,
             const sf::Vector2f & t_mapPositionOffset,
             const sf::Vector2i & t_count,
