@@ -116,7 +116,7 @@ namespace bramblefore
                 util::scaleRectInPlace(collRect, { 0.15f, 0.55f });
             }
 
-            t_context.level.layer_collisions.push_back(collRect);
+            t_context.level.layerCollisions().push_back(collRect);
         }
     }
 

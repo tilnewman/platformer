@@ -14,7 +14,7 @@ namespace util
 namespace bramblefore
 {
 
-    struct Level;
+    class Level;
     struct Settings;
 
     class Avatar;

@@ -87,9 +87,16 @@ namespace bramblefore
 
       private:
         TileImage m_image;
+
+        // how big is this layer's image in tiles
         sf::Vector2i m_imageTileCounts;
+
+        // texture indexes in XY order for each tile
         std::vector<int> m_indexes;
+
+        // texture indexes that are pre-computed as an optimization step
         std::vector<IndexedTile> m_indexTiles;
+
         std::vector<sf::Vertex> m_verts;
         std::vector<sf::Vertex> m_visibleVerts;
     };

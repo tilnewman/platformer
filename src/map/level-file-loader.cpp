@@ -100,23 +100,20 @@ namespace bramblefore
     void LevelFileLoader::parseLevelDetails(Context & t_context, const nlohmann::json & t_json)
     {
         // parse level tile size and counts
-        t_context.level.tile_count = { t_json["width"], t_json["height"] };
-        t_context.level.tile_size  = { t_json["tilewidth"], t_json["tileheight"] };
-
-        t_context.level.tile_size_texture = sf::Vector2f{ t_context.level.tile_size };
+        const sf::Vector2i tileCount{ t_json["width"], t_json["height"] };
+        const sf::Vector2i tileSize{ t_json["tilewidth"], t_json["tileheight"] };
 
         const float scale{ t_context.layout.calScaleBasedOnResolution(
             t_context, t_context.settings.tile_scale) };
 
-        t_context.level.tile_size_screen = (sf::Vector2f{ t_context.level.tile_size } * scale);
+        const sf::Vector2f tileScreenSize{ sf::Vector2f{ tileSize } * scale };
 
         // calc map position offset
-        const sf::Vector2f mapSizeOrig{ t_context.level.tile_size_screen *
-                                        sf::Vector2f{ t_context.level.tile_count } };
-
+        const sf::Vector2f mapSizeOrig{ tileScreenSize * sf::Vector2f{ tileCount } };
         const float heightOffset{ util::bottom(t_context.layout.wholeRect()) - mapSizeOrig.y };
+        const sf::Vector2f mapScreenPosOffset{ 0.0f, heightOffset };
 
-        t_context.level.map_position_offset = { 0.0f, heightOffset };
+        t_context.level.setupDetails(tileCount, tileSize, tileScreenSize, mapScreenPosOffset);
     }
 
     void LevelFileLoader::parseObjectTextureGIDs(const nlohmann::json & wholeJson)
@@ -255,15 +252,15 @@ namespace bramblefore
             }
             else if (layerName == "collision")
             {
-                parseRectLayer(t_context, jsonLayer, t_context.level.collisions);
+                parseRectLayer(t_context, jsonLayer, t_context.level.collisions());
             }
             else if (layerName == "kill-collision")
             {
-                parseRectLayer(t_context, jsonLayer, t_context.level.kill_collisions);
+                parseRectLayer(t_context, jsonLayer, t_context.level.killCollisions());
             }
             else if (layerName == "ladder")
             {
-                parseRectLayer(t_context, jsonLayer, t_context.level.ladders);
+                parseRectLayer(t_context, jsonLayer, t_context.level.ladders());
             }
             else if (layerName == "spawn")
             {
@@ -391,12 +388,13 @@ namespace bramblefore
             "Error Parsing Level File " << m_pathStr << ":  tile layer for image " << image
                                         << " was empty.");
 
-        t_context.level.tile_layers.push_back(
-            std::make_unique<TileLayer>(t_context, image, indexes));
+        t_context.level.appendTileLayer(std::make_unique<TileLayer>(t_context, image, indexes));
     }
 
     void LevelFileLoader::parseRectLayer(
-        const Context & t_context, const nlohmann::json & t_json, std::vector<sf::FloatRect> & t_rects)
+        const Context & t_context,
+        const nlohmann::json & t_json,
+        std::vector<sf::FloatRect> & t_rects)
     {
         t_rects.clear();
 
@@ -420,22 +418,15 @@ namespace bramblefore
 
         // convert from map to screen coordinates
         sf::FloatRect screenRect{ mapRect };
-        screenRect.position.x *= scale;
-        screenRect.position.y *= scale;
-        screenRect.size.x *= scale;
-        screenRect.size.y *= scale;
-        //
-        screenRect.position.x += t_context.level.map_position_offset.x;
-        screenRect.position.y += t_context.level.map_position_offset.y;
+        screenRect.position *= scale;
+        screenRect.position += t_context.level.mapScreenPosOffset();
+        screenRect.size *= scale;
 
         return screenRect;
     }
 
     void LevelFileLoader::parseSpawnLayer(Context & t_context, const nlohmann::json & t_json)
     {
-        t_context.level.enter_rect = { { 0.0f, 0.0f }, { -1.0f, -1.0f } };
-        t_context.level.exit_rect  = { { 0.0f, 0.0f }, { -1.0f, -1.0f } };
-
         for (const nlohmann::json & spawnJson : t_json["objects"])
         {
             const std::string name{ spawnJson["name"] };
@@ -443,11 +434,11 @@ namespace bramblefore
 
             if (name == "enter")
             {
-                t_context.level.enter_rect = rect;
+                t_context.level.enterRect(rect);
             }
             else if (name == "exit")
             {
-                t_context.level.exit_rect = rect;
+                t_context.level.exitRect(rect);
             }
             else
             {
@@ -457,15 +448,16 @@ namespace bramblefore
         }
 
         M_CHECK(
-            (t_context.level.enter_rect.size.x > 0.0f),
+            (t_context.level.enterRect().size.x > 0.0f),
             "Error Parsing Level File " << m_pathStr << ":  Failed to find enter location.");
 
         M_CHECK(
-            (t_context.level.exit_rect.size.x > 0.0f),
+            (t_context.level.exitRect().size.x > 0.0f),
             "Error Parsing Level File " << m_pathStr << ":  Failed to find exit location.");
     }
 
-    void LevelFileLoader::parsePickupAnimLayer(const Context & t_context, const nlohmann::json & t_json)
+    void LevelFileLoader::parsePickupAnimLayer(
+        const Context & t_context, const nlohmann::json & t_json)
     {
         for (const nlohmann::json & pickupJson : t_json["objects"])
         {
@@ -481,7 +473,8 @@ namespace bramblefore
         }
     }
 
-    void LevelFileLoader::parseAccentAnimLayer(const Context & t_context, const nlohmann::json & t_json)
+    void LevelFileLoader::parseAccentAnimLayer(
+        const Context & t_context, const nlohmann::json & t_json)
     {
         for (const nlohmann::json & accentJson : t_json["objects"])
         {
@@ -497,7 +490,8 @@ namespace bramblefore
         }
     }
 
-    void LevelFileLoader::parseChestAnimLayer(const Context & t_context, const nlohmann::json & t_json)
+    void LevelFileLoader::parseChestAnimLayer(
+        const Context & t_context, const nlohmann::json & t_json)
     {
         auto chestAnimLayerUPtr{ std::make_unique<ChestAnimationLayer>(t_context) };
 
@@ -514,7 +508,7 @@ namespace bramblefore
             chestAnimLayerUPtr->add(t_context, chest, parseAndConvertRect(t_context, accentJson));
         }
 
-        t_context.level.tile_layers.push_back(std::move(chestAnimLayerUPtr));
+        t_context.level.appendTileLayer(std::move(chestAnimLayerUPtr));
     }
 
     void
@@ -527,123 +521,123 @@ namespace bramblefore
 
             if (name == "goblin")
             {
-                t_context.level.monsters.add(std::make_unique<Goblin>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Goblin>(t_context, rect));
             }
             else if (name == "dino")
             {
-                t_context.level.monsters.add(std::make_unique<Dino>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Dino>(t_context, rect));
             }
             else if (name == "spider")
             {
-                t_context.level.monsters.add(std::make_unique<Spider>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Spider>(t_context, rect));
             }
             else if (name == "ent")
             {
-                t_context.level.monsters.add(std::make_unique<Ent>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Ent>(t_context, rect));
             }
             else if (name == "big-knight")
             {
-                t_context.level.monsters.add(std::make_unique<BigKnight>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<BigKnight>(t_context, rect));
             }
             else if (name == "little-knight")
             {
-                t_context.level.monsters.add(std::make_unique<LittleKnight>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<LittleKnight>(t_context, rect));
             }
             else if (name == "bone-dragon")
             {
-                t_context.level.monsters.add(std::make_unique<BoneDragon>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<BoneDragon>(t_context, rect));
             }
             else if (name == "ghost")
             {
-                t_context.level.monsters.add(std::make_unique<Ghost>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Ghost>(t_context, rect));
             }
             else if (name == "skeleton")
             {
-                t_context.level.monsters.add(std::make_unique<Skeleton>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Skeleton>(t_context, rect));
             }
             else if (name == "vampire")
             {
-                t_context.level.monsters.add(std::make_unique<Vampire>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Vampire>(t_context, rect));
             }
             else if (name == "fire-knight")
             {
-                t_context.level.monsters.add(std::make_unique<FireKnight>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<FireKnight>(t_context, rect));
             }
             else if (name == "fire-imp")
             {
-                t_context.level.monsters.add(std::make_unique<FireImp>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<FireImp>(t_context, rect));
             }
             else if (name == "hound")
             {
-                t_context.level.monsters.add(std::make_unique<Hound>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Hound>(t_context, rect));
             }
             else if (name == "imp")
             {
-                t_context.level.monsters.add(std::make_unique<Imp>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Imp>(t_context, rect));
             }
             else if (name == "salamander")
             {
-                t_context.level.monsters.add(std::make_unique<Salamander>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Salamander>(t_context, rect));
             }
             else if (name == "skull")
             {
-                t_context.level.monsters.add(std::make_unique<Skull>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Skull>(t_context, rect));
             }
             else if (name == "bear")
             {
-                t_context.level.monsters.add(std::make_unique<Bear>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Bear>(t_context, rect));
             }
             else if (name == "dwarf")
             {
-                t_context.level.monsters.add(std::make_unique<Dwarf>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Dwarf>(t_context, rect));
             }
             else if (name == "orc")
             {
-                t_context.level.monsters.add(std::make_unique<Orc>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Orc>(t_context, rect));
             }
             else if (name == "snake")
             {
-                t_context.level.monsters.add(std::make_unique<Snake>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Snake>(t_context, rect));
             }
             else if (name == "yeti")
             {
-                t_context.level.monsters.add(std::make_unique<Yeti>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Yeti>(t_context, rect));
             }
             else if (name == "demon")
             {
-                t_context.level.monsters.add(std::make_unique<Demon>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Demon>(t_context, rect));
             }
             else if (name == "dragon")
             {
-                t_context.level.monsters.add(std::make_unique<Dragon>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Dragon>(t_context, rect));
             }
             else if (name == "djinn")
             {
-                t_context.level.monsters.add(std::make_unique<Djinn>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Djinn>(t_context, rect));
             }
             else if (name == "lizard")
             {
-                t_context.level.monsters.add(std::make_unique<Lizard>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Lizard>(t_context, rect));
             }
             else if (name == "medusa")
             {
-                t_context.level.monsters.add(std::make_unique<Medusa>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<Medusa>(t_context, rect));
             }
             else if (name == "baby-dragon")
             {
-                t_context.level.monsters.add(std::make_unique<BabyDragon>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<BabyDragon>(t_context, rect));
             }
             else if (name == "boss-tribal")
             {
-                t_context.level.monsters.add(std::make_unique<BossTribal>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<BossTribal>(t_context, rect));
             }
             else if (name == "boss-knight")
             {
-                t_context.level.monsters.add(std::make_unique<BossKnight>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<BossKnight>(t_context, rect));
             }
             else if (name == "boss-wizard")
             {
-                t_context.level.monsters.add(std::make_unique<BossWizard>(t_context, rect));
+                t_context.level.monsters().add(std::make_unique<BossWizard>(t_context, rect));
             }
             else
             {
@@ -666,7 +660,7 @@ namespace bramblefore
                 parseAndConvertRect(t_context, trapJson), stringToTrapDirection(trapJson["name"]));
         }
 
-        t_context.level.tile_layers.push_back(
+        t_context.level.appendTileLayer(
             std::make_unique<FlameTrapAnimationLayer>(t_context, rectDirs));
     }
 
@@ -682,7 +676,7 @@ namespace bramblefore
                 parseAndConvertRect(t_context, trapJson), stringToRock(trapJson["name"]));
         }
 
-        t_context.level.tile_layers.push_back(
+        t_context.level.appendTileLayer(
             std::make_unique<FallingRockAnimationLayer>(t_context, rectRocks));
     }
 
@@ -698,7 +692,7 @@ namespace bramblefore
                 parseAndConvertRect(t_context, trapJson), stringToDripSize(trapJson["name"]));
         }
 
-        t_context.level.tile_layers.push_back(
+        t_context.level.appendTileLayer(
             std::make_unique<LavaDripAnimationLayer>(t_context, rectSizes));
     }
 
@@ -720,7 +714,7 @@ namespace bramblefore
             rectDirs.emplace_back((nameStr == "left"), parseAndConvertRect(t_context, trapJson));
         }
 
-        t_context.level.tile_layers.push_back(
+        t_context.level.appendTileLayer(
             std::make_unique<DartTrapAnimationLayer>(t_context, rectDirs));
     }
 
@@ -735,7 +729,7 @@ namespace bramblefore
             typeRects.emplace_back(isSurface, parseAndConvertRect(t_context, trapJson));
         }
 
-        t_context.level.tile_layers.push_back(
+        t_context.level.appendTileLayer(
             std::make_unique<WaterAnimationLayer>(t_context, typeRects));
     }
 
@@ -751,7 +745,7 @@ namespace bramblefore
                 fromString(trapJson["name"]), parseAndConvertRect(t_context, trapJson));
         }
 
-        t_context.level.tile_layers.push_back(
+        t_context.level.appendTileLayer(
             std::make_unique<WaterRockAnimationLayer>(t_context, rockRects));
     }
 

@@ -32,11 +32,11 @@ namespace bramblefore
 
         // calculate how many tiles horiz and vert there are in this layer's image
         const sf::Vector2i mapTextureSizePixels{ MapTextureManager::instance().get(m_image).size };
-        m_imageTileCounts = (mapTextureSizePixels / t_context.level.tile_size);
+        m_imageTileCounts = (mapTextureSizePixels / t_context.level.tileSize());
 
         // sanity check that the map/level total tile count matches this layers index count
-        const std::size_t totalTileCount{ static_cast<std::size_t>(t_context.level.tile_count.x) *
-                                          static_cast<std::size_t>(t_context.level.tile_count.y) };
+        const std::size_t totalTileCount{ static_cast<std::size_t>(t_context.level.tileCount().x) *
+                                          static_cast<std::size_t>(t_context.level.tileCount().y) };
 
         M_CHECK(
             (totalTileCount == m_indexes.size()),
@@ -48,7 +48,7 @@ namespace bramblefore
         m_visibleVerts.reserve(t_indexes.size() * util::verts_per_quad);
 
         // pre-skip empty tiles in the map and pre-compute remaining tile texture rects
-        setupOptimizedTileIndexes(t_context.level.tile_count, t_context.level.tile_size);
+        setupOptimizedTileIndexes(t_context.level.tileCount(), t_context.level.tileSize());
     }
 
     TileLayer::~TileLayer() { MapTextureManager::instance().release(m_image); }

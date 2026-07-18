@@ -354,7 +354,7 @@ namespace bramblefore
         const AttackInfo attackInfo(
             startingAttackDamage(m_type, (AvatarState::AttackExtra == m_state)), attackRect());
 
-        if (t_context.level.monsters.avatarAttack(t_context, attackInfo))
+        if (t_context.level.monsters().avatarAttack(t_context, attackInfo))
         {
             m_hasHitEnemy = true;
             if (isWizard(m_type))
@@ -419,10 +419,10 @@ namespace bramblefore
         footRect.position.y += footRectHeightAdj;
         footRect.size.y -= footRectHeightAdj;
 
-        std::vector<sf::FloatRect> rects{ t_context.level.collisions };
-        t_context.level.monsters.appendCollisionRects(rects);
+        std::vector<sf::FloatRect> rects{ t_context.level.collisions() };
+        t_context.level.monsters().appendCollisionRects(rects);
 
-        for (const sf::FloatRect & rect : t_context.level.layer_collisions)
+        for (const sf::FloatRect & rect : t_context.level.layerCollisions())
         {
             rects.push_back(rect);
         }
@@ -824,7 +824,7 @@ namespace bramblefore
 
     void Avatar::exitCollisions(Context & t_context) const
     {
-        if (collisionRect().findIntersection(t_context.level.exit_rect))
+        if (collisionRect().findIntersection(t_context.level.exitRect()))
         {
             t_context.sfx.stopAllLooped();
             t_context.state.setChangePending(State::LevelComplete);
@@ -840,14 +840,14 @@ namespace bramblefore
 
         const sf::FloatRect avatarRect{ collisionRect() };
         harm(t_context, HarmCollisionManager::instance().avatarCollide(t_context, avatarRect));
-        harm(t_context, t_context.level.monsters.avatarCollide(avatarRect));
+        harm(t_context, t_context.level.monsters().avatarCollide(avatarRect));
     }
 
     void Avatar::killCollisions(Context & t_context)
     {
         const sf::FloatRect collRect{ collisionRect() };
 
-        for (const sf::FloatRect & killRect : t_context.level.kill_collisions)
+        for (const sf::FloatRect & killRect : t_context.level.killCollisions())
         {
             if (collRect.findIntersection(killRect))
             {

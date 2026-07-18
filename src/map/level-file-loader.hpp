@@ -65,7 +65,7 @@ namespace bramblefore
                 rects.push_back(parseAndConvertRect(t_context, subJson));
             }
 
-            t_context.level.tile_layers.push_back(std::make_unique<Layer_t>(t_context, rects));
+            t_context.level.appendTileLayer(std::make_unique<Layer_t>(t_context, rects));
         }
 
       private:

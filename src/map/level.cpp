@@ -22,40 +22,41 @@ namespace bramblefore
 {
 
     Level::Level()
-        : map_position_offset{}
-        , tile_size_screen{}
-        , tile_size_texture{}
-        , collisions{}
-        , kill_collisions{}
-        , layer_collisions{}
-        , ladders{}
-        , enter_rect{}
-        , exit_rect{}
-        , name{}
-        , tile_count{}
-        , tile_size{}
-        , tile_layers{}
-        , monsters{}
-        , farthest_horiz_traveled{ 0.0f }
-        , farthest_horiz_map_pixel{ 0.0f }
+        : m_name{}
+        , m_mapScreenPosOffset{}
+        , m_tileSizeScreen{}
+        , m_tileSizeTexture{}
+        , m_collisions{}
+        , m_killCollisions{}
+        , m_layerCollisions{}
+        , m_ladders{}
+        , m_enterRect{}
+        , m_exitRect{}
+        , m_tileCount{}
+        , m_tileSize{}
+        , m_tileLayers{}
+        , m_monsters{}
+        , m_farthestHorizTraveled{ 0.0f }
+        , m_farthestHorizMapPixel{ 0.0f }
     {
         // harmless guesses based on what I know is in map files
-        tile_layers.reserve(32);
-        collisions.reserve(1024);
-        kill_collisions.reserve(32);
-        layer_collisions.reserve(32);
+        m_collisions.reserve(1024);
+        m_killCollisions.reserve(32);
+        m_layerCollisions.reserve(32);
+        m_ladders.reserve(16);
+        m_tileLayers.reserve(32);
     }
 
     void Level::reset()
     {
-        tile_layers.clear();
-        collisions.clear();
-        kill_collisions.clear();
-        layer_collisions.clear();
-        ladders.clear();
-        monsters.clear();
-        farthest_horiz_traveled  = 0.0f;
-        farthest_horiz_map_pixel = 0.0f;
+        m_tileLayers.clear();
+        m_collisions.clear();
+        m_killCollisions.clear();
+        m_layerCollisions.clear();
+        m_ladders.clear();
+        m_monsters.clear();
+        m_farthestHorizTraveled = 0.0f;
+        m_farthestHorizMapPixel = 0.0f;
     }
 
     void Level::load(Context & t_context, const std::string & t_filename)
@@ -63,48 +64,61 @@ namespace bramblefore
         reset();
         t_context.level_loader.load(t_context, t_filename);
         appendVertLayers(t_context);
-        t_context.avatar.setPosition(enter_rect);
-        farthest_horiz_map_pixel = exit_rect.position.x;
+        t_context.avatar.setPosition(m_enterRect);
+        m_farthestHorizMapPixel = m_exitRect.position.x;
         dumpInfo(t_filename);
+    }
+
+    void Level::setupDetails(
+        const sf::Vector2i & t_tileCount,
+        const sf::Vector2i & t_tileSize,
+        const sf::Vector2f & t_tileSizeScreen,
+        const sf::Vector2f & t_mapScreenPosOffset)
+    {
+        m_tileCount          = t_tileCount;
+        m_tileSize           = t_tileSize;
+        m_tileSizeTexture    = sf::Vector2f{ t_tileSize };
+        m_tileSizeScreen     = t_tileSizeScreen;
+        m_mapScreenPosOffset = t_mapScreenPosOffset;
     }
 
     bool Level::move(const Context & t_context, const float t_amount)
     {
-        farthest_horiz_traveled += util::abs(t_amount);
-        if (farthest_horiz_traveled > (farthest_horiz_map_pixel - t_context.layout.wholeSize().x))
+        m_farthestHorizTraveled += util::abs(t_amount);
+        if (m_farthestHorizTraveled > (m_farthestHorizMapPixel - t_context.layout.wholeSize().x))
         {
             return false;
         }
 
-        enter_rect.position.x += t_amount;
-        exit_rect.position.x += t_amount;
+        m_enterRect.position.x += t_amount;
+        m_exitRect.position.x += t_amount;
 
-        for (sf::FloatRect & rect : collisions)
+        for (sf::FloatRect & rect : m_collisions)
         {
             rect.position.x += t_amount;
         }
 
-        for (sf::FloatRect & rect : kill_collisions)
+        for (sf::FloatRect & rect : m_killCollisions)
         {
             rect.position.x += t_amount;
         }
 
-        for (sf::FloatRect & rect : layer_collisions)
+        for (sf::FloatRect & rect : m_layerCollisions)
         {
             rect.position.x += t_amount;
         }
 
-        for (sf::FloatRect & rect : ladders)
+        for (sf::FloatRect & rect : m_ladders)
         {
             rect.position.x += t_amount;
         }
 
-        for (auto & layerUPtr : tile_layers)
+        for (auto & layerUPtr : m_tileLayers)
         {
             layerUPtr->move(t_context, t_amount);
         }
 
-        monsters.move(t_amount);
+        m_monsters.move(t_amount);
         t_context.accent.move(t_amount);
         t_context.pickup.move(t_amount);
         t_context.bg_image.move(t_amount);
@@ -116,9 +130,9 @@ namespace bramblefore
 
     void Level::appendVertLayers(const Context & t_context)
     {
-        for (auto & layerUPtr : tile_layers)
+        for (auto & layerUPtr : m_tileLayers)
         {
-            layerUPtr->appendVerts(t_context, map_position_offset, tile_size_screen);
+            layerUPtr->appendVerts(t_context, m_mapScreenPosOffset, m_tileSizeScreen);
         }
     }
 
@@ -126,7 +140,7 @@ namespace bramblefore
     {
         std::clog << t_filename << " Map Graphics Layer Info:\n";
 
-        for (const auto & layerUPtr : tile_layers)
+        for (const auto & layerUPtr : m_tileLayers)
         {
             layerUPtr->dumpInfo();
         }
@@ -137,27 +151,28 @@ namespace bramblefore
     void Level::draw(
         const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
-        for (auto & layerUPtr : tile_layers)
+        for (auto & layerUPtr : m_tileLayers)
         {
             layerUPtr->draw(t_context, t_target, t_states);
         }
 
-        monsters.draw(t_context, t_target, t_states);
+        m_monsters.draw(t_context, t_target, t_states);
     }
 
     void Level::update(Context & t_context, const float t_frameTimeSec)
     {
-        for (auto & layerUPtr : tile_layers)
+        for (auto & layerUPtr : m_tileLayers)
         {
             layerUPtr->update(t_context, t_frameTimeSec);
         }
 
-        monsters.update(t_context, t_frameTimeSec);
+        m_monsters.update(t_context, t_frameTimeSec);
     }
 
-    std::optional<sf::FloatRect> Level::ladderCollisionRect(const sf::FloatRect & avatarRect) const
+    const std::optional<sf::FloatRect>
+        Level::ladderCollisionRect(const sf::FloatRect & avatarRect) const
     {
-        for (const sf::FloatRect & ladderRect : ladders)
+        for (const sf::FloatRect & ladderRect : m_ladders)
         {
             if (avatarRect.findIntersection(ladderRect))
             {
