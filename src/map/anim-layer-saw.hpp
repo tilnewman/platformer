@@ -41,12 +41,7 @@ namespace bramblefore
         void dumpInfo() const final;
         void update(Context & t_context, const float t_frameTimeSec) final;
 
-        inline void appendVerts(
-            const Context &,
-            const sf::Vector2f &,
-            const sf::Vector2i &,
-            const sf::Vector2i &,
-            const sf::Vector2f &) final
+        inline void appendVerts(const Context &, const sf::Vector2f &, const sf::Vector2f &) final
         {}
 
         const Harm avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;

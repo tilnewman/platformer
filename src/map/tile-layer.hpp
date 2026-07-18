@@ -36,9 +36,7 @@ namespace bramblefore
         virtual void appendVerts(
             const Context & t_context,
             const sf::Vector2f & t_mapOnScreenPosOffset,
-            const sf::Vector2i & t_mapTileCount,
-            const sf::Vector2i & t_tileSize,
-            const sf::Vector2f & t_tileSizeOnScreen) = 0;
+            const sf::Vector2f & t_sizeOnScreen) = 0;
     };
 
     //
@@ -79,23 +77,9 @@ namespace bramblefore
         void appendVerts(
             const Context & t_context,
             const sf::Vector2f & t_mapOnScreenPosOffset,
-            const sf::Vector2i & t_mapTileCount,
-            const sf::Vector2i & t_tileSize,
             const sf::Vector2f & t_sizeOnScreen) override;
 
       private:
-        void appendVertsOriginal(
-            const Context & t_context,
-            const sf::Vector2f & t_mapOnScreenPosOffset,
-            const sf::Vector2i & t_mapTileCount,
-            const sf::Vector2i & t_tileSize,
-            const sf::Vector2f & t_sizeOnScreen);
-
-        void appendVertsOptimized(
-            const Context & t_context,
-            const sf::Vector2f & t_mapOnScreenPosOffset,
-            const sf::Vector2f & t_sizeOnScreen);
-
         void populateVisibleVerts(const sf::FloatRect & t_visibleRect);
 
         void setupOptimizedTileIndexes(
