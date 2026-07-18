@@ -35,8 +35,8 @@ namespace bramblefore
 
         virtual void appendVerts(
             const Context & t_context,
-            const sf::Vector2f & t_mapPositionOffset,
-            const sf::Vector2i & t_tileCount,
+            const sf::Vector2f & t_mapOnScreenPosOffset,
+            const sf::Vector2i & t_mapTileCount,
             const sf::Vector2i & t_tileSize,
             const sf::Vector2f & t_tileSizeOnScreen) = 0;
     };
@@ -60,9 +60,9 @@ namespace bramblefore
 
         void appendVerts(
             const Context & t_context,
-            const sf::Vector2f & t_mapPositionOffset,
-            const sf::Vector2i & t_count,
-            const sf::Vector2i & t_size,
+            const sf::Vector2f & t_mapOnScreenPosOffset,
+            const sf::Vector2i & t_mapTileCount,
+            const sf::Vector2i & t_tileSize,
             const sf::Vector2f & t_sizeOnScreen) override;
 
       private:
@@ -70,6 +70,7 @@ namespace bramblefore
 
       private:
         TileImage m_image;
+        sf::Vector2i m_imageTileCounts;
         std::vector<int> m_indexes;
         std::vector<sf::Vertex> m_verts;
         std::vector<sf::Vertex> m_visibleVerts;
