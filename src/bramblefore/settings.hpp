@@ -23,8 +23,11 @@ namespace bramblefore
 
         sf::VideoMode video_mode{ { 1920u, 1080u }, 32u };
 
-        float frame_rate            = 60; // change at your own risk
-        bool will_log_fps           = false;
+        // never set to zero
+        // strange physics bugs when setting to anything other than 60...TODO
+        float frame_rate = 60.0f;
+
+        bool will_log_fps           = true;
         bool will_display_fps_graph = true;
 
         float tile_scale    = 1.75f;

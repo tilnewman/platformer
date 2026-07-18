@@ -9,10 +9,10 @@
 #include "map/map-textures.hpp"
 #include "monster/monster-spell-anim.hpp"
 #include "monster/monster-textures.hpp"
-#include "util/texture-loader.hpp"
 #include "ui/gui-window.hpp"
 #include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
+#include "util/texture-loader.hpp"
 
 #include <iostream>
 
@@ -56,9 +56,12 @@ namespace bramblefore
     {
         setupRenderWindow(m_settings.video_mode);
         m_window.setMouseCursorVisible(false);
-        m_window.setFramerateLimit(0);
         m_window.setVerticalSyncEnabled(false);
         m_window.setKeyRepeatEnabled(false);
+
+        // don't let SFML sleep between frames because we do this ourselves below
+        // see settings.hpp for where the framerate is actually set
+        m_window.setFramerateLimit(0);
 
         util::SfmlDefaults::instance().setup();
 
@@ -110,13 +113,16 @@ namespace bramblefore
         m_contextUPtr.reset();
         m_playerInfoDisplayUPtr.reset();
         m_avatarUPtr.reset();
+
         MonsterSpellTextureManager::instance().teardown();
         MapTextureManager::instance().teardown();
         AvatarTextureManager::instance().teardown();
         MonsterTextureManager::instance().teardown();
         util::SfmlDefaults::instance().teardown();
+        
         m_window.close();
-        util::TextureLoader::dumpInfo();
+        
+        // util::TextureLoader::dumpInfo();
     }
 
     void Coordinator::play()
