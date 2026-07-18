@@ -24,6 +24,7 @@ namespace bramblefore
         : m_image{ t_image }
         , m_imageTileCounts{ 0, 0 }
         , m_indexes{ t_indexes }
+        , m_indexTiles{}
         , m_verts{}
         , m_visibleVerts{}
     {
@@ -45,6 +46,9 @@ namespace bramblefore
         // reserve the total possible for now
         m_verts.reserve(t_indexes.size() * util::verts_per_quad);
         m_visibleVerts.reserve(t_indexes.size() * util::verts_per_quad);
+
+        // pre-skip empty tiles in the map and pre-compute remaining tile texture rects
+        setupOptimizedTileIndexes(t_context.level.tile_count, t_context.level.tile_size);
     }
 
     TileLayer::~TileLayer() { MapTextureManager::instance().release(m_image); }
@@ -76,7 +80,7 @@ namespace bramblefore
     void TileLayer::dumpInfo() const
     {
         std::clog << "\tTilLayer Quads for " << toString(m_image)
-                  << ": possible=" << m_indexes.size()
+                  << ": possible=" << m_indexes.size() << ", optimized=" << m_indexTiles.size()
                   << ", actual=" << (m_verts.size() / util::verts_per_quad)
                   << ", visible=" << (m_visibleVerts.size() / util::verts_per_quad) << '\n';
     }
@@ -116,6 +120,16 @@ namespace bramblefore
     void TileLayer::appendVerts(
         const Context & t_context,
         const sf::Vector2f & t_mapOnScreenPosOffset,
+        const sf::Vector2i &, // t_mapTileCount
+        const sf::Vector2i &, // t_tileSize
+        const sf::Vector2f & t_tileSizeOnScreen)
+    {
+        appendVertsOptimized(t_context, t_mapOnScreenPosOffset, t_tileSizeOnScreen);
+    }
+
+    void TileLayer::appendVertsOriginal(
+        const Context & t_context,
+        const sf::Vector2f & t_mapOnScreenPosOffset,
         const sf::Vector2i & t_mapTileCount,
         const sf::Vector2i & t_tileSize,
         const sf::Vector2f & t_tileSizeOnScreen)
@@ -148,6 +162,51 @@ namespace bramblefore
         }
 
         populateVisibleVerts(t_context.layout.wholeRect());
+    }
+
+    void TileLayer::appendVertsOptimized(
+        const Context & t_context,
+        const sf::Vector2f & t_mapOnScreenPosOffset,
+        const sf::Vector2f & t_tileSizeOnScreen)
+    {
+        for (const IndexedTile & indexTile : m_indexTiles)
+        {
+            const float posX{ static_cast<float>(indexTile.position.x) * t_tileSizeOnScreen.x };
+            const float posY{ static_cast<float>(indexTile.position.y) * t_tileSizeOnScreen.y };
+            const sf::Vector2f screenPos{ sf::Vector2f(posX, posY) + t_mapOnScreenPosOffset };
+            const sf::FloatRect screenRect{ screenPos, t_tileSizeOnScreen };
+
+            util::appendTriangleVerts(screenRect, indexTile.texture_rect, m_verts);
+        }
+
+        // TODO move this check above instead of this function call
+        populateVisibleVerts(t_context.layout.wholeRect());
+    }
+
+    void TileLayer::setupOptimizedTileIndexes(
+        const sf::Vector2i & t_mapTileCount, const sf::Vector2i & t_tileSize)
+    {
+        const int tileTextureGid{ MapTextureManager::instance().get(m_image).gid };
+
+        std::size_t tileIndex{ 0 };
+        for (int y{ 0 }; y < t_mapTileCount.y; ++y)
+        {
+            for (int x{ 0 }; x < t_mapTileCount.x; ++x)
+            {
+                const int tileNumberRaw{ m_indexes[tileIndex++] };
+                if (tileNumberRaw == 0)
+                {
+                    continue; // zero means no tile image at this location
+                }
+
+                const int tileNumber{ tileNumberRaw - tileTextureGid };
+                const int texturePosX{ (tileNumber % m_imageTileCounts.x) * t_tileSize.x };
+                const int texturePosY{ (tileNumber / m_imageTileCounts.x) * t_tileSize.y };
+                const sf::IntRect textureRect{ { texturePosX, texturePosY }, t_tileSize };
+
+                m_indexTiles.emplace_back(sf::Vector2i(x, y), textureRect);
+            }
+        }
     }
 
 } // namespace bramblefore

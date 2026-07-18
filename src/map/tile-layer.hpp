@@ -43,6 +43,24 @@ namespace bramblefore
 
     //
 
+    struct IndexedTile
+    {
+        IndexedTile()
+            : position{}
+            , texture_rect{}
+        {}
+
+        IndexedTile(const sf::Vector2i & t_position, const sf::IntRect & t_textureRect)
+            : position{ t_position }
+            , texture_rect{ t_textureRect }
+        {}
+
+        sf::Vector2i position;
+        sf::IntRect texture_rect;
+    };
+
+    //
+
     class TileLayer : public ITileLayer
     {
       public:
@@ -66,12 +84,28 @@ namespace bramblefore
             const sf::Vector2f & t_sizeOnScreen) override;
 
       private:
+        void appendVertsOriginal(
+            const Context & t_context,
+            const sf::Vector2f & t_mapOnScreenPosOffset,
+            const sf::Vector2i & t_mapTileCount,
+            const sf::Vector2i & t_tileSize,
+            const sf::Vector2f & t_sizeOnScreen);
+
+        void appendVertsOptimized(
+            const Context & t_context,
+            const sf::Vector2f & t_mapOnScreenPosOffset,
+            const sf::Vector2f & t_sizeOnScreen);
+
         void populateVisibleVerts(const sf::FloatRect & t_visibleRect);
+
+        void setupOptimizedTileIndexes(
+            const sf::Vector2i & t_mapTileCount, const sf::Vector2i & t_tileSize);
 
       private:
         TileImage m_image;
         sf::Vector2i m_imageTileCounts;
         std::vector<int> m_indexes;
+        std::vector<IndexedTile> m_indexTiles;
         std::vector<sf::Vertex> m_verts;
         std::vector<sf::Vertex> m_visibleVerts;
     };
