@@ -252,15 +252,21 @@ namespace bramblefore
             }
             else if (layerName == "collision")
             {
-                parseRectLayer(t_context, jsonLayer, t_context.level.collisions());
+                std::vector<sf::FloatRect> rects;
+                parseRectLayer(t_context, jsonLayer, rects);
+                t_context.level.collisions(rects);
             }
             else if (layerName == "kill-collision")
             {
-                parseRectLayer(t_context, jsonLayer, t_context.level.killCollisions());
+                std::vector<sf::FloatRect> rects;
+                parseRectLayer(t_context, jsonLayer, rects);
+                t_context.level.killCollisions(rects);
             }
             else if (layerName == "ladder")
             {
-                parseRectLayer(t_context, jsonLayer, t_context.level.ladders());
+                std::vector<sf::FloatRect> rects;
+                parseRectLayer(t_context, jsonLayer, rects);
+                t_context.level.ladders(rects);
             }
             else if (layerName == "spawn")
             {

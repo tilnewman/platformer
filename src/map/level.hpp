@@ -42,20 +42,45 @@ namespace bramblefore
             return m_tileSizeTexture;
         }
 
-        // these functions return a ref to the actual vectors for use by the map loader
-        [[nodiscard]] inline std::vector<sf::FloatRect> & collisions() { return m_collisions; }
-        //
-        [[nodiscard]] inline std::vector<sf::FloatRect> & killCollisions()
+        [[nodiscard]] inline const std::vector<sf::FloatRect> & collisions() noexcept
+        {
+            return m_collisions;
+        }
+
+        inline void collisions(const std::vector<sf::FloatRect> & t_collisions)
+        {
+            m_collisions = t_collisions;
+        }
+
+        [[nodiscard]] inline const std::vector<sf::FloatRect> & killCollisions() noexcept
         {
             return m_killCollisions;
         }
-        //
-        [[nodiscard]] inline std::vector<sf::FloatRect> & layerCollisions()
+
+        inline void killCollisions(const std::vector<sf::FloatRect> & t_killCollisions)
+        {
+            m_killCollisions = t_killCollisions;
+        }
+
+        [[nodiscard]] inline const std::vector<sf::FloatRect> & layerCollisions() noexcept
         {
             return m_layerCollisions;
         }
-        //
-        [[nodiscard]] inline std::vector<sf::FloatRect> & ladders() { return m_ladders; }
+
+        inline void appendLayerCollision(const sf::FloatRect & t_layerCollision)
+        {
+            m_layerCollisions.push_back(t_layerCollision);
+        }
+
+        [[nodiscard]] inline const std::vector<sf::FloatRect> & ladders() noexcept
+        {
+            return m_ladders;
+        }
+
+        inline void ladders(const std::vector<sf::FloatRect> & t_ladders) noexcept
+        {
+            m_ladders = t_ladders;
+        }
 
         [[nodiscard]] inline const sf::FloatRect enterRect() const noexcept { return m_enterRect; }
         [[nodiscard]] inline const sf::FloatRect exitRect() const noexcept { return m_exitRect; }
