@@ -27,7 +27,7 @@ namespace bramblefore
         HarmCollisionManager::instance().addOwner(*this);
 
         util::TextureLoader::load(
-            m_texture, (t_context.settings.media_path / "image/anim/acid-surface.png"));
+            m_texture, (t_context.settings.media_path / "image" / "anim" / "acid-surface.png"));
 
         m_sprites.reserve(t_rects.size());
 

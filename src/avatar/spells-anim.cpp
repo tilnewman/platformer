@@ -66,13 +66,13 @@ namespace bramblefore
             SpellTextures & set{ m_textureSets.at(spellIndex) };
 
             const std::filesystem::path iconPath{
-                t_context.settings.media_path / "image/spell" /
+                t_context.settings.media_path / "image" / "spell" /
                 std::string(toFilesystemName(spell)).append("-icon.png")
             };
 
             util::TextureLoader::load(set.icon_texture, iconPath, true);
 
-            const std::filesystem::path path{ t_context.settings.media_path / "image/spell" /
+            const std::filesystem::path path{ t_context.settings.media_path / "image" / "spell" /
                                               toFilesystemName(spell) };
 
             const std::vector<std::filesystem::path> files{ util::findFilesInDirectory(

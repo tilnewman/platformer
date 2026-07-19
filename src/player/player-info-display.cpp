@@ -72,7 +72,8 @@ namespace bramblefore
         m_barFillMax = t_context.layout.calScaleBasedOnResolution(t_context, 226.0f);
 
         util::TextureLoader::load(
-            m_halfFrameTexture, (t_context.settings.media_path / "image/ui/half-frame.png"));
+            m_halfFrameTexture,
+            (t_context.settings.media_path / "image" / "ui" / "half-frame.png"));
 
         m_halfFrameSprite.setTexture(m_halfFrameTexture, true);
 
@@ -85,7 +86,8 @@ namespace bramblefore
         //
 
         util::TextureLoader::load(
-            m_fullFrameTexture, (t_context.settings.media_path / "image/ui/full-frame.png"));
+            m_fullFrameTexture,
+            (t_context.settings.media_path / "image" / "ui" / "full-frame.png"));
 
         m_fullFrameSprite.setTexture(m_fullFrameTexture, true);
         m_fullFrameSprite.scale({ frameScale, frameScale });
@@ -110,7 +112,7 @@ namespace bramblefore
         //
 
         util::TextureLoader::load(
-            m_barFrameTexture, (t_context.settings.media_path / "image/ui/bar-frame.png"));
+            m_barFrameTexture, (t_context.settings.media_path / "image" / "ui" / "bar-frame.png"));
 
         m_healthBarFrameSprite.setTexture(m_barFrameTexture, true);
         m_healthBarFrameSprite.scale({ frameScale, frameScale });
@@ -132,7 +134,8 @@ namespace bramblefore
         //
 
         util::TextureLoader::load(
-            m_barFillLeftTexture, (t_context.settings.media_path / "image/ui/bar-fill-left.png"));
+            m_barFillLeftTexture,
+            (t_context.settings.media_path / "image" / "ui" / "bar-fill-left.png"));
 
         m_healthBarLeftSprite.setTexture(m_barFillLeftTexture, true);
         m_healthBarLeftSprite.scale({ frameScale, frameScale });
@@ -149,7 +152,7 @@ namespace bramblefore
 
         util::TextureLoader::load(
             m_barFillMiddleTexture,
-            (t_context.settings.media_path / "image/ui/bar-fill-middle.png"));
+            (t_context.settings.media_path / "image" / "ui" / "bar-fill-middle.png"));
 
         m_healthBarMiddleSprite.setTexture(m_barFillMiddleTexture, true);
         m_healthBarMiddleSprite.scale({ frameScale, frameScale });
@@ -165,7 +168,8 @@ namespace bramblefore
         //
 
         util::TextureLoader::load(
-            m_barFillRightTexture, (t_context.settings.media_path / "image/ui/bar-fill-right.png"));
+            m_barFillRightTexture,
+            (t_context.settings.media_path / "image" / "ui" / "bar-fill-right.png"));
 
         m_healthBarRightSprite.setTexture(m_barFillRightTexture, true);
         m_healthBarRightSprite.scale({ frameScale, frameScale });
@@ -212,7 +216,7 @@ namespace bramblefore
                                           (starRectHeight * 0.5f) };
 
         util::TextureLoader::load(
-            m_coinTexture, (t_context.settings.media_path / "image/ui/coin.png"), true);
+            m_coinTexture, (t_context.settings.media_path / "image" / "ui" / "coin.png"), true);
 
         m_coinSprite.setTexture(m_coinTexture, true);
 
@@ -237,15 +241,18 @@ namespace bramblefore
         //
 
         util::TextureLoader::load(
-            m_starBrownTexture, (t_context.settings.media_path / "image/ui/star-brown.png"), true);
+            m_starBrownTexture,
+            (t_context.settings.media_path / "image" / "ui" / "star-brown.png"),
+            true);
 
         m_starBrown1Sprite.setTexture(m_starBrownTexture, true);
 
         const float starScale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.5f) };
         m_starBrown1Sprite.scale({ starScale, starScale });
 
-        m_starBrown1Sprite.setPosition({ (m_fullFrameSprite.getPosition().x + 10.0f),
-                                         (util::bottom(m_halfFrameSprite) + 10.0f) });
+        m_starBrown1Sprite.setPosition(
+            { (m_fullFrameSprite.getPosition().x + 10.0f),
+              (util::bottom(m_halfFrameSprite) + 10.0f) });
 
         m_starBrown2Sprite.setTexture(m_starBrownTexture, true);
         m_starBrown2Sprite.scale(m_starBrown1Sprite.getScale());
@@ -275,7 +282,7 @@ namespace bramblefore
 
         util::TextureLoader::load(
             m_starYellowTexture,
-            (t_context.settings.media_path / "image/ui/star-yellow.png"),
+            (t_context.settings.media_path / "image" / "ui" / "star-yellow.png"),
             true);
 
         m_starYellow1Sprite.setTexture(m_starYellowTexture, true);

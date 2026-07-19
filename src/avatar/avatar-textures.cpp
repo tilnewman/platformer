@@ -35,7 +35,7 @@ namespace bramblefore
         {
             const AvatarType type{ static_cast<AvatarType>(typeIndex) };
 
-            const std::filesystem::path typePath{ t_settings.media_path / "image/avatar" /
+            const std::filesystem::path typePath{ t_settings.media_path / "image" / "avatar" /
                                                   toString(type) };
 
             AvatarTextureSet & set{ m_textureSets.at(typeIndex) };
@@ -88,8 +88,8 @@ namespace bramblefore
 
         if (0 == set.ref_count)
         {
-            const std::filesystem::path typePath{ t_context.settings.media_path / "image/avatar" /
-                                                  toString(t_type) };
+            const std::filesystem::path typePath{ t_context.settings.media_path / "image" /
+                                                  "avatar" / toString(t_type) };
 
             for (std::size_t animIndex(0); animIndex < static_cast<std::size_t>(AvatarAnim::Count);
                  ++animIndex)

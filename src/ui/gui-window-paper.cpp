@@ -43,17 +43,20 @@ namespace bramblefore
     {
         // TODO um...should we always be reloading these big textures?
 
-        util::TextureLoader::load(m_paper1Texture, (t_settings.media_path / "image/ui/paper1.png"));
-        util::TextureLoader::load(m_paper2Texture, (t_settings.media_path / "image/ui/paper2.png"));
+        util::TextureLoader::load(
+            m_paper1Texture, (t_settings.media_path / "image" / "ui" / "paper1.png"));
 
         util::TextureLoader::load(
-            m_tapeLeftTexture, (t_settings.media_path / "image/ui/tape-left.png"));
+            m_paper2Texture, (t_settings.media_path / "image" / "ui" / "paper2.png"));
 
         util::TextureLoader::load(
-            m_tapeRightTexture, (t_settings.media_path / "image/ui/tape-right.png"));
+            m_tapeLeftTexture, (t_settings.media_path / "image" / "ui" / "tape-left.png"));
 
         util::TextureLoader::load(
-            m_tapeMiddleTexture, (t_settings.media_path / "image/ui/tape-middle.png"));
+            m_tapeRightTexture, (t_settings.media_path / "image" / "ui" / "tape-right.png"));
+
+        util::TextureLoader::load(
+            m_tapeMiddleTexture, (t_settings.media_path / "image" / "ui" / "tape-middle.png"));
     }
 
     void GuiWindowPaper::create(

@@ -45,95 +45,106 @@ namespace bramblefore
         }
 
         util::TextureLoader::load(
-            m_borderTopLeftTexture, (t_settings.media_path / "image/ui/border-top-left.png"));
+            m_borderTopLeftTexture,
+            (t_settings.media_path / "image" / "ui" / "border-top-left.png"));
 
         util::TextureLoader::load(
-            m_borderTopRightTexture, (t_settings.media_path / "image/ui/border-top-right.png"));
+            m_borderTopRightTexture,
+            (t_settings.media_path / "image" / "ui" / "border-top-right.png"));
 
         util::TextureLoader::load(
-            m_borderBotLeftTexture, (t_settings.media_path / "image/ui/border-bottom-left.png"));
+            m_borderBotLeftTexture,
+            (t_settings.media_path / "image" / "ui" / "border-bottom-left.png"));
 
         util::TextureLoader::load(
-            m_borderBotRightTexture, (t_settings.media_path / "image/ui/border-bottom-right.png"));
+            m_borderBotRightTexture,
+            (t_settings.media_path / "image" / "ui" / "border-bottom-right.png"));
 
         util::TextureLoader::load(
-            m_borderTopTexture, (t_settings.media_path / "image/ui/border-top.png"));
+            m_borderTopTexture, (t_settings.media_path / "image" / "ui" / "border-top.png"));
 
         util::TextureLoader::load(
-            m_borderBotTexture, (t_settings.media_path / "image/ui/border-bottom.png"));
+            m_borderBotTexture, (t_settings.media_path / "image" / "ui" / "border-bottom.png"));
 
         util::TextureLoader::load(
-            m_borderLeftTexture, (t_settings.media_path / "image/ui/border-left.png"));
+            m_borderLeftTexture, (t_settings.media_path / "image" / "ui" / "border-left.png"));
 
         util::TextureLoader::load(
-            m_borderRightTexture, (t_settings.media_path / "image/ui/border-right.png"));
+            m_borderRightTexture, (t_settings.media_path / "image" / "ui" / "border-right.png"));
 
         //
 
         util::TextureLoader::load(
             m_smallBorderTopLeftTexture,
-            (t_settings.media_path / "image/ui/small-border-top-left.png"));
+            (t_settings.media_path / "image" / "ui" / "small-border-top-left.png"));
 
         util::TextureLoader::load(
             m_smallBorderTopRightTexture,
-            (t_settings.media_path / "image/ui/small-border-top-right.png"));
+            (t_settings.media_path / "image" / "ui" / "small-border-top-right.png"));
 
         util::TextureLoader::load(
             m_smallBorderBotLeftTexture,
-            (t_settings.media_path / "image/ui/small-border-bottom-left.png"));
+            (t_settings.media_path / "image" / "ui" / "small-border-bottom-left.png"));
 
         util::TextureLoader::load(
             m_smallBorderBotRightTexture,
-            (t_settings.media_path / "image/ui/small-border-bottom-right.png"));
+            (t_settings.media_path / "image" / "ui" / "small-border-bottom-right.png"));
 
         util::TextureLoader::load(
-            m_smallBorderTopTexture, (t_settings.media_path / "image/ui/small-border-top.png"));
+            m_smallBorderTopTexture,
+            (t_settings.media_path / "image" / "ui" / "small-border-top.png"));
 
         util::TextureLoader::load(
-            m_smallBorderBotTexture, (t_settings.media_path / "image/ui/small-border-bottom.png"));
+            m_smallBorderBotTexture,
+            (t_settings.media_path / "image" / "ui" / "small-border-bottom.png"));
 
         util::TextureLoader::load(
-            m_smallBorderLeftTexture, (t_settings.media_path / "image/ui/small-border-left.png"));
+            m_smallBorderLeftTexture,
+            (t_settings.media_path / "image" / "ui" / "small-border-left.png"));
 
         util::TextureLoader::load(
-            m_smallBorderRightTexture, (t_settings.media_path / "image/ui/small-border-right.png"));
+            m_smallBorderRightTexture,
+            (t_settings.media_path / "image" / "ui" / "small-border-right.png"));
 
         //
 
         util::TextureLoader::load(
-            m_bgTopLeftTexture, (t_settings.media_path / "image/ui/menu-bg-top-left.png"));
+            m_bgTopLeftTexture, (t_settings.media_path / "image" / "ui" / "menu-bg-top-left.png"));
 
         util::TextureLoader::load(
-            m_bgTopRightTexture, (t_settings.media_path / "image/ui/menu-bg-top-right.png"));
+            m_bgTopRightTexture,
+            (t_settings.media_path / "image" / "ui" / "menu-bg-top-right.png"));
 
         util::TextureLoader::load(
-            m_bgBotLeftTexture, (t_settings.media_path / "image/ui/menu-bg-bottom-left.png"));
+            m_bgBotLeftTexture,
+            (t_settings.media_path / "image" / "ui" / "menu-bg-bottom-left.png"));
 
         util::TextureLoader::load(
-            m_bgBotRightTexture, (t_settings.media_path / "image/ui/menu-bg-bottom-right.png"));
+            m_bgBotRightTexture,
+            (t_settings.media_path / "image" / "ui" / "menu-bg-bottom-right.png"));
 
         util::TextureLoader::load(
-            m_bgTopTexture, (t_settings.media_path / "image/ui/menu-bg-top.png"));
+            m_bgTopTexture, (t_settings.media_path / "image" / "ui" / "menu-bg-top.png"));
 
         util::TextureLoader::load(
-            m_bgBotTexture, (t_settings.media_path / "image/ui/menu-bg-bottom.png"));
+            m_bgBotTexture, (t_settings.media_path / "image" / "ui" / "menu-bg-bottom.png"));
 
         util::TextureLoader::load(
-            m_bgLeftTexture, (t_settings.media_path / "image/ui/menu-bg-left.png"));
+            m_bgLeftTexture, (t_settings.media_path / "image" / "ui" / "menu-bg-left.png"));
 
         util::TextureLoader::load(
-            m_bgRightTexture, (t_settings.media_path / "image/ui/menu-bg-right.png"));
+            m_bgRightTexture, (t_settings.media_path / "image" / "ui" / "menu-bg-right.png"));
 
         //
 
         util::TextureLoader::load(
-            m_tapeLeftTexture, (t_settings.media_path / "image/ui/tape-left.png"));
+            m_tapeLeftTexture, (t_settings.media_path / "image" / "ui" / "tape-left.png"));
 
         util::TextureLoader::load(
-            m_tapeRightTexture, (t_settings.media_path / "image/ui/tape-right.png"));
+            m_tapeRightTexture, (t_settings.media_path / "image" / "ui" / "tape-right.png"));
 
         util::TextureLoader::load(
-            m_tapeMiddleTexture, (t_settings.media_path / "image/ui/tape-middle.png"));
+            m_tapeMiddleTexture, (t_settings.media_path / "image" / "ui" / "tape-middle.png"));
     }
 
     void GuiWindow::arrange(Context & t_context, const GuiWindowInfo & t_info)
@@ -195,8 +206,9 @@ namespace bramblefore
 
         sf::Sprite bgTopRightSprite{ m_bgTopRightTexture };
 
-        bgTopRightSprite.setPosition({ (util::right(bgTopLeftSprite) + betweenCornerSize.x),
-                                       bgTopLeftSprite.getPosition().y });
+        bgTopRightSprite.setPosition(
+            { (util::right(bgTopLeftSprite) + betweenCornerSize.x),
+              bgTopLeftSprite.getPosition().y });
 
         if (t_info.will_draw_background && (betweenCornerSize.y > 0.0f))
         {
@@ -221,8 +233,9 @@ namespace bramblefore
 
         sf::Sprite bgBotLeftSprite{ m_bgBotLeftTexture };
 
-        bgBotLeftSprite.setPosition({ bgTopLeftSprite.getPosition().x,
-                                      (util::bottom(bgTopLeftSprite) + betweenCornerSize.y) });
+        bgBotLeftSprite.setPosition(
+            { bgTopLeftSprite.getPosition().x,
+              (util::bottom(bgTopLeftSprite) + betweenCornerSize.y) });
 
         sf::Sprite bgBotRightSprite{ m_bgBotRightTexture };
 
@@ -260,26 +273,30 @@ namespace bramblefore
         {
             sf::Sprite & borderTopLeftSprite{ m_sprites.emplace_back(m_borderTopLeftTexture) };
 
-            borderTopLeftSprite.setPosition({ (bgTopLeftSprite.getPosition().x - 14.0f),
-                                              (bgTopLeftSprite.getPosition().y - 16.0f) });
+            borderTopLeftSprite.setPosition(
+                { (bgTopLeftSprite.getPosition().x - 14.0f),
+                  (bgTopLeftSprite.getPosition().y - 16.0f) });
 
             sf::Sprite & borderTopRightSprite{ m_sprites.emplace_back(m_borderTopRightTexture) };
 
-            borderTopRightSprite.setPosition({ (bgTopRightSprite.getPosition().x - 26.0f),
-                                               (bgTopRightSprite.getPosition().y - 16.0f) });
+            borderTopRightSprite.setPosition(
+                { (bgTopRightSprite.getPosition().x - 26.0f),
+                  (bgTopRightSprite.getPosition().y - 16.0f) });
 
             const float betweenSizeHoriz{ borderTopRightSprite.getPosition().x -
                                           util::right(borderTopLeftSprite) };
 
             sf::Sprite & borderBotLeftSprite{ m_sprites.emplace_back(m_borderBotLeftTexture) };
 
-            borderBotLeftSprite.setPosition({ (bgBotLeftSprite.getPosition().x - 14.0f),
-                                              (bgBotLeftSprite.getPosition().y - 28.0f) });
+            borderBotLeftSprite.setPosition(
+                { (bgBotLeftSprite.getPosition().x - 14.0f),
+                  (bgBotLeftSprite.getPosition().y - 28.0f) });
 
             sf::Sprite & borderBotRightSprite{ m_sprites.emplace_back(m_borderBotRightTexture) };
 
-            borderBotRightSprite.setPosition({ (bgBotRightSprite.getPosition().x - 26.0f),
-                                               (bgBotRightSprite.getPosition().y - 28.0f) });
+            borderBotRightSprite.setPosition(
+                { (bgBotRightSprite.getPosition().x - 26.0f),
+                  (bgBotRightSprite.getPosition().y - 28.0f) });
 
             const float betweenSizeVert{ borderBotLeftSprite.getPosition().y -
                                          util::bottom(borderTopLeftSprite) };
@@ -354,28 +371,32 @@ namespace bramblefore
         {
             sf::Sprite & borderTopLeftSprite{ m_sprites.emplace_back(m_smallBorderTopLeftTexture) };
 
-            borderTopLeftSprite.setPosition({ (bgTopLeftSprite.getPosition().x - 3.0f),
-                                              (bgTopLeftSprite.getPosition().y - 4.0f) });
+            borderTopLeftSprite.setPosition(
+                { (bgTopLeftSprite.getPosition().x - 3.0f),
+                  (bgTopLeftSprite.getPosition().y - 4.0f) });
 
             sf::Sprite & borderTopRightSprite{ m_sprites.emplace_back(
                 m_smallBorderTopRightTexture) };
 
-            borderTopRightSprite.setPosition({ (bgTopRightSprite.getPosition().x + 4.0f),
-                                               (bgTopRightSprite.getPosition().y - 4.0f) });
+            borderTopRightSprite.setPosition(
+                { (bgTopRightSprite.getPosition().x + 4.0f),
+                  (bgTopRightSprite.getPosition().y - 4.0f) });
 
             const float betweenSizeHoriz{ borderTopRightSprite.getPosition().x -
                                           util::right(borderTopLeftSprite) };
 
             sf::Sprite & borderBotLeftSprite{ m_sprites.emplace_back(m_smallBorderBotLeftTexture) };
 
-            borderBotLeftSprite.setPosition({ (bgBotLeftSprite.getPosition().x - 3.0f),
-                                              (bgBotLeftSprite.getPosition().y + 12.0f) });
+            borderBotLeftSprite.setPosition(
+                { (bgBotLeftSprite.getPosition().x - 3.0f),
+                  (bgBotLeftSprite.getPosition().y + 12.0f) });
 
             sf::Sprite & borderBotRightSprite{ m_sprites.emplace_back(
                 m_smallBorderBotRightTexture) };
 
-            borderBotRightSprite.setPosition({ (bgBotRightSprite.getPosition().x + 4.0f),
-                                               (bgBotRightSprite.getPosition().y + 12.0f) });
+            borderBotRightSprite.setPosition(
+                { (bgBotRightSprite.getPosition().x + 4.0f),
+                  (bgBotRightSprite.getPosition().y + 12.0f) });
 
             const float betweenSizeVert{ borderBotLeftSprite.getPosition().y -
                                          util::bottom(borderTopLeftSprite) };

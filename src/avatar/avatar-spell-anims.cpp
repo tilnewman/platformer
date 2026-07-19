@@ -66,26 +66,28 @@ namespace bramblefore
         m_scale.y = scale;
 
         loadTextures(
-            m_druidTextures.first, (t_context.settings.media_path / "image/avatar/druid/fire"));
+            m_druidTextures.first,
+            (t_context.settings.media_path / "image" / "avatar" / "druid" / "fire"));
 
         loadTextures(
             m_druidTextures.second,
-            (t_context.settings.media_path / "image/avatar/druid/fire_extra"));
+            (t_context.settings.media_path / "image" / "avatar" / "druid" / "fire_extra"));
 
         loadTextures(
             m_enchantressTextures.first,
-            (t_context.settings.media_path / "image/avatar/enchantress/fire"));
+            (t_context.settings.media_path / "image" / "avatar" / "enchantress" / "fire"));
 
         loadTextures(
             m_enchantressTextures.second,
-            (t_context.settings.media_path / "image/avatar/enchantress/fire_extra"));
+            (t_context.settings.media_path / "image" / "avatar" / "enchantress" / "fire_extra"));
 
         loadTextures(
-            m_witchTextures.first, (t_context.settings.media_path / "image/avatar/witch/fire"));
+            m_witchTextures.first,
+            (t_context.settings.media_path / "image" / "avatar" / "witch" / "fire"));
 
         loadTextures(
             m_witchTextures.second,
-            (t_context.settings.media_path / "image/avatar/witch/fire_extra"));
+            (t_context.settings.media_path / "image" / "avatar" / "witch" / "fire_extra"));
     }
 
     void AvatarSpellAnimations::add(

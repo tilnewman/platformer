@@ -146,9 +146,10 @@ namespace bramblefore
         m_titleText = t_context.font.makeText(
             Font::Title, FontSize::Huge, "Character Selection", t_context.settings.off_white_color);
 
-        m_titleText.setPosition({ (util::center(t_context.layout.wholeRect()).x -
-                                   (m_titleText.getGlobalBounds().size.x * 0.5f)),
-                                  (t_context.layout.wholeSize().y * 0.15f) });
+        m_titleText.setPosition(
+            { (util::center(t_context.layout.wholeRect()).x -
+               (m_titleText.getGlobalBounds().size.x * 0.5f)),
+              (t_context.layout.wholeSize().y * 0.15f) });
 
         //
 
@@ -167,7 +168,9 @@ namespace bramblefore
         //
 
         util::TextureLoader::load(
-            m_paperTexture, (t_context.settings.media_path / "image/ui/paper-runes.png"), true);
+            m_paperTexture,
+            (t_context.settings.media_path / "image" / "ui" / "paper-runes.png"),
+            true);
 
         m_paperSprite.setTexture(m_paperTexture, true);
 
@@ -191,33 +194,36 @@ namespace bramblefore
 
         util::TextureLoader::load(
             m_buttonNextTexture,
-            (t_context.settings.media_path / "image/ui/button-right-gold.png"));
+            (t_context.settings.media_path / "image" / "ui" / "button-right-gold.png"));
 
         util::TextureLoader::load(
             m_buttonNextTextureAlt,
-            (t_context.settings.media_path / "image/ui/button-right-orange.png"));
+            (t_context.settings.media_path / "image" / "ui" / "button-right-orange.png"));
 
         m_buttonNextSprite.setTexture(m_buttonNextTexture, true);
         m_buttonNextSprite.setScale({ nextPrevButtonScale, nextPrevButtonScale });
 
-        m_buttonNextSprite.setPosition({ (util::right(m_paperSprite) + nextPrevButtonHorizPad),
-                                         (util::center(m_paperSprite).y -
-                                          (m_buttonNextSprite.getGlobalBounds().size.y * 0.5f)) });
+        m_buttonNextSprite.setPosition(
+            { (util::right(m_paperSprite) + nextPrevButtonHorizPad),
+              (util::center(m_paperSprite).y -
+               (m_buttonNextSprite.getGlobalBounds().size.y * 0.5f)) });
 
         util::TextureLoader::load(
-            m_buttonPrevTexture, (t_context.settings.media_path / "image/ui/button-left-gold.png"));
+            m_buttonPrevTexture,
+            (t_context.settings.media_path / "image" / "ui" / "button-left-gold.png"));
 
         util::TextureLoader::load(
             m_buttonPrevTextureAlt,
-            (t_context.settings.media_path / "image/ui/button-left-orange.png"));
+            (t_context.settings.media_path / "image" / "ui" / "button-left-orange.png"));
 
         m_buttonPrevSprite.setTexture(m_buttonPrevTexture, true);
         m_buttonPrevSprite.setScale({ nextPrevButtonScale, nextPrevButtonScale });
 
-        m_buttonPrevSprite.setPosition({ (m_paperSprite.getPosition().x - nextPrevButtonHorizPad -
-                                          m_buttonPrevSprite.getGlobalBounds().size.x),
-                                         (util::center(m_paperSprite).y -
-                                          (m_buttonPrevSprite.getGlobalBounds().size.y * 0.5f)) });
+        m_buttonPrevSprite.setPosition(
+            { (m_paperSprite.getPosition().x - nextPrevButtonHorizPad -
+               m_buttonPrevSprite.getGlobalBounds().size.x),
+              (util::center(m_paperSprite).y -
+               (m_buttonPrevSprite.getGlobalBounds().size.y * 0.5f)) });
 
         //
 
@@ -252,9 +258,10 @@ namespace bramblefore
             sf::Color(0, 0, 0, 160),
             sf::Text::Bold);
 
-        m_avatarTypeText.setPosition({ (util::center(m_paperInnerRect).x -
-                                        (m_avatarTypeText.getGlobalBounds().size.x * 0.5f)),
-                                       m_paperInnerRect.position.y });
+        m_avatarTypeText.setPosition(
+            { (util::center(m_paperInnerRect).x -
+               (m_avatarTypeText.getGlobalBounds().size.x * 0.5f)),
+              m_paperInnerRect.position.y });
 
         //
 
@@ -290,10 +297,11 @@ namespace bramblefore
         m_avatarClassText = t_context.font.makeText(
             Font::Title, FontSize::Medium, classNameString, sf::Color(0, 0, 0, 200));
 
-        m_avatarClassText.setPosition({ (util::center(m_paperInnerRect).x -
-                                         (m_avatarClassText.getGlobalBounds().size.x * 0.5f)),
-                                        (util::bottom(m_descriptionTexts.back()) +
-                                         m_avatarTypeText.getGlobalBounds().size.y) });
+        m_avatarClassText.setPosition(
+            { (util::center(m_paperInnerRect).x -
+               (m_avatarClassText.getGlobalBounds().size.x * 0.5f)),
+              (util::bottom(m_descriptionTexts.back()) +
+               m_avatarTypeText.getGlobalBounds().size.y) });
 
         //
 

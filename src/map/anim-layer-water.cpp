@@ -56,7 +56,7 @@ namespace bramblefore
         {
             util::TextureLoader::load(
                 m_textures.at(index),
-                (t_context.settings.media_path / "image/anim" /
+                (t_context.settings.media_path / "image" / "anim" /
                  toFilename(static_cast<WaterType>(index))));
         }
 

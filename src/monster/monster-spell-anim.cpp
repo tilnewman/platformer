@@ -49,10 +49,8 @@ namespace bramblefore
 
         if (0 == set.ref_count)
         {
-            const std::filesystem::path imageDirPath{
-                t_context.settings.media_path /
-                std::string("image/monster-spell/").append(toString(t_spell))
-            };
+            const std::filesystem::path imageDirPath{ (
+                t_context.settings.media_path / "image" / "monster-spell" / toString(t_spell)) };
 
             const std::vector<std::filesystem::path> files{ util::findFilesInDirectory(
                 imageDirPath, ".png") };

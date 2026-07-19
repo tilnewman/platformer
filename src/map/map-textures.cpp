@@ -58,10 +58,10 @@ namespace bramblefore
 
         if (0 == tileTexture.ref_count)
         {
-            util::TextureLoader::load(
-                tileTexture.texture,
-                (t_context.settings.media_path /
-                 std::string("image/map/").append(toImageFilename(t_image))));
+            const std::filesystem::path path{ (
+                t_context.settings.media_path / "image" / "map" / toImageFilename(t_image)) };
+
+            util::TextureLoader::load(tileTexture.texture, path);
 
             tileTexture.size = sf::Vector2i{ tileTexture.texture.getSize() };
         }

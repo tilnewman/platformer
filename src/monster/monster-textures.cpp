@@ -69,8 +69,8 @@ namespace bramblefore
                 const MonsterAnim anim{ static_cast<MonsterAnim>(animIndex) };
                 sf::Texture & texture{ set.textures.at(animIndex) };
 
-                const std::filesystem::path path{ t_context.settings.media_path / "image/monster/" /
-                                                  std::string(toString(t_type)) /
+                const std::filesystem::path path{ t_context.settings.media_path / "image" /
+                                                  "monster" / std::string(toString(t_type)) /
                                                   std::string(toString(anim)).append(".png") };
 
                 util::TextureLoader::load(texture, path, true);
@@ -78,8 +78,8 @@ namespace bramblefore
 
             util::TextureLoader::load(
                 set.icon_texture,
-                (t_context.settings.media_path / "image/monster" / std::string(toString(t_type)) /
-                 "icon.png"),
+                (t_context.settings.media_path / "image" / "monster" /
+                 std::string(toString(t_type)) / "icon.png"),
                 true);
         }
 

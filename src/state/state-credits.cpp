@@ -51,8 +51,9 @@ namespace bramblefore
         // this is the vertical empty space between images and lines of text
         const float vertPad{ screenRect.size.y * 0.025f };
 
-        name.setPosition({ (util::center(screenRect).x - (name.getGlobalBounds().size.x * 0.5f)),
-                           (util::bottom(sprite) + vertPad) });
+        name.setPosition(
+            { (util::center(screenRect).x - (name.getGlobalBounds().size.x * 0.5f)),
+              (util::bottom(sprite) + vertPad) });
 
         description.setPosition(
             { (util::center(screenRect).x - (description.getGlobalBounds().size.x * 0.5f)),
@@ -134,7 +135,7 @@ namespace bramblefore
 
         m_credits.emplace_back(
             t_context,
-            (t_context.settings.media_path / "image/credits/cpp.png").string(),
+            (t_context.settings.media_path / "image" / "credits" / "cpp.png").string(),
             0.25f,
             "Ziesche Til Newman",
             "Software, C++, SFML, CMake",
@@ -142,7 +143,7 @@ namespace bramblefore
 
         m_credits.emplace_back(
             t_context,
-            (t_context.settings.media_path / "image/credits/sfml.png").string(),
+            (t_context.settings.media_path / "image" / "credits" / "sfml.png").string(),
             0.6f,
             "Simple Fast Multimedia Library",
             "Thanks to Laurent Gomila for this amazing library!",
@@ -150,7 +151,7 @@ namespace bramblefore
 
         m_credits.emplace_back(
             t_context,
-            (t_context.settings.media_path / "image/credits/freesound.png").string(),
+            (t_context.settings.media_path / "image" / "credits" / "freesound.png").string(),
             0.75f,
             "www.freesound.org Website",
             "My secret weapon in the hunt for sound effects.",
@@ -158,7 +159,7 @@ namespace bramblefore
 
         m_credits.emplace_back(
             t_context,
-            (t_context.settings.media_path / "image/credits/craftpix.png").string(),
+            (t_context.settings.media_path / "image" / "credits" / "craftpix.png").string(),
             0.9f,
             "www.craftpix.net Website",
             "www.craftpix.net/product/fantasy-platformer-game-kit-pixel-art/",
@@ -166,7 +167,7 @@ namespace bramblefore
 
         m_credits.emplace_back(
             t_context,
-            (t_context.settings.media_path / "image/credits/font.png").string(),
+            (t_context.settings.media_path / "image" / "credits" / "font.png").string(),
             0.35f,
             "Mops Antiqua Font",
             "Created by Uwe Borchert, with FontForge 2.0, SIL Open Font License v1.1",

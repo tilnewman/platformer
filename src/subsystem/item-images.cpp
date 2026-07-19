@@ -19,10 +19,12 @@ namespace bramblefore
     void ItemImages::setup(const Settings & t_settings)
     {
         util::TextureLoader::load(
-            m_iconsTexture, (t_settings.media_path / "image/item/items.png"), true);
+            m_iconsTexture, (t_settings.media_path / "image" / "item" / "items.png"), true);
 
         util::TextureLoader::load(
-            m_backgroundTexture, (t_settings.media_path / "image/item/item-background.png"), true);
+            m_backgroundTexture,
+            (t_settings.media_path / "image" / "item" / "item-background.png"),
+            true);
     }
 
 } // namespace bramblefore

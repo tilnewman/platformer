@@ -29,7 +29,9 @@ namespace bramblefore
     void LevelDeathState::onEnter(Context & t_context)
     {
         util::TextureLoader::load(
-            m_texture, (t_context.settings.media_path / "image/splash/knight-loose.png"), true);
+            m_texture,
+            (t_context.settings.media_path / "image" / "splash" / "knight-loose.png"),
+            true);
 
         m_sprite.setTexture(m_texture, true);
 
@@ -42,8 +44,9 @@ namespace bramblefore
         m_text = t_context.font.makeText(
             Font::Title, FontSize::Huge, "You Died", t_context.settings.off_white_color);
 
-        m_text.setPosition({ ((wholeRect.size.x * 0.5f) - (m_text.getGlobalBounds().size.x * 0.5f)),
-                             (util::bottom(m_sprite) + (wholeRect.size.y * 0.015f)) });
+        m_text.setPosition(
+            { ((wholeRect.size.x * 0.5f) - (m_text.getGlobalBounds().size.x * 0.5f)),
+              (util::bottom(m_sprite) + (wholeRect.size.y * 0.015f)) });
     }
 
     void LevelDeathState::update(Context & t_context, const float t_frameTimeSec)

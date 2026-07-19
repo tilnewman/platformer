@@ -78,10 +78,11 @@ namespace bramblefore
 
         util::TextureLoader::load(
             m_sparkTexture,
-            (t_context.settings.media_path / "image/particle/spark/spark-small.png"));
+            (t_context.settings.media_path / "image" / "particle" / "spark" / "spark-small.png"));
 
         util::TextureLoader::load(
-            m_lightningTexture, (t_context.settings.media_path / "image/anim/lightning.png"));
+            m_lightningTexture,
+            (t_context.settings.media_path / "image" / "anim" / "lightning.png"));
 
         m_anims.reserve(t_rects.size());
         for (const sf::FloatRect & rect : t_rects)
