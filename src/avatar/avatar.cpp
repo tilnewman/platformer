@@ -42,7 +42,11 @@ namespace bramblefore
         , m_spellAnim{}
         , m_movement{}
         , m_runParticleEffect{}
-    {}
+        , collisionRectCache{}
+    {
+        // just a guess
+        collisionRectCache.reserve(1024);
+    }
 
     Avatar::~Avatar() { AvatarTextureManager::instance().release(m_type); }
 
@@ -73,13 +77,13 @@ namespace bramblefore
 
         m_spellAnim.update(t_frameTimeSec);
 
-        // this handleDeath() call must happen first
+        // this handleDeath() call must happen before all other handle functions
         if (handleDeath(t_context, t_frameTimeSec))
         {
             return;
         }
 
-        // handleAttacking() should be called BEFORE these
+        // this order is critical
         handleAttackState(t_context);
         handleAttackingEnemies(t_context);
         sideToSideMotion(t_context, t_frameTimeSec);
@@ -102,7 +106,7 @@ namespace bramblefore
 
         t_context.pickup.processCollisionWithAvatar(t_context, collisionRect());
 
-        // these two must happen last
+        // these two must happen after all the handle functions above
         killIfOutOfBounds(t_context);
         animate(t_context, t_frameTimeSec);
 
@@ -127,20 +131,21 @@ namespace bramblefore
         m_sprite.move({ 0.0f, (-110.0f * m_sprite.getScale().y) });
     }
 
-    sf::FloatRect Avatar::collisionRect() const
+    const sf::FloatRect Avatar::collisionRect() const
     {
         const sf::FloatRect bounds{ m_sprite.getGlobalBounds() };
         sf::FloatRect rect{ bounds };
         util::scaleRectInPlace(rect, m_avatarSizeRatio);
         rect.position.y += (bounds.size.x * 0.175f);
 
+        const float facingDirectionOffsetRatio{ 0.15f };
         if (m_isFacingRight)
         {
-            rect.position.x -= (bounds.size.x * 0.15f);
+            rect.position.x -= (bounds.size.x * facingDirectionOffsetRatio);
         }
         else
         {
-            rect.position.x += (bounds.size.x * 0.15f);
+            rect.position.x += (bounds.size.x * facingDirectionOffsetRatio);
         }
 
         return rect;
@@ -154,7 +159,7 @@ namespace bramblefore
         m_movement = calculateMovementDetails(t_context);
     }
 
-    sf::FloatRect Avatar::attackRect() const
+    const sf::FloatRect Avatar::attackRect() const
     {
         if ((AvatarState::Attack != m_state) && (AvatarState::AttackExtra != m_state))
         {
@@ -167,6 +172,7 @@ namespace bramblefore
         rect.size.y += 4.0f;
         rect.position.y -= 2.0f;
 
+        // these avatars have long swords that reach farther
         if ((AvatarType::BlueKnight == m_type) || (AvatarType::RedKnight == m_type) ||
             (AvatarType::Viking == m_type))
         {
@@ -296,13 +302,14 @@ namespace bramblefore
                         const sf::FloatRect collRect{ collisionRect() };
                         sf::Vector2f pos{ util::center(collRect) };
 
+                        const float facingDirectionOffsetRatio{ 1.5f };
                         if (m_isFacingRight)
                         {
-                            pos.x += (collRect.size.x * 1.5f);
+                            pos.x += (collRect.size.x * facingDirectionOffsetRatio);
                         }
                         else
                         {
-                            pos.x -= (collRect.size.x * 1.5f);
+                            pos.x -= (collRect.size.x * facingDirectionOffsetRatio);
                         }
 
                         return pos;
@@ -370,15 +377,15 @@ namespace bramblefore
 
     void Avatar::moveMap(Context & t_context)
     {
-        const float posXAfter    = util::center(m_sprite.getGlobalBounds()).x;
-        const float screenMiddle = (t_context.layout.wholeRect().size.x * 0.5f);
+        const float posXAfter{ util::center(m_sprite.getGlobalBounds()).x };
+        const float screenMiddle{ t_context.layout.wholeRect().size.x * 0.5f };
 
         if ((m_velocity.x < 0.0f) || (posXAfter < screenMiddle))
         {
             return;
         }
 
-        const float moveX = (screenMiddle - posXAfter);
+        const float moveX{ screenMiddle - posXAfter };
         if (t_context.level.move(t_context, moveX))
         {
             m_sprite.move({ moveX, 0.0f });
@@ -409,26 +416,39 @@ namespace bramblefore
 
     void Avatar::collisions(Context & t_context)
     {
-        const float tolerance = 25.0f; // this magic number brought to you by zTn 2021-8-2
+        const float tolerance{ t_context.settings.avatar_collision_tolerance };
 
-        const sf::FloatRect avatarRect  = collisionRect();
-        const sf::Vector2f avatarCenter = util::center(avatarRect);
+        const sf::FloatRect avatarRect{ collisionRect() };
+        const sf::Vector2f avatarCenter{ util::center(avatarRect) };
 
         const float footRectHeightAdj{ avatarRect.size.y * 0.8f };
         sf::FloatRect footRect = avatarRect;
         footRect.position.y += footRectHeightAdj;
         footRect.size.y -= footRectHeightAdj;
 
-        std::vector<sf::FloatRect> rects{ t_context.level.collisions() };
-        t_context.level.monsters().appendCollisionRects(rects);
+        // setup a vector of all types of collision rects that are colliding
+        collisionRectCache.clear();
+        for (const sf::FloatRect & rect : t_context.level.collisions())
+        {
+            if (avatarRect.findIntersection(rect))
+            {
+                collisionRectCache.push_back(rect);
+            }
+        }
+
+        t_context.level.monsters().appendCollisionRects(collisionRectCache);
 
         for (const sf::FloatRect & rect : t_context.level.layerCollisions())
         {
-            rects.push_back(rect);
+            if (avatarRect.findIntersection(rect))
+            {
+                collisionRectCache.push_back(rect);
+            }
         }
 
+        // iterate over all of those collision rects and push the avatar around
         bool hasHitSomething{ false };
-        for (const sf::FloatRect & collRect : rects)
+        for (const sf::FloatRect & collRect : collisionRectCache)
         {
             const auto intersectOpt{ avatarRect.findIntersection(collRect) };
             if (!intersectOpt)
@@ -556,9 +576,8 @@ namespace bramblefore
         if ((AvatarState::Jump == m_state) || (AvatarState::JumpHigh == m_state))
         {
             // Allow moving side-to-side at a reduced rate while in the air.
-            // It sounds wrong but feels so right.
-            // What the hell, mario did it.
-            const float jumpMoveDivisor = 3.0f;
+            // It sounds wrong but feels so right. What the hell, mario did it.
+            const float jumpMoveDivisor{ t_context.settings.avatar_jump_horiz_move_divisor };
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Right))
             {
@@ -880,7 +899,7 @@ namespace bramblefore
         m_anim  = AvatarAnim::Hurt;
         restartAnim();
 
-        const sf::Vector2f recoilSpeed{ 2.25f, 3.5f };
+        const sf::Vector2f recoilSpeed{ t_context.settings.avatar_hurt_recoil_speed };
         m_velocity.y = -recoilSpeed.y;
 
         const float collisionRectCenterHoriz{ util::center(t_harm.rect).x };

@@ -90,8 +90,8 @@ namespace bramblefore
         void update(Context & t_context, const float t_frameTimeSec);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states);
         void setPosition(const sf::FloatRect & t_rect);
-        [[nodiscard]] sf::FloatRect collisionRect() const;
-        [[nodiscard]] sf::FloatRect attackRect() const;
+        [[nodiscard]] const sf::FloatRect collisionRect() const;
+        [[nodiscard]] const sf::FloatRect attackRect() const;
         void triggerDeath(Context & t_context);
         void triggerIdle();
 
@@ -137,6 +137,7 @@ namespace bramblefore
         AvatarSpellAnimations m_spellAnim;
         MovementDetails m_movement;
         RunParticleEffect m_runParticleEffect;
+        std::vector<sf::FloatRect> collisionRectCache;
     };
 
 } // namespace bramblefore

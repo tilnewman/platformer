@@ -27,7 +27,7 @@ namespace bramblefore
         // strange physics bugs occur when setting to anything other than 60...TODO?
         float frame_rate = 60.0f;
 
-        bool will_log_fps           = false;
+        bool will_log_fps           = true;
         bool will_display_fps_graph = true;
 
         // These are related, so if you half or double one of these then you should also do that to
@@ -45,6 +45,15 @@ namespace bramblefore
         float jump_acc         = 600.0f;
         float high_jump_acc    = 750.0f;
         float ladder_speed     = 60.0f;
+
+        // this magic number brought to you by zTn 2021-8-2
+        float avatar_collision_tolerance = 25.0f;
+
+        // Allow moving side-to-side at a reduced speed while in the air.
+        // It sounds wrong but feels so right. What the hell, mario did it.
+        float avatar_jump_horiz_move_divisor = 3.0f;
+
+        sf::Vector2f avatar_hurt_recoil_speed{ 2.25f, 3.5f };
 
         sf::Color off_white_color{ 220, 220, 220 };
     };
