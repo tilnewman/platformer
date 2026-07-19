@@ -39,7 +39,6 @@ namespace bramblefore
         , m_avatarSizeRatio{ 0.25f, 0.35f }
         , m_isAnimating{ false }
         , m_hasHitEnemy{ false }
-        , m_spellAnim{}
         , m_movement{}
         , m_runParticleEffect{}
         , collisionRectCache{}
@@ -53,7 +52,6 @@ namespace bramblefore
     void Avatar::setup(const Context & t_context)
     {
         m_runParticleEffect.setup(t_context);
-        m_spellAnim.setup(t_context);
 
         m_type  = t_context.player.avatarType();
         m_anim  = AvatarAnim::Walk;
@@ -74,8 +72,6 @@ namespace bramblefore
     void Avatar::update(Context & t_context, const float t_frameTimeSec)
     {
         m_runParticleEffect.update(t_context, t_frameTimeSec);
-
-        m_spellAnim.update(t_frameTimeSec);
 
         // this handleDeath() call must happen before all other handle functions
         if (handleDeath(t_context, t_frameTimeSec))
@@ -122,7 +118,6 @@ namespace bramblefore
         m_runParticleEffect.draw(t_target, t_states);
         t_target.draw(m_sprite, t_states);
         // util::drawRectangleShape(t_target, collisionRect(), false, sf::Color::Red);
-        m_spellAnim.draw(t_target, t_states);
     }
 
     void Avatar::setPosition(const sf::FloatRect & t_rect)

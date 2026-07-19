@@ -3,7 +3,6 @@
 //
 // avatar.hpp
 //
-#include "avatar/avatar-spell-anims.hpp"
 #include "avatar/avatar-textures.hpp"
 #include "player/player-info.hpp"
 #include "subsystem/harm.hpp"
@@ -134,7 +133,6 @@ namespace bramblefore
         sf::Vector2f m_avatarSizeRatio;
         bool m_isAnimating;
         bool m_hasHitEnemy;
-        AvatarSpellAnimations m_spellAnim;
         MovementDetails m_movement;
         RunParticleEffect m_runParticleEffect;
         std::vector<sf::FloatRect> collisionRectCache;
