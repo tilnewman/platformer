@@ -70,7 +70,7 @@ namespace bramblefore
         for (std::size_t index{ 0 }; index < static_cast<std::size_t>(WaterRock::Count); ++index)
         {
             std::string pathStr{
-                (t_context.settings.media_path / "image/anim/water-rock-").string()
+                (t_context.settings.media_path / "image" / "anim" / "water-rock-").string()
             };
 
             pathStr += toString(static_cast<WaterRock>(index));
