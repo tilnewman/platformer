@@ -320,17 +320,11 @@ namespace bramblefore
     {
         if (Spell::Light == t_spell)
         {
-            return 0.25f;
-        }
-        else if (
-            (Spell::KillAll == t_spell) || (Spell::SunStrike == t_spell) ||
-            (Spell::Water == t_spell))
-        {
-            return 0.175f;
+            return 0.15f;
         }
         else
         {
-            return 0.125f;
+            return 0.1f;
         }
     }
 

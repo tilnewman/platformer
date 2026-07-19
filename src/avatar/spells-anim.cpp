@@ -146,7 +146,7 @@ namespace bramblefore
     {
         for (const SpellAnim & anim : m_anims)
         {
-            // can't imagine a situation where these would be offscreen so don't check
+            // can't imagine a situation where these would be completely offscreen so don't check
             t_target.draw(anim.sprite, t_states);
         }
     }
