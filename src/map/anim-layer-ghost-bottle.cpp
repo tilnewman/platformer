@@ -45,9 +45,10 @@ namespace bramblefore
         HarmCollisionManager::instance().addOwner(*this);
 
         util::TextureLoader::load(
-            m_texture, (t_context.settings.media_path / "image/anim/ghost-bottle.png"));
+            m_texture, (t_context.settings.media_path / "image" / "anim" / "ghost-bottle.png"));
 
-        const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 2.0f) };
+        const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.0f) *
+                           t_context.settings.map_scale };
 
         m_anims.reserve(t_rects.size());
         for (const sf::FloatRect & rect : t_rects)

@@ -104,7 +104,7 @@ namespace bramblefore
         const sf::Vector2i tileSize{ t_json["tilewidth"], t_json["tileheight"] };
 
         const float scale{ t_context.layout.calScaleBasedOnResolution(
-            t_context, t_context.settings.tile_scale) };
+            t_context, t_context.settings.map_scale) };
 
         const sf::Vector2f tileScreenSize{ sf::Vector2f{ tileSize } * scale };
 
@@ -420,7 +420,7 @@ namespace bramblefore
         mapRect.size.y     = t_json["height"];
 
         const float scale{ t_context.layout.calScaleBasedOnResolution(
-            t_context, t_context.settings.tile_scale) };
+            t_context, t_context.settings.map_scale) };
 
         // convert from map to screen coordinates
         sf::FloatRect screenRect{ mapRect };

@@ -68,7 +68,7 @@ namespace bramblefore
         for (std::size_t index{ 0 }; index < smokeTextureCount; ++index)
         {
             std::string pathStr{
-                (t_context.settings.media_path / "image/particle/smoke/smoke").string()
+                (t_context.settings.media_path / "image" / "particle" / "smoke" / "smoke").string()
             };
 
             pathStr += std::to_string(index);
@@ -82,19 +82,19 @@ namespace bramblefore
 
         util::TextureLoader::load(
             m_fireTextures.at(0),
-            (t_context.settings.media_path / "image/anim/firewall-1-center.png"));
+            (t_context.settings.media_path / "image" / "anim" / "firewall-1-center.png"));
 
         util::TextureLoader::load(
             m_fireTextures.at(1),
-            (t_context.settings.media_path / "image/anim/firewall-2-center.png"));
+            (t_context.settings.media_path / "image" / "anim" / "firewall-2-center.png"));
 
         util::TextureLoader::load(
             m_fireTextures.at(2),
-            (t_context.settings.media_path / "image/anim/firewall-3-center.png"));
+            (t_context.settings.media_path / "image" / "anim" / "firewall-3-center.png"));
 
         util::TextureLoader::load(
             m_fireTextures.at(3),
-            (t_context.settings.media_path / "image/anim/firewall-4-center.png"));
+            (t_context.settings.media_path / "image" / "anim" / "firewall-4-center.png"));
 
         // setup firewall animated sprites
         m_fireSprites.reserve(t_rects.size());

@@ -24,13 +24,15 @@ namespace bramblefore
         sf::VideoMode video_mode{ { 1920u, 1080u }, 32u };
 
         // never set to zero
-        // strange physics bugs when setting to anything other than 60...TODO
+        // strange physics bugs occur when setting to anything other than 60...TODO?
         float frame_rate = 60.0f;
 
         bool will_log_fps           = false;
         bool will_display_fps_graph = true;
 
-        float tile_scale    = 1.75f;
+        // These are related, so if you half or double one of these then you should also do that to
+        // the others, except for very minor tweaks.
+        float map_scale     = 1.75f;
         float spell_scale   = 1.0f;
         float avatar_scale  = 1.5f;
         float monster_scale = 1.5f;

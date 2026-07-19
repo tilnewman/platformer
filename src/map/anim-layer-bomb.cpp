@@ -44,15 +44,14 @@ namespace bramblefore
         HarmCollisionManager::instance().addOwner(*this);
 
         util::TextureLoader::load(
-            m_texture, (t_context.settings.media_path / "image/anim/bomb.png"));
+            m_texture, (t_context.settings.media_path / "image" / "anim" / "bomb.png"));
 
         for (const sf::FloatRect & rect : t_rects)
         {
-            m_anims.emplace_back(
-                m_texture,
-                textureRect(0),
-                rect,
-                t_context.layout.calScaleBasedOnResolution(t_context, 1.0f));
+            const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 0.75f) *
+                               t_context.settings.map_scale };
+
+            m_anims.emplace_back(m_texture, textureRect(0), rect, scale);
         }
     }
 

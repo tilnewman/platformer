@@ -31,7 +31,9 @@ namespace bramblefore
     void SplashState::onEnter(Context & t_context)
     {
         util::TextureLoader::load(
-            m_texture, (t_context.settings.media_path / "image/splash/characters.png"), true);
+            m_texture,
+            (t_context.settings.media_path / "image" / "splash" / "characters.png"),
+            true);
 
         m_sprite.setTexture(m_texture, true);
 
@@ -44,8 +46,8 @@ namespace bramblefore
             { m_sprite.getPosition().x, (t_context.layout.wholeRect().size.y * 0.15f) });
 
         m_sprite.setColor(sf::Color::Transparent);
-        //
 
+        //
         m_text = t_context.font.makeText(
             Font::Title, FontSize::Huge, "Bramblefore", t_context.settings.off_white_color);
 

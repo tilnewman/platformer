@@ -31,7 +31,8 @@ namespace bramblefore
         , elapsed_time_sec{ 0.0f }
         , time_per_frame_sec{ 0.0f }
     {
-        const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 2.4f) };
+        const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.2f) *
+                           t_context.settings.map_scale };
         sprite.setScale({ scale, scale });
 
         if (isVine(which))
@@ -72,7 +73,9 @@ namespace bramblefore
             sf::Texture & texture{ m_textures.emplace_back() };
 
             util::TextureLoader::load(
-                texture, (t_context.settings.media_path / "image/anim" / toFilename(accent)), true);
+                texture,
+                (t_context.settings.media_path / "image" / "anim" / toFilename(accent)),
+                true);
         }
     }
 

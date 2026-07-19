@@ -62,8 +62,9 @@ namespace bramblefore
 
         sprite.scale({ t_scale, t_scale });
 
-        sprite.setPosition({ (util::center(t_rect).x - (sprite.getGlobalBounds().size.x * 0.5f)),
-                             (t_rect.position.y - (sprite.getGlobalBounds().size.y * 0.25f)) });
+        sprite.setPosition(
+            { (util::center(t_rect).x - (sprite.getGlobalBounds().size.x * 0.5f)),
+              (t_rect.position.y - (sprite.getGlobalBounds().size.y * 0.25f)) });
 
         if (rock == Rock::Rock1)
         {
@@ -100,29 +101,32 @@ namespace bramblefore
         //
 
         util::TextureLoader::load(
-            m_texture1, (t_context.settings.media_path / "image/anim/rock-spike-1.png"));
+            m_texture1, (t_context.settings.media_path / "image" / "anim" / "rock-spike-1.png"));
 
         util::TextureLoader::load(
-            m_texture2, (t_context.settings.media_path / "image/anim/rock-spike-2.png"));
+            m_texture2, (t_context.settings.media_path / "image" / "anim" / "rock-spike-2.png"));
 
         util::TextureLoader::load(
-            m_texture3, (t_context.settings.media_path / "image/anim/rock-spike-3.png"));
+            m_texture3, (t_context.settings.media_path / "image" / "anim" / "rock-spike-3.png"));
 
         util::TextureLoader::load(
-            m_texture4, (t_context.settings.media_path / "image/anim/rock-spike-4.png"));
+            m_texture4, (t_context.settings.media_path / "image" / "anim" / "rock-spike-4.png"));
 
         //
 
         m_hangingAnims.reserve(t_rectRocks.size());
         for (const RectRock & rectRock : t_rectRocks)
         {
+            const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 0.75f) *
+                               t_context.settings.map_scale };
+
             m_hangingAnims.emplace_back(
                 t_context,
                 texture(rectRock.rock),
                 textureRect(texture(rectRock.rock), 0),
                 rectRock.rock,
                 rectRock.rect,
-                t_context.layout.calScaleBasedOnResolution(t_context, 1.5f));
+                scale);
         }
     }
 

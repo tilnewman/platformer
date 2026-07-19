@@ -42,7 +42,7 @@ namespace bramblefore
         coll_rect = util::scaleRectInPlaceCopy(sprite.getGlobalBounds(), { 0.7f, 0.2f });
 
         // make the spring rect bigger so players can walk to and trigger it without harm
-        spring_rect = util::scaleRectInPlaceCopy(sprite.getGlobalBounds(), { 1.0f, 0.5f });
+        spring_rect = util::scaleRectInPlaceCopy(sprite.getGlobalBounds(), { 1.15f, 0.5f });
     }
 
     //
@@ -60,11 +60,10 @@ namespace bramblefore
         m_anims.reserve(t_rects.size());
         for (const sf::FloatRect & rect : t_rects)
         {
-            m_anims.emplace_back(
-                m_texture,
-                textureRect(0),
-                t_context.layout.calScaleBasedOnResolution(t_context, 1.5f),
-                rect);
+            const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 0.75f) *
+                               t_context.settings.map_scale };
+
+            m_anims.emplace_back(m_texture, textureRect(0), scale, rect);
         }
     }
 

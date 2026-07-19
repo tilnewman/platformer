@@ -54,11 +54,11 @@ namespace bramblefore
     void ChestAnimationLayer::add(
         const Context & t_context, const Chest t_chest, const sf::FloatRect & t_rect)
     {
+        const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.6f) *
+                           t_context.settings.map_scale };
+
         m_animations.emplace_back(
-            m_textureSets.at(static_cast<std::size_t>(t_chest)).closed,
-            t_chest,
-            t_context.layout.calScaleBasedOnResolution(t_context, 2.5f),
-            t_rect);
+            m_textureSets.at(static_cast<std::size_t>(t_chest)).closed, t_chest, scale, t_rect);
     }
 
     void ChestAnimationLayer::draw(
@@ -129,17 +129,15 @@ namespace bramblefore
         {
             ChestTextures & textures{ m_textureSets.emplace_back() };
 
-            util::TextureLoader::load(
-                textures.open,
-                (t_context.settings.media_path / std::string("image/anim/chest")
-                                                     .append(std::to_string(chestIndex))
-                                                     .append("-open.png")));
+            const std::filesystem::path path{ t_context.settings.media_path / "image" / "anim" /
+                                              "chest" };
 
             util::TextureLoader::load(
-                textures.closed,
-                (t_context.settings.media_path / std::string("image/anim/chest")
-                                                     .append(std::to_string(chestIndex))
-                                                     .append(".png")));
+                textures.open,
+                (path.string().append(std::to_string(chestIndex)).append("-open.png")));
+
+            util::TextureLoader::load(
+                textures.closed, (path.string().append(std::to_string(chestIndex)).append(".png")));
         }
     }
 

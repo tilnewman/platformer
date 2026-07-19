@@ -28,7 +28,9 @@ namespace bramblefore
         , frame_index{ 0 }
         , sprite{ t_texture, t_textureRect }
     {
-        const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.0f) };
+        const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 0.5f) *
+                           t_context.settings.map_scale };
+
         sprite.scale({ scale, scale });
 
         sprite.setPosition(
@@ -49,8 +51,9 @@ namespace bramblefore
     {
         sprite.setScale(t_scale);
 
-        sprite.setPosition({ (util::center(region).x - (sprite.getGlobalBounds().size.x * 0.5f)),
-                             region.position.y });
+        sprite.setPosition(
+            { (util::center(region).x - (sprite.getGlobalBounds().size.x * 0.5f)),
+              region.position.y });
     }
 
     //
@@ -80,7 +83,7 @@ namespace bramblefore
 
     AcidSpoutAnimationLayer::AcidSpoutAnimationLayer(
         const Context & t_context, const std::vector<sf::FloatRect> & t_rects)
-        : m_scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.5f) }
+        : m_scale{ t_context.layout.calScaleBasedOnResolution(t_context, 0.75f) * t_context.settings.map_scale }
         , m_spoutTexture{}
         , m_dropTexture{}
         , m_splashTexture{}
@@ -93,13 +96,15 @@ namespace bramblefore
         //
 
         util::TextureLoader::load(
-            m_spoutTexture, (t_context.settings.media_path / "image/anim/acid-spout.png"));
+            m_spoutTexture, (t_context.settings.media_path / "image" / "anim" / "acid-spout.png"));
 
         util::TextureLoader::load(
-            m_dropTexture, (t_context.settings.media_path / "image/anim/acid-spout-drop.png"));
+            m_dropTexture,
+            (t_context.settings.media_path / "image" / "anim" / "acid-spout-drop.png"));
 
         util::TextureLoader::load(
-            m_splashTexture, (t_context.settings.media_path / "image/anim/acid-spout-splash.png"));
+            m_splashTexture,
+            (t_context.settings.media_path / "image" / "anim" / "acid-spout-splash.png"));
 
         //
 

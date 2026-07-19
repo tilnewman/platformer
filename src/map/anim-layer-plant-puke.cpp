@@ -64,11 +64,10 @@ namespace bramblefore
         m_anims.reserve(t_rects.size());
         for (const sf::FloatRect & rect : t_rects)
         {
-            m_anims.emplace_back(
-                m_texture,
-                textureRect(0),
-                t_context.layout.calScaleBasedOnResolution(t_context, 1.5f),
-                rect);
+            const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 0.75f) *
+                               t_context.settings.map_scale };
+
+            m_anims.emplace_back(m_texture, textureRect(0), scale, rect);
         }
     }
 

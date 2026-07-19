@@ -24,12 +24,10 @@ namespace bramblefore
         HarmCollisionManager::instance().addOwner(*this);
 
         //
-
         util::TextureLoader::load(
-            m_texture, (t_context.settings.media_path / "image/anim/saw.png"));
+            m_texture, (t_context.settings.media_path / "image" / "anim" / "saw.png"));
 
         //
-
         m_anims.reserve(t_rects.size());
         for (const sf::FloatRect & rect : t_rects)
         {
@@ -37,7 +35,9 @@ namespace bramblefore
             util::setOriginToCenter(sprite);
             sprite.setPosition(util::center(rect));
 
-            const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 0.5f) };
+            const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 0.25f) *
+                               t_context.settings.map_scale };
+
             sprite.scale({ scale, scale });
         }
     }

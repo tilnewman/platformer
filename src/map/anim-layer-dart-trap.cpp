@@ -97,20 +97,24 @@ namespace bramblefore
         HarmCollisionManager::instance().addOwner(*this);
 
         util::TextureLoader::load(
-            m_shooterTexture, (t_context.settings.media_path / "image/anim/dart-shooter.png"));
+            m_shooterTexture,
+            (t_context.settings.media_path / "image" / "anim" / "dart-shooter.png"));
 
         util::TextureLoader::load(
-            m_dartTexture, (t_context.settings.media_path / "image/anim/dart.png"));
+            m_dartTexture, (t_context.settings.media_path / "image" / "anim" / "dart.png"));
 
         m_shooters.reserve(t_rectDirs.size());
         for (const DartRectDir & rectDir : t_rectDirs)
         {
+            const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 0.85f) *
+                               t_context.settings.map_scale };
+
             m_shooters.emplace_back(
                 rectDir.is_left,
                 m_shooterTexture,
                 rectDir.rect,
                 t_context.random.fromTo(3.5f, 6.5f),
-                t_context.layout.calScaleBasedOnResolution(t_context, 1.5f));
+                scale);
         }
     }
 
@@ -167,11 +171,14 @@ namespace bramblefore
             {
                 shooter.elapsed_time_sec -= shooter.time_between_shots_sec;
 
+                const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 0.65f) *
+                                   t_context.settings.map_scale };
+
                 m_darts.emplace_back(
                     shooter.is_left,
                     m_dartTexture,
                     shooter.region,
-                    t_context.layout.calScaleBasedOnResolution(t_context, 1.1f),
+                    scale,
                     shooter.sprite.getGlobalBounds());
 
                 if (wholeScreenRect.findIntersection(shooter.sprite.getGlobalBounds()))

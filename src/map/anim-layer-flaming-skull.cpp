@@ -94,26 +94,28 @@ namespace bramblefore
 
         util::TextureLoader::load(
             m_skullBlockTexture,
-            (t_context.settings.media_path / "image/anim/skull-flames-block.png"));
+            (t_context.settings.media_path / "image" / "anim" / "skull-flames-block.png"));
 
         util::TextureLoader::load(
-            m_flamesUpTexture, (t_context.settings.media_path / "image/anim/skull-flames-up.png"));
+            m_flamesUpTexture,
+            (t_context.settings.media_path / "image" / "anim" / "skull-flames-up.png"));
 
         util::TextureLoader::load(
             m_flamesDownTexture,
-            (t_context.settings.media_path / "image/anim/skull-flames-down.png"));
+            (t_context.settings.media_path / "image" / "anim" / "skull-flames-down.png"));
 
         util::TextureLoader::load(
             m_flamesLeftTexture,
-            (t_context.settings.media_path / "image/anim/skull-flames-left.png"));
+            (t_context.settings.media_path / "image" / "anim" / "skull-flames-left.png"));
 
         util::TextureLoader::load(
             m_flamesRightTexture,
-            (t_context.settings.media_path / "image/anim/skull-flames-right.png"));
+            (t_context.settings.media_path / "image" / "anim" / "skull-flames-right.png"));
 
         //
 
-        const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.8f) };
+        const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 0.9f) *
+                           t_context.settings.map_scale };
 
         const float spawnSecMin{ 1.5f };
         const float spawnSecMax{ 4.0f };

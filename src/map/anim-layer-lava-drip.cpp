@@ -99,15 +99,17 @@ namespace bramblefore
     {
         sprite.scale({ t_scale, t_scale });
 
-        sprite.setPosition({ (util::center(region).x - (sprite.getGlobalBounds().size.x * 0.5f)),
-                             region.position.y });
+        sprite.setPosition(
+            { (util::center(region).x - (sprite.getGlobalBounds().size.x * 0.5f)),
+              region.position.y });
     }
 
     //
 
     LavaDripAnimationLayer::LavaDripAnimationLayer(
         const Context & t_context, const std::vector<LavaRectSize> & t_rectSizes)
-        : m_scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.5f) }
+        : m_scale{ t_context.layout.calScaleBasedOnResolution(t_context, 0.75f) *
+                   t_context.settings.map_scale }
         , m_dripperTexture1{}
         , m_dripperTexture2{}
         , m_dripperTexture3{}
@@ -126,35 +128,41 @@ namespace bramblefore
         //
 
         util::TextureLoader::load(
-            m_dripperTexture1, (t_context.settings.media_path / "image/anim/lava-spill1.png"));
+            m_dripperTexture1,
+            (t_context.settings.media_path / "image" / "anim" / "lava-spill1.png"));
 
         util::TextureLoader::load(
-            m_dripperTexture2, (t_context.settings.media_path / "image/anim/lava-spill2.png"));
+            m_dripperTexture2,
+            (t_context.settings.media_path / "image" / "anim" / "lava-spill2.png"));
 
         util::TextureLoader::load(
-            m_dripperTexture3, (t_context.settings.media_path / "image/anim/lava-spill3.png"));
+            m_dripperTexture3,
+            (t_context.settings.media_path / "image" / "anim" / "lava-spill3.png"));
 
         //
 
         util::TextureLoader::load(
-            m_dripTexture1, (t_context.settings.media_path / "image/anim/lava-drop1.png"));
+            m_dripTexture1, (t_context.settings.media_path / "image" / "anim" / "lava-drop1.png"));
 
         util::TextureLoader::load(
-            m_dripTexture2, (t_context.settings.media_path / "image/anim/lava-drop2.png"));
+            m_dripTexture2, (t_context.settings.media_path / "image" / "anim" / "lava-drop2.png"));
 
         util::TextureLoader::load(
-            m_dripTexture3, (t_context.settings.media_path / "image/anim/lava-drop3.png"));
+            m_dripTexture3, (t_context.settings.media_path / "image" / "anim" / "lava-drop3.png"));
 
         //
 
         util::TextureLoader::load(
-            m_splatTexture1, (t_context.settings.media_path / "image/anim/lava-splat1.png"));
+            m_splatTexture1,
+            (t_context.settings.media_path / "image" / "anim" / "lava-splat1.png"));
 
         util::TextureLoader::load(
-            m_splatTexture2, (t_context.settings.media_path / "image/anim/lava-splat2.png"));
+            m_splatTexture2,
+            (t_context.settings.media_path / "image" / "anim" / "lava-splat2.png"));
 
         util::TextureLoader::load(
-            m_splatTexture3, (t_context.settings.media_path / "image/anim/lava-splat3.png"));
+            m_splatTexture3,
+            (t_context.settings.media_path / "image" / "anim" / "lava-splat3.png"));
 
         //
 
@@ -288,11 +296,14 @@ namespace bramblefore
             didAnyDripsLand = true;
             anim.is_alive   = false;
 
+            const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 0.5f) *
+                               t_context.settings.map_scale };
+
             LavaSplatAnim & splashAnim{ m_splatAnims.emplace_back(
                 anim.size,
                 splatTexture(anim.size),
                 textureRect(splatTexture(anim.size), 0),
-                t_context.layout.calScaleBasedOnResolution(t_context, 1.0f),
+                scale,
                 anim.region) };
 
             if (t_context.layout.wholeRect().findIntersection(splashAnim.sprite.getGlobalBounds()))

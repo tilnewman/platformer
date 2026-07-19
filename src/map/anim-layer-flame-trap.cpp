@@ -77,12 +77,14 @@ namespace bramblefore
 
     FlameTrapAnimationLayer::FlameTrapAnimationLayer(
         const Context & t_context, const std::vector<FlameTrapRectDir> & t_rectDirs)
-        : m_emitterScale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.8f) }
+        : m_emitterScale{ t_context.layout.calScaleBasedOnResolution(t_context, 0.9f) *
+                          t_context.settings.map_scale }
         , m_emitterUpTexture{}
         , m_emitterDownTexture{}
         , m_emitterLeftTexture{}
         , m_emitterRightTexture{}
-        , m_flameScale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.25f) }
+        , m_flameScale{ t_context.layout.calScaleBasedOnResolution(t_context, 0.75f) *
+                        t_context.settings.map_scale }
         , m_flamesUpTexture{}
         , m_flamesDownTexture{}
         , m_flamesLeftTexture{}
@@ -95,37 +97,38 @@ namespace bramblefore
         //
 
         util::TextureLoader::load(
-            m_emitterUpTexture, (t_context.settings.media_path / "image/anim/flame-trap-up.png"));
+            m_emitterUpTexture,
+            (t_context.settings.media_path / "image" / "anim" / "flame-trap-up.png"));
 
         util::TextureLoader::load(
             m_emitterDownTexture,
-            (t_context.settings.media_path / "image/anim/flame-trap-down.png"));
+            (t_context.settings.media_path / "image" / "anim" / "flame-trap-down.png"));
 
         util::TextureLoader::load(
             m_emitterLeftTexture,
-            (t_context.settings.media_path / "image/anim/flame-trap-left.png"));
+            (t_context.settings.media_path / "image" / "anim" / "flame-trap-left.png"));
 
         util::TextureLoader::load(
             m_emitterRightTexture,
-            (t_context.settings.media_path / "image/anim/flame-trap-right.png"));
+            (t_context.settings.media_path / "image" / "anim" / "flame-trap-right.png"));
 
         //
 
         util::TextureLoader::load(
             m_flamesUpTexture,
-            (t_context.settings.media_path / "image/anim/flame-trap-flames-up.png"));
+            (t_context.settings.media_path / "image" / "anim" / "flame-trap-flames-up.png"));
 
         util::TextureLoader::load(
             m_flamesDownTexture,
-            (t_context.settings.media_path / "image/anim/flame-trap-flames-down.png"));
+            (t_context.settings.media_path / "image" / "anim" / "flame-trap-flames-down.png"));
 
         util::TextureLoader::load(
             m_flamesLeftTexture,
-            (t_context.settings.media_path / "image/anim/flame-trap-flames-left.png"));
+            (t_context.settings.media_path / "image" / "anim" / "flame-trap-flames-left.png"));
 
         util::TextureLoader::load(
             m_flamesRightTexture,
-            (t_context.settings.media_path / "image/anim/flame-trap-flames-right.png"));
+            (t_context.settings.media_path / "image" / "anim" / "flame-trap-flames-right.png"));
 
         //
 
@@ -152,9 +155,10 @@ namespace bramblefore
             {
                 emitterSprite.setTexture(m_emitterDownTexture, true);
 
-                emitterSprite.setPosition({ (util::center(rectDir.rect).x -
-                                             (emitterSprite.getGlobalBounds().size.x * 0.5f)),
-                                            rectDir.rect.position.y });
+                emitterSprite.setPosition(
+                    { (util::center(rectDir.rect).x -
+                       (emitterSprite.getGlobalBounds().size.x * 0.5f)),
+                      rectDir.rect.position.y });
             }
             else if (rectDir.direction == TrapDirection::Left)
             {
@@ -169,9 +173,10 @@ namespace bramblefore
             {
                 emitterSprite.setTexture(m_emitterRightTexture, true);
 
-                emitterSprite.setPosition({ rectDir.rect.position.x,
-                                            (util::center(rectDir.rect).y -
-                                             (emitterSprite.getGlobalBounds().size.y * 0.5f)) });
+                emitterSprite.setPosition(
+                    { rectDir.rect.position.x,
+                      (util::center(rectDir.rect).y -
+                       (emitterSprite.getGlobalBounds().size.y * 0.5f)) });
             }
 
             //

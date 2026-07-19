@@ -55,8 +55,9 @@ namespace bramblefore
     {
         sprite.scale({ t_scale, t_scale });
 
-        sprite.setPosition({ (util::center(t_screenRect).x - sprite.getGlobalBounds().size.x),
-                             (util::bottom(t_screenRect) - sprite.getGlobalBounds().size.y) });
+        sprite.setPosition(
+            { (util::center(t_screenRect).x - sprite.getGlobalBounds().size.x),
+              (util::bottom(t_screenRect) - sprite.getGlobalBounds().size.y) });
 
         particles.reserve(32);
     }
@@ -85,10 +86,13 @@ namespace bramblefore
         m_anims.reserve(t_rects.size());
         for (const sf::FloatRect & rect : t_rects)
         {
+            const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 0.5f) *
+                               t_context.settings.map_scale };
+
             m_anims.emplace_back(
                 m_lightningTexture,
                 textureRect(0),
-                t_context.layout.calScaleBasedOnResolution(t_context, 1.0f),
+                scale,
                 t_context.random.fromTo(2.0f, 6.0f),
                 rect);
         }
