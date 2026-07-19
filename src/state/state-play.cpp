@@ -150,8 +150,7 @@ namespace bramblefore
                 t_context.sfx.stop("walk");
                 t_context.sfx.play("ui-select-thock-slide");
             }
-            else if (keyPtr->scancode == sf::Keyboard::Scancode::T) // TOOD remove this after
-                                                                    // testing
+            else if (keyPtr->scancode == sf::Keyboard::Scancode::T) // TOOD remove after testing
             {
                 std::size_t temp{ static_cast<std::size_t>(t_context.player.avatarType()) };
 

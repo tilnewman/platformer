@@ -418,7 +418,8 @@ namespace bramblefore
 
         void learnSpell(const Spell t_spell);
 
-        void castCurrentSpell(Context & t_context, const sf::Vector2f & pos);
+        void castCurrentSpell(
+            Context & t_context, const sf::Vector2f & pos, const bool t_isFacingRight);
 
       private:
         AvatarType m_avatarType;

@@ -31,13 +31,15 @@ namespace bramblefore
             const sf::Texture & t_texture,
             const float t_timePerFrameSec,
             const sf::Vector2f & t_scale,
-            const sf::Vector2f & t_position);
+            const sf::Vector2f & t_position,
+            const bool t_isFacingRight);
 
         bool is_alive;
         Spell spell;
         std::size_t frame_index;
         float elapsed_time_sec;
         float time_per_frame_sec;
+        bool is_facing_right;
         sf::Sprite sprite;
     };
 
@@ -57,7 +59,7 @@ namespace bramblefore
         SpellAnimations();
 
         void setup(const Context & t_context);
-        void add(const sf::Vector2f & t_pos, const Spell t_spell);
+        void add(const sf::Vector2f & t_pos, const Spell t_spell, const bool t_isFacingRight);
         void update(Context & t_context, const float t_frameTimeSec);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
         void move(const float t_amount);

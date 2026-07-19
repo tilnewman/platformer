@@ -310,7 +310,7 @@ namespace bramblefore
                         return pos;
                     }();
 
-                    t_context.player.castCurrentSpell(t_context, spellAnimPos);
+                    t_context.player.castCurrentSpell(t_context, spellAnimPos, m_isFacingRight);
                 }
                 else
                 {

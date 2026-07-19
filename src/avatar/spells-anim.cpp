@@ -23,17 +23,24 @@ namespace bramblefore
         const sf::Texture & t_texture,
         const float t_timePerFrameSec,
         const sf::Vector2f & t_scale,
-        const sf::Vector2f & t_position)
+        const sf::Vector2f & t_position,
+        const bool t_isFacingRight)
         : is_alive{ true }
         , spell{ t_spell }
         , frame_index{ 0 }
         , elapsed_time_sec{ 0.0f }
         , time_per_frame_sec{ t_timePerFrameSec }
+        , is_facing_right{ t_isFacingRight }
         , sprite{ t_texture }
     {
         sprite.setScale(t_scale);
         util::setOriginToCenter(sprite);
         sprite.setPosition(t_position);
+
+        if (!is_facing_right)
+        {
+            sprite.setScale({ -1.0f, 1.0f });
+        }
     }
 
     //
@@ -89,7 +96,7 @@ namespace bramblefore
         }
     }
 
-    void SpellAnimations::add(const sf::Vector2f & t_pos, const Spell t_spell)
+    void SpellAnimations::add(const sf::Vector2f & t_pos, const Spell t_spell, const bool t_isFacingRight)
     {
         const std::size_t spellIndex{ static_cast<std::size_t>(t_spell) };
 
@@ -105,7 +112,8 @@ namespace bramblefore
             toFilesystemName(t_spell) << " of index " << spellIndex
                                       << " has no images loaded. Maybe setup() was not called?");
 
-        m_anims.emplace_back(t_spell, textures.at(0), timePerFrameSec(t_spell), m_scale, t_pos);
+        m_anims.emplace_back(
+            t_spell, textures.at(0), timePerFrameSec(t_spell), m_scale, t_pos, t_isFacingRight);
     }
 
     void SpellAnimations::update(Context &, const float t_frameTimeSec)

@@ -193,14 +193,15 @@ namespace bramblefore
         iter->is_learned = true;
     }
 
-    void PlayerInfo::castCurrentSpell(Context & t_context, const sf::Vector2f & pos)
+    void PlayerInfo::castCurrentSpell(
+        Context & t_context, const sf::Vector2f & pos, const bool t_isFacingRight)
     {
         const Spell spell{ t_context.player.currentSpell() };
         const int manaCost{ toManaCost(spell) };
 
         if (m_mana >= manaCost)
         {
-            t_context.spell.add(pos, spell);
+            t_context.spell.add(pos, spell, t_isFacingRight);
             manaAdjust(t_context, -manaCost);
         }
         else
