@@ -67,7 +67,9 @@ namespace bramblefore
             sf::Texture & texture{ m_textures.emplace_back() };
 
             util::TextureLoader::load(
-                texture, (t_context.settings.media_path / "image/anim" / toFilename(pickup)), true);
+                texture,
+                (t_context.settings.media_path / "image" / "anim" / toFilename(pickup)),
+                true);
         }
     }
 
