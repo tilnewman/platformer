@@ -66,7 +66,7 @@ namespace bramblefore
         appendVertLayers(t_context);
         t_context.avatar.setPosition(m_enterRect);
         m_farthestHorizMapPixel = m_exitRect.position.x;
-        dumpInfo(t_filename);
+        // dumpInfo(t_filename);
     }
 
     void Level::setupDetails(

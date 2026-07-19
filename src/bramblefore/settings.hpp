@@ -27,7 +27,7 @@ namespace bramblefore
         // strange physics bugs when setting to anything other than 60...TODO
         float frame_rate = 60.0f;
 
-        bool will_log_fps           = true;
+        bool will_log_fps           = false;
         bool will_display_fps_graph = true;
 
         float tile_scale    = 1.75f;
