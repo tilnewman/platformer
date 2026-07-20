@@ -103,14 +103,16 @@ namespace bramblefore
         const sf::Vector2i tileCount{ t_json["width"], t_json["height"] };
         const sf::Vector2i tileSize{ t_json["tilewidth"], t_json["tileheight"] };
 
+        // calc tile size on screen
         const float scale{ t_context.layout.calScaleBasedOnResolution(
             t_context, t_context.settings.map_scale) };
 
         const sf::Vector2f tileScreenSize{ sf::Vector2f{ tileSize } * scale };
 
-        // calc map position offset
-        const sf::Vector2f mapSizeOrig{ tileScreenSize * sf::Vector2f{ tileCount } };
-        const float heightOffset{ util::bottom(t_context.layout.wholeRect()) - mapSizeOrig.y };
+        // calc map on screen position
+        const sf::FloatRect screenRect{ t_context.layout.wholeRect() };
+        const sf::Vector2f mapScreenSize{ tileScreenSize * sf::Vector2f{ tileCount } };
+        const float heightOffset{ (util::bottom(screenRect) - mapScreenSize.y) };
         const sf::Vector2f mapScreenPosOffset{ 0.0f, heightOffset };
 
         t_context.level.setupDetails(tileCount, tileSize, tileScreenSize, mapScreenPosOffset);
