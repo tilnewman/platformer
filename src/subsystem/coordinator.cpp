@@ -43,15 +43,9 @@ namespace bramblefore
         , m_playerInfoDisplayUPtr{}
         , m_floatText{}
         , m_mapCoord{}
+        , m_framerateDisplay{}
         , m_contextUPtr{}
-        , m_fpsValues{}
-        , m_oneSecondClock{}
-        , m_elapsedTimeSec{ 0.0f }
-        , m_statsDisplayUPtr{}
-        , m_framerateTextUPtr{}
-    {
-        m_fpsValues.reserve(128);
-    }
+    {}
 
     void Coordinator::setup()
     {
@@ -65,8 +59,6 @@ namespace bramblefore
         m_window.setFramerateLimit(0);
 
         util::SfmlDefaults::instance().setup();
-
-        m_framerateTextUPtr = std::make_unique<sf::Text>(util::SfmlDefaults::instance().font());
 
         m_sfx.mediaPath(m_settings.media_path / "sound");
         m_sfx.loadAll();
@@ -107,15 +99,13 @@ namespace bramblefore
         m_pickups.setup(*m_contextUPtr);
         m_accents.setup(*m_contextUPtr);
         m_spells.setup(*m_contextUPtr);
+        m_framerateDisplay.setup(*m_contextUPtr);
 
         m_states.setChangePending(State::Splash);
     }
 
     void Coordinator::teardown()
     {
-        m_statsDisplayUPtr.reset();
-        m_framerateTextUPtr.reset();
-
         m_contextUPtr.reset();
         m_playerInfoDisplayUPtr.reset();
         m_avatarUPtr.reset();
@@ -149,8 +139,7 @@ namespace bramblefore
             update(1.0f / m_settings.frame_rate);
             draw();
 
-            handleSleepUntilEndOfFrame(frameClock.getElapsedTime().asSeconds());
-            handleOncePerSecondTasks();
+            handleEndOfFrameTasks(frameClock.getElapsedTime().asSeconds());
         }
     }
 
@@ -181,21 +170,10 @@ namespace bramblefore
 
     void Coordinator::draw()
     {
-        sf::RenderStates states;
-
+        sf::RenderStates states;          // TODO make this a member
         m_window.clear(sf::Color::Black); // some states depend on the background color being black
         m_states.current().draw(*m_contextUPtr, m_window, states);
-
-        if (m_statsDisplayUPtr && m_settings.will_display_fps_graph)
-        {
-            m_statsDisplayUPtr->draw(m_window, states);
-        }
-
-        if (m_settings.will_display_fps)
-        {
-            m_window.draw(*m_framerateTextUPtr, states);
-        }
-
+        m_framerateDisplay.draw(*m_contextUPtr, m_window, states);
         m_window.display();
     }
 
@@ -205,10 +183,11 @@ namespace bramblefore
         m_states.changeIfPending(*m_contextUPtr);
     }
 
-    void Coordinator::handleSleepUntilEndOfFrame(const float t_elapsedTimeSec)
+    void Coordinator::handleEndOfFrameTasks(const float t_elapsedTimeSec)
     {
-        m_fpsValues.push_back(static_cast<std::size_t>(1.0f / t_elapsedTimeSec));
+        m_framerateDisplay.handleElapsedFrame(*m_contextUPtr, t_elapsedTimeSec);
 
+        // sleep until end of frame occurs
         float timeRemainingSec{ (1.0f / m_settings.frame_rate) - t_elapsedTimeSec };
 
         sf::Clock delayClock;
@@ -217,39 +196,6 @@ namespace bramblefore
             delayClock.restart();
             sf::sleep(sf::microseconds(100));
             timeRemainingSec -= delayClock.getElapsedTime().asSeconds();
-        }
-    }
-
-    void Coordinator::handleOncePerSecondTasks()
-    {
-        m_elapsedTimeSec += m_oneSecondClock.restart().asSeconds();
-        if (m_elapsedTimeSec > 1.0f)
-        {
-            m_elapsedTimeSec -= 1.0f;
-
-            if (m_settings.will_display_fps)
-            {
-                const auto stats{ util::makeStats(m_fpsValues) };
-
-                *m_framerateTextUPtr = m_fonts.makeText(
-                    Font::General,
-                    FontSize::Medium,
-                    stats.toString(),
-                    sf::Color(255, 255, 255, 127));
-
-                m_framerateTextUPtr->setPosition(
-                    { (m_contextUPtr->layout.wholeRect().size.x -
-                       m_framerateTextUPtr->getGlobalBounds().size.x),
-                      0.0f });
-            }
-
-            if (m_settings.will_display_fps_graph)
-            {
-                m_statsDisplayUPtr = std::make_unique<util::GraphDisplay<std::size_t>>(
-                    m_fpsValues, sf::Vector2u{ 500, 200 }, std::uint8_t(64));
-            }
-
-            m_fpsValues.clear();
         }
     }
 

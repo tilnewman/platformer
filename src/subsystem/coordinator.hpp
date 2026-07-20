@@ -19,11 +19,11 @@
 #include "subsystem/context.hpp"
 #include "subsystem/floating-text.hpp"
 #include "subsystem/font.hpp"
+#include "subsystem/framerate-display.hpp"
 #include "subsystem/map-coordinator.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "util/random.hpp"
 #include "util/sound-player.hpp"
-#include "util/stats-display.hpp"
 
 #include <memory>
 #include <vector>
@@ -50,8 +50,7 @@ namespace bramblefore
         void handleEvent(const sf::Event & t_event);
         void update(const float t_frameTimeSec);
         void draw();
-        void handleSleepUntilEndOfFrame(const float t_actualFrameTimeSec);
-        void handleOncePerSecondTasks();
+        void handleEndOfFrameTasks(const float t_actualFrameTimeSec);
         void setupRenderWindow(sf::VideoMode & t_videoMode);
 
       private:
@@ -75,15 +74,9 @@ namespace bramblefore
         std::unique_ptr<PlayerInfoDisplay> m_playerInfoDisplayUPtr;
         FloatingText m_floatText;
         MapCoordinator m_mapCoord;
+        FramerateDisplay m_framerateDisplay;
 
-        std::unique_ptr <Context> m_contextUPtr;
-
-        // fps stuff
-        std::vector<std::size_t> m_fpsValues;
-        sf::Clock m_oneSecondClock;
-        float m_elapsedTimeSec;
-        std::unique_ptr<util::GraphDisplay<std::size_t>> m_statsDisplayUPtr;
-        std::unique_ptr<sf::Text> m_framerateTextUPtr;
+        std::unique_ptr<Context> m_contextUPtr;
     };
 
 } // namespace bramblefore
