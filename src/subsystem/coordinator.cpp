@@ -23,7 +23,8 @@ namespace bramblefore
 {
 
     Coordinator::Coordinator(const Settings & t_settings)
-        : m_window{}
+        : m_renderStates{}
+        , m_window{}
         , m_settings{ t_settings }
         , m_random{}
         , m_sfx{ m_random }
@@ -170,10 +171,9 @@ namespace bramblefore
 
     void Coordinator::draw()
     {
-        sf::RenderStates states;          // TODO make this a member
         m_window.clear(sf::Color::Black); // some states depend on the background color being black
-        m_states.current().draw(*m_contextUPtr, m_window, states);
-        m_framerateDisplay.draw(*m_contextUPtr, m_window, states);
+        m_states.current().draw(*m_contextUPtr, m_window, m_renderStates);
+        m_framerateDisplay.draw(*m_contextUPtr, m_window, m_renderStates);
         m_window.display();
     }
 

@@ -28,6 +28,7 @@
 #include <memory>
 #include <vector>
 
+#include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/VideoMode.hpp>
@@ -54,6 +55,7 @@ namespace bramblefore
         void setupRenderWindow(sf::VideoMode & t_videoMode);
 
       private:
+        sf::RenderStates m_renderStates;
         sf::RenderWindow m_window;
         Settings m_settings;
         util::Random m_random;
