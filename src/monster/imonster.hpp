@@ -23,7 +23,7 @@ namespace bramblefore
 
     //
 
-    enum class MonsterType : std::size_t
+    enum class MonsterType : unsigned char
     {
         BabyDragon = 0,
         Bear,
@@ -393,7 +393,7 @@ namespace bramblefore
 
     //
 
-    enum class MonsterAnim : std::size_t
+    enum class MonsterAnim : unsigned char
     {
         Attack = 0,
         Death,

@@ -26,7 +26,7 @@ namespace bramblefore
 
     //
 
-    enum class WaterRock : std::size_t
+    enum class WaterRock : unsigned char
     {
         Flat1 = 0,
         Flat2,

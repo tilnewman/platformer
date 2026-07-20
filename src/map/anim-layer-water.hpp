@@ -27,7 +27,7 @@ namespace bramblefore
 
     //
 
-    enum class WaterType : std::size_t
+    enum class WaterType : unsigned char
     {
         Surface1 = 0,
         Surface2,

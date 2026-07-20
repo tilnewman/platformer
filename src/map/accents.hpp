@@ -23,7 +23,7 @@ namespace bramblefore
 
     //
 
-    enum class Accent : std::size_t
+    enum class Accent : unsigned char
     {
         LampGobletLarge = 0,
         LampGobletMedium,

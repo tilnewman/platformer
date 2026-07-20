@@ -22,7 +22,7 @@ namespace bramblefore
 
     //
 
-    enum class Pickup : std::size_t
+    enum class Pickup : unsigned char
     {
         Arrow = 0,
         Bottle,

@@ -24,7 +24,7 @@ namespace bramblefore
 
     //
 
-    enum class MonsterSpell : std::size_t
+    enum class MonsterSpell : unsigned char
     {
         BossBlade = 0,
         BossFire,

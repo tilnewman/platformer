@@ -15,7 +15,7 @@ namespace bramblefore
 
     //
 
-    enum class Item : std::size_t
+    enum class Item : unsigned char
     {
         Bone = 0,
         Berries,

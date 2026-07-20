@@ -10,7 +10,7 @@
 namespace bramblefore
 {
 
-    enum class TileImage : std::size_t
+    enum class TileImage : unsigned char
     {
         CastleGround = 0,
         CastleObject,

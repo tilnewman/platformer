@@ -17,7 +17,7 @@ namespace bramblefore
 
     //
 
-    enum class AvatarType : std::size_t
+    enum class AvatarType : unsigned char
     {
         Assassin = 0,
         BlueKnight,
@@ -179,7 +179,7 @@ namespace bramblefore
 
     //
 
-    enum class Spell : std::size_t
+    enum class Spell : unsigned char
     {
         // Witch spells
         Comet = 0,

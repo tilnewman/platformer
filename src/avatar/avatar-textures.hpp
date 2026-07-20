@@ -19,7 +19,7 @@ namespace bramblefore
 
     //
 
-    enum class AvatarAnim : std::size_t
+    enum class AvatarAnim : unsigned char
     {
         Attack = 0,
         AttackExtra,
