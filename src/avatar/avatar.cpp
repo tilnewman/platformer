@@ -506,7 +506,7 @@ namespace bramblefore
             return;
         }
 
-        if ((m_velocity.y >= 0.0f) && (t_intersectionRect.size.y < t_tolerance) &&
+        if ((m_velocity.y > 0.0f) && (t_intersectionRect.size.y < t_tolerance) &&
             t_collRect.findIntersection(t_avatarFootRect))
         {
             // falling and hit something below
