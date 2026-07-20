@@ -83,8 +83,8 @@ namespace bramblefore
         }
     }
 
-    const Harm
-        ChestAnimationLayer::avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect)
+    const Harm ChestAnimationLayer::avatarCollide(
+        const Context & t_context, const sf::FloatRect & t_avatarRect)
     {
         for (ChestAnim & anim : m_animations)
         {

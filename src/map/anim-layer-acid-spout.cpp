@@ -175,7 +175,7 @@ namespace bramblefore
         }
     }
 
-    void AcidSpoutAnimationLayer::update(Context & t_context, const float t_frameTimeSec)
+    void AcidSpoutAnimationLayer::update(const Context & t_context, const float t_frameTimeSec)
     {
         updateSpouts(t_frameTimeSec);
         updateDrops(t_context, t_frameTimeSec);
@@ -301,7 +301,7 @@ namespace bramblefore
         return rect;
     }
 
-    const Harm AcidSpoutAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm AcidSpoutAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
     {
         for (const AcidDropAnim & anim : m_dropAnims)
         {

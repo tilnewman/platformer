@@ -370,8 +370,8 @@ namespace bramblefore
       public:
         PlayerInfo();
 
-        void setup(Context & t_context, const AvatarType t_type);
-        void update(Context & t_context, const float frameTimeSec);
+        void setup(const Context & t_context, const AvatarType t_type);
+        void update(const Context & t_context, const float frameTimeSec);
 
         [[nodiscard]] constexpr AvatarType avatarType() const noexcept { return m_avatarType; }
 
@@ -379,19 +379,19 @@ namespace bramblefore
 
         [[nodiscard]] constexpr Health_t healthMax() const noexcept { return m_healthMax; }
 
-        Health_t healthAdjust(Context & t_context, const Health_t t_adjustment);
-        void healthReset(Context & t_context);
+        Health_t healthAdjust(const Context & t_context, const Health_t t_adjustment);
+        void healthReset(const Context & t_context);
 
         [[nodiscard]] constexpr Mana_t mana() const noexcept { return m_mana; }
 
         [[nodiscard]] constexpr Mana_t manaMax() const noexcept { return m_manaMax; }
 
-        Mana_t manaAdjust(Context & t_context, const Mana_t t_adjustment);
-        void manaReset(Context & t_context);
+        Mana_t manaAdjust(const Context & t_context, const Mana_t t_adjustment);
+        void manaReset(const Context & t_context);
 
         [[nodiscard]] constexpr Coin_t coin() const noexcept { return m_coins; }
 
-        Coin_t coinAdjust(Context & t_context, const Coin_t t_adjustment);
+        Coin_t coinAdjust(const Context & t_context, const Coin_t t_adjustment);
 
         [[nodiscard]] constexpr Experience_t experience() const noexcept { return m_experience; }
 
@@ -399,8 +399,8 @@ namespace bramblefore
 
         [[nodiscard]] constexpr int mapStarCount() const noexcept { return m_mapStarCount; }
 
-        void mapStarCollect(Context & t_context);
-        void mapStarReset(Context & t_context);
+        void mapStarCollect(const Context & t_context);
+        void mapStarReset(const Context & t_context);
 
         [[nodiscard]] constexpr std::size_t currentSpellIndex() const noexcept
         {
@@ -419,7 +419,7 @@ namespace bramblefore
         void learnSpell(const Spell t_spell);
 
         void castCurrentSpell(
-            Context & t_context, const sf::Vector2f & pos, const bool t_isFacingRight);
+            const Context & t_context, const sf::Vector2f & pos, const bool t_isFacingRight);
 
       private:
         AvatarType m_avatarType;

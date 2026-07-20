@@ -32,7 +32,7 @@ namespace bramblefore
     }
 
     void FloatingText::add(
-        Context & t_context,
+        const Context & t_context,
         const std::string & t_message,
         const sf::Color & t_color,
         const sf::Vector2f & t_pos)
@@ -41,7 +41,7 @@ namespace bramblefore
             t_context.font.makeText(Font::Title, FontSize::Medium, t_message, t_color), t_pos);
     }
 
-    void FloatingText::update(Context &, const float t_frameTimeSec)
+    void FloatingText::update(const Context &, const float t_frameTimeSec)
     {
         bool areAnyAnimationsFinished{ false };
         for (FloatingTextAnim & anim : m_animations)

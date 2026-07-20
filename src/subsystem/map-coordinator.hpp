@@ -18,10 +18,10 @@ namespace bramblefore
       public:
         MapCoordinator();
 
-        void respawn(Context & t_context);
+        void respawn(const Context & t_context);
 
-        void deathBeforeDelay(Context & t_context);
-        void deathAfterDelay(Context & t_context);
+        void deathBeforeDelay(const Context & t_context);
+        void deathAfterDelay(const Context & t_context);
 
         [[nodiscard]] const std::string mapName() const;
         void mapNameAdvance();

@@ -85,7 +85,7 @@ namespace bramblefore
         }
     }
 
-    void GhostBottleAnimationLayer::update(Context &, const float t_frameTimeSec)
+    void GhostBottleAnimationLayer::update(const Context &, const float t_frameTimeSec)
     {
         for (GhostBottleAnim & anim : m_anims)
         {
@@ -131,8 +131,8 @@ namespace bramblefore
         return rect;
     }
 
-    const Harm
-        GhostBottleAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm GhostBottleAnimationLayer::avatarCollide(
+        const Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

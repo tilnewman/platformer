@@ -79,13 +79,13 @@ namespace bramblefore
 
         void move(const Context & t_context, const float t_amount) final;
         void dumpInfo() const final;
-        void update(Context & t_context, const float t_frameTimeSec) final;
+        void update(const Context & t_context, const float t_frameTimeSec) final;
 
         inline void appendVerts(const Context &, const sf::Vector2f &, const sf::Vector2f &) final
         {}
 
         [[nodiscard]] const Harm
-            avatarCollide(Context & t_context, const sf::FloatRect & t_avatarRect) final;
+            avatarCollide(const Context & t_context, const sf::FloatRect & t_avatarRect) final;
 
       private:
         [[nodiscard]] const sf::IntRect textureRect(const std::size_t frame) const noexcept;

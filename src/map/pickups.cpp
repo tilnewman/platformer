@@ -116,7 +116,7 @@ namespace bramblefore
         return rect;
     }
 
-    void PickupAnimations::update(Context &, const float t_frameTimeSec)
+    void PickupAnimations::update(const Context &, const float t_frameTimeSec)
     {
         m_elapsedTimeSec += t_frameTimeSec;
         if (m_elapsedTimeSec > m_timePerFrameSec)
@@ -196,7 +196,7 @@ namespace bramblefore
     }
 
     void PickupAnimations::processCollisionWithAvatar(
-        Context & t_context, const sf::FloatRect & t_avatarRect)
+        const Context & t_context, const sf::FloatRect & t_avatarRect)
     {
         bool wereAnyPickedUp{ false };
         for (PickupAnim & anim : m_anims)

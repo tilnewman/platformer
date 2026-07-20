@@ -55,33 +55,33 @@ namespace bramblefore
         virtual ~Monster() override;
 
         // IMonster functions
-        void update(Context & t_context, const float t_frameTimeSec) override;
+        void update(const Context & t_context, const float t_frameTimeSec) override;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const override;
 
         void move(const float t_amount) override;
-        bool avatarAttack(Context & t_context, const AttackInfo & t_attackInfo) override;
+        bool avatarAttack(const Context & t_context, const AttackInfo & t_attackInfo) override;
 
         const Harm avatarCollide(const sf::FloatRect & t_avatarRect) override;
 
       protected:
         bool animate(); // returns true if animation is finished
         [[nodiscard]] float timePerFrameSec(const MonsterAnim t_anim) const noexcept;
-        void handleWalking(Context & t_context, const float t_frameTimeSec);
-        void handleDying(Context & t_context);
+        void handleWalking(const Context & t_context, const float t_frameTimeSec);
+        void handleDying(const Context & t_context);
 
-        virtual void changeStateBeforeSeeingPlayer(Context & t_context);
-        virtual void changeStateAfterSeeingPlayer(Context & t_context);
+        virtual void changeStateBeforeSeeingPlayer(const Context & t_context);
+        virtual void changeStateAfterSeeingPlayer(const Context & t_context);
         virtual void turnAround();
-        virtual void startAttackAnimation(Context &) {}
+        virtual void startAttackAnimation(const Context &) {}
 
         void resetAnimation();
 
         void initialSpriteSetup(
             const Context & t_context, const float t_imageHeightOffsetRatio, const float t_imageScale);
 
-        void turnToFacePlayer(Context & t_context);
+        void turnToFacePlayer(const Context & t_context);
 
       protected:
         MonsterType m_type;

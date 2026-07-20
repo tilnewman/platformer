@@ -160,7 +160,7 @@ namespace bramblefore
         }
     }
 
-    void DartTrapAnimationLayer::update(Context & t_context, const float t_frameTimeSec)
+    void DartTrapAnimationLayer::update(const Context & t_context, const float t_frameTimeSec)
     {
         const sf::FloatRect wholeScreenRect{ t_context.layout.wholeRect() };
 
@@ -231,7 +231,7 @@ namespace bramblefore
         }
     }
 
-    const Harm DartTrapAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm DartTrapAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

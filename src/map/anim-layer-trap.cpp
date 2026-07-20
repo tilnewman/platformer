@@ -96,7 +96,7 @@ namespace bramblefore
         }
     }
 
-    void TrapAnimationLayer::update(Context & t_context, const float t_frameTimeSec)
+    void TrapAnimationLayer::update(const Context & t_context, const float t_frameTimeSec)
     {
         for (TrapAnim & anim : m_anims)
         {
@@ -163,7 +163,8 @@ namespace bramblefore
         return rect;
     }
 
-    const Harm TrapAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm
+        TrapAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

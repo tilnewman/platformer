@@ -148,7 +148,7 @@ namespace bramblefore
         return rect;
     }
 
-    void LightningAnimationLayer::update(Context & t_context, const float t_frameTimeSec)
+    void LightningAnimationLayer::update(const Context & t_context, const float t_frameTimeSec)
     {
         const sf::FloatRect wholeScreenRect{ t_context.layout.wholeRect() };
 
@@ -223,7 +223,8 @@ namespace bramblefore
         }
     }
 
-    const Harm LightningAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm
+        LightningAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

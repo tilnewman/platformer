@@ -87,7 +87,7 @@ namespace bramblefore
         return rect;
     }
 
-    void LavaAnimationLayer::update(Context &, const float t_frameTimeSec)
+    void LavaAnimationLayer::update(const Context &, const float t_frameTimeSec)
     {
         m_elapsedTimeSec += t_frameTimeSec;
         if (m_elapsedTimeSec > m_timePerFrameSec)
@@ -107,7 +107,8 @@ namespace bramblefore
         }
     }
 
-    const Harm LavaAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm
+        LavaAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

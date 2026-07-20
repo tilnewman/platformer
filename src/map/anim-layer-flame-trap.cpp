@@ -274,7 +274,7 @@ namespace bramblefore
         }
     }
 
-    void FlameTrapAnimationLayer::update(Context & t_context, const float t_frameTimeSec)
+    void FlameTrapAnimationLayer::update(const Context & t_context, const float t_frameTimeSec)
     {
         const sf::FloatRect wholeScreenRect{ t_context.layout.wholeRect() };
 
@@ -338,7 +338,7 @@ namespace bramblefore
         return rect;
     }
 
-    const Harm FlameTrapAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm FlameTrapAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

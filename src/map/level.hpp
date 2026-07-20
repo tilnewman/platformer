@@ -103,7 +103,7 @@ namespace bramblefore
         inline void enterRect(const sf::FloatRect & t_enterRect) { m_enterRect = t_enterRect; }
         inline void exitRect(const sf::FloatRect & t_exitRect) { m_exitRect = t_exitRect; }
 
-        void load(Context & t_context, const std::string & t_filename);
+        void load(const Context & t_context, const std::string & t_filename);
         void reset();
 
         // returns true if the map actually moved
@@ -112,7 +112,7 @@ namespace bramblefore
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const;
 
-        void update(Context & t_context, const float t_frameTimeSec);
+        void update(const Context & t_context, const float t_frameTimeSec);
 
         const std::optional<sf::FloatRect>
             ladderCollisionRect(const sf::FloatRect & avatarRect) const;

@@ -16,7 +16,7 @@ namespace bramblefore
         : m_monsters{}
     {}
 
-    void MonsterManager::update(Context & t_context, const float t_frameTimeSec)
+    void MonsterManager::update(const Context & t_context, const float t_frameTimeSec)
     {
         for (auto & monsterUPtr : m_monsters)
         {
@@ -63,7 +63,7 @@ namespace bramblefore
         }
     }
 
-    bool MonsterManager::avatarAttack(Context & t_context, const AttackInfo & t_attackInfo)
+    bool MonsterManager::avatarAttack(const Context & t_context, const AttackInfo & t_attackInfo)
     {
         for (auto & monsterUPtr : m_monsters)
         {

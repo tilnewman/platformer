@@ -234,7 +234,7 @@ namespace bramblefore
         }
     }
 
-    void LavaDripAnimationLayer::update(Context & t_context, const float t_frameTimeSec)
+    void LavaDripAnimationLayer::update(const Context & t_context, const float t_frameTimeSec)
     {
         updateDrippers(t_frameTimeSec);
         updateDrips(t_context, t_frameTimeSec);
@@ -372,7 +372,8 @@ namespace bramblefore
         return rect;
     }
 
-    const Harm LavaDripAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm
+        LavaDripAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
     {
         for (const LavaDripAnim & anim : m_dripAnims)
         {

@@ -31,7 +31,7 @@ namespace bramblefore
         virtual void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const = 0;
         virtual void move(const Context & t_context, const float t_move)                     = 0;
         virtual void dumpInfo() const                                                        = 0;
-        virtual void update(Context & t_context, const float t_frameTimeSec)                 = 0;
+        virtual void update(const Context & t_context, const float t_frameTimeSec)                 = 0;
 
         virtual void appendVerts(
             const Context & t_context,
@@ -72,7 +72,7 @@ namespace bramblefore
 
         void move(const Context & t_context, const float t_move) override;
         void dumpInfo() const override;
-        void update(Context &, const float) override {}
+        void update(const Context &, const float) override {}
 
         void appendVerts(
             const Context & t_context,

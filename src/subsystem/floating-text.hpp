@@ -37,13 +37,13 @@ namespace bramblefore
         FloatingText();
 
         void
-            add(Context & t_context,
+            add(const Context & t_context,
                 const std::string & t_message,
                 const sf::Color & t_color,
                 const sf::Vector2f & t_pos);
 
         void clear() noexcept { m_animations.clear(); }
-        void update(Context & t_context, const float t_frameTimeSec);
+        void update(const Context & t_context, const float t_frameTimeSec);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
         void move(const float t_amount);
 

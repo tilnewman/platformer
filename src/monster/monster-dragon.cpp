@@ -61,7 +61,7 @@ namespace bramblefore
         return rect;
     }
 
-    void Dragon::startAttackAnimation(Context &)
+    void Dragon::startAttackAnimation(const Context &)
     {
         const sf::FloatRect collRect{ collisionRect() };
 

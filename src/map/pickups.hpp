@@ -117,14 +117,14 @@ namespace bramblefore
 
         void add(const Context & t_context, const sf::FloatRect & t_rect, const Pickup t_pickup);
 
-        void update(Context & t_context, const float t_frameTimeSec);
+        void update(const Context & t_context, const float t_frameTimeSec);
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const;
 
         void move(const float amount);
         constexpr void clear() noexcept { m_anims.clear(); }
-        void processCollisionWithAvatar(Context & t_context, const sf::FloatRect & t_avatarRect);
+        void processCollisionWithAvatar(const Context & t_context, const sf::FloatRect & t_avatarRect);
 
       private:
         [[nodiscard]] std::size_t frameCount(const Pickup which) const;

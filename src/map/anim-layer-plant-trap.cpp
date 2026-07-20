@@ -96,7 +96,7 @@ namespace bramblefore
         }
     }
 
-    void PlantTrapAnimationLayer::update(Context & t_context, const float t_frameTimeSec)
+    void PlantTrapAnimationLayer::update(const Context & t_context, const float t_frameTimeSec)
     {
         const sf::FloatRect avatarCollRect{ t_context.avatar.collisionRect() };
 
@@ -165,7 +165,8 @@ namespace bramblefore
         return rect;
     }
 
-    const Harm PlantTrapAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm
+        PlantTrapAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

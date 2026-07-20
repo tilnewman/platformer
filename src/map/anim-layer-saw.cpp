@@ -66,7 +66,7 @@ namespace bramblefore
         }
     }
 
-    void SawAnimationLayer::update(Context &, const float t_frameTimeSec)
+    void SawAnimationLayer::update(const Context &, const float t_frameTimeSec)
     {
         for (sf::Sprite & sprite : m_anims)
         {
@@ -74,7 +74,7 @@ namespace bramblefore
         }
     }
 
-    const Harm SawAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm SawAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
     {
         const sf::Vector2f avatarCenter{ util::center(t_avatarRect) };
 

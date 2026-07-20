@@ -165,7 +165,7 @@ namespace bramblefore
         return rect;
     }
 
-    void WaterAnimationLayer::update(Context &, const float t_frameTimeSec)
+    void WaterAnimationLayer::update(const Context &, const float t_frameTimeSec)
     {
         for (WaterAnim & anim : m_anims)
         {
@@ -185,7 +185,8 @@ namespace bramblefore
         }
     }
 
-    const Harm WaterAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm
+        WaterAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

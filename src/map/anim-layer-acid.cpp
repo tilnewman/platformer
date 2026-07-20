@@ -88,7 +88,7 @@ namespace bramblefore
         return rect;
     }
 
-    void AcidAnimationLayer::update(Context &, const float t_frameTimeSec)
+    void AcidAnimationLayer::update(const Context &, const float t_frameTimeSec)
     {
         m_elapsedTimeSec += t_frameTimeSec;
         if (m_elapsedTimeSec > m_timePerFrameSec)
@@ -108,7 +108,8 @@ namespace bramblefore
         }
     }
 
-    const Harm AcidAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm
+        AcidAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

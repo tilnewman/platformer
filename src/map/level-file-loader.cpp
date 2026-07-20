@@ -73,7 +73,7 @@ namespace bramblefore
         : m_pathStr()
     {}
 
-    void LevelFileLoader::load(Context & t_context, const std::string & t_filename)
+    void LevelFileLoader::load(const Context & t_context, const std::string & t_filename)
     {
         const std::filesystem::path path{ t_context.settings.media_path / "map" / t_filename };
         M_CHECK(std::filesystem::exists(path), "The level file does not exist: " << path.string());
@@ -97,7 +97,8 @@ namespace bramblefore
         parseLayers(t_context, json);
     }
 
-    void LevelFileLoader::parseLevelDetails(Context & t_context, const nlohmann::json & t_json)
+    void
+        LevelFileLoader::parseLevelDetails(const Context & t_context, const nlohmann::json & t_json)
     {
         // parse level tile size and counts
         const sf::Vector2i tileCount{ t_json["width"], t_json["height"] };
@@ -173,7 +174,7 @@ namespace bramblefore
     }
 
     void LevelFileLoader::parseBackgroundImageName(
-        Context & t_context, const nlohmann::json & t_json)
+        const Context & t_context, const nlohmann::json & t_json)
     {
         std::string backgroundImageName;
 
@@ -210,7 +211,8 @@ namespace bramblefore
         t_context.bg_image.setup(t_context, backgroundImageName);
     }
 
-    void LevelFileLoader::parseLayers(Context & t_context, const nlohmann::json & jsonWholeFile)
+    void LevelFileLoader::parseLayers(
+        const Context & t_context, const nlohmann::json & jsonWholeFile)
     {
         for (const nlohmann::json & jsonLayer : jsonWholeFile["layers"])
         {
@@ -387,7 +389,7 @@ namespace bramblefore
     }
 
     void LevelFileLoader::parseTileLayer(
-        Context & t_context, const TileImage image, const nlohmann::json & t_json)
+        const Context & t_context, const TileImage image, const nlohmann::json & t_json)
     {
         const std::vector<int> indexes = t_json["data"];
 
@@ -433,7 +435,7 @@ namespace bramblefore
         return screenRect;
     }
 
-    void LevelFileLoader::parseSpawnLayer(Context & t_context, const nlohmann::json & t_json)
+    void LevelFileLoader::parseSpawnLayer(const Context & t_context, const nlohmann::json & t_json)
     {
         for (const nlohmann::json & spawnJson : t_json["objects"])
         {

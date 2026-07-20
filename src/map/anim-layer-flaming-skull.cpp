@@ -208,7 +208,7 @@ namespace bramblefore
         }
     }
 
-    void FlamingSkullAnimationLayer::update(Context & t_context, const float t_frameTimeSec)
+    void FlamingSkullAnimationLayer::update(const Context & t_context, const float t_frameTimeSec)
     {
         const sf::FloatRect wholeScreenRect{ t_context.layout.wholeRect() };
 
@@ -276,7 +276,7 @@ namespace bramblefore
     }
 
     const Harm
-        FlamingSkullAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+        FlamingSkullAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

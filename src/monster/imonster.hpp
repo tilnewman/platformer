@@ -443,13 +443,13 @@ namespace bramblefore
     {
         virtual ~IMonster() = default;
 
-        virtual void update(Context & t_context, const float t_frameTimeSec)                 = 0;
+        virtual void update(const Context & t_context, const float t_frameTimeSec)                 = 0;
         virtual void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const = 0;
         virtual void move(const float t_amount)                                              = 0;
         virtual const Harm avatarCollide(const sf::FloatRect & t_avatarRect)                 = 0;
         virtual const sf::FloatRect collisionRect() const                                    = 0;
         virtual const sf::FloatRect attackCollisionRect() const                              = 0;
-        virtual bool avatarAttack(Context & t_context, const AttackInfo & t_attackInfo)      = 0;
+        virtual bool avatarAttack(const Context & t_context, const AttackInfo & t_attackInfo)      = 0;
     };
 
 } // namespace bramblefore

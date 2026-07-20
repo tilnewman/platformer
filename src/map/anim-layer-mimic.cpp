@@ -89,7 +89,7 @@ namespace bramblefore
         }
     }
 
-    void MimicAnimationLayer::update(Context &, const float t_frameTimeSec)
+    void MimicAnimationLayer::update(const Context &, const float t_frameTimeSec)
     {
         for (MimicAnim & anim : m_anims)
         {
@@ -148,7 +148,8 @@ namespace bramblefore
         return rect;
     }
 
-    const Harm MimicAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm
+        MimicAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

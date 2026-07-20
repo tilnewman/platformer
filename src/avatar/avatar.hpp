@@ -86,38 +86,38 @@ namespace bramblefore
         ~Avatar();
 
         void setup(const Context & t_context);
-        void update(Context & t_context, const float t_frameTimeSec);
+        void update(const Context & t_context, const float t_frameTimeSec);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states);
         void setPosition(const sf::FloatRect & t_rect);
         [[nodiscard]] const sf::FloatRect collisionRect() const;
         [[nodiscard]] const sf::FloatRect attackRect() const;
         [[nodiscard]] const sf::FloatRect footCollisionRect() const;
-        void triggerDeath(Context & t_context);
+        void triggerDeath(const Context & t_context);
         void triggerIdle();
 
         // TODO remove after testing
-        void changeType(Context & t_context);
+        void changeType(const Context & t_context);
 
       private:
-        void animate(Context & t_context, const float t_frameTimeSec);
-        void handleClimbing(Context & t_context, const float t_frameTimeSec);
-        void handleAttackState(Context & t_context);
-        void handleAttackingEnemies(Context & t_context);
-        void moveMap(Context & t_context);
-        void killIfOutOfBounds(Context & t_context);
+        void animate(const Context & t_context, const float t_frameTimeSec);
+        void handleClimbing(const Context & t_context, const float t_frameTimeSec);
+        void handleAttackState(const Context & t_context);
+        void handleAttackingEnemies(const Context & t_context);
+        void moveMap(const Context & t_context);
+        void killIfOutOfBounds(const Context & t_context);
         void preventBacktracking(const Context & t_context);
         void collisions(const Context & t_context);
-        void sideToSideMotion(Context & t_context, const float t_frameTimeSec);
+        void sideToSideMotion(const Context & t_context, const float t_frameTimeSec);
         void restartAnim();
-        void jumping(Context & t_context, const float t_frameTimeSec);
-        bool handleDeath(Context & t_context, const float t_frameTimeSec);
-        void respawn(Context & t_context);
+        void jumping(const Context & t_context, const float t_frameTimeSec);
+        bool handleDeath(const Context & t_context, const float t_frameTimeSec);
+        void respawn(const Context & t_context);
         void turnRight();
         void turnLeft();
-        void exitCollisions(Context & t_context) const;
-        void hurtCollisions(Context & t_context);
-        void killCollisions(Context & t_context);
-        void harm(Context & t_context, const Harm & t_harm);
+        void exitCollisions(const Context & t_context) const;
+        void hurtCollisions(const Context & t_context);
+        void killCollisions(const Context & t_context);
+        void harm(const Context & t_context, const Harm & t_harm);
         [[nodiscard]] MovementDetails calculateMovementDetails(const Context & t_context) const;
 
         void collide(

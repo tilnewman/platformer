@@ -21,16 +21,16 @@ namespace bramblefore
       public:
         LevelFileLoader();
 
-        void load(Context & t_context, const std::string & t_filename);
+        void load(const Context & t_context, const std::string & t_filename);
 
       private:
-        void parseLevelDetails(Context & t_context, const nlohmann::json & t_json);
+        void parseLevelDetails(const Context & t_context, const nlohmann::json & t_json);
         void parseObjectTextureGIDs(const nlohmann::json & t_json);
-        void parseBackgroundImageName(Context & t_context, const nlohmann::json & t_json);
-        void parseLayers(Context & t_context, const nlohmann::json & t_json);
+        void parseBackgroundImageName(const Context & t_context, const nlohmann::json & t_json);
+        void parseLayers(const Context & t_context, const nlohmann::json & t_json);
 
         void parseTileLayer(
-            Context & t_context, const TileImage image, const nlohmann::json & t_json);
+            const Context & t_context, const TileImage image, const nlohmann::json & t_json);
 
         void parseRectLayer(
             const Context & t_context,
@@ -40,7 +40,7 @@ namespace bramblefore
         [[nodiscard]] const sf::FloatRect
             parseAndConvertRect(const Context & t_context, const nlohmann::json & t_json);
 
-        void parseSpawnLayer(Context & t_context, const nlohmann::json & t_json);
+        void parseSpawnLayer(const Context & t_context, const nlohmann::json & t_json);
         void parsePickupAnimLayer(const Context & t_context, const nlohmann::json & t_json);
         void parseAccentAnimLayer(const Context & t_context, const nlohmann::json & t_json);
         void parseChestAnimLayer(const Context & t_context, const nlohmann::json & t_json);

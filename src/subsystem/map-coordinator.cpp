@@ -27,7 +27,7 @@ namespace bramblefore
         , m_mapNameIter{ std::begin(m_mapNames) }
     {}
 
-    void MapCoordinator::respawn(Context & t_context)
+    void MapCoordinator::respawn(const Context & t_context)
     {
         t_context.accent.clear();
         t_context.pickup.clear();
@@ -50,7 +50,7 @@ namespace bramblefore
         }
     }
 
-    void MapCoordinator::deathBeforeDelay(Context & t_context)
+    void MapCoordinator::deathBeforeDelay(const Context & t_context)
     {
         t_context.sfx.play("death-avatar");
         // t_context.map_stats.has_player_died = true;
@@ -58,7 +58,7 @@ namespace bramblefore
         // t_context.map_stats.coin_collected  = 0;
     }
 
-    void MapCoordinator::deathAfterDelay(Context & t_context)
+    void MapCoordinator::deathAfterDelay(const Context & t_context)
     {
         t_context.state.setChangePending(State::LevelDeath);
     }

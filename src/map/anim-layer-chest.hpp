@@ -91,12 +91,12 @@ namespace bramblefore
 
         void move(const Context & t_context, const float t_amount) final;
         void dumpInfo() const final;
-        void update(Context &, const float) final {}
+        void update(const Context &, const float) final {}
 
         void appendVerts(const Context &, const sf::Vector2f &, const sf::Vector2f &) final
         {}
 
-        const Harm avatarCollide(Context &, const sf::FloatRect & t_avatarRect) override;
+        const Harm avatarCollide(const Context &, const sf::FloatRect & t_avatarRect) override;
 
       private:
         void loadTextures(const Context & t_context);

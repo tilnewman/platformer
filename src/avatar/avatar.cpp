@@ -69,7 +69,7 @@ namespace bramblefore
         m_movement = calculateMovementDetails(t_context);
     }
 
-    void Avatar::update(Context & t_context, const float t_frameTimeSec)
+    void Avatar::update(const Context & t_context, const float t_frameTimeSec)
     {
         m_runParticleEffect.update(t_context, t_frameTimeSec);
 
@@ -146,7 +146,7 @@ namespace bramblefore
         return rect;
     }
 
-    void Avatar::changeType(Context & t_context)
+    void Avatar::changeType(const Context & t_context)
     {
         AvatarTextureManager::instance().release(m_type);
         m_type = t_context.player.avatarType();
@@ -186,7 +186,7 @@ namespace bramblefore
         return rect;
     }
 
-    void Avatar::animate(Context &, const float t_frameTimeSec)
+    void Avatar::animate(const Context &, const float t_frameTimeSec)
     {
         AvatarTextureManager & textureManager{ AvatarTextureManager::instance() };
         const std::size_t frameCount{ textureManager.frameCount(m_type, m_anim) };
@@ -223,7 +223,7 @@ namespace bramblefore
         }
     }
 
-    void Avatar::handleClimbing(Context & t_context, const float t_frameTimeSec)
+    void Avatar::handleClimbing(const Context & t_context, const float t_frameTimeSec)
     {
         // first frame
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A) &&
@@ -278,7 +278,7 @@ namespace bramblefore
         }
     }
 
-    void Avatar::handleAttackState(Context & t_context)
+    void Avatar::handleAttackState(const Context & t_context)
     {
         // first frame
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::F) &&
@@ -340,7 +340,7 @@ namespace bramblefore
         }
     }
 
-    void Avatar::handleAttackingEnemies(Context & t_context)
+    void Avatar::handleAttackingEnemies(const Context & t_context)
     {
         if ((AvatarState::Attack != m_state) && (AvatarState::AttackExtra != m_state))
         {
@@ -370,7 +370,7 @@ namespace bramblefore
         }
     }
 
-    void Avatar::moveMap(Context & t_context)
+    void Avatar::moveMap(const Context & t_context)
     {
         const float posXAfter{ util::center(m_sprite.getGlobalBounds()).x };
         const float screenMiddle{ t_context.layout.wholeRect().size.x * 0.5f };
@@ -388,7 +388,7 @@ namespace bramblefore
         }
     }
 
-    void Avatar::killIfOutOfBounds(Context & t_context)
+    void Avatar::killIfOutOfBounds(const Context & t_context)
     {
         if (!t_context.layout.wholeRect().findIntersection(collisionRect()))
         {
@@ -596,7 +596,7 @@ namespace bramblefore
         return details;
     }
 
-    void Avatar::sideToSideMotion(Context & t_context, const float t_frameTimeSec)
+    void Avatar::sideToSideMotion(const Context & t_context, const float t_frameTimeSec)
     {
         if ((AvatarState::Hurt == m_state) || (AvatarState::Attack == m_state) ||
             (AvatarState::AttackExtra == m_state) ||
@@ -742,7 +742,7 @@ namespace bramblefore
         m_elapsedTimeSec = 0.0f;
     }
 
-    void Avatar::jumping(Context & t_context, const float t_frameTimeSec)
+    void Avatar::jumping(const Context & t_context, const float t_frameTimeSec)
     {
         if ((AvatarState::Attack == m_state) || (AvatarState::AttackExtra == m_state) ||
             (AvatarState::Climb == m_state) || (AvatarState::Death == m_state) ||
@@ -782,7 +782,7 @@ namespace bramblefore
         }
     }
 
-    void Avatar::triggerDeath(Context & t_context)
+    void Avatar::triggerDeath(const Context & t_context)
     {
         if (AvatarState::Death == m_state)
         {
@@ -811,7 +811,7 @@ namespace bramblefore
         restartAnim();
     }
 
-    bool Avatar::handleDeath(Context & t_context, const float t_frameTimeSec)
+    bool Avatar::handleDeath(const Context & t_context, const float t_frameTimeSec)
     {
         if (AvatarState::Death != m_state)
         {
@@ -841,7 +841,7 @@ namespace bramblefore
         return true;
     }
 
-    void Avatar::respawn(Context & t_context)
+    void Avatar::respawn(const Context & t_context)
     {
         m_state = AvatarState::Still;
         m_anim  = AvatarAnim::Walk;
@@ -873,7 +873,7 @@ namespace bramblefore
         m_sprite.move({ (m_sprite.getGlobalBounds().size.x * (1.0f - m_avatarSizeRatio.x)), 0.0f });
     }
 
-    void Avatar::exitCollisions(Context & t_context) const
+    void Avatar::exitCollisions(const Context & t_context) const
     {
         if (collisionRect().findIntersection(t_context.level.exitRect()))
         {
@@ -882,7 +882,7 @@ namespace bramblefore
         }
     }
 
-    void Avatar::hurtCollisions(Context & t_context)
+    void Avatar::hurtCollisions(const Context & t_context)
     {
         if (AvatarState::Hurt == m_state)
         {
@@ -894,7 +894,7 @@ namespace bramblefore
         harm(t_context, t_context.level.monsters().avatarCollide(avatarRect));
     }
 
-    void Avatar::killCollisions(Context & t_context)
+    void Avatar::killCollisions(const Context & t_context)
     {
         const sf::FloatRect collRect{ collisionRect() };
 
@@ -909,7 +909,7 @@ namespace bramblefore
         }
     }
 
-    void Avatar::harm(Context & t_context, const Harm & t_harm)
+    void Avatar::harm(const Context & t_context, const Harm & t_harm)
     {
         if (!t_harm.isAnyHarmDone())
         {

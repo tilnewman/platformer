@@ -96,7 +96,7 @@ namespace bramblefore
         }
     }
 
-    void SpikeTrapAnimationLayer::update(Context & t_context, const float t_frameTimeSec)
+    void SpikeTrapAnimationLayer::update(const Context & t_context, const float t_frameTimeSec)
     {
         const sf::FloatRect avatarCollRect{ t_context.avatar.collisionRect() };
 
@@ -165,7 +165,8 @@ namespace bramblefore
         return rect;
     }
 
-    const Harm SpikeTrapAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm
+        SpikeTrapAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

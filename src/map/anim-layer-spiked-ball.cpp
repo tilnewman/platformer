@@ -99,7 +99,7 @@ namespace bramblefore
         }
     }
 
-    void SpikedBallAnimationLayer::update(Context &, const float t_frameTimeSec)
+    void SpikedBallAnimationLayer::update(const Context &, const float t_frameTimeSec)
     {
         for (SpikedBallAnim & anim : m_anims)
         {
@@ -118,7 +118,7 @@ namespace bramblefore
     }
 
     const Harm
-        SpikedBallAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+        SpikedBallAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

@@ -83,7 +83,7 @@ namespace bramblefore
         }
     }
 
-    void BombAnimationLayer::update(Context &, const float t_frameTimeSec)
+    void BombAnimationLayer::update(const Context &, const float t_frameTimeSec)
     {
         for (BombAnim & anim : m_anims)
         {
@@ -129,7 +129,7 @@ namespace bramblefore
         return rect;
     }
 
-    const Harm BombAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm BombAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

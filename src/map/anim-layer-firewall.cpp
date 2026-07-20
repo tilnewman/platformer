@@ -160,7 +160,7 @@ namespace bramblefore
         }
     }
 
-    void FirewallAnimationLayer::update(Context & t_context, const float t_frameTimeSec)
+    void FirewallAnimationLayer::update(const Context & t_context, const float t_frameTimeSec)
     {
         // animate firewall sprites
         m_fireElapsedTimeSec += t_frameTimeSec;
@@ -206,7 +206,7 @@ namespace bramblefore
         }
     }
 
-    void SmokeEffect::update(Context &, const float t_frameTimeSec)
+    void SmokeEffect::update(const Context &, const float t_frameTimeSec)
     {
         for (SmokeParticle & particle : particles)
         {
@@ -241,7 +241,8 @@ namespace bramblefore
         std::erase_if(particles, [](const SmokeParticle & p) { return !p.isAlive(); });
     }
 
-    const Harm FirewallAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm
+        FirewallAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

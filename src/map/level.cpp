@@ -59,7 +59,7 @@ namespace bramblefore
         m_farthestHorizMapPixel = 0.0f;
     }
 
-    void Level::load(Context & t_context, const std::string & t_filename)
+    void Level::load(const Context & t_context, const std::string & t_filename)
     {
         reset();
         t_context.level_loader.load(t_context, t_filename);
@@ -159,7 +159,7 @@ namespace bramblefore
         m_monsters.draw(t_context, t_target, t_states);
     }
 
-    void Level::update(Context & t_context, const float t_frameTimeSec)
+    void Level::update(const Context & t_context, const float t_frameTimeSec)
     {
         for (auto & layerUPtr : m_tileLayers)
         {

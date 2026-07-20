@@ -187,7 +187,7 @@ namespace bramblefore
         }
     }
 
-    void FallingRockAnimationLayer::update(Context & t_context, const float t_frameTimeSec)
+    void FallingRockAnimationLayer::update(const Context & t_context, const float t_frameTimeSec)
     {
         updateHangingRocks(t_context, t_frameTimeSec);
         updateDroppingRocks(t_context, t_frameTimeSec);
@@ -332,8 +332,8 @@ namespace bramblefore
         return rect;
     }
 
-    const Harm
-        FallingRockAnimationLayer::avatarCollide(Context &, const sf::FloatRect & t_avatarRect)
+    const Harm FallingRockAnimationLayer::avatarCollide(
+        const Context &, const sf::FloatRect & t_avatarRect)
     {
         for (const RockDropAnim & anim : m_dropAnims)
         {

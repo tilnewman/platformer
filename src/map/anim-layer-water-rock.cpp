@@ -183,7 +183,7 @@ namespace bramblefore
         return rect;
     }
 
-    void WaterRockAnimationLayer::update(Context &, const float t_frameTimeSec)
+    void WaterRockAnimationLayer::update(const Context &, const float t_frameTimeSec)
     {
         for (WaterRockAnim & anim : m_rockAnims)
         {

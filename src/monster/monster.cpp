@@ -58,7 +58,7 @@ namespace bramblefore
         MonsterTextureManager::instance().release(m_type);
     }
 
-    void Monster::update(Context & t_context, const float t_frameTimeSec)
+    void Monster::update(const Context & t_context, const float t_frameTimeSec)
     {
         m_animations.update(t_frameTimeSec);
 
@@ -119,7 +119,7 @@ namespace bramblefore
         }
     }
 
-    void Monster::handleDying(Context & t_context)
+    void Monster::handleDying(const Context & t_context)
     {
         m_isAlive = false;
 
@@ -161,7 +161,7 @@ namespace bramblefore
         m_animations.move(t_amount);
     }
 
-    bool Monster::avatarAttack(Context & t_context, const AttackInfo & t_attackInfo)
+    bool Monster::avatarAttack(const Context & t_context, const AttackInfo & t_attackInfo)
     {
         if ((MonsterAnim::Death == m_anim) || (MonsterAnim::Hurt == m_anim))
         {
@@ -256,7 +256,7 @@ namespace bramblefore
         // clang-format on
     }
 
-    void Monster::changeStateBeforeSeeingPlayer(Context & t_context)
+    void Monster::changeStateBeforeSeeingPlayer(const Context & t_context)
     {
         if (MonsterAnim::Death == m_anim)
         {
@@ -286,7 +286,7 @@ namespace bramblefore
         }
     }
 
-    void Monster::changeStateAfterSeeingPlayer(Context & t_context)
+    void Monster::changeStateAfterSeeingPlayer(const Context & t_context)
     {
         if (!t_context.layout.wholeRect().findIntersection(collisionRect()))
         {
@@ -329,7 +329,7 @@ namespace bramblefore
         }
     }
 
-    void Monster::handleWalking(Context & t_context, const float t_frameTimeSec)
+    void Monster::handleWalking(const Context & t_context, const float t_frameTimeSec)
     {
         if (MonsterAnim::Walk != m_anim)
         {
@@ -401,7 +401,7 @@ namespace bramblefore
         m_sprite.move({ 0.0f, (t_imageHeightOffsetRatio * m_sprite.getGlobalBounds().size.y) });
     }
 
-    void Monster::turnToFacePlayer(Context & t_context)
+    void Monster::turnToFacePlayer(const Context & t_context)
     {
         const bool isPlayerToTheRight{ util::center(t_context.avatar.collisionRect()).x >
                                        util::center(collisionRect()).x };

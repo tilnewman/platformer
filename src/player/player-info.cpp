@@ -31,7 +31,7 @@ namespace bramblefore
         , m_elapsedTimeSec{ 0.0f }
     {}
 
-    void PlayerInfo::setup(Context & t_context, const AvatarType t_type)
+    void PlayerInfo::setup(const Context & t_context, const AvatarType t_type)
     {
         m_avatarType = t_type;
 
@@ -59,7 +59,7 @@ namespace bramblefore
         manaReset(t_context);
     }
 
-    void PlayerInfo::update(Context & t_context, const float t_frameTimeSec)
+    void PlayerInfo::update(const Context & t_context, const float t_frameTimeSec)
     {
         m_elapsedTimeSec += t_frameTimeSec;
         if (m_elapsedTimeSec > 1.0f)
@@ -69,7 +69,7 @@ namespace bramblefore
         }
     }
 
-    Health_t PlayerInfo::healthAdjust(Context & t_context, const Health_t t_adjustment)
+    Health_t PlayerInfo::healthAdjust(const Context & t_context, const Health_t t_adjustment)
     {
         m_health = std::clamp((m_health + t_adjustment), 0, m_healthMax);
 
@@ -83,13 +83,13 @@ namespace bramblefore
         return m_health;
     }
 
-    void PlayerInfo::healthReset(Context & t_context)
+    void PlayerInfo::healthReset(const Context & t_context)
     {
         m_health = 0;
         healthAdjust(t_context, m_healthMax);
     }
 
-    Mana_t PlayerInfo::manaAdjust(Context & t_context, const Mana_t t_adjustment)
+    Mana_t PlayerInfo::manaAdjust(const Context & t_context, const Mana_t t_adjustment)
     {
         m_mana = std::clamp((m_mana + t_adjustment), 0, m_manaMax);
 
@@ -103,13 +103,13 @@ namespace bramblefore
         return m_mana;
     }
 
-    void PlayerInfo::manaReset(Context & t_context)
+    void PlayerInfo::manaReset(const Context & t_context)
     {
         m_mana = 0;
         manaAdjust(t_context, m_manaMax);
     }
 
-    Coin_t PlayerInfo::coinAdjust(Context & t_context, const Coin_t t_adjustment)
+    Coin_t PlayerInfo::coinAdjust(const Context & t_context, const Coin_t t_adjustment)
     {
         m_coins += t_adjustment;
 
@@ -137,13 +137,13 @@ namespace bramblefore
         return m_experience;
     }
 
-    void PlayerInfo::mapStarCollect(Context & t_context)
+    void PlayerInfo::mapStarCollect(const Context & t_context)
     {
         ++m_mapStarCount;
         t_context.player_display.setStarCount(m_mapStarCount);
     }
 
-    void PlayerInfo::mapStarReset(Context & t_context)
+    void PlayerInfo::mapStarReset(const Context & t_context)
     {
         m_mapStarCount = 0;
         t_context.player_display.setStarCount(m_mapStarCount);
@@ -194,7 +194,7 @@ namespace bramblefore
     }
 
     void PlayerInfo::castCurrentSpell(
-        Context & t_context, const sf::Vector2f & pos, const bool t_isFacingRight)
+        const Context & t_context, const sf::Vector2f & pos, const bool t_isFacingRight)
     {
         const Spell spell{ t_context.player.currentSpell() };
         const int manaCost{ toManaCost(spell) };
