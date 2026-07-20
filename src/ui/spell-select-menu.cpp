@@ -86,7 +86,7 @@ namespace bramblefore
                                             (static_cast<float>(selection) * (iconSize * 1.5f)) };
 
                 m_slider =
-                    util::SliderFromTo<float>(m_selectionRect.position.x, targetHorizPos, 10.0f);
+                    util::SliderFromTo<float>(m_selectionRect.position.x, targetHorizPos, 3.0f);
 
                 t_context.player.setCurentSpellIndex(selection);
             }

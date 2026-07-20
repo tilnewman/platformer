@@ -13,7 +13,7 @@
 namespace util
 {
     // All Sliders:
-    //  - Use sin() to achieve smooth motion called "sliding" here.
+    //  - Use Smooth Step to achieve sin motion called "sliding" here.
     //  - Start automatically at the given value and isMoving() returns true.
     //  - Call Update() with a fraction of a second to move the value towards the target.
     //  - Update() will call stop() automatically when target value is reached or IsRealClose().
@@ -28,19 +28,19 @@ namespace util
     // Will not work with negative speeds or update(...).
     //
     template <typename T = float>
-    class SliderRatio
+    class SinSliderRatio
     {
         static_assert(std::is_floating_point_v<T>);
 
       public:
-        constexpr SliderRatio() noexcept
+        constexpr SinSliderRatio() noexcept
             : m_isMoving{ false }
             , m_speed{ 0 }
             , m_value{ 0 }
             , m_radians{ 0 }
         {}
 
-        explicit constexpr SliderRatio(const T t_speed, const T t_startAt = T(0)) noexcept
+        explicit constexpr SinSliderRatio(const T t_speed, const T t_startAt = T(0)) noexcept
             : m_isMoving{ true }
             , m_speed{ 0 }
             , m_value{ 0 }
@@ -53,14 +53,23 @@ namespace util
         [[nodiscard]] constexpr T value() const noexcept { return m_value; }
         [[nodiscard]] constexpr T speed() const noexcept { return m_speed; }
         constexpr void speed(const T t_newSpeed) noexcept { m_speed = t_newSpeed; }
-        constexpr bool isMoving() const noexcept { return m_isMoving; }
+        [[nodiscard]] constexpr bool isMoving() const noexcept { return m_isMoving; }
         constexpr void stop() noexcept { m_isMoving = false; }
 
         constexpr void restart(const T t_speed, const T t_startAt = T(0))
         {
-            m_speed   = t_speed;
-            m_value   = std::clamp(t_startAt, T(0), T(1));
-            m_radians = (m_radiansFrom + (std::numbers::pi_v<T> * m_value));
+            m_isMoving = true;
+            m_speed    = t_speed;
+            m_value    = std::clamp(t_startAt, T(0), T(1));
+            m_radians  = (m_radiansFrom + (std::numbers::pi_v<T> * m_value));
+            update(T(0));
+        }
+
+        constexpr void restart(const T t_startAt = T(0))
+        {
+            m_isMoving = true;
+            m_value    = std::clamp(t_startAt, T(0), T(1));
+            m_radians  = (m_radiansFrom + (std::numbers::pi_v<T> * m_value));
             update(T(0));
         }
 
@@ -90,6 +99,81 @@ namespace util
         T m_radians;
         static constexpr T m_radiansFrom{ std::numbers::pi_v<T> * T(0.5) };
         static constexpr T m_radiansTo{ std::numbers::pi_v<T> * T(1.5) };
+    };
+
+    //
+    // Slides a value from zero to one using smoothstep equation.
+    // Motion is fastest (bounce-like) when startAt=0.5.
+    // Will not work with negative speeds or update(...).
+    //
+    template <typename T = float>
+    class SliderRatio
+    {
+        static_assert(std::is_floating_point_v<T>);
+
+      public:
+        constexpr SliderRatio() noexcept
+            : m_isMoving{ false }
+            , m_speed{ 0 }
+            , m_value{ 0 }
+            , m_base{ 0 }
+        {}
+
+        explicit constexpr SliderRatio(const T t_speed, const T t_startAt = T(0)) noexcept
+            : m_isMoving{ true }
+            , m_speed{ 0 }
+            , m_value{ 0 }
+            , m_base{ std::clamp(t_startAt, T(0), T(1)) }
+        {
+            restart(t_speed, t_startAt);
+        }
+
+        [[nodiscard]] constexpr T value() const noexcept { return m_value; }
+        [[nodiscard]] constexpr T speed() const noexcept { return m_speed; }
+        constexpr void speed(const T t_newSpeed) noexcept { m_speed = t_newSpeed; }
+        [[nodiscard]] constexpr bool isMoving() const noexcept { return m_isMoving; }
+        constexpr void stop() noexcept { m_isMoving = false; }
+
+        constexpr void restart(const T t_speed, const T t_startAt = T(0))
+        {
+            m_isMoving = true;
+            m_speed    = t_speed;
+            m_base     = std::clamp(t_startAt, T(0), T(1));
+            update(T(0));
+        }
+
+        constexpr void restart(const T t_startAt = T(0))
+        {
+            m_isMoving = true;
+            m_base     = std::clamp(t_startAt, T(0), T(1));
+            update(T(0));
+        }
+
+        constexpr T update(const T t_adjustment) noexcept
+        {
+            if (m_isMoving)
+            {
+                m_base += (t_adjustment * m_speed);
+                if ((m_base > T(1)) || isRealClose(m_base, T(1)))
+                {
+                    m_value = T(1);
+                    stop();
+                }
+                else
+                {
+                    m_value = ((m_base * m_base) * (T(3) - (T(2) * m_base)));
+                    m_value = std::clamp(m_value, T(0), T(1));
+                }
+            }
+
+            return m_value;
+        }
+
+      private:
+        bool m_isMoving;
+        T m_speed;
+        T m_value;
+        T m_base;
     };
 
     //
