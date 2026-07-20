@@ -83,6 +83,7 @@ namespace bramblefore
         sf::Clock m_oneSecondClock;
         float m_elapsedTimeSec;
         std::unique_ptr<util::GraphDisplay<std::size_t>> m_statsDisplayUPtr;
+        std::unique_ptr<sf::Text> m_framerateTextUPtr;
     };
 
 } // namespace bramblefore

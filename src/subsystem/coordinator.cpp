@@ -48,6 +48,7 @@ namespace bramblefore
         , m_oneSecondClock{}
         , m_elapsedTimeSec{ 0.0f }
         , m_statsDisplayUPtr{}
+        , m_framerateTextUPtr{}
     {
         m_fpsValues.reserve(128);
     }
@@ -64,6 +65,8 @@ namespace bramblefore
         m_window.setFramerateLimit(0);
 
         util::SfmlDefaults::instance().setup();
+
+        m_framerateTextUPtr = std::make_unique<sf::Text>(util::SfmlDefaults::instance().font());
 
         m_sfx.mediaPath(m_settings.media_path / "sound");
         m_sfx.loadAll();
@@ -110,6 +113,9 @@ namespace bramblefore
 
     void Coordinator::teardown()
     {
+        m_statsDisplayUPtr.reset();
+        m_framerateTextUPtr.reset();
+
         m_contextUPtr.reset();
         m_playerInfoDisplayUPtr.reset();
         m_avatarUPtr.reset();
@@ -119,9 +125,9 @@ namespace bramblefore
         AvatarTextureManager::instance().teardown();
         MonsterTextureManager::instance().teardown();
         util::SfmlDefaults::instance().teardown();
-        
+
         m_window.close();
-        
+
         // util::TextureLoader::dumpInfo();
     }
 
@@ -177,12 +183,17 @@ namespace bramblefore
     {
         sf::RenderStates states;
 
-        m_window.clear(sf::Color::Black);
+        m_window.clear(sf::Color::Black); // some states depend on the background color being black
         m_states.current().draw(*m_contextUPtr, m_window, states);
 
         if (m_statsDisplayUPtr && m_settings.will_display_fps_graph)
         {
             m_statsDisplayUPtr->draw(m_window, states);
+        }
+
+        if (m_settings.will_display_fps)
+        {
+            m_window.draw(*m_framerateTextUPtr, states);
         }
 
         m_window.display();
@@ -216,10 +227,20 @@ namespace bramblefore
         {
             m_elapsedTimeSec -= 1.0f;
 
-            if (m_settings.will_log_fps)
+            if (m_settings.will_display_fps)
             {
-                const auto stats = util::makeStats(m_fpsValues);
-                std::clog << "\tFPS " << stats << '\n';
+                const auto stats{ util::makeStats(m_fpsValues) };
+
+                *m_framerateTextUPtr = m_fonts.makeText(
+                    Font::General,
+                    FontSize::Medium,
+                    stats.toString(),
+                    sf::Color(255, 255, 255, 127));
+
+                m_framerateTextUPtr->setPosition(
+                    { (m_contextUPtr->layout.wholeRect().size.x -
+                       m_framerateTextUPtr->getGlobalBounds().size.x),
+                      0.0f });
             }
 
             if (m_settings.will_display_fps_graph)

@@ -27,7 +27,7 @@ namespace bramblefore
         // strange physics bugs occur when setting to anything other than 60...TODO?
         float frame_rate = 60.0f;
 
-        bool will_log_fps           = true;
+        bool will_display_fps       = true;
         bool will_display_fps_graph = true;
 
         // These are related, so if you half or double one of these then you should also do that to
