@@ -91,6 +91,7 @@ namespace bramblefore
         void setPosition(const sf::FloatRect & t_rect);
         [[nodiscard]] const sf::FloatRect collisionRect() const;
         [[nodiscard]] const sf::FloatRect attackRect() const;
+        [[nodiscard]] const sf::FloatRect footCollisionRect() const;
         void triggerDeath(Context & t_context);
         void triggerIdle();
 
@@ -105,7 +106,7 @@ namespace bramblefore
         void moveMap(Context & t_context);
         void killIfOutOfBounds(Context & t_context);
         void preventBacktracking(const Context & t_context);
-        void collisions(Context & t_context);
+        void collisions(const Context & t_context);
         void sideToSideMotion(Context & t_context, const float t_frameTimeSec);
         void restartAnim();
         void jumping(Context & t_context, const float t_frameTimeSec);
@@ -118,6 +119,15 @@ namespace bramblefore
         void killCollisions(Context & t_context);
         void harm(Context & t_context, const Harm & t_harm);
         [[nodiscard]] MovementDetails calculateMovementDetails(const Context & t_context) const;
+
+        void collide(
+            const Context & t_context,
+            const sf::FloatRect & t_avatarRect,
+            const sf::FloatRect & t_avatarFootRect,
+            const sf::FloatRect & t_collRect,
+            const sf::FloatRect & t_intersectionRect,
+            const float t_tolerance,
+            bool & t_hasHitSomething);
 
       private:
         sf::Sprite m_sprite;

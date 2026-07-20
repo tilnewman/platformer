@@ -409,104 +409,141 @@ namespace bramblefore
         }
     }
 
-    void Avatar::collisions(Context & t_context)
+    [[nodiscard]] const sf::FloatRect Avatar::footCollisionRect() const
     {
-        const float tolerance{ t_context.settings.avatar_collision_tolerance };
-
         const sf::FloatRect avatarRect{ collisionRect() };
-        const sf::Vector2f avatarCenter{ util::center(avatarRect) };
+
+        sf::FloatRect footRect{ avatarRect };
 
         const float footRectHeightAdj{ avatarRect.size.y * 0.8f };
-        sf::FloatRect footRect = avatarRect;
         footRect.position.y += footRectHeightAdj;
         footRect.size.y -= footRectHeightAdj;
 
-        // setup a vector of all types of collision rects that are colliding
-        collisionRectCache.clear();
-        for (const sf::FloatRect & rect : t_context.level.collisions())
-        {
-            if (avatarRect.findIntersection(rect))
-            {
-                collisionRectCache.push_back(rect);
-            }
-        }
+        return footRect;
+    }
 
-        t_context.level.monsters().appendCollisionRects(collisionRectCache);
-
-        for (const sf::FloatRect & rect : t_context.level.layerCollisions())
-        {
-            if (avatarRect.findIntersection(rect))
-            {
-                collisionRectCache.push_back(rect);
-            }
-        }
-
-        // iterate over all of those collision rects and push the avatar around
+    void Avatar::collisions(const Context & t_context)
+    {
         bool hasHitSomething{ false };
+        const float tolerance{ t_context.settings.avatar_collision_tolerance };
+        const sf::FloatRect avatarRect{ collisionRect() };
+        const sf::FloatRect footRect{ footCollisionRect() };
+
+        for (const sf::FloatRect & collRect : t_context.level.collisions())
+        {
+            const auto intersectionOpt{ avatarRect.findIntersection(collRect) };
+            if (intersectionOpt)
+            {
+                collide(
+                    t_context,
+                    avatarRect,
+                    footRect,
+                    collRect,
+                    intersectionOpt.value(),
+                    tolerance,
+                    hasHitSomething);
+            }
+        }
+
+        for (const sf::FloatRect & collRect : t_context.level.layerCollisions())
+        {
+            const auto intersectionOpt{ avatarRect.findIntersection(collRect) };
+            if (intersectionOpt)
+            {
+                collide(
+                    t_context,
+                    avatarRect,
+                    footRect,
+                    collRect,
+                    intersectionOpt.value(),
+                    tolerance,
+                    hasHitSomething);
+            }
+        }
+
+        collisionRectCache.clear();
+        t_context.level.monsters().appendCollisionRects(collisionRectCache);
         for (const sf::FloatRect & collRect : collisionRectCache)
         {
-            const auto intersectOpt{ avatarRect.findIntersection(collRect) };
-            if (!intersectOpt)
+            const auto intersectionOpt{ avatarRect.findIntersection(collRect) };
+            if (intersectionOpt)
             {
-                continue;
-            }
-
-            const sf::FloatRect intersection{ intersectOpt.value() };
-
-            if ((m_velocity.y < 0.0f) && (util::center(collRect).y < avatarCenter.y))
-            {
-                // rising and hit something above
-
-                m_velocity.y = 0.0f;
-                m_sprite.move({ 0.0f, intersection.size.y });
-                hasHitSomething = true;
-                continue;
-            }
-
-            if ((m_velocity.y >= 0.0f) && (intersection.size.y < tolerance) &&
-                collRect.findIntersection(footRect))
-            {
-                // falling and hit something below
-
-                if (!m_hasLanded)
-                {
-                    t_context.sfx.play("land");
-                    m_state = AvatarState::Still;
-                    m_anim  = AvatarAnim::Walk;
-                    restartAnim();
-                }
-
-                m_hasLanded  = true;
-                m_velocity.y = 0.0f;
-                m_sprite.move({ 0.0f, -intersection.size.y });
-                hasHitSomething = true;
-                continue;
-            }
-
-            // at this point we hit something from the side
-
-            if (intersection.size.x < tolerance)
-            {
-                if (m_velocity.x > 0.0f)
-                {
-                    m_velocity.x = 0.0f;
-                    m_sprite.move({ -intersection.size.x, 0.0f });
-                    hasHitSomething = true;
-                    continue;
-                }
-                else if (m_velocity.x < 0.0f)
-                {
-                    m_velocity.x = 0.0f;
-                    m_sprite.move({ intersection.size.x, 0.0f });
-                    hasHitSomething = true;
-                    continue;
-                }
+                collide(
+                    t_context,
+                    avatarRect,
+                    footRect,
+                    collRect,
+                    intersectionOpt.value(),
+                    tolerance,
+                    hasHitSomething);
             }
         }
 
         if (!hasHitSomething)
         {
             m_hasLanded = false;
+        }
+    }
+
+    void Avatar::collide(
+        const Context & t_context,
+        const sf::FloatRect & t_avatarRect,
+        const sf::FloatRect & t_avatarFootRect,
+        const sf::FloatRect & t_collRect,
+        const sf::FloatRect & t_intersectionRect,
+        const float t_tolerance,
+        bool & t_hasHitSomething)
+    {
+        const sf::Vector2f avatarCenter{ util::center(t_avatarRect) };
+
+        if ((m_velocity.y < 0.0f) && (util::center(t_collRect).y < avatarCenter.y))
+        {
+            // rising and hit something above
+
+            m_velocity.y = 0.0f;
+            m_sprite.move({ 0.0f, t_intersectionRect.size.y });
+            t_hasHitSomething = true;
+            return;
+        }
+
+        if ((m_velocity.y >= 0.0f) && (t_intersectionRect.size.y < t_tolerance) &&
+            t_collRect.findIntersection(t_avatarFootRect))
+        {
+            // falling and hit something below
+
+            if (!m_hasLanded)
+            {
+                t_context.sfx.play("land");
+                m_state = AvatarState::Still;
+                m_anim  = AvatarAnim::Walk;
+                restartAnim();
+            }
+
+            m_hasLanded  = true;
+            m_velocity.y = 0.0f;
+            m_sprite.move({ 0.0f, -t_intersectionRect.size.y });
+            t_hasHitSomething = true;
+            return;
+        }
+
+        // at this point we hit something from the side
+
+        if (t_intersectionRect.size.x < t_tolerance)
+        {
+            if (m_velocity.x > 0.0f)
+            {
+                m_velocity.x = 0.0f;
+                m_sprite.move({ -t_intersectionRect.size.x, 0.0f });
+                t_hasHitSomething = true;
+                return;
+            }
+            else if (m_velocity.x < 0.0f)
+            {
+                m_velocity.x = 0.0f;
+                m_sprite.move({ t_intersectionRect.size.x, 0.0f });
+                t_hasHitSomething = true;
+                return;
+            }
         }
     }
 
