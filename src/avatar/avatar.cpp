@@ -560,8 +560,8 @@ namespace bramblefore
     {
         MovementDetails details;
 
-        details.gravity =
-            t_context.layout.calScaleBasedOnResolution(t_context, t_context.settings.gravity_acc);
+        details.gravity = t_context.layout.calScaleBasedOnResolution(
+            t_context, t_context.settings.gravity_acc, CalcOrder::Inverse);
 
         details.walk_speed_limit = t_context.layout.calScaleBasedOnResolution(
             t_context, t_context.settings.walk_speed_limit);

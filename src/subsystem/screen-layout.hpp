@@ -12,6 +12,14 @@ namespace bramblefore
 
     //
 
+    enum class CalcOrder : unsigned char
+    {
+        Normal,
+        Inverse
+    };
+
+    //
+
     class ScreenLayout
     {
       public:
@@ -22,8 +30,10 @@ namespace bramblefore
         [[nodiscard]] inline const sf::Vector2f wholeSize() const noexcept { return m_wholeSize; }
         [[nodiscard]] inline const sf::FloatRect wholeRect() const noexcept { return m_wholeRect; }
 
-        [[nodiscard]] float
-            calScaleBasedOnResolution(const Context & t_context, const float t_originalScale) const;
+        [[nodiscard]] float calScaleBasedOnResolution(
+            const Context & t_context,
+            const float t_originalScale,
+            const CalcOrder t_order = CalcOrder::Normal) const;
 
       private:
         sf::Vector2f m_wholeSize;

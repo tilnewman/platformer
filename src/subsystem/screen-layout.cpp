@@ -23,7 +23,7 @@ namespace bramblefore
     }
 
     float ScreenLayout::calScaleBasedOnResolution(
-        const Context & t_context, const float t_scale) const
+        const Context & t_context, const float t_scale, const CalcOrder t_order) const
     {
         // This is the resolution on my macbook originally used when starting the game.
         // The values in settings.hpp work as is when this is the resolution.
@@ -32,7 +32,14 @@ namespace bramblefore
         const float current{ std::sqrt(static_cast<float>(
             t_context.settings.video_mode.size.x * t_context.settings.video_mode.size.y)) };
 
-        return ((t_scale * current) / original);
+        if (CalcOrder::Normal == t_order)
+        {
+            return ((t_scale * current) / original);
+        }
+        else
+        {
+            return ((t_scale * original) / current);
+        }
     }
 
 } // namespace bramblefore
