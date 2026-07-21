@@ -201,22 +201,40 @@ namespace bramblefore
 
     void Coordinator::setupRenderWindow(sf::VideoMode & t_videoMode)
     {
-        const sf::VideoMode videoModeOrig{ t_videoMode };
+        std::cout << "Attempting video mode " << t_videoMode << "...";
 
-        // sometimes the resolution of the window created does not match what was specified
+        if (!m_settings.video_mode.isValid())
+        {
+            std::cout << "but that is not suported.  Valid video modes at "
+                      << m_settings.video_mode.bitsPerPixel << "bpp:\n"
+                      << util::makeSupportedVideoModesString(m_settings.video_mode.bitsPerPixel)
+                      << '\n';
+
+            t_videoMode = util::findVideoModeClosestTo(m_settings.video_mode);
+            setupRenderWindow(t_videoMode);
+            return;
+        }
+
         m_window.create(t_videoMode, "Bramblefore", sf::State::Fullscreen);
 
-        const unsigned actualWidth{ m_window.getSize().x };
-        const unsigned actualHeight{ m_window.getSize().y };
-
-        if ((t_videoMode.size.x != actualWidth) || (t_videoMode.size.y != actualHeight))
+        // sometimes the resolution of the window created does not match what was specified
+        const unsigned actualWidth  = m_window.getSize().x;
+        const unsigned actualHeight = m_window.getSize().y;
+        if ((m_settings.video_mode.size.x == actualWidth) &&
+            (m_settings.video_mode.size.y == actualHeight))
         {
-            t_videoMode.size.x = actualWidth;
-            t_videoMode.size.y = actualHeight;
-
-            std::clog << "SFML switched resolution from " << videoModeOrig << " to " << t_videoMode
-                      << ".\n";
+            std::cout << "Success." << std::endl;
         }
+        else
+        {
+            std::cout << "Failed" << ".  ";
+
+            m_settings.video_mode.size.x = actualWidth;
+            m_settings.video_mode.size.y = actualHeight;
+
+            std::cout << "Using " << m_settings.video_mode << " instead." << std::endl;
+        }
+
     }
 
 } // namespace bramblefore
