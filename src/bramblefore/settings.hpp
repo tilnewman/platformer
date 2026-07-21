@@ -23,8 +23,9 @@ namespace bramblefore
 
         sf::VideoMode video_mode{ { 1920u, 1080u }, 32u };
 
-        // never set to zero, there are already tools in place to see raw framerates
-        // strange physics bugs occur when setting to anything other than 60...TODO?
+        // Never set to zero, there are already tools in place to see raw framerates.
+        // The physics are tuned for 60Hz framerate, setting this to anything else will
+        // cause strang physics bugs.
         float frame_rate = 60.0f;
 
         bool will_display_fps       = true;
