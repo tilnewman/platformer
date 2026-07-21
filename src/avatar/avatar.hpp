@@ -88,7 +88,7 @@ namespace bramblefore
         void setup(const Context & t_context);
         void update(const Context & t_context, const float t_frameTimeSec);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states);
-        void setPosition(const sf::FloatRect & t_rect);
+        void setToSpawnPosition(const sf::FloatRect & t_rect);
         [[nodiscard]] const sf::FloatRect collisionRect() const;
         [[nodiscard]] const sf::FloatRect attackRect() const;
         [[nodiscard]] const sf::FloatRect footCollisionRect() const;

@@ -64,7 +64,7 @@ namespace bramblefore
         reset();
         t_context.level_loader.load(t_context, t_filename);
         appendVertLayers(t_context);
-        t_context.avatar.setPosition(m_enterRect);
+        t_context.avatar.setToSpawnPosition(m_enterRect);
         m_farthestHorizMapPixel = m_exitRect.position.x;
         // dumpInfo(t_filename);
     }

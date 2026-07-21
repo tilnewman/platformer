@@ -122,17 +122,17 @@ namespace bramblefore
     {
         m_runParticleEffect.draw(t_target, t_states);
         t_target.draw(m_sprite, t_states);
-        
+
         if (m_willDisplayCollisionRect)
         {
             util::drawRectangleShape(t_target, collisionRect(), false, sf::Color::Red);
         }
     }
 
-    void Avatar::setPosition(const sf::FloatRect & t_rect)
+    void Avatar::setToSpawnPosition(const sf::FloatRect & t_rect)
     {
-        m_sprite.setPosition({ util::center(t_rect).x, util::bottom(t_rect) });
-        m_sprite.move({ 0.0f, (-110.0f * m_sprite.getScale().y) });
+        m_sprite.setPosition(
+            { util::center(t_rect).x, (t_rect.position.y - m_sprite.getGlobalBounds().size.y) });
     }
 
     const sf::FloatRect Avatar::collisionRect() const
