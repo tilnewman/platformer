@@ -27,14 +27,17 @@ namespace bramblefore
         FramerateDisplay();
 
         void setup(const Context & t_context);
-        void update(const Context & t_context, const float t_elapsedTimeSec);
+        void handleElapsedFrame(const Context & t_context, const float t_elapsedTimeSec);
         
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const;
 
       private:
-        std::size_t m_frameCount;
+        float m_updateDisplayPeriodSec;
+        sf::Vector2u m_statsDisplaySize;
+        std::vector<std::size_t> m_fpsValues;
         float m_elapsedTimeSec;
+        std::unique_ptr<util::GraphDisplay<std::size_t>> m_statsDisplayUPtr;
         std::unique_ptr<sf::Text> m_framerateTextUPtr;
     };
 

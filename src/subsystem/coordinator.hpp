@@ -51,10 +51,10 @@ namespace bramblefore
         void handleEvent(const sf::Event & t_event);
         void update(const float t_frameTimeSec);
         void draw();
+        void handleEndOfFrameTasks(const float t_actualFrameTimeSec);
         void setupRenderWindow(sf::VideoMode & t_videoMode);
 
       private:
-        // TODO make these unique pointers to save stack space and better control teardown()
         sf::RenderStates m_renderStates;
         sf::RenderWindow m_window;
         Settings m_settings;

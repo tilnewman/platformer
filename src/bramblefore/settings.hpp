@@ -23,9 +23,12 @@ namespace bramblefore
 
         sf::VideoMode video_mode{ { 1920u, 1080u }, 32u };
 
-        unsigned frame_rate         = 60u;
+        // never set to zero
+        // strange physics bugs occur when setting to anything other than 60...TODO?
+        float frame_rate = 60.0f;
+
         bool will_display_fps       = true;
-        bool will_display_fps_graph = false;
+        bool will_display_fps_graph = true;
 
         // These are related, so if you half or double one of these then you should also do that to
         // the others, except for very minor tweaks.
