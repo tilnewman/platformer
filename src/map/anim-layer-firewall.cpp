@@ -142,20 +142,20 @@ namespace bramblefore
         }
     }
 
-    void FirewallAnimationLayer::move(const Context &, const float t_amount)
+    void FirewallAnimationLayer::move(const Context &, const sf::Vector2f & t_move)
     {
         for (sf::Sprite & sprite : m_fireSprites)
         {
-            sprite.move({ t_amount, 0.0f });
+            sprite.move(t_move);
         }
 
         for (SmokeEffect & smokeEffect : m_smokeEffects)
         {
-            smokeEffect.region.position.x += t_amount;
+            smokeEffect.region.position += t_move;
 
             for (SmokeParticle & particle : smokeEffect.particles)
             {
-                particle.sprite.move({ t_amount, 0.0f });
+                particle.sprite.move(t_move);
             }
         }
     }

@@ -114,15 +114,13 @@ namespace bramblefore
         PickupAnimations();
 
         void setup(const Context & t_context);
-
         void add(const Context & t_context, const sf::FloatRect & t_rect, const Pickup t_pickup);
-
         void update(const Context & t_context, const float t_frameTimeSec);
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const;
 
-        void move(const float amount);
+        void move(const sf::Vector2f & t_move);
         constexpr void clear() noexcept { m_anims.clear(); }
         void processCollisionWithAvatar(const Context & t_context, const sf::FloatRect & t_avatarRect);
 

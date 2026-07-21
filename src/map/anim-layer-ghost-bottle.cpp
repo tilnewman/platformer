@@ -76,12 +76,12 @@ namespace bramblefore
         }
     }
 
-    void GhostBottleAnimationLayer::move(const Context &, const float t_amount)
+    void GhostBottleAnimationLayer::move(const Context &, const sf::Vector2f & t_move)
     {
         for (GhostBottleAnim & anim : m_anims)
         {
-            anim.sprite.move({ t_amount, 0.0f });
-            anim.coll_rect.position.x += t_amount;
+            anim.sprite.move(t_move);
+            anim.coll_rect.position += t_move;
         }
     }
 

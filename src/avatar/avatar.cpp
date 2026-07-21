@@ -180,7 +180,7 @@ namespace bramblefore
         if ((AvatarType::BlueKnight == m_type) || (AvatarType::RedKnight == m_type) ||
             (AvatarType::Viking == m_type))
         {
-            rect.size.x *= 1.2f;
+            rect.size.x *= 1.2f; // TODO move this to settings
         }
 
         if (m_isFacingRight)
@@ -381,19 +381,43 @@ namespace bramblefore
 
     void Avatar::moveMap(const Context & t_context)
     {
-        const float posXAfter{ util::center(m_sprite.getGlobalBounds()).x };
-        const float screenMiddle{ t_context.layout.wholeRect().size.x * 0.5f };
+        const sf::FloatRect wholeRect{ t_context.layout.wholeRect() };
+        const sf::Vector2f avatarMiddle{ util::center(m_sprite.getGlobalBounds()) };
 
-        if ((m_velocity.x < 0.0f) || (posXAfter < screenMiddle))
+        if (const sf::Vector2f screenMiddle{ util::center(wholeRect) };
+            (m_velocity.x > 0.0f) && (avatarMiddle.x > screenMiddle.x))
         {
-            return;
+            // moving right creates a negative move.x
+            const sf::Vector2f move{ (screenMiddle.x - avatarMiddle.x), 0.0f };
+            if (t_context.level.move(t_context, move))
+            {
+                m_sprite.move(move);
+                m_runParticleEffect.move(move);
+            }
         }
 
-        const float moveX{ screenMiddle - posXAfter };
-        if (t_context.level.move(t_context, moveX))
+        if (const float riseMovePoint{ wholeRect.size.y * 0.12f };
+            (m_velocity.y < 0.0f) && (avatarMiddle.y < riseMovePoint))
         {
-            m_sprite.move({ moveX, 0.0f });
-            m_runParticleEffect.move(moveX);
+            // moving up creates a positive move.y
+            const sf::Vector2f move{ 0.0f, (riseMovePoint - avatarMiddle.y) };
+            if (t_context.level.move(t_context, move))
+            {
+                m_sprite.move(move);
+                m_runParticleEffect.move(move);
+            }
+        }
+
+        if (const float fallMovePoint{ wholeRect.size.y * 0.5f };
+            (m_velocity.y > 0.0f) && (avatarMiddle.y > fallMovePoint))
+        {
+            // moving down creates a negative move.y
+            const sf::Vector2f move{ 0.0f, (fallMovePoint - avatarMiddle.y) };
+            if (t_context.level.move(t_context, move))
+            {
+                m_sprite.move(move);
+                m_runParticleEffect.move(move);
+            }
         }
     }
 

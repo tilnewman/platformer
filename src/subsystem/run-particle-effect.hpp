@@ -34,12 +34,12 @@ namespace bramblefore
       public:
         RunParticleEffect();
 
-        inline void start() noexcept { m_isSpawning = true; }
-        inline void stop() noexcept { m_isSpawning = false; }
+        constexpr void start() noexcept { m_isSpawning = true; }
+        constexpr void stop() noexcept { m_isSpawning = false; }
         void setup(const Context & t_context);
         void update(const Context & t_context, const float t_elapsedTimeSec);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
-        void move(const float t_amount);
+        void move(const sf::Vector2f & t_move);
 
       private:
         [[nodiscard]] const sf::Texture & randomStarTexture(const Context & t_context) const;

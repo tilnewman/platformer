@@ -33,6 +33,7 @@ namespace bramblefore
     {
         const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.2f) *
                            t_context.settings.map_scale };
+
         sprite.setScale({ scale, scale });
 
         if (isVine(which))
@@ -153,11 +154,11 @@ namespace bramblefore
         }
     }
 
-    void AccentAnimations::move(const float t_amount)
+    void AccentAnimations::move(const sf::Vector2f & t_move)
     {
         for (AccentAnim & anim : m_anims)
         {
-            anim.sprite.move({ t_amount, 0.0f });
+            anim.sprite.move(t_move);
         }
     }
 

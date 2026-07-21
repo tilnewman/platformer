@@ -124,15 +124,15 @@ namespace bramblefore
         }
     }
 
-    void LightningAnimationLayer::move(const Context &, const float t_amount)
+    void LightningAnimationLayer::move(const Context &, const sf::Vector2f & t_move)
     {
         for (LightningAnim & anim : m_anims)
         {
-            anim.sprite.move({ t_amount, 0.0f });
+            anim.sprite.move(t_move);
 
             for (SparkParticle & particle : anim.particles)
             {
-                particle.sprite.move({ t_amount, 0.0f });
+                particle.sprite.move(t_move);
             }
         }
     }

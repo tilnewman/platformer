@@ -83,7 +83,8 @@ namespace bramblefore
 
     AcidSpoutAnimationLayer::AcidSpoutAnimationLayer(
         const Context & t_context, const std::vector<sf::FloatRect> & t_rects)
-        : m_scale{ t_context.layout.calScaleBasedOnResolution(t_context, 0.75f) * t_context.settings.map_scale }
+        : m_scale{ t_context.layout.calScaleBasedOnResolution(t_context, 0.75f) *
+                   t_context.settings.map_scale }
         , m_spoutTexture{}
         , m_dropTexture{}
         , m_splashTexture{}
@@ -155,23 +156,23 @@ namespace bramblefore
         }
     }
 
-    void AcidSpoutAnimationLayer::move(const Context &, const float t_amount)
+    void AcidSpoutAnimationLayer::move(const Context &, const sf::Vector2f & t_move)
     {
         for (AcidDropAnim & anim : m_dropAnims)
         {
-            anim.sprite.move({ t_amount, 0.0f });
-            anim.region.position.x += t_amount;
+            anim.sprite.move(t_move);
+            anim.region.position += t_move;
         }
 
         for (AcidSpoutAnim & anim : m_spoutAnims)
         {
-            anim.sprite.move({ t_amount, 0.0f });
-            anim.region.position.x += t_amount;
+            anim.sprite.move(t_move);
+            anim.region.position += t_move;
         }
 
         for (AcidSplashAnim & anim : m_splashAnims)
         {
-            anim.sprite.move({ t_amount, 0.0f });
+            anim.sprite.move(t_move);
         }
     }
 
@@ -301,7 +302,8 @@ namespace bramblefore
         return rect;
     }
 
-    const Harm AcidSpoutAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
+    const Harm
+        AcidSpoutAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
     {
         for (const AcidDropAnim & anim : m_dropAnims)
         {

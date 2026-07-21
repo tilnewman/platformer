@@ -145,18 +145,18 @@ namespace bramblefore
         }
     }
 
-    void DartTrapAnimationLayer::move(const Context &, const float t_amount)
+    void DartTrapAnimationLayer::move(const Context &, const sf::Vector2f & t_move)
     {
         for (Dart & dart : m_darts)
         {
-            dart.sprite.move({ t_amount, 0.0f });
-            dart.region.position.x += t_amount;
+            dart.sprite.move(t_move);
+            dart.region.position += t_move;
         }
 
         for (Shooter & shooter : m_shooters)
         {
-            shooter.sprite.move({ t_amount, 0.0f });
-            shooter.region.position.x += t_amount;
+            shooter.sprite.move(t_move);
+            shooter.region.position += t_move;
         }
     }
 
@@ -231,7 +231,8 @@ namespace bramblefore
         }
     }
 
-    const Harm DartTrapAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
+    const Harm
+        DartTrapAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

@@ -107,7 +107,7 @@ namespace bramblefore
         void reset();
 
         // returns true if the map actually moved
-        bool move(const Context & t_context, const float t_move);
+        bool move(const Context & t_context, const sf::Vector2f & t_move);
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const;
@@ -145,6 +145,7 @@ namespace bramblefore
 
         float m_farthestHorizTraveled;
         float m_farthestHorizMapPixel;
+        float m_traveledVert;
     };
 
 } // namespace bramblefore

@@ -110,7 +110,7 @@ namespace bramblefore
 
         void update(const float t_frameTimeSec);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
-        void move(const float t_amount);
+        void move(const sf::Vector2f & t_move);
         constexpr void clear() noexcept { m_anims.clear(); }
 
       private:

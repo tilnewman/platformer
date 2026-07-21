@@ -74,12 +74,12 @@ namespace bramblefore
         }
     }
 
-    void BombAnimationLayer::move(const Context &, const float t_amount)
+    void BombAnimationLayer::move(const Context &, const sf::Vector2f & t_move)
     {
         for (BombAnim & anim : m_anims)
         {
-            anim.sprite.move({ t_amount, 0.0f });
-            anim.coll_rect.position.x += t_amount;
+            anim.sprite.move(t_move);
+            anim.coll_rect.position += t_move;
         }
     }
 

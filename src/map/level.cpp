@@ -38,6 +38,7 @@ namespace bramblefore
         , m_monsters{}
         , m_farthestHorizTraveled{ 0.0f }
         , m_farthestHorizMapPixel{ 0.0f }
+        , m_traveledVert{ 0.0f }
     {
         // harmless guesses based on what I know is in map files
         m_collisions.reserve(1024);
@@ -82,50 +83,70 @@ namespace bramblefore
         m_mapScreenPosOffset = t_mapScreenPosOffset;
     }
 
-    bool Level::move(const Context & t_context, const float t_amount)
+    bool Level::move(const Context & t_context, const sf::Vector2f & t_moveOrig)
     {
-        m_farthestHorizTraveled += util::abs(t_amount);
-        if (m_farthestHorizTraveled > (m_farthestHorizMapPixel - t_context.layout.wholeSize().x))
+        sf::Vector2f move{ 0.0f, 0.0f };
+
+        m_farthestHorizTraveled += util::abs(t_moveOrig.x);
+        if (m_farthestHorizTraveled < (m_farthestHorizMapPixel - t_context.layout.wholeSize().x))
+        {
+            move.x = t_moveOrig.x;
+        }
+
+        if (t_moveOrig.y > 0.0f)
+        {
+            m_traveledVert += t_moveOrig.y;
+            move.y = t_moveOrig.y;
+        }
+        else if ((t_moveOrig.y < 0.0f) && (m_traveledVert > 0.0f))
+        {
+            m_traveledVert += t_moveOrig.y;
+            move.y = t_moveOrig.y;
+        }
+
+        if ((move.x < 0.0f) || (move.x > 0.0f) || (move.y < 0.0f) || (move.y > 0.0f))
+        {
+            m_enterRect.position += move;
+            m_exitRect.position += move;
+
+            for (sf::FloatRect & rect : m_collisions)
+            {
+                rect.position += move;
+            }
+
+            for (sf::FloatRect & rect : m_killCollisions)
+            {
+                rect.position += move;
+            }
+
+            for (sf::FloatRect & rect : m_layerCollisions)
+            {
+                rect.position += move;
+            }
+
+            for (sf::FloatRect & rect : m_ladders)
+            {
+                rect.position += move;
+            }
+
+            for (auto & layerUPtr : m_tileLayers)
+            {
+                layerUPtr->move(t_context, move);
+            }
+
+            m_monsters.move(move);
+            t_context.accent.move(move);
+            t_context.pickup.move(move);
+            t_context.bg_image.move(move.x); // the map doesn't move up or down
+            t_context.spell.move(move);
+            t_context.float_text.move(move);
+
+            return true;
+        }
+        else
         {
             return false;
         }
-
-        m_enterRect.position.x += t_amount;
-        m_exitRect.position.x += t_amount;
-
-        for (sf::FloatRect & rect : m_collisions)
-        {
-            rect.position.x += t_amount;
-        }
-
-        for (sf::FloatRect & rect : m_killCollisions)
-        {
-            rect.position.x += t_amount;
-        }
-
-        for (sf::FloatRect & rect : m_layerCollisions)
-        {
-            rect.position.x += t_amount;
-        }
-
-        for (sf::FloatRect & rect : m_ladders)
-        {
-            rect.position.x += t_amount;
-        }
-
-        for (auto & layerUPtr : m_tileLayers)
-        {
-            layerUPtr->move(t_context, t_amount);
-        }
-
-        m_monsters.move(t_amount);
-        t_context.accent.move(t_amount);
-        t_context.pickup.move(t_amount);
-        t_context.bg_image.move(t_amount);
-        t_context.spell.move(t_amount);
-        t_context.float_text.move(t_amount);
-
-        return true;
     }
 
     void Level::appendVertLayers(const Context & t_context)

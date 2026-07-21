@@ -29,9 +29,9 @@ namespace bramblefore
         virtual ~ITileLayer() = default;
 
         virtual void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const = 0;
-        virtual void move(const Context & t_context, const float t_move)                     = 0;
+        virtual void move(const Context & t_context, const sf::Vector2f & t_move)            = 0;
         virtual void dumpInfo() const                                                        = 0;
-        virtual void update(const Context & t_context, const float t_frameTimeSec)                 = 0;
+        virtual void update(const Context & t_context, const float t_frameTimeSec)           = 0;
 
         virtual void appendVerts(
             const Context & t_context,
@@ -70,7 +70,7 @@ namespace bramblefore
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const override;
 
-        void move(const Context & t_context, const float t_move) override;
+        void move(const Context & t_context, const sf::Vector2f & t_move) override;
         void dumpInfo() const override;
         void update(const Context &, const float) override {}
 

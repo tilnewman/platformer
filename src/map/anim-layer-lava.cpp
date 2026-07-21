@@ -57,11 +57,11 @@ namespace bramblefore
         }
     }
 
-    void LavaAnimationLayer::move(const Context &, const float t_amount)
+    void LavaAnimationLayer::move(const Context &, const sf::Vector2f & t_move)
     {
         for (sf::Sprite & sprite : m_sprites)
         {
-            sprite.move({ t_amount, 0.0f });
+            sprite.move(t_move);
         }
     }
 

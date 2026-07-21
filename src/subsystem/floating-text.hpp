@@ -42,10 +42,10 @@ namespace bramblefore
                 const sf::Color & t_color,
                 const sf::Vector2f & t_pos);
 
-        void clear() noexcept { m_animations.clear(); }
+        constexpr void clear() noexcept { m_animations.clear(); }
         void update(const Context & t_context, const float t_frameTimeSec);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
-        void move(const float t_amount);
+        void move(const sf::Vector2f & t_move);
 
       private:
         std::vector<FloatingTextAnim> m_animations;

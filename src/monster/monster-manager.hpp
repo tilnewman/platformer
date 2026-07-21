@@ -42,7 +42,7 @@ namespace bramblefore
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const;
 
-        void move(const float t_amount);
+        void move(const sf::Vector2f & t_move);
         const Harm avatarCollide(const sf::FloatRect & t_avatarRect);
         void appendCollisionRects(std::vector<sf::FloatRect> & t_rects) const;
         bool avatarAttack(const Context & t_context, const AttackInfo & t_attackInfo);

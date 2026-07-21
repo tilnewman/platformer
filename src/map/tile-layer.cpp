@@ -67,11 +67,11 @@ namespace bramblefore
         }
     }
 
-    void TileLayer::move(const Context & t_context, const float t_move)
+    void TileLayer::move(const Context & t_context, const sf::Vector2f & t_move)
     {
         for (sf::Vertex & vertex : m_verts)
         {
-            vertex.position.x += t_move;
+            vertex.position += t_move;
         }
 
         populateVisibleVerts(t_context.layout.wholeRect());

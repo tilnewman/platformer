@@ -75,11 +75,11 @@ namespace bramblefore
         }
     }
 
-    void ChestAnimationLayer::move(const Context &, const float t_amount)
+    void ChestAnimationLayer::move(const Context &, const sf::Vector2f & t_move)
     {
         for (ChestAnim & anim : m_animations)
         {
-            anim.sprite.move({ t_amount, 0.0f });
+            anim.sprite.move(t_move);
         }
     }
 

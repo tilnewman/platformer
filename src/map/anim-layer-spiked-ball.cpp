@@ -90,12 +90,12 @@ namespace bramblefore
         }
     }
 
-    void SpikedBallAnimationLayer::move(const Context &, const float t_amount)
+    void SpikedBallAnimationLayer::move(const Context &, const sf::Vector2f & t_move)
     {
         for (SpikedBallAnim & anim : m_anims)
         {
-            anim.sprite.move({ t_amount, 0.0f });
-            anim.region.position.x += t_amount;
+            anim.sprite.move(t_move);
+            anim.region.position += t_move;
         }
     }
 

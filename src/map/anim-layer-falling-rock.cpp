@@ -165,25 +165,25 @@ namespace bramblefore
         }
     }
 
-    void FallingRockAnimationLayer::move(const Context &, const float t_amount)
+    void FallingRockAnimationLayer::move(const Context &, const sf::Vector2f & t_move)
     {
         for (RockHangingAnim & anim : m_hangingAnims)
         {
-            anim.sprite.move({ t_amount, 0.0f });
-            anim.trigger_region.position.x += t_amount;
-            anim.fall_region.position.x += t_amount;
+            anim.sprite.move(t_move);
+            anim.trigger_region.position += t_move;
+            anim.fall_region.position += t_move;
         }
 
         for (RockDropAnim & anim : m_dropAnims)
         {
-            anim.sprite.move({ t_amount, 0.0f });
-            anim.fall_region.position.x += t_amount;
+            anim.sprite.move(t_move);
+            anim.fall_region.position += t_move;
         }
 
         for (RockShatterAnim & anim : m_shatterAnims)
         {
-            anim.sprite.move({ t_amount, 0.0f });
-            anim.coll_rect.position.x += t_amount;
+            anim.sprite.move(t_move);
+            anim.coll_rect.position += t_move;
         }
     }
 

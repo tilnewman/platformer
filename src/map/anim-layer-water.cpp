@@ -118,11 +118,11 @@ namespace bramblefore
         }
     }
 
-    void WaterAnimationLayer::move(const Context &, const float amount)
+    void WaterAnimationLayer::move(const Context &, const sf::Vector2f & t_move)
     {
         for (WaterAnim & anim : m_anims)
         {
-            anim.sprite.move({ amount, 0.0f });
+            anim.sprite.move(t_move);
         }
     }
 

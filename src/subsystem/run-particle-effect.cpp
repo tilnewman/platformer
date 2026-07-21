@@ -134,11 +134,11 @@ namespace bramblefore
         // clang-format on
     }
 
-    void RunParticleEffect::move(const float t_amount)
+    void RunParticleEffect::move(const sf::Vector2f & t_move)
     {
         for (RunParticle & particle : m_particles)
         {
-            particle.sprite.move({ t_amount, 0.0f });
+            particle.sprite.move(t_move);
         }
     }
 

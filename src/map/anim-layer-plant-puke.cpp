@@ -90,13 +90,13 @@ namespace bramblefore
         }
     }
 
-    void PukeTrapAnimationLayer::move(const Context &, const float t_amount)
+    void PukeTrapAnimationLayer::move(const Context &, const sf::Vector2f & t_move)
     {
         for (PukeTrapAnim & anim : m_anims)
         {
-            anim.sprite.move({ t_amount, 0.0f });
-            anim.coll_rect.position.x += t_amount;
-            anim.spring_rect.position.x += t_amount;
+            anim.sprite.move(t_move);
+            anim.coll_rect.position += t_move;
+            anim.spring_rect.position += t_move;
         }
     }
 

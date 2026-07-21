@@ -58,11 +58,11 @@ namespace bramblefore
         }
     }
 
-    void SawAnimationLayer::move(const Context &, const float t_amount)
+    void SawAnimationLayer::move(const Context &, const sf::Vector2f & t_move)
     {
         for (sf::Sprite & sprite : m_anims)
         {
-            sprite.move({ t_amount, 0.0f });
+            sprite.move(t_move);
         }
     }
 

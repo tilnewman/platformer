@@ -108,7 +108,7 @@ namespace bramblefore
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const final;
 
-        void move(const Context & t_context, const float t_amount) final;
+        void move(const Context & t_context, const sf::Vector2f & t_move) final;
         void dumpInfo() const final;
         void update(const Context & t_context, const float t_frameTimeSec) final;
 

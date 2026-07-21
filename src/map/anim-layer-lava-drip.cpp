@@ -214,23 +214,23 @@ namespace bramblefore
         }
     }
 
-    void LavaDripAnimationLayer::move(const Context &, const float t_amount)
+    void LavaDripAnimationLayer::move(const Context &, const sf::Vector2f & t_move)
     {
         for (LavaDripAnim & anim : m_dripAnims)
         {
-            anim.sprite.move({ t_amount, 0.0f });
-            anim.region.position.x += t_amount;
+            anim.sprite.move(t_move);
+            anim.region.position += t_move;
         }
 
         for (LavaDripperAnim & anim : m_dripperAnims)
         {
-            anim.sprite.move({ t_amount, 0.0f });
-            anim.region.position.x += t_amount;
+            anim.sprite.move(t_move);
+            anim.region.position += t_move;
         }
 
         for (LavaSplatAnim & anim : m_splatAnims)
         {
-            anim.sprite.move({ t_amount, 0.0f });
+            anim.sprite.move(t_move);
         }
     }
 

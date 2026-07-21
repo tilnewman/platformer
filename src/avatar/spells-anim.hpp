@@ -62,7 +62,7 @@ namespace bramblefore
         void add(const sf::Vector2f & t_pos, const Spell t_spell, const bool t_isFacingRight);
         void update(Context & t_context, const float t_frameTimeSec);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
-        void move(const float t_amount);
+        void move(const sf::Vector2f & t_move);
 
         [[nodiscard]] inline const sf::Texture & iconTexture(const Spell spell) const
         {

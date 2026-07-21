@@ -159,11 +159,11 @@ namespace bramblefore
         }
     }
 
-    void SpellAnimations::move(const float t_amount)
+    void SpellAnimations::move(const sf::Vector2f & t_move)
     {
         for (SpellAnim & anim : m_anims)
         {
-            anim.sprite.move({ t_amount, 0.0f });
+            anim.sprite.move(t_move);
         }
     }
 

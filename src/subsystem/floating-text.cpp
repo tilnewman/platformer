@@ -80,11 +80,11 @@ namespace bramblefore
         }
     }
 
-    void FloatingText::move(const float t_amount)
+    void FloatingText::move(const sf::Vector2f & t_move)
     {
         for (FloatingTextAnim & anim : m_animations)
         {
-            anim.text.move({ t_amount, 0.0f });
+            anim.text.move(t_move);
         }
     }
 

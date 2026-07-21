@@ -154,11 +154,11 @@ namespace bramblefore
         }
     }
 
-    void Monster::move(const float t_amount)
+    void Monster::move(const sf::Vector2f & t_move)
     {
-        m_sprite.move({ t_amount, 0.0f });
-        m_region.position.x += t_amount;
-        m_animations.move(t_amount);
+        m_sprite.move(t_move);
+        m_region.position += t_move;
+        m_animations.move(t_move);
     }
 
     bool Monster::avatarAttack(const Context & t_context, const AttackInfo & t_attackInfo)

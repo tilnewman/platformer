@@ -60,7 +60,7 @@ namespace bramblefore
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const override;
 
-        void move(const float t_amount) override;
+        void move(const sf::Vector2f & t_move) override;
         bool avatarAttack(const Context & t_context, const AttackInfo & t_attackInfo) override;
 
         const Harm avatarCollide(const sf::FloatRect & t_avatarRect) override;

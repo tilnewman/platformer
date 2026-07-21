@@ -182,16 +182,16 @@ namespace bramblefore
         }
     }
 
-    void PickupAnimations::move(const float t_amount)
+    void PickupAnimations::move(const sf::Vector2f & t_move)
     {
         for (PickupAnim & anim : m_anims)
         {
-            anim.sprite.move({ t_amount, 0.0f });
+            anim.sprite.move(t_move);
         }
 
         for (PickupFlareAnim & anim : m_flareAnims)
         {
-            anim.sprite.move({ t_amount, 0.0f });
+            anim.sprite.move(t_move);
         }
     }
 

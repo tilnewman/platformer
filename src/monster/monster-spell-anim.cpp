@@ -198,11 +198,11 @@ namespace bramblefore
         }
     }
 
-    void MonsterSpellAnimations::move(const float t_amount)
+    void MonsterSpellAnimations::move(const sf::Vector2f & t_move)
     {
         for (MonsterSpellAnim & anim : m_anims)
         {
-            anim.sprite.move({ t_amount, 0.0f });
+            anim.sprite.move(t_move);
         }
     }
 

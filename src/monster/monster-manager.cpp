@@ -33,11 +33,11 @@ namespace bramblefore
         }
     }
 
-    void MonsterManager::move(const float t_amount)
+    void MonsterManager::move(const sf::Vector2f & t_move)
     {
         for (auto & monsterUPtr : m_monsters)
         {
-            monsterUPtr->move(t_amount);
+            monsterUPtr->move(t_move);
         }
     }
 
