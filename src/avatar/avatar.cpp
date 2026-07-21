@@ -533,6 +533,7 @@ namespace bramblefore
         bool & t_detectLanding)
     {
         const sf::Vector2f avatarCenter{ util::center(t_avatarRect) };
+        const sf::Vector2f intersectionCenter{ util::center(t_intersectionRect) };
 
         // rising and hit something above
         if ((m_velocity.y < 0.0f) && (util::center(t_collRect).y < avatarCenter.y))
@@ -562,18 +563,15 @@ namespace bramblefore
         }
 
         // at this point we hit something from the side
-        if (t_intersectionRect.size.x < t_tolerance)
+        m_velocity.x = 0.0f;
+
+        if (intersectionCenter.x > avatarCenter.x)
         {
-            if (m_velocity.x > 0.0f)
-            {
-                m_velocity.x = 0.0f;
-                m_sprite.move({ -t_intersectionRect.size.x, 0.0f });
-            }
-            else if (m_velocity.x < 0.0f)
-            {
-                m_velocity.x = 0.0f;
-                m_sprite.move({ t_intersectionRect.size.x, 0.0f });
-            }
+            m_sprite.move({ -t_intersectionRect.size.x, 0.0f });
+        }
+        else
+        {
+            m_sprite.move({ t_intersectionRect.size.x, 0.0f });
         }
     }
 
