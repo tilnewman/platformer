@@ -52,9 +52,6 @@ namespace bramblefore
         float raider_walk_run_speed_adj_ratio = 2.0f;
         float raider_jump_acc_offset          = 100.0f;
 
-        // this magic number brought to you by zTn 2021-8-2
-        float avatar_collision_tolerance = 25.0f;
-
         // these values are used to create the avatar collision rect
         sf::Vector2f avatar_collision_scale{ 0.25f, 0.35f };
         float avatar_collision_facing_offset_ratio = 0.15f;

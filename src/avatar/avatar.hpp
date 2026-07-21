@@ -92,7 +92,6 @@ namespace bramblefore
         void setToSpawnPosition(const sf::FloatRect & t_rect);
         [[nodiscard]] const sf::FloatRect collisionRect() const;
         [[nodiscard]] const sf::FloatRect attackRect() const;
-        [[nodiscard]] const sf::FloatRect footCollisionRect() const;
         void triggerDeath(const Context & t_context);
         void triggerIdle();
 
@@ -124,10 +123,7 @@ namespace bramblefore
         void collide(
             const Context & t_context,
             const sf::FloatRect & t_avatarRect,
-            const sf::FloatRect & t_avatarFootRect,
-            const sf::FloatRect & t_collRect,
             const sf::FloatRect & t_intersectionRect,
-            const float t_tolerance,
             bool & t_detectLanding);
 
       private:

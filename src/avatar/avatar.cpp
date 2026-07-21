@@ -447,39 +447,17 @@ namespace bramblefore
         }
     }
 
-    [[nodiscard]] const sf::FloatRect Avatar::footCollisionRect() const
-    {
-        const sf::FloatRect avatarRect{ collisionRect() };
-
-        sf::FloatRect footRect{ avatarRect };
-
-        const float footRectHeightAdj{ avatarRect.size.y * 0.8f };
-        footRect.position.y += footRectHeightAdj;
-        footRect.size.y -= footRectHeightAdj;
-
-        return footRect;
-    }
-
     void Avatar::collisions(const Context & t_context)
     {
         bool detectLanding{ false };
-        const float tolerance{ t_context.settings.avatar_collision_tolerance };
         const sf::FloatRect avatarRect{ collisionRect() };
-        const sf::FloatRect footRect{ footCollisionRect() };
 
         for (const sf::FloatRect & collRect : t_context.level.collisions())
         {
             const auto intersectionOpt{ avatarRect.findIntersection(collRect) };
             if (intersectionOpt)
             {
-                collide(
-                    t_context,
-                    avatarRect,
-                    footRect,
-                    collRect,
-                    intersectionOpt.value(),
-                    tolerance,
-                    detectLanding);
+                collide(t_context, avatarRect, intersectionOpt.value(), detectLanding);
             }
         }
 
@@ -488,14 +466,7 @@ namespace bramblefore
             const auto intersectionOpt{ avatarRect.findIntersection(collRect) };
             if (intersectionOpt)
             {
-                collide(
-                    t_context,
-                    avatarRect,
-                    footRect,
-                    collRect,
-                    intersectionOpt.value(),
-                    tolerance,
-                    detectLanding);
+                collide(t_context, avatarRect, intersectionOpt.value(), detectLanding);
             }
         }
 
@@ -506,14 +477,7 @@ namespace bramblefore
             const auto intersectionOpt{ avatarRect.findIntersection(collRect) };
             if (intersectionOpt)
             {
-                collide(
-                    t_context,
-                    avatarRect,
-                    footRect,
-                    collRect,
-                    intersectionOpt.value(),
-                    tolerance,
-                    detectLanding);
+                collide(t_context, avatarRect, intersectionOpt.value(), detectLanding);
             }
         }
 
@@ -526,27 +490,23 @@ namespace bramblefore
     void Avatar::collide(
         const Context & t_context,
         const sf::FloatRect & t_avatarRect,
-        const sf::FloatRect & t_avatarFootRect,
-        const sf::FloatRect & t_collRect,
         const sf::FloatRect & t_intersectionRect,
-        const float t_tolerance,
         bool & t_detectLanding)
     {
         const sf::Vector2f avatarCenter{ util::center(t_avatarRect) };
         const sf::Vector2f intersectionCenter{ util::center(t_intersectionRect) };
 
-        // rising and hit something above
-        if ((m_velocity.y < 0.0f) && (util::center(t_collRect).y < avatarCenter.y))
+        if ((m_velocity.y < 0.0f) && (intersectionCenter.y < avatarCenter.y))
         {
+            // rising and hit something above
             m_velocity.y = 0.0f;
             m_sprite.move({ 0.0f, t_intersectionRect.size.y });
-            return;
         }
-
-        // falling and hit something below
-        if ((m_velocity.y > 0.0f) && (t_intersectionRect.size.y < t_tolerance) &&
-            t_collRect.findIntersection(t_avatarFootRect))
+        else if (
+            (m_velocity.y > 0.0f) && (t_intersectionRect.size.y < 25.0f) &&
+            (intersectionCenter.y > avatarCenter.y))
         {
+            // falling and hit something below
             if (!m_hasLanded)
             {
                 t_context.sfx.play("land");
@@ -555,23 +515,24 @@ namespace bramblefore
                 restartAnim();
             }
 
-            m_hasLanded  = true;
-            m_velocity.y = 0.0f;
-            m_sprite.move({ 0.0f, -t_intersectionRect.size.y });
+            m_hasLanded     = true;
             t_detectLanding = true;
-            return;
-        }
-
-        // at this point we hit something from the side
-        m_velocity.x = 0.0f;
-
-        if (intersectionCenter.x > avatarCenter.x)
-        {
-            m_sprite.move({ -t_intersectionRect.size.x, 0.0f });
+            m_velocity.y    = 0.0f;
+            m_sprite.move({ 0.0f, -t_intersectionRect.size.y });
         }
         else
         {
-            m_sprite.move({ t_intersectionRect.size.x, 0.0f });
+            // at this point we hit something from the side
+            m_velocity.x = 0.0f;
+
+            if (intersectionCenter.x > avatarCenter.x)
+            {
+                m_sprite.move({ -t_intersectionRect.size.x, 0.0f });
+            }
+            else
+            {
+                m_sprite.move({ t_intersectionRect.size.x, 0.0f });
+            }
         }
     }
 
