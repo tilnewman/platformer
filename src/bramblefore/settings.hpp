@@ -23,7 +23,7 @@ namespace bramblefore
 
         sf::VideoMode video_mode{ { 1920u, 1080u }, 32u };
 
-        // never set to zero
+        // never set to zero, there are already tools in place to see raw framerates
         // strange physics bugs occur when setting to anything other than 60...TODO?
         float frame_rate = 60.0f;
 

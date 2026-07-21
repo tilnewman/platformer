@@ -68,6 +68,7 @@ namespace bramblefore
 
     struct MovementDetails
     {
+        float gravity{ 0.0f };
         float walk_speed_limit{ 0.0f };
         float run_speed_limit{ 0.0f };
         float walk_acc{ 0.0f };
@@ -118,7 +119,7 @@ namespace bramblefore
         void hurtCollisions(const Context & t_context);
         void killCollisions(const Context & t_context);
         void harm(const Context & t_context, const Harm & t_harm);
-        [[nodiscard]] MovementDetails calculateMovementDetails(const Context & t_context) const;
+        [[nodiscard]] const MovementDetails calculateMovementDetails(const Context & t_context) const;
 
         void collide(
             const Context & t_context,

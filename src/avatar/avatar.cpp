@@ -91,9 +91,10 @@ namespace bramblefore
         jumping(t_context, t_frameTimeSec);
         handleClimbing(t_context, t_frameTimeSec);
 
+        // apply gravity
         if (AvatarState::Climb != m_state)
         {
-            m_velocity.y += (t_context.settings.gravity_acc * t_frameTimeSec);
+            m_velocity.y += (m_movement.gravity * t_frameTimeSec);
             m_sprite.move(m_velocity);
         }
 
@@ -107,7 +108,7 @@ namespace bramblefore
 
         t_context.pickup.processCollisionWithAvatar(t_context, collisionRect());
 
-        // these two must happen after all the handle functions above
+        // these two must happen last
         killIfOutOfBounds(t_context);
         animate(t_context, t_frameTimeSec);
 
@@ -555,9 +556,12 @@ namespace bramblefore
         }
     }
 
-    MovementDetails Avatar::calculateMovementDetails(const Context & t_context) const
+    const MovementDetails Avatar::calculateMovementDetails(const Context & t_context) const
     {
         MovementDetails details;
+
+        details.gravity =
+            t_context.layout.calScaleBasedOnResolution(t_context, t_context.settings.gravity_acc);
 
         details.walk_speed_limit = t_context.layout.calScaleBasedOnResolution(
             t_context, t_context.settings.walk_speed_limit);
