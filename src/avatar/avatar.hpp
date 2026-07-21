@@ -128,7 +128,7 @@ namespace bramblefore
             const sf::FloatRect & t_collRect,
             const sf::FloatRect & t_intersectionRect,
             const float t_tolerance,
-            bool & t_hasHitSomething);
+            bool & t_detectLanding);
 
       private:
         sf::Sprite m_sprite;

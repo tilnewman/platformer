@@ -462,7 +462,7 @@ namespace bramblefore
 
     void Avatar::collisions(const Context & t_context)
     {
-        bool hasHitSomething{ false };
+        bool detectLanding{ false };
         const float tolerance{ t_context.settings.avatar_collision_tolerance };
         const sf::FloatRect avatarRect{ collisionRect() };
         const sf::FloatRect footRect{ footCollisionRect() };
@@ -479,7 +479,7 @@ namespace bramblefore
                     collRect,
                     intersectionOpt.value(),
                     tolerance,
-                    hasHitSomething);
+                    detectLanding);
             }
         }
 
@@ -495,7 +495,7 @@ namespace bramblefore
                     collRect,
                     intersectionOpt.value(),
                     tolerance,
-                    hasHitSomething);
+                    detectLanding);
             }
         }
 
@@ -513,11 +513,11 @@ namespace bramblefore
                     collRect,
                     intersectionOpt.value(),
                     tolerance,
-                    hasHitSomething);
+                    detectLanding);
             }
         }
 
-        if (!hasHitSomething)
+        if (!detectLanding)
         {
             m_hasLanded = false;
         }
@@ -530,7 +530,7 @@ namespace bramblefore
         const sf::FloatRect & t_collRect,
         const sf::FloatRect & t_intersectionRect,
         const float t_tolerance,
-        bool & t_hasHitSomething)
+        bool & t_detectLanding)
     {
         const sf::Vector2f avatarCenter{ util::center(t_avatarRect) };
 
@@ -539,7 +539,6 @@ namespace bramblefore
         {
             m_velocity.y = 0.0f;
             m_sprite.move({ 0.0f, t_intersectionRect.size.y });
-            t_hasHitSomething = true;
             return;
         }
 
@@ -558,7 +557,7 @@ namespace bramblefore
             m_hasLanded  = true;
             m_velocity.y = 0.0f;
             m_sprite.move({ 0.0f, -t_intersectionRect.size.y });
-            t_hasHitSomething = true;
+            t_detectLanding = true;
             return;
         }
 
@@ -569,15 +568,11 @@ namespace bramblefore
             {
                 m_velocity.x = 0.0f;
                 m_sprite.move({ -t_intersectionRect.size.x, 0.0f });
-                t_hasHitSomething = true;
-                return;
             }
             else if (m_velocity.x < 0.0f)
             {
                 m_velocity.x = 0.0f;
                 m_sprite.move({ t_intersectionRect.size.x, 0.0f });
-                t_hasHitSomething = true;
-                return;
             }
         }
     }
