@@ -84,12 +84,12 @@ namespace bramblefore
             return;
         }
 
-        // this order is critical
         handleAttackState(t_context);
         handleAttackingEnemies(t_context);
         sideToSideMotion(t_context, t_frameTimeSec);
         jumping(t_context, t_frameTimeSec);
         handleClimbing(t_context, t_frameTimeSec);
+        preventBacktracking(t_context);
 
         // apply gravity
         if (AvatarState::Climb != m_state)
@@ -98,9 +98,8 @@ namespace bramblefore
             m_sprite.move(m_velocity);
         }
 
-        // moveMap() and collision handlers should be called AFTER m_sprite.move() above
+        // moveMap() and collision handlers should be called AFTER all m_sprite.move() calls above
         moveMap(t_context);
-        preventBacktracking(t_context);
         collisions(t_context);
         exitCollisions(t_context);
         hurtCollisions(t_context);
@@ -384,10 +383,10 @@ namespace bramblefore
         const sf::FloatRect wholeRect{ t_context.layout.wholeRect() };
         const sf::Vector2f avatarMiddle{ util::center(m_sprite.getGlobalBounds()) };
 
+        // moving right creates a negative move.x (can't move left)
         if (const sf::Vector2f screenMiddle{ util::center(wholeRect) };
             (m_velocity.x > 0.0f) && (avatarMiddle.x > screenMiddle.x))
         {
-            // moving right creates a negative move.x
             const sf::Vector2f move{ (screenMiddle.x - avatarMiddle.x), 0.0f };
             if (t_context.level.move(t_context, move))
             {
@@ -396,10 +395,10 @@ namespace bramblefore
             }
         }
 
+        // moving up creates a positive move.y
         if (const float riseMovePoint{ wholeRect.size.y * 0.12f };
             (m_velocity.y < 0.0f) && (avatarMiddle.y < riseMovePoint))
         {
-            // moving up creates a positive move.y
             const sf::Vector2f move{ 0.0f, (riseMovePoint - avatarMiddle.y) };
             if (t_context.level.move(t_context, move))
             {
@@ -408,10 +407,10 @@ namespace bramblefore
             }
         }
 
+        // moving down creates a negative move.y
         if (const float fallMovePoint{ wholeRect.size.y * 0.5f };
             (m_velocity.y > 0.0f) && (avatarMiddle.y > fallMovePoint))
         {
-            // moving down creates a negative move.y
             const sf::Vector2f move{ 0.0f, (fallMovePoint - avatarMiddle.y) };
             if (t_context.level.move(t_context, move))
             {
