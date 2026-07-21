@@ -46,6 +46,11 @@ namespace bramblefore
         // this magic number brought to you by zTn 2021-8-2
         float avatar_collision_tolerance = 25.0f;
 
+        // these values are used to create the avatar collision rect
+        sf::Vector2f avatar_collision_scale{ 0.25f, 0.35f };
+        float avatar_collision_facing_offset_ratio = 0.15f;
+        bool avatar_collision_display              = false;
+
         // Allow moving side-to-side at a reduced speed while in the air.
         // It sounds wrong but feels so right. What the hell, mario did it.
         float avatar_jump_horiz_move_divisor = 3.0f;

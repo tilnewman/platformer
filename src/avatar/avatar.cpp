@@ -36,12 +36,14 @@ namespace bramblefore
         , m_velocity{}
         , m_hasLanded{ false }
         , m_isFacingRight{ true }
-        , m_avatarSizeRatio{ 0.25f, 0.35f }
+        , m_avatarSizeRatio{}
         , m_isAnimating{ false }
         , m_hasHitEnemy{ false }
         , m_movement{}
         , m_runParticleEffect{}
         , collisionRectCache{}
+        , m_facingDirectionOffsetRatio{ 0.0f }
+        , m_willDisplayCollisionRect{ false }
     {
         // just a guess
         collisionRectCache.reserve(1024);
@@ -53,9 +55,12 @@ namespace bramblefore
     {
         m_runParticleEffect.setup(t_context);
 
-        m_type  = t_context.player.avatarType();
-        m_anim  = AvatarAnim::Walk;
-        m_state = AvatarState::Still;
+        m_avatarSizeRatio            = t_context.settings.avatar_collision_scale;
+        m_facingDirectionOffsetRatio = t_context.settings.avatar_collision_facing_offset_ratio;
+        m_willDisplayCollisionRect   = t_context.settings.avatar_collision_display;
+        m_type                       = t_context.player.avatarType();
+        m_anim                       = AvatarAnim::Walk;
+        m_state                      = AvatarState::Still;
 
         AvatarTextureManager & textureManager{ AvatarTextureManager::instance() };
         textureManager.acquire(t_context, m_type);
@@ -117,7 +122,11 @@ namespace bramblefore
     {
         m_runParticleEffect.draw(t_target, t_states);
         t_target.draw(m_sprite, t_states);
-        // util::drawRectangleShape(t_target, collisionRect(), false, sf::Color::Red);
+        
+        if (m_willDisplayCollisionRect)
+        {
+            util::drawRectangleShape(t_target, collisionRect(), false, sf::Color::Red);
+        }
     }
 
     void Avatar::setPosition(const sf::FloatRect & t_rect)
@@ -133,14 +142,13 @@ namespace bramblefore
         util::scaleRectInPlace(rect, m_avatarSizeRatio);
         rect.position.y += (bounds.size.x * 0.175f);
 
-        const float facingDirectionOffsetRatio{ 0.15f };
         if (m_isFacingRight)
         {
-            rect.position.x -= (bounds.size.x * facingDirectionOffsetRatio);
+            rect.position.x -= (bounds.size.x * m_facingDirectionOffsetRatio);
         }
         else
         {
-            rect.position.x += (bounds.size.x * facingDirectionOffsetRatio);
+            rect.position.x += (bounds.size.x * m_facingDirectionOffsetRatio);
         }
 
         return rect;

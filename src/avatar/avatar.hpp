@@ -146,6 +146,8 @@ namespace bramblefore
         MovementDetails m_movement;
         RunParticleEffect m_runParticleEffect;
         std::vector<sf::FloatRect> collisionRectCache;
+        float m_facingDirectionOffsetRatio;
+        bool m_willDisplayCollisionRect;
     };
 
 } // namespace bramblefore
