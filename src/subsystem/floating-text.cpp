@@ -75,7 +75,7 @@ namespace bramblefore
     {
         for (const FloatingTextAnim & anim : m_animations)
         {
-            // these finish animating very quickly so assume always on screen
+            // these spawn on the player and finish quickly so assume always on screen
             t_target.draw(anim.text, t_states);
         }
     }

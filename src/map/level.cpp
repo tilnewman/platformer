@@ -87,6 +87,7 @@ namespace bramblefore
     {
         sf::Vector2f move{ 0.0f, 0.0f };
 
+        // the level can progress to the right but not left
         m_farthestHorizTraveled += util::abs(t_moveOrig.x);
         if (m_farthestHorizTraveled < (m_farthestHorizMapPixel - t_context.layout.wholeSize().x))
         {
