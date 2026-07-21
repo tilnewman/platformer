@@ -534,21 +534,19 @@ namespace bramblefore
     {
         const sf::Vector2f avatarCenter{ util::center(t_avatarRect) };
 
+        // rising and hit something above
         if ((m_velocity.y < 0.0f) && (util::center(t_collRect).y < avatarCenter.y))
         {
-            // rising and hit something above
-
             m_velocity.y = 0.0f;
             m_sprite.move({ 0.0f, t_intersectionRect.size.y });
             t_hasHitSomething = true;
             return;
         }
 
+        // falling and hit something below
         if ((m_velocity.y > 0.0f) && (t_intersectionRect.size.y < t_tolerance) &&
             t_collRect.findIntersection(t_avatarFootRect))
         {
-            // falling and hit something below
-
             if (!m_hasLanded)
             {
                 t_context.sfx.play("land");
@@ -565,7 +563,6 @@ namespace bramblefore
         }
 
         // at this point we hit something from the side
-
         if (t_intersectionRect.size.x < t_tolerance)
         {
             if (m_velocity.x > 0.0f)
@@ -613,25 +610,27 @@ namespace bramblefore
 
         if (isWizard(m_type))
         {
-            const float wizardSpeedRatio{ 1.35f };
+            const float wizardSpeedRatio{ t_context.settings.wizard_walk_run_speed_adj_ratio };
             details.walk_speed_limit *= wizardSpeedRatio;
             details.walk_acc *= wizardSpeedRatio;
             details.run_speed_limit *= wizardSpeedRatio;
             details.run_acc *= wizardSpeedRatio;
 
-            details.jump_acc += 50.0f;
-            details.high_jump_acc += 50.0f;
+            const float wizardJumpAccOffset{ t_context.settings.wizard_jump_acc_offset };
+            details.jump_acc += wizardJumpAccOffset;
+            details.high_jump_acc += wizardJumpAccOffset;
         }
         else if (isRaider(m_type))
         {
-            const float raiderSpeedRatio{ 2.0f };
+            const float raiderSpeedRatio{ t_context.settings.raider_walk_run_speed_adj_ratio };
             details.walk_speed_limit *= raiderSpeedRatio;
             details.walk_acc *= raiderSpeedRatio;
             details.run_speed_limit *= raiderSpeedRatio;
             details.run_acc *= raiderSpeedRatio;
 
-            details.jump_acc += 100.0f;
-            details.high_jump_acc += 100.0f;
+            const float raiderJumpAccOffset{ t_context.settings.raider_jump_acc_offset };
+            details.jump_acc += raiderJumpAccOffset;
+            details.high_jump_acc += raiderJumpAccOffset;
         }
 
         return details;

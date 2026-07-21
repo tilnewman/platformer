@@ -37,7 +37,7 @@ namespace bramblefore
         float spell_scale   = 1.0f;
         float avatar_scale  = 1.5f;
         float monster_scale = 1.5f;
-
+        
         float gravity_acc      = 25.0f;
         float walk_speed_limit = 2.5f;
         float run_speed_limit  = 3.5f;
@@ -46,6 +46,11 @@ namespace bramblefore
         float jump_acc         = 600.0f;
         float high_jump_acc    = 750.0f;
         float ladder_speed     = 60.0f;
+
+        float wizard_walk_run_speed_adj_ratio = 1.35f;
+        float wizard_jump_acc_offset          = 50.0f;
+        float raider_walk_run_speed_adj_ratio = 2.0f;
+        float raider_jump_acc_offset          = 100.0f;
 
         // this magic number brought to you by zTn 2021-8-2
         float avatar_collision_tolerance = 25.0f;
