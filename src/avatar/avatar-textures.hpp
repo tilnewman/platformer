@@ -62,19 +62,19 @@ namespace bramblefore
         // clang-format off
         switch (t_anim)
         {
-            case AvatarAnim::Attack:        { return 0.08f; }
+            case AvatarAnim::Attack:
             case AvatarAnim::AttackExtra:   { return 0.08f; }
-            case AvatarAnim::Climb:         { return 0.2f;  }
-            case AvatarAnim::Death:         { return 0.1f;  }
-            case AvatarAnim::Hurt:          { return 0.1f;  }
-            case AvatarAnim::Idle:          { return 0.1f;  }
-            case AvatarAnim::Jump:          { return 0.1f;  }
-            case AvatarAnim::JumpHigh:      { return 0.1f;  }
+            case AvatarAnim::Climb:
             case AvatarAnim::Push:          { return 0.2f;  }
-            case AvatarAnim::Run:           { return 0.1f;  }
-            case AvatarAnim::Walk:          { return 0.1f;  }
-            case AvatarAnim::Count:         [[fallthrough]];
-            default:                        { return 0.0f;  }
+            case AvatarAnim::Run:
+            case AvatarAnim::Walk:
+            case AvatarAnim::Death:
+            case AvatarAnim::Hurt:
+            case AvatarAnim::Idle:
+            case AvatarAnim::Jump:
+            case AvatarAnim::JumpHigh:
+            case AvatarAnim::Count:         
+            default:                        { return 0.1f;  }
         }
         // clang-format on
     }
