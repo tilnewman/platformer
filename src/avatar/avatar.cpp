@@ -430,14 +430,20 @@ namespace bramblefore
 
     void Avatar::preventBacktracking(const Context & t_context)
     {
-        const sf::FloatRect backtrackRect{ { -100.0f, 0.0f },
-                                           { 100.0f, t_context.layout.wholeSize().y } };
+        // anything about the size of the avatar or bigger will work here
+        const float collisionWidth{ m_sprite.getGlobalBounds().size.x };
+
+        // double tall to prevent jumping backwards offscreen
+        const float collisionHeight{ t_context.layout.wholeSize().y * 2.0f };
+
+        const sf::FloatRect backtrackRect{ { -collisionWidth, -collisionHeight },
+                                           { collisionWidth, (collisionHeight * 2.0f) } };
 
         const auto intersectionOpt{ collisionRect().findIntersection(backtrackRect) };
         if (intersectionOpt.has_value())
         {
             m_velocity.x = 0.0f;
-            m_sprite.move({ intersectionOpt.value().size.x, 0.0f });
+            m_sprite.move({ intersectionOpt.value().size.x, 0.0f }); // only allow pushing right
         }
     }
 
