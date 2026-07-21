@@ -54,10 +54,7 @@ namespace bramblefore
         m_window.setMouseCursorVisible(false);
         m_window.setVerticalSyncEnabled(false);
         m_window.setKeyRepeatEnabled(false);
-
-        // don't let SFML sleep between frames because we do this ourselves below
-        // see settings.hpp for where the framerate is actually set
-        m_window.setFramerateLimit(0);
+        m_window.setFramerateLimit(m_settings.frame_rate);
 
         util::SfmlDefaults::instance().setup();
 
@@ -134,13 +131,9 @@ namespace bramblefore
         sf::Clock frameClock;
         while (m_window.isOpen() && (m_states.current().which() != State::Shutdown))
         {
-            frameClock.restart();
-
             handleEvents();
-            update(1.0f / m_settings.frame_rate);
+            update(frameClock.restart().asSeconds());
             draw();
-
-            handleEndOfFrameTasks(frameClock.getElapsedTime().asSeconds());
         }
     }
 
@@ -179,24 +172,9 @@ namespace bramblefore
 
     void Coordinator::update(const float t_frameTimeSec)
     {
+        m_framerateDisplay.update(*m_contextUPtr, t_frameTimeSec);
         m_states.current().update(*m_contextUPtr, t_frameTimeSec);
         m_states.changeIfPending(*m_contextUPtr);
-    }
-
-    void Coordinator::handleEndOfFrameTasks(const float t_elapsedTimeSec)
-    {
-        m_framerateDisplay.handleElapsedFrame(*m_contextUPtr, t_elapsedTimeSec);
-
-        // sleep until end of frame occurs
-        float timeRemainingSec{ (1.0f / m_settings.frame_rate) - t_elapsedTimeSec };
-
-        sf::Clock delayClock;
-        while (timeRemainingSec > 0.0f)
-        {
-            delayClock.restart();
-            sf::sleep(sf::microseconds(100));
-            timeRemainingSec -= delayClock.getElapsedTime().asSeconds();
-        }
     }
 
     void Coordinator::setupRenderWindow(sf::VideoMode & t_videoMode)
