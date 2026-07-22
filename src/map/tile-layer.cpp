@@ -93,12 +93,12 @@ namespace bramblefore
         while (vertIndex < m_verts.size())
         {
             // see sfml-util::setupTriangleVerts() for where this mapping comes from
-            const sf::Vertex topLeftVert{ m_verts[vertIndex + 0] };
-            const sf::Vertex topRightVert{ m_verts[vertIndex + 1] };
-            const sf::Vertex botLeftVert{ m_verts[vertIndex + 2] };
-            const sf::Vertex botLeftVert2{ m_verts[vertIndex + 3] };
-            const sf::Vertex topRightVert2{ m_verts[vertIndex + 4] };
-            const sf::Vertex botRightVert{ m_verts[vertIndex + 5] };
+            const sf::Vertex & topLeftVert{ m_verts[vertIndex + 0] };
+            const sf::Vertex & topRightVert{ m_verts[vertIndex + 1] };
+            const sf::Vertex & botLeftVert{ m_verts[vertIndex + 2] };
+            const sf::Vertex & botLeftVert2{ m_verts[vertIndex + 3] };
+            const sf::Vertex & topRightVert2{ m_verts[vertIndex + 4] };
+            const sf::Vertex & botRightVert{ m_verts[vertIndex + 5] };
 
             if (t_visibleRect.contains(topLeftVert.position) ||
                 t_visibleRect.contains(topRightVert.position) ||
