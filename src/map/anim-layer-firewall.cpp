@@ -169,7 +169,7 @@ namespace bramblefore
             m_fireElapsedTimeSec -= m_fireTimePerFrameSec;
 
             ++m_fireFrameIndex;
-            if (m_fireFrameIndex >= 4)
+            if (m_fireFrameIndex >= m_fireTextures.size())
             {
                 m_fireFrameIndex = 0;
             }
@@ -232,9 +232,7 @@ namespace bramblefore
 
             particle.velocity.y -= 1.0f;
             particle.sprite.move(particle.velocity * t_frameTimeSec);
-
             particle.sprite.rotate(sf::degrees(particle.rotation_speed * t_frameTimeSec));
-
             particle.sprite.scale({ particle.shrink_scale, particle.shrink_scale });
         }
 
