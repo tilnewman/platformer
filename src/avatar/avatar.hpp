@@ -119,9 +119,7 @@ namespace bramblefore
         void hurtCollisions(const Context & t_context);
         void killCollisions(const Context & t_context);
         void harm(const Context & t_context, const Harm & t_harm);
-
-        [[nodiscard]] const MovementDetails
-            calculateMovementDetails(const Context & t_context) const;
+        void calculateMovementDetails(const Context & t_context);
 
         void collide(
             const Context & t_context,

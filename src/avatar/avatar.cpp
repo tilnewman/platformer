@@ -71,7 +71,7 @@ namespace bramblefore
 
         m_sprite.setScale({ scale, scale });
 
-        m_movement = calculateMovementDetails(t_context);
+        calculateMovementDetails(t_context);
     }
 
     void Avatar::update(const Context & t_context, const float t_frameTimeSec)
@@ -158,7 +158,7 @@ namespace bramblefore
         AvatarTextureManager::instance().release(m_type);
         m_type = t_context.player.avatarType();
         AvatarTextureManager::instance().acquire(t_context, m_type);
-        m_movement = calculateMovementDetails(t_context);
+        calculateMovementDetails(t_context);
     }
 
     const sf::FloatRect Avatar::attackRect() const
@@ -544,58 +544,54 @@ namespace bramblefore
         }
     }
 
-    const MovementDetails Avatar::calculateMovementDetails(const Context & t_context) const
+    void Avatar::calculateMovementDetails(const Context & t_context)
     {
-        MovementDetails details;
-
-        details.gravity = t_context.layout.calScaleBasedOnResolution(
+        m_movement.gravity = t_context.layout.calScaleBasedOnResolution(
             t_context, t_context.settings.gravity_acc, CalcOrder::Inverse);
 
-        details.walk_speed_limit = t_context.layout.calScaleBasedOnResolution(
+        m_movement.walk_speed_limit = t_context.layout.calScaleBasedOnResolution(
             t_context, t_context.settings.walk_speed_limit);
 
-        details.walk_acc =
+        m_movement.walk_acc =
             t_context.layout.calScaleBasedOnResolution(t_context, t_context.settings.walk_acc);
 
-        details.run_speed_limit = t_context.layout.calScaleBasedOnResolution(
+        m_movement.run_speed_limit = t_context.layout.calScaleBasedOnResolution(
             t_context, t_context.settings.run_speed_limit);
 
-        details.run_acc =
+        m_movement.run_acc =
             t_context.layout.calScaleBasedOnResolution(t_context, t_context.settings.run_acc);
 
-        details.ladder_speed =
+        m_movement.ladder_speed =
             t_context.layout.calScaleBasedOnResolution(t_context, t_context.settings.ladder_speed);
 
-        details.jump_acc = t_context.settings.jump_acc;
+        m_movement.jump_acc = t_context.settings.jump_acc;
 
-        details.high_jump_acc = t_context.settings.high_jump_acc;
+        m_movement.high_jump_acc = t_context.settings.high_jump_acc;
 
         if (isWizard(m_type))
         {
             const float wizardSpeedRatio{ t_context.settings.wizard_walk_run_speed_adj_ratio };
-            details.walk_speed_limit *= wizardSpeedRatio;
-            details.walk_acc *= wizardSpeedRatio;
-            details.run_speed_limit *= wizardSpeedRatio;
-            details.run_acc *= wizardSpeedRatio;
+            m_movement.walk_speed_limit *= wizardSpeedRatio;
+            m_movement.walk_acc *= wizardSpeedRatio;
+            m_movement.run_speed_limit *= wizardSpeedRatio;
+            m_movement.run_acc *= wizardSpeedRatio;
 
             const float wizardJumpAccOffset{ t_context.settings.wizard_jump_acc_offset };
-            details.jump_acc += wizardJumpAccOffset;
-            details.high_jump_acc += wizardJumpAccOffset;
+            m_movement.jump_acc += wizardJumpAccOffset;
+            m_movement.high_jump_acc += wizardJumpAccOffset;
         }
         else if (isRaider(m_type))
         {
             const float raiderSpeedRatio{ t_context.settings.raider_walk_run_speed_adj_ratio };
-            details.walk_speed_limit *= raiderSpeedRatio;
-            details.walk_acc *= raiderSpeedRatio;
-            details.run_speed_limit *= raiderSpeedRatio;
-            details.run_acc *= raiderSpeedRatio;
+            m_movement.walk_speed_limit *= raiderSpeedRatio;
+            m_movement.walk_acc *= raiderSpeedRatio;
+            m_movement.run_speed_limit *= raiderSpeedRatio;
+            m_movement.run_acc *= raiderSpeedRatio;
 
             const float raiderJumpAccOffset{ t_context.settings.raider_jump_acc_offset };
-            details.jump_acc += raiderJumpAccOffset;
-            details.high_jump_acc += raiderJumpAccOffset;
+            m_movement.jump_acc += raiderJumpAccOffset;
+            m_movement.high_jump_acc += raiderJumpAccOffset;
         }
-
-        return details;
     }
 
     void Avatar::sideToSideMotion(const Context & t_context, const float t_frameTimeSec)
