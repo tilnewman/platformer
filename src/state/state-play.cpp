@@ -14,6 +14,7 @@
 #include "player/player-info-display.hpp"
 #include "state/state-manager.hpp"
 #include "subsystem/background-images.hpp"
+#include "subsystem/blood-splat.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/floating-text.hpp"
 #include "subsystem/font.hpp"
@@ -53,12 +54,14 @@ namespace bramblefore
         t_context.avatar.update(t_context, t_frameTimeSec);
         if (!t_context.state.isChangePending())
         {
+            // this order is NOT critical
             t_context.player.update(t_context, t_frameTimeSec);
             t_context.level.update(t_context, t_frameTimeSec);
             t_context.pickup.update(t_context, t_frameTimeSec);
             t_context.accent.update(t_context, t_frameTimeSec);
             t_context.spell.update(t_context, t_frameTimeSec);
             t_context.float_text.update(t_context, t_frameTimeSec);
+            t_context.blood_splat.update(t_frameTimeSec);
             m_spellSelectMenu.update(t_context, t_frameTimeSec);
         }
 
@@ -73,6 +76,7 @@ namespace bramblefore
     void PlayState::draw(
         Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
+        // this order IS critical
         t_context.bg_image.draw(t_target, t_states);
         t_context.level.draw(t_context, t_target, t_states);
         t_context.pickup.draw(t_context, t_target, t_states);
@@ -81,6 +85,7 @@ namespace bramblefore
         t_context.spell.draw(t_target, t_states);
         t_context.float_text.draw(t_target, t_states);
         t_context.player_display.draw(t_target, t_states);
+        t_context.blood_splat.draw(t_target, t_states);
         m_spellSelectMenu.draw(t_target, t_states);
 
         if (m_isPaused)

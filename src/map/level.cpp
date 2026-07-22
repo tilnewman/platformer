@@ -11,6 +11,7 @@
 #include "map/level-file-loader.hpp"
 #include "map/pickups.hpp"
 #include "subsystem/background-images.hpp"
+#include "subsystem/blood-splat.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/floating-text.hpp"
 #include "subsystem/screen-layout.hpp"
@@ -144,6 +145,7 @@ namespace bramblefore
             t_context.bg_image.move(move.x); // the map doesn't move up or down
             t_context.spell.move(move);
             t_context.float_text.move(move);
+            t_context.blood_splat.move(move);
 
             return true;
         }

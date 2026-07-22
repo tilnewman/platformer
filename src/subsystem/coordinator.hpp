@@ -16,6 +16,7 @@
 #include "player/player-info.hpp"
 #include "state/state-manager.hpp"
 #include "subsystem/background-images.hpp"
+#include "subsystem/blood-splat.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/floating-text.hpp"
 #include "subsystem/font.hpp"
@@ -77,6 +78,7 @@ namespace bramblefore
         FloatingText m_floatText;
         MapCoordinator m_mapCoord;
         FramerateDisplay m_framerateDisplay;
+        std::unique_ptr<BloodSplatManager> m_bloodSplatManagerUPtr;
 
         std::unique_ptr<Context> m_contextUPtr;
     };

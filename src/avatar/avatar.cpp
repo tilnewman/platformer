@@ -11,6 +11,7 @@
 #include "map/pickups.hpp"
 #include "monster/monster-manager.hpp"
 #include "state/state-manager.hpp"
+#include "subsystem/blood-splat.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/harm-collision-manager.hpp"
 #include "subsystem/map-coordinator.hpp"
@@ -948,14 +949,21 @@ namespace bramblefore
         const sf::Vector2f recoilSpeed{ t_context.settings.avatar_hurt_recoil_speed };
         m_velocity.y = -recoilSpeed.y;
 
+        const sf::FloatRect avatarRect{ collisionRect() };
         const float collisionRectCenterHoriz{ util::center(t_harm.rect).x };
-        if (collisionRectCenterHoriz < util::center(collisionRect()).x)
+        if (collisionRectCenterHoriz < util::center(avatarRect).x)
         {
             m_velocity.x = recoilSpeed.x;
         }
         else
         {
             m_velocity.x = -recoilSpeed.x;
+        }
+
+        const auto intersectionRectOpt{ avatarRect.findIntersection(t_harm.rect) };
+        if (intersectionRectOpt)
+        {
+            t_context.blood_splat.add(t_context, util::center(intersectionRectOpt.value()));
         }
 
         t_context.player.healthAdjust(t_context, -t_harm.damage);

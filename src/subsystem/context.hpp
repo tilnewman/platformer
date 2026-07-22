@@ -32,53 +32,56 @@ namespace bramblefore
     class PickupAnimations;
     class AccentAnimations;
     class PlayerInfoDisplay;
+    class BloodSplatManager;
 
     //
 
     struct Context
     {
         Context(
-            const Settings & set,
-            util::Random & ran,
-            util::SoundPlayer & spl,
-            StateManager & sma,
-            FontManager & fma,
-            Avatar & ava,
-            ScreenLayout & scl,
-            LevelFileLoader & lfl,
-            Level & lvl,
-            BackgroundImages & bim,
-            PickupAnimations & pan,
-            AccentAnimations & aan,
-            SpellAnimations & san,
-            ItemImages & ima,
-            LevelInfo & lin,
-            PlayerInfo & pin,
-            PlayerInfoDisplay & pid,
-            FloatingText & flt,
-            MapCoordinator & mco)
-            : settings(set)
-            , random(ran)
-            , sfx(spl)
-            , state(sma)
-            , font(fma)
-            , avatar(ava)
-            , layout(scl)
-            , level_loader(lfl)
-            , level(lvl)
-            , bg_image(bim)
-            , pickup(pan)
-            , accent(aan)
-            , spell(san)
-            , item(ima)
-            , level_info(lin)
-            , player(pin)
-            , player_display(pid)
-            , float_text(flt)
-            , map_coord(mco)
+            const Settings & t_settings,
+            util::Random & t_random,
+            util::SoundPlayer & t_soundPlayer,
+            StateManager & t_stateManager,
+            FontManager & t_fontManager,
+            Avatar & t_avatar,
+            ScreenLayout & t_screenLayout,
+            LevelFileLoader & t_levelFileLoader,
+            Level & t_level,
+            BackgroundImages & t_backgroundImages,
+            PickupAnimations & t_pickupAnimations,
+            AccentAnimations & t_accentAnimations,
+            SpellAnimations & t_spellAnimations,
+            ItemImages & t_itemImages,
+            LevelInfo & t_levelInfo,
+            PlayerInfo & t_playerInfo,
+            PlayerInfoDisplay & t_playerInfoDisplay,
+            FloatingText & t_floatingText,
+            MapCoordinator & t_mapCoordinator,
+            BloodSplatManager & t_bloodSplatManager)
+            : settings{ t_settings }
+            , random{ t_random }
+            , sfx{ t_soundPlayer }
+            , state{ t_stateManager }
+            , font{ t_fontManager }
+            , avatar{ t_avatar }
+            , layout{ t_screenLayout }
+            , level_loader{ t_levelFileLoader }
+            , level{ t_level }
+            , bg_image{ t_backgroundImages }
+            , pickup{ t_pickupAnimations }
+            , accent{ t_accentAnimations }
+            , spell{ t_spellAnimations }
+            , item{ t_itemImages }
+            , level_info{ t_levelInfo }
+            , player{ t_playerInfo }
+            , player_display{ t_playerInfoDisplay }
+            , float_text{ t_floatingText }
+            , map_coord{ t_mapCoordinator }
+            , blood_splat{ t_bloodSplatManager }
         {}
 
-        const Settings & settings;
+        const Settings & settings; // TODO no plurals, no biscuit...
         util::Random & random;
         util::SoundPlayer & sfx;
         StateManager & state;
@@ -97,6 +100,7 @@ namespace bramblefore
         PlayerInfoDisplay & player_display;
         FloatingText & float_text;
         MapCoordinator & map_coord;
+        BloodSplatManager & blood_splat;
     };
 
 } // namespace bramblefore

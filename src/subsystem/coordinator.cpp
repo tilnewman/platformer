@@ -45,6 +45,7 @@ namespace bramblefore
         , m_floatText{}
         , m_mapCoord{}
         , m_framerateDisplay{}
+        , m_bloodSplatManagerUPtr{}
         , m_contextUPtr{}
     {}
 
@@ -67,6 +68,7 @@ namespace bramblefore
 
         m_avatarUPtr            = std::make_unique<Avatar>();
         m_playerInfoDisplayUPtr = std::make_unique<PlayerInfoDisplay>();
+        m_bloodSplatManagerUPtr = std::make_unique<BloodSplatManager>();
 
         m_contextUPtr = std::make_unique<Context>(
             m_settings,
@@ -87,7 +89,8 @@ namespace bramblefore
             m_playerInfo,
             *m_playerInfoDisplayUPtr,
             m_floatText,
-            m_mapCoord);
+            m_mapCoord,
+            *m_bloodSplatManagerUPtr);
 
         AvatarTextureManager::instance().setup(m_settings);
         MonsterTextureManager::instance().setup(m_settings);
@@ -101,21 +104,25 @@ namespace bramblefore
         m_accents.setup(*m_contextUPtr);
         m_spells.setup(*m_contextUPtr);
         m_framerateDisplay.setup(*m_contextUPtr);
+        m_bloodSplatManagerUPtr->setup(*m_contextUPtr);
 
         m_states.setChangePending(State::Splash);
     }
 
     void Coordinator::teardown()
     {
-        m_contextUPtr.reset();
         m_playerInfoDisplayUPtr.reset();
+        m_bloodSplatManagerUPtr.reset();
         m_avatarUPtr.reset();
 
         MonsterSpellTextureManager::instance().teardown();
         MapTextureManager::instance().teardown();
         AvatarTextureManager::instance().teardown();
         MonsterTextureManager::instance().teardown();
+        
         util::SfmlDefaults::instance().teardown();
+
+        m_contextUPtr.reset();
 
         m_window.close();
 
@@ -234,7 +241,6 @@ namespace bramblefore
 
             std::cout << "Using " << m_settings.video_mode << " instead." << std::endl;
         }
-
     }
 
 } // namespace bramblefore
