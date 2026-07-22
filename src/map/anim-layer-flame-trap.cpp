@@ -288,7 +288,7 @@ namespace bramblefore
                     anim.elapsed_time_sec -= anim.time_between_frames_sec;
 
                     ++anim.frame_index;
-                    if (anim.frame_index >= 9)
+                    if (anim.frame_index >= 9) // all four directions have nine frames each
                     {
                         anim.frame_index      = 0;
                         anim.elapsed_time_sec = 0.0f;
