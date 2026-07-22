@@ -85,8 +85,8 @@ namespace bramblefore
 
     void CreditsState::update(const Context & t_context, const float t_frameTimeSec)
     {
-        const float speed{ -45.0f };
-        const float moveAmount{ speed * t_frameTimeSec };
+        const float speed{ 45.0f };
+        const float moveAmount{ -1.0f * speed * t_frameTimeSec };
         m_titleText.move({ 0.0f, moveAmount });
 
         for (CreditAnim & anim : m_credits)
