@@ -15,7 +15,7 @@ namespace bramblefore
     GlowRect::GlowRect()
         : m_verts{}
     {
-        m_verts.reserve(9 * util::verts_per_quad);
+        m_verts.reserve(9 * util::verts_per_quad); // the rect is broken into a 3x3 grid
     }
 
     void GlowRect::setup(

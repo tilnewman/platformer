@@ -23,7 +23,7 @@ namespace bramblefore
         : m_info{}
         , m_innerRect{}
         , m_outerRect{}
-        , m_bgColor{ 74, 76, 41 }
+        , m_bgColor{ 74, 76, 41 } // comes from the PNGs made by the artist
         , m_bgCenterRect{}
         , m_bgCenterVerts{}
         , m_sprites{}
