@@ -21,16 +21,22 @@ namespace bramblefore
 
     void FontManager::setup(const Settings & t_settings)
     {
-        M_CHECK(
-            m_titleFont.openFromFile((t_settings.media_path / "font/mops-antiqua.ttf").string()),
-            "file not found");
+        const std::string titleFontPath{
+            (t_settings.media_path / "font" / "mops-antiqua.ttf").string()
+        };
 
+        const bool titleFontLoadSuccess{ m_titleFont.openFromFile(titleFontPath) };
+        M_CHECK(titleFontLoadSuccess, "Failed to load title font at: " << titleFontPath);
         setupFontExtents(t_settings, Font::Title, m_titleExtents);
 
-        M_CHECK(
-            m_generalFont.openFromFile((t_settings.media_path / "font/et-bembo.ttf").string()),
-            "file not found");
+        //
 
+        const std::string generalFontPath{
+            (t_settings.media_path / "font" / "gentium-plus.ttf").string()
+        };
+
+        const bool generalFontLoadSuccess{ m_generalFont.openFromFile(generalFontPath) };
+        M_CHECK(generalFontLoadSuccess, "Failed to load general font at: " << generalFontPath);
         setupFontExtents(t_settings, Font::General, m_generalExtents);
     }
 
