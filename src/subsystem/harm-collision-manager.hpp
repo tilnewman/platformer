@@ -29,6 +29,7 @@ namespace bramblefore
     class HarmCollisionManager
     {
       public:
+        // using a singleton because tile layer classes need this in their destructors
         static HarmCollisionManager & instance();
 
         void addOwner(IHarmCollisionOwner & t_owner);
