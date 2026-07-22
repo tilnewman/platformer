@@ -94,6 +94,7 @@ namespace bramblefore
         [[nodiscard]] const sf::FloatRect attackRect() const;
         void triggerDeath(const Context & t_context);
         void triggerIdle();
+        void resetBeforePlacingInNewLevel();
 
         // TODO remove after testing
         void changeType(const Context & t_context);

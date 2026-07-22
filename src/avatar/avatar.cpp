@@ -128,8 +128,22 @@ namespace bramblefore
         }
     }
 
+    void Avatar::resetBeforePlacingInNewLevel()
+    {
+        m_anim                     = AvatarAnim::Walk;
+        m_state                    = AvatarState::Still;
+        m_elapsedTimeSec           = 0.0f;
+        m_deathDelayElapsedTimeSec = 0.0f;
+        m_velocity                 = { 0.0f, 0.0f };
+        m_hasLanded                = false;
+        m_isFacingRight            = true;
+        m_hasHitEnemy              = false;
+        m_runParticleEffect.stop();
+    }
+
     void Avatar::setToSpawnPosition(const sf::FloatRect & t_rect)
     {
+        // place just above the spawn point so the player falls a little when entering a new map
         m_sprite.setPosition(
             { util::center(t_rect).x, (t_rect.position.y - m_sprite.getGlobalBounds().size.y) });
     }
