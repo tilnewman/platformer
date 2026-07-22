@@ -64,6 +64,8 @@ namespace bramblefore
         sf::Vector2f avatar_hurt_recoil_speed{ 2.25f, 3.5f };
 
         sf::Color off_white_color{ 220, 220, 220 };
+
+        sf::Color popup_window_background_fade_color{ 0, 0, 0, 127 };
     };
 
 } // namespace bramblefore

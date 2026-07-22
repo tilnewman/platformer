@@ -155,7 +155,9 @@ namespace bramblefore
         if (t_info.will_fade_whole_screen)
         {
             util::appendTriangleVerts(
-                t_context.layout.wholeRect(), m_bgFadeVerts, sf::Color(0, 0, 0, 127));
+                t_context.layout.wholeRect(),
+                m_bgFadeVerts,
+                t_context.settings.popup_window_background_fade_color);
         }
 
         m_info = t_info;
