@@ -37,7 +37,7 @@ namespace bramblefore
             const float t_vertPos);
 
         void move(const float t_amount);
-        float bottom() const;
+        [[nodiscard]] float bottom() const;
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
 
         sf::Texture texture;
