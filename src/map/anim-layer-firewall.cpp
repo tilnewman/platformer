@@ -248,7 +248,12 @@ namespace bramblefore
 
         for (const sf::Sprite & sprite : m_fireSprites)
         {
-            const sf::FloatRect fireRect{ sprite.getGlobalBounds() };
+            // reduce the height so that player's fall into the fire a little before dying
+            sf::FloatRect fireRect{ sprite.getGlobalBounds() };
+            const float offset{fireRect.size.y * 0.3f};
+            fireRect.position.y += offset;
+            fireRect.size.y -= offset;
+
             if (t_avatarRect.findIntersection(fireRect))
             {
                 harm.rect   = fireRect;
