@@ -603,6 +603,28 @@ namespace bramblefore
             return;
         }
 
+        const auto enforceSpeedLimitWalk = [&]() {
+            if (m_velocity.x > m_movement.walk_speed_limit)
+            {
+                m_velocity.x = m_movement.walk_speed_limit;
+            }
+            else if (m_velocity.x < -m_movement.walk_speed_limit)
+            {
+                m_velocity.x = -m_movement.walk_speed_limit;
+            }
+        };
+
+        const auto enforceSpeedLimitRun = [&]() {
+            if (m_velocity.x > m_movement.run_speed_limit)
+            {
+                m_velocity.x = m_movement.run_speed_limit;
+            }
+            else if (m_velocity.x < -m_movement.run_speed_limit)
+            {
+                m_velocity.x = -m_movement.run_speed_limit;
+            }
+        };
+
         if ((AvatarState::Jump == m_state) || (AvatarState::JumpHigh == m_state))
         {
             // Allow moving side-to-side at a reduced rate while in the air.
@@ -612,21 +634,13 @@ namespace bramblefore
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Right))
             {
                 m_velocity.x += ((m_movement.walk_acc / jumpMoveDivisor) * t_frameTimeSec);
-
-                if (m_velocity.x > m_movement.walk_speed_limit)
-                {
-                    m_velocity.x = m_movement.walk_speed_limit;
-                }
+                enforceSpeedLimitWalk();
             }
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Left))
             {
                 m_velocity.x -= ((m_movement.walk_acc / jumpMoveDivisor) * t_frameTimeSec);
-
-                if (m_velocity.x < -m_movement.walk_speed_limit)
-                {
-                    m_velocity.x = -m_movement.walk_speed_limit;
-                }
+                enforceSpeedLimitWalk();
             }
 
             return;
@@ -637,10 +651,7 @@ namespace bramblefore
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::LShift))
             {
                 m_velocity.x += (m_movement.run_acc * t_frameTimeSec);
-                if (m_velocity.x > m_movement.run_speed_limit)
-                {
-                    m_velocity.x = m_movement.run_speed_limit;
-                }
+                enforceSpeedLimitRun();
 
                 if (AvatarState::Run != m_state)
                 {
@@ -656,10 +667,7 @@ namespace bramblefore
             else
             {
                 m_velocity.x += (m_movement.walk_acc * t_frameTimeSec);
-                if (m_velocity.x > m_movement.walk_speed_limit)
-                {
-                    m_velocity.x = m_movement.walk_speed_limit;
-                }
+                enforceSpeedLimitWalk();
 
                 if (AvatarState::Walk != m_state)
                 {
@@ -681,10 +689,7 @@ namespace bramblefore
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::LShift))
             {
                 m_velocity.x -= (m_movement.run_acc * t_frameTimeSec);
-                if (m_velocity.x < -m_movement.run_speed_limit)
-                {
-                    m_velocity.x = -m_movement.run_speed_limit;
-                }
+                enforceSpeedLimitRun();
 
                 if (AvatarState::Run != m_state)
                 {
@@ -700,10 +705,7 @@ namespace bramblefore
             else
             {
                 m_velocity.x -= (m_movement.walk_acc * t_frameTimeSec);
-                if (m_velocity.x < -m_movement.walk_speed_limit)
-                {
-                    m_velocity.x = -m_movement.walk_speed_limit;
-                }
+                enforceSpeedLimitWalk();
 
                 if (AvatarState::Walk != m_state)
                 {
