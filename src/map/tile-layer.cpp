@@ -89,6 +89,11 @@ namespace bramblefore
     {
         m_visibleVerts.clear();
 
+        if (m_verts.size() < util::verts_per_quad)
+        {
+            return;
+        }
+
         std::size_t vertIndex{ 0 };
         while (vertIndex < m_verts.size())
         {
