@@ -58,6 +58,7 @@ namespace bramblefore
         m_monsters.clear();
         m_farthestHorizTraveled = 0.0f;
         m_farthestHorizMapPixel = 0.0f;
+        m_traveledVert          = 0.0f;
     }
 
     void Level::load(const Context & t_context, const std::string & t_filename)
