@@ -152,7 +152,7 @@ namespace bramblefore
         // add() with no remove() because lamps and vines never leave the map
         void add(const Context & t_context, const sf::FloatRect & t_rect, const Accent t_accent);
 
-        void update(Context & t_context, const float t_frameTimeSec);
+        void update(const Context & t_context, const float t_frameTimeSec);
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const;

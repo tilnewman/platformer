@@ -120,7 +120,7 @@ namespace bramblefore
         return rect;
     }
 
-    void AccentAnimations::update(Context &, const float t_frameTimeSec)
+    void AccentAnimations::update(const Context &, const float t_frameTimeSec)
     {
         for (AccentAnim & anim : m_anims)
         {

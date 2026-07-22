@@ -58,7 +58,7 @@ namespace bramblefore
         // safe to call repeatedly, won't reload textures
         void loadTextures(const Settings & t_settings);
 
-        void arrange(Context & t_context, const GuiWindowInfo & t_info);
+        void arrange(const Context & t_context, const GuiWindowInfo & t_info);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
         [[nodiscard]] inline const sf::FloatRect innerRect() const noexcept { return m_innerRect; }
         [[nodiscard]] inline const sf::FloatRect outerRect() const noexcept { return m_outerRect; }

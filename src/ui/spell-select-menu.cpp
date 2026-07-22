@@ -38,7 +38,7 @@ namespace bramblefore
         m_windowFrame.loadTextures(t_settings);
     }
 
-    void SpellSelectMenu::setup(Context & t_context, const std::size_t t_selectionOrig)
+    void SpellSelectMenu::setup(const Context & t_context, const std::size_t t_selectionOrig)
     {
         m_fadeRects.clear();
         m_glowRects.clear();
@@ -140,7 +140,7 @@ namespace bramblefore
               (util::bottom(m_selectionRect) + (m_selectionRect.size.y * 0.15f)) });
     }
 
-    void SpellSelectMenu::update(Context & t_context, const float t_frameTimeSec)
+    void SpellSelectMenu::update(const Context & t_context, const float t_frameTimeSec)
     {
         m_elapsedTimeSec += t_frameTimeSec;
         if (m_elapsedTimeSec > 3.0f)

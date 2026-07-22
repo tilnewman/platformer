@@ -83,7 +83,7 @@ namespace bramblefore
         , m_credits{}
     {}
 
-    void CreditsState::update(Context & t_context, const float t_frameTimeSec)
+    void CreditsState::update(const Context & t_context, const float t_frameTimeSec)
     {
         const float speed{ -35.0f };
         const float moveAmount{ speed * t_frameTimeSec };
@@ -101,7 +101,8 @@ namespace bramblefore
         }
     }
 
-    void CreditsState::draw(Context &, sf::RenderTarget & t_target, sf::RenderStates t_states) const
+    void CreditsState::draw(
+        const Context &, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
         t_target.draw(m_titleText, t_states);
 
@@ -111,7 +112,7 @@ namespace bramblefore
         }
     }
 
-    void CreditsState::handleEvent(Context & t_context, const sf::Event & t_event)
+    void CreditsState::handleEvent(const Context & t_context, const sf::Event & t_event)
     {
         if (t_event.is<sf::Event::KeyPressed>())
         {
@@ -119,7 +120,7 @@ namespace bramblefore
         }
     }
 
-    void CreditsState::onEnter(Context & t_context)
+    void CreditsState::onEnter(const Context & t_context)
     {
         const sf::FloatRect screenRect{ t_context.layout.wholeRect() };
         const float vertPad{ screenRect.size.y * 0.15f };
@@ -174,6 +175,6 @@ namespace bramblefore
             m_credits.back().bottom() + vertPad);
     }
 
-    void CreditsState::onExit(Context &) {}
+    void CreditsState::onExit(const Context &) {}
 
 } // namespace bramblefore

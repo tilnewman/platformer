@@ -147,10 +147,9 @@ namespace bramblefore
             m_tapeMiddleTexture, (t_settings.media_path / "image" / "ui" / "tape-middle.png"));
     }
 
-    void GuiWindow::arrange(Context & t_context, const GuiWindowInfo & t_info)
+    void GuiWindow::arrange(const Context & t_context, const GuiWindowInfo & t_info)
     {
         m_sprites.clear();
-
         m_bgFadeVerts.clear();
 
         if (t_info.will_fade_whole_screen)

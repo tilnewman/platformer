@@ -28,7 +28,7 @@ namespace bramblefore
         , m_fadeSlider{ 0.0f, 255.0f, 1.0f }
     {}
 
-    void SplashState::onEnter(Context & t_context)
+    void SplashState::onEnter(const Context & t_context)
     {
         util::TextureLoader::load(
             m_texture,
@@ -57,7 +57,7 @@ namespace bramblefore
         m_text.setFillColor(sf::Color::Transparent);
     }
 
-    void SplashState::update(Context & t_context, const float t_frameTimeSec)
+    void SplashState::update(const Context & t_context, const float t_frameTimeSec)
     {
         const std::uint8_t alpha{ static_cast<std::uint8_t>(m_fadeSlider.update(t_frameTimeSec)) };
         const sf::Color color{ 255, 255, 255, alpha };
@@ -71,13 +71,14 @@ namespace bramblefore
         }
     }
 
-    void SplashState::draw(Context &, sf::RenderTarget & t_target, sf::RenderStates t_states) const
+    void SplashState::draw(
+        const Context &, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
         t_target.draw(m_sprite, t_states);
         t_target.draw(m_text, t_states);
     }
 
-    void SplashState::handleEvent(Context & t_context, const sf::Event & t_event)
+    void SplashState::handleEvent(const Context & t_context, const sf::Event & t_event)
     {
         if (t_event.is<sf::Event::KeyPressed>())
         {

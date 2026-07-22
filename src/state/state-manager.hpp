@@ -30,7 +30,7 @@ namespace bramblefore
         }
 
         // only coordinator.cpp should call this after all updates are finished()
-        void changeIfPending(Context & context);
+        void changeIfPending(const Context & context);
 
       private:
         [[nodiscard]] static std::unique_ptr<IState> factory(const State t_state);

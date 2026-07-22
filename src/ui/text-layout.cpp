@@ -18,7 +18,7 @@ namespace bramblefore
     TextLayout::TextLayout() {}
 
     const std::vector<sf::Text> TextLayout::layout(
-        Context & t_context,
+        const Context & t_context,
         const std::string & t_text,
         const sf::FloatRect & t_rect,
         const TextDetails & t_details)

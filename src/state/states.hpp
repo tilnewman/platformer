@@ -57,11 +57,11 @@ namespace bramblefore
         virtual ~IState() = default;
 
         [[nodiscard]] virtual State which() const                                      = 0;
-        virtual void update(Context & context, const float frameTimeSec)               = 0;
-        virtual void draw(Context & c, sf::RenderTarget & t, sf::RenderStates s) const = 0;
-        virtual void handleEvent(Context & context, const sf::Event & event)           = 0;
-        virtual void onEnter(Context & context)                                        = 0;
-        virtual void onExit(Context & context)                                         = 0;
+        virtual void update(const Context & context, const float frameTimeSec)               = 0;
+        virtual void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const = 0;
+        virtual void handleEvent(const Context & context, const sf::Event & event)           = 0;
+        virtual void onEnter(const Context & context)                                        = 0;
+        virtual void onExit(const Context & context)                                         = 0;
     };
 
     //
@@ -71,11 +71,11 @@ namespace bramblefore
         virtual ~StartupState() override = default;
 
         [[nodiscard]] State which() const final { return State::Startup; }
-        void update(Context &, const float) final {}
-        void draw(Context &, sf::RenderTarget &, sf::RenderStates) const final {}
-        void handleEvent(Context &, const sf::Event &) final {}
-        void onEnter(Context &) final {}
-        void onExit(Context &) final {}
+        void update(const Context &, const float) final {}
+        void draw(const Context &, sf::RenderTarget &, sf::RenderStates) const final {}
+        void handleEvent(const Context &, const sf::Event &) final {}
+        void onEnter(const Context &) final {}
+        void onExit(const Context &) final {}
     };
 
     //
@@ -85,11 +85,11 @@ namespace bramblefore
         virtual ~ShutdownState() override = default;
 
         [[nodiscard]] State which() const final { return State::Shutdown; }
-        void update(Context &, const float) final {}
-        void draw(Context &, sf::RenderTarget &, sf::RenderStates) const final {}
-        void handleEvent(Context &, const sf::Event &) final {}
-        void onEnter(Context &) final {}
-        void onExit(Context &) final {}
+        void update(const Context &, const float) final {}
+        void draw(const Context &, sf::RenderTarget &, sf::RenderStates) const final {}
+        void handleEvent(const Context &, const sf::Event &) final {}
+        void onEnter(const Context &) final {}
+        void onExit(const Context &) final {}
     };
 
 } // namespace bramblefore

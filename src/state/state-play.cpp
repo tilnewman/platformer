@@ -43,7 +43,7 @@ namespace bramblefore
         m_pauseFadeVerts.reserve(util::verts_per_quad);
     }
 
-    void PlayState::update(Context & t_context, const float t_frameTimeSec)
+    void PlayState::update(const Context & t_context, const float t_frameTimeSec)
     {
         if (m_isPaused || m_isQuitting)
         {
@@ -74,7 +74,7 @@ namespace bramblefore
     }
 
     void PlayState::draw(
-        Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
+        const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
         // this order IS critical
         t_context.bg_image.draw(t_target, t_states);
@@ -107,7 +107,7 @@ namespace bramblefore
         }
     }
 
-    void PlayState::handleEvent(Context & t_context, const sf::Event & t_event)
+    void PlayState::handleEvent(const Context & t_context, const sf::Event & t_event)
     {
         if (const auto * const keyPtr = t_event.getIf<sf::Event::KeyPressed>())
         {
@@ -178,7 +178,7 @@ namespace bramblefore
         }
     }
 
-    void PlayState::onEnter(Context & t_context)
+    void PlayState::onEnter(const Context & t_context)
     {
         // safe to call repeatedly, won't reload textures
         m_spellSelectMenu.loadTextures(t_context.settings);
@@ -211,6 +211,6 @@ namespace bramblefore
         m_quitWindow.arrange(t_context, quitWindowInfo);
     }
 
-    void PlayState::onExit(Context & t_context) { t_context.level.reset(); }
+    void PlayState::onExit(const Context & t_context) { t_context.level.reset(); }
 
 } // namespace bramblefore

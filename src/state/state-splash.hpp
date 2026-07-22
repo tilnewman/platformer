@@ -25,14 +25,14 @@ namespace bramblefore
         virtual ~SplashState() override = default;
 
         [[nodiscard]] State which() const final { return State::Splash; }
-        void update(Context & t_context, const float t_frameTimeSec) final;
+        void update(const Context & t_context, const float t_frameTimeSec) final;
 
-        void draw(Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
+        void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const final;
 
-        void handleEvent(Context & t_context, const sf::Event & t_event) final;
-        void onEnter(Context & t_context) final;
-        void onExit(Context &) final {}
+        void handleEvent(const Context & t_context, const sf::Event & t_event) final;
+        void onEnter(const Context & t_context) final;
+        void onExit(const Context &) final {}
 
       private:
         sf::Texture m_texture;

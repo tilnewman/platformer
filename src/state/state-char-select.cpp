@@ -46,10 +46,10 @@ namespace bramblefore
         , m_buttonPrevSprite{ m_buttonPrevTexture }
     {}
 
-    void CharacterSelectState::update(Context &, const float) {}
+    void CharacterSelectState::update(const Context &, const float) {}
 
     void CharacterSelectState::draw(
-        Context &, sf::RenderTarget & t_target, sf::RenderStates t_states) const
+        const Context &, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
         t_target.draw(m_titleText, t_states);
         t_target.draw(m_instructionsText, t_states);
@@ -78,7 +78,7 @@ namespace bramblefore
         t_target.draw(m_buttonPrevSprite, t_states);
     }
 
-    void CharacterSelectState::handleEvent(Context & t_context, const sf::Event & t_event)
+    void CharacterSelectState::handleEvent(const Context & t_context, const sf::Event & t_event)
     {
         if (const auto * const keyPtr = t_event.getIf<sf::Event::KeyPressed>())
         {
@@ -141,7 +141,7 @@ namespace bramblefore
         }
     }
 
-    void CharacterSelectState::onEnter(Context & t_context)
+    void CharacterSelectState::onEnter(const Context & t_context)
     {
         m_titleText = t_context.font.makeText(
             Font::Title, FontSize::Huge, "Character Selection", t_context.settings.off_white_color);
@@ -230,7 +230,7 @@ namespace bramblefore
         setup(t_context);
     }
 
-    void CharacterSelectState::onExit(Context & t_context)
+    void CharacterSelectState::onExit(const Context & t_context)
     {
         AvatarTextureManager::instance().release(m_avatarType);
 
@@ -238,7 +238,7 @@ namespace bramblefore
         t_context.player_display.setup(t_context);
     }
 
-    void CharacterSelectState::setup(Context & t_context)
+    void CharacterSelectState::setup(const Context & t_context)
     {
         AvatarTextureManager::instance().acquire(t_context, m_avatarType);
 

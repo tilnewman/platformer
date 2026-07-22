@@ -33,14 +33,14 @@ namespace bramblefore
         virtual ~PlayState() override = default;
 
         [[nodiscard]] State which() const final { return State::Play; }
-        void update(Context & t_context, const float t_frameTimeSec) final;
+        void update(const Context & t_context, const float t_frameTimeSec) final;
 
-        void draw(Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
+        void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const final;
 
-        void handleEvent(Context & t_context, const sf::Event & t_event) final;
-        void onEnter(Context & t_context) final;
-        void onExit(Context & t_context) final;
+        void handleEvent(const Context & t_context, const sf::Event & t_event) final;
+        void onEnter(const Context & t_context) final;
+        void onExit(const Context & t_context) final;
 
       private:
         SpellSelectMenu m_spellSelectMenu;

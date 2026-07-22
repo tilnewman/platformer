@@ -27,7 +27,7 @@ namespace bramblefore
         m_changePendingOpt = t_state;
     }
 
-    void StateManager::changeIfPending(Context & t_context)
+    void StateManager::changeIfPending(const Context & t_context)
     {
         if (!m_changePendingOpt)
         {

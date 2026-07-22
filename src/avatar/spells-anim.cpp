@@ -116,7 +116,7 @@ namespace bramblefore
             t_spell, textures.at(0), timePerFrameSec(t_spell), m_scale, t_pos, t_isFacingRight);
     }
 
-    void SpellAnimations::update(Context &, const float t_frameTimeSec)
+    void SpellAnimations::update(const Context &, const float t_frameTimeSec)
     {
         bool didAnyFinish{ false };
 

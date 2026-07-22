@@ -24,14 +24,14 @@ namespace bramblefore
         virtual ~LevelCompleteState() override = default;
 
         [[nodiscard]] State which() const final { return State::LevelComplete; }
-        void update(Context & t_context, const float t_frameTimeSec) final;
+        void update(const Context & t_context, const float t_frameTimeSec) final;
 
-        void draw(Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
+        void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const final;
 
-        void handleEvent(Context &, const sf::Event &) final {}
-        void onEnter(Context &) final;
-        void onExit(Context &) final {}
+        void handleEvent(const Context &, const sf::Event &) final {}
+        void onEnter(const Context &) final;
+        void onExit(const Context &) final {}
 
       private:
         sf::Texture m_texture;

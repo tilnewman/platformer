@@ -26,7 +26,7 @@ namespace bramblefore
         , m_elapsedTimeSec{ 0.0f }
     {}
 
-    void LevelDeathState::onEnter(Context & t_context)
+    void LevelDeathState::onEnter(const Context & t_context)
     {
         util::TextureLoader::load(
             m_texture,
@@ -49,7 +49,7 @@ namespace bramblefore
               (util::bottom(m_sprite) + (wholeRect.size.y * 0.015f)) });
     }
 
-    void LevelDeathState::update(Context & t_context, const float t_frameTimeSec)
+    void LevelDeathState::update(const Context & t_context, const float t_frameTimeSec)
     {
         m_elapsedTimeSec += t_frameTimeSec;
         if (m_elapsedTimeSec > 4.0f)
@@ -59,7 +59,7 @@ namespace bramblefore
     }
 
     void LevelDeathState::draw(
-        Context &, sf::RenderTarget & t_target, sf::RenderStates t_states) const
+        const Context &, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
         t_target.draw(m_sprite, t_states);
         t_target.draw(m_text, t_states);

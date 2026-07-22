@@ -34,11 +34,9 @@ namespace bramblefore
         // safe to call repeatedly, won't reload textures
         void loadTextures(const Settings & t_settings);
 
-        void setup(Context & t_context, const std::size_t t_selection);
-
-        [[nodiscard]] inline constexpr bool isVisible() const noexcept { return m_isVisible; }
-
-        void update(Context & t_context, const float t_frameTimeSec);
+        void setup(const Context & t_context, const std::size_t t_selection);
+        [[nodiscard]] constexpr bool isVisible() const noexcept { return m_isVisible; }
+        void update(const Context & t_context, const float t_frameTimeSec);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
 
       private:
