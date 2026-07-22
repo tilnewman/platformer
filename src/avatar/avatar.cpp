@@ -78,7 +78,7 @@ namespace bramblefore
     {
         m_runParticleEffect.update(t_context, t_frameTimeSec);
 
-        // this handleDeath() call must happen before all other handle functions
+        // this handleDeath() call must happen before all other handle functions below
         if (handleDeath(t_context, t_frameTimeSec))
         {
             return;
@@ -86,20 +86,19 @@ namespace bramblefore
 
         handleAttackState(t_context);
         handleAttackingEnemies(t_context);
+
         sideToSideMotion(t_context, t_frameTimeSec);
-        jumping(t_context, t_frameTimeSec);
-        handleClimbing(t_context, t_frameTimeSec);
+        jumpingMotion(t_context, t_frameTimeSec);
+        climbingMotion(t_context, t_frameTimeSec);
+        gravityMotion(t_frameTimeSec);
+
+        // prevent backtracking only after all the motion funcions above
         preventBacktracking(t_context);
 
-        // apply gravity
-        if (AvatarState::Climb != m_state)
-        {
-            m_velocity.y += (m_movement.gravity * t_frameTimeSec);
-            m_sprite.move(m_velocity);
-        }
-
-        // moveMap() and collision handlers should be called AFTER all m_sprite.move() calls above
+        // moveMap() should be called after the movement functions above
         moveMap(t_context);
+
+        // all collision handling should occur after the moveMap() function above
         collisions(t_context);
         exitCollisions(t_context);
         hurtCollisions(t_context);
@@ -107,7 +106,7 @@ namespace bramblefore
 
         t_context.pickup.processCollisionWithAvatar(t_context, collisionRect());
 
-        // these two must happen last
+        // these two should be called in this order after all other functions above
         killIfOutOfBounds(t_context);
         animate(t_context, t_frameTimeSec);
 
@@ -231,7 +230,16 @@ namespace bramblefore
         }
     }
 
-    void Avatar::handleClimbing(const Context & t_context, const float t_frameTimeSec)
+    void Avatar::gravityMotion(const float t_frameTimeSec)
+    {
+        if (AvatarState::Climb != m_state)
+        {
+            m_velocity.y += (m_movement.gravity * t_frameTimeSec);
+            m_sprite.move(m_velocity);
+        }
+    }
+
+    void Avatar::climbingMotion(const Context & t_context, const float t_frameTimeSec)
     {
         // first frame
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A) &&
@@ -736,7 +744,7 @@ namespace bramblefore
         m_elapsedTimeSec = 0.0f;
     }
 
-    void Avatar::jumping(const Context & t_context, const float t_frameTimeSec)
+    void Avatar::jumpingMotion(const Context & t_context, const float t_frameTimeSec)
     {
         if ((AvatarState::Attack == m_state) || (AvatarState::AttackExtra == m_state) ||
             (AvatarState::Climb == m_state) || (AvatarState::Death == m_state) ||

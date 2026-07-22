@@ -100,7 +100,8 @@ namespace bramblefore
 
       private:
         void animate(const Context & t_context, const float t_frameTimeSec);
-        void handleClimbing(const Context & t_context, const float t_frameTimeSec);
+        void climbingMotion(const Context & t_context, const float t_frameTimeSec);
+        void gravityMotion(const float t_frameTimeSec);
         void handleAttackState(const Context & t_context);
         void handleAttackingEnemies(const Context & t_context);
         void moveMap(const Context & t_context);
@@ -109,7 +110,7 @@ namespace bramblefore
         void collisions(const Context & t_context);
         void sideToSideMotion(const Context & t_context, const float t_frameTimeSec);
         void restartAnim();
-        void jumping(const Context & t_context, const float t_frameTimeSec);
+        void jumpingMotion(const Context & t_context, const float t_frameTimeSec);
         bool handleDeath(const Context & t_context, const float t_frameTimeSec);
         void respawn(const Context & t_context);
         void turnRight();
@@ -118,7 +119,9 @@ namespace bramblefore
         void hurtCollisions(const Context & t_context);
         void killCollisions(const Context & t_context);
         void harm(const Context & t_context, const Harm & t_harm);
-        [[nodiscard]] const MovementDetails calculateMovementDetails(const Context & t_context) const;
+
+        [[nodiscard]] const MovementDetails
+            calculateMovementDetails(const Context & t_context) const;
 
         void collide(
             const Context & t_context,
