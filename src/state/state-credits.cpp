@@ -49,7 +49,7 @@ namespace bramblefore
         //
 
         // this is the vertical empty space between images and lines of text
-        const float vertPad{ screenRect.size.y * 0.025f };
+        const float vertPad{ screenRect.size.y * 0.015f };
 
         name.setPosition(
             { (util::center(screenRect).x - (name.getGlobalBounds().size.x * 0.5f)),
@@ -85,9 +85,8 @@ namespace bramblefore
 
     void CreditsState::update(const Context & t_context, const float t_frameTimeSec)
     {
-        const float speed{ -35.0f };
+        const float speed{ -45.0f };
         const float moveAmount{ speed * t_frameTimeSec };
-
         m_titleText.move({ 0.0f, moveAmount });
 
         for (CreditAnim & anim : m_credits)
@@ -95,7 +94,7 @@ namespace bramblefore
             anim.move(moveAmount);
         }
 
-        if (m_credits.back().bottom() < 50.0f)
+        if (m_credits.back().bottom() < -50.0f)
         {
             t_context.state.setChangePending(State::Shutdown);
         }
@@ -123,7 +122,7 @@ namespace bramblefore
     void CreditsState::onEnter(const Context & t_context)
     {
         const sf::FloatRect screenRect{ t_context.layout.wholeRect() };
-        const float vertPad{ screenRect.size.y * 0.15f };
+        const float vertPad{ screenRect.size.y * 0.11f };
 
         m_titleText = t_context.font.makeText(
             Font::Title, FontSize::Huge, "Credits", t_context.settings.off_white_color);
@@ -137,7 +136,7 @@ namespace bramblefore
         m_credits.emplace_back(
             t_context,
             (t_context.settings.media_path / "image" / "credits" / "cpp.png").string(),
-            0.25f,
+            0.5f,
             "Ziesche Til Newman",
             "Software, C++, SFML, CMake",
             (util::bottom(m_titleText) + vertPad));
@@ -145,7 +144,7 @@ namespace bramblefore
         m_credits.emplace_back(
             t_context,
             (t_context.settings.media_path / "image" / "credits" / "sfml.png").string(),
-            0.6f,
+            0.85f,
             "Simple Fast Multimedia Library",
             "Thanks to Laurent Gomila for this amazing library!",
             m_credits.back().bottom() + vertPad);
@@ -171,7 +170,15 @@ namespace bramblefore
             (t_context.settings.media_path / "image" / "credits" / "font.png").string(),
             0.35f,
             "Mops Antiqua Font",
-            "Created by Uwe Borchert, with FontForge 2.0, SIL Open Font License v1.1",
+            "Uwe Borchert, SIL Open Font License v1.1",
+            m_credits.back().bottom() + vertPad);
+
+        m_credits.emplace_back(
+            t_context,
+            (t_context.settings.media_path / "image" / "credits" / "font.png").string(),
+            0.35f,
+            "Gentium Plus",
+            "J. Victor Gaultney, Annie Olsen, Iska Routamaa, Becca Hirsbrunner SIL Open Font License v1.1",
             m_credits.back().bottom() + vertPad);
     }
 
