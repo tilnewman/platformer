@@ -4,6 +4,7 @@
 // gui-window-paper.hpp
 //
 #include "gui-window.hpp"
+#include "ui/text-layout.hpp"
 
 #include <vector>
 
@@ -55,7 +56,7 @@ namespace bramblefore
         sf::Sprite m_tapeMiddleSprite;
 
         sf::Text m_titleText;
-        std::vector<sf::Text> m_contentTexts;
+        TextLayoutPack m_contentTextLayout;
         std::vector<sf::Vertex> m_bgFadeVerts;
     };
 

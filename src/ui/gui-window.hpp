@@ -4,6 +4,7 @@
 // gui-window.hpp
 //
 #include "subsystem/font.hpp"
+#include "ui/text-layout.hpp"
 
 #include <string>
 #include <vector>
@@ -102,10 +103,13 @@ namespace bramblefore
         sf::Color m_bgColor;
         sf::FloatRect m_bgCenterRect;
         std::vector<sf::Vertex> m_bgCenterVerts;
-        std::vector<sf::Sprite> m_sprites;
-        sf::Text m_titleText;
-        std::vector<sf::Text> m_contentTexts;
         std::vector<sf::Vertex> m_bgFadeVerts;
+
+        std::vector<sf::Sprite> m_sprites;
+        
+        sf::Text m_titleText;
+
+        TextLayoutPack m_contextLayoutPack;
     };
 
 } // namespace bramblefore

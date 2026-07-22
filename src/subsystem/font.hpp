@@ -38,18 +38,40 @@ namespace bramblefore
 
     struct TextDetails
     {
-        TextDetails();
+        TextDetails()
+            : font{ Font::General }
+            , size{ FontSize::Medium }
+            , color{ sf::Color::White }
+            , style{ sf::Text::Regular }
+            , will_center_horiz{ true }
+            , will_center_vert{ true }
+            , inner_pad_ratio{ 0.0f }
+        {}
 
         TextDetails(
             const Font t_font,
             const FontSize t_size,
             const sf::Color & t_color     = sf::Color::White,
-            const sf::Text::Style t_style = sf::Text::Regular);
+            const sf::Text::Style t_style = sf::Text::Regular,
+            const bool t_willCenterHoriz  = true,
+            const bool t_willCenterVert   = true,
+            const float t_innerPadRatio   = 0.0f)
+            : font{ t_font }
+            , size{ t_size }
+            , color{ t_color }
+            , style{ t_style }
+            , will_center_horiz{ t_willCenterHoriz }
+            , will_center_vert{ t_willCenterVert }
+            , inner_pad_ratio{ t_innerPadRatio }
+        {}
 
         Font font;
         FontSize size;
         sf::Color color;
         sf::Text::Style style;
+        bool will_center_horiz;
+        bool will_center_vert;
+        float inner_pad_ratio;
     };
 
     //
@@ -103,7 +125,8 @@ namespace bramblefore
                 t_details.font, t_details.size, t_text, t_details.color, t_details.style);
         }
 
-        [[nodiscard]] const FontExtent extent(const Font t_font, const FontSize t_size) const noexcept;
+        [[nodiscard]] const FontExtent
+            extent(const Font t_font, const FontSize t_size) const noexcept;
 
       private:
         void setupFontExtents(

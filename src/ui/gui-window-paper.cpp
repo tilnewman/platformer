@@ -9,7 +9,6 @@
 #include "subsystem/context.hpp"
 #include "subsystem/font.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "ui/text-layout.hpp"
 #include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
 #include "util/texture-loader.hpp"
@@ -33,7 +32,7 @@ namespace bramblefore
         , m_tapeRightSprite{ m_tapeRightTexture }
         , m_tapeMiddleSprite{ m_tapeMiddleTexture }
         , m_titleText{ util::SfmlDefaults::instance().font() }
-        , m_contentTexts{}
+        , m_contentTextLayout{}
         , m_bgFadeVerts{}
     {
         m_bgFadeVerts.reserve(util::verts_per_quad);
@@ -161,7 +160,8 @@ namespace bramblefore
             m_outerRect.position.y = m_tapeLeftSprite.getPosition().y;
         }
 
-        m_contentTexts = TextLayout::layout(t_context, m_info.content, m_innerRect, m_info.details);
+        m_contentTextLayout =
+            TextLayout::typeset(t_context, m_info.content, m_innerRect, m_info.details);
     }
 
     void GuiWindowPaper::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
@@ -178,7 +178,7 @@ namespace bramblefore
         t_target.draw(m_tapeMiddleSprite, t_states);
         t_target.draw(m_titleText, t_states);
 
-        for (const sf::Text & text : m_contentTexts)
+        for (const sf::Text & text : m_contentTextLayout.texts)
         {
             t_target.draw(text, t_states);
         }

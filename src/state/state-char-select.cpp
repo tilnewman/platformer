@@ -13,7 +13,6 @@
 #include "subsystem/context.hpp"
 #include "subsystem/font.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "ui/text-layout.hpp"
 #include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
 #include "util/sound-player.hpp"
@@ -32,11 +31,11 @@ namespace bramblefore
         , m_paperSprite{ m_paperTexture }
         , m_avatarType{ AvatarType::BlueKnight }
         , m_avatarSprite{ util::SfmlDefaults::instance().texture() }
-        , m_paperInnerRect{ { 90, 64 }, { 368, 384 } }
+        , m_paperInnerRect{ { 90, 64 }, { 368, 384 } } // from the PNG the artist made
         , m_avatarTypeText{ util::SfmlDefaults::instance().font() }
-        , m_descriptionTexts{}
+        , m_descriptionTextLayout{}
         , m_avatarClassText{ util::SfmlDefaults::instance().font() }
-        , m_classDescriptionTexts{}
+        , m_classDescriptionTextLayout{}
         , m_avatarPoseSprites{}
         , m_buttonNextTexture{}
         , m_buttonNextTextureAlt{}
@@ -57,7 +56,7 @@ namespace bramblefore
         t_target.draw(m_avatarSprite, t_states);
         t_target.draw(m_avatarTypeText, t_states);
 
-        for (const sf::Text & text : m_descriptionTexts)
+        for (const sf::Text & text : m_descriptionTextLayout.texts)
         {
             t_target.draw(text, t_states);
         }
@@ -69,7 +68,7 @@ namespace bramblefore
 
         t_target.draw(m_avatarClassText, t_states);
 
-        for (const sf::Text & text : m_classDescriptionTexts)
+        for (const sf::Text & text : m_classDescriptionTextLayout.texts)
         {
             t_target.draw(text, t_states);
         }
@@ -267,14 +266,17 @@ namespace bramblefore
 
         sf::FloatRect descriptionRect{ m_paperInnerRect };
 
-        descriptionRect.position.y =
-            (util::bottom(m_avatarTypeText) + m_avatarTypeText.getGlobalBounds().size.y);
+        const float vertPad{ m_paperInnerRect.size.y * 0.025f };
 
-        const TextDetails descriptionTextDeatils{ Font::General,
-                                                  FontSize::Small,
-                                                  sf::Color(0, 0, 0, 220) };
+        descriptionRect.position.y = (util::bottom(m_avatarTypeText) + vertPad);
 
-        m_descriptionTexts = TextLayout::layout(
+        descriptionRect.size.y = (m_paperInnerRect.size.y * 0.3f);
+
+        const TextDetails descriptionTextDeatils{
+            Font::General, FontSize::Small, sf::Color(0, 0, 0, 220), sf::Text::Regular, true, false
+        };
+
+        m_descriptionTextLayout = TextLayout::typeset(
             t_context, avatarDescription(m_avatarType), descriptionRect, descriptionTextDeatils);
 
         //
@@ -300,18 +302,18 @@ namespace bramblefore
         m_avatarClassText.setPosition(
             { (util::center(m_paperInnerRect).x -
                (m_avatarClassText.getGlobalBounds().size.x * 0.5f)),
-              (util::bottom(m_descriptionTexts.back()) +
-               m_avatarTypeText.getGlobalBounds().size.y) });
+              util::bottom(descriptionRect) });
 
         //
 
-        descriptionRect.position.y =
-            (util::bottom(m_avatarClassText) + m_avatarClassText.getGlobalBounds().size.y);
+        sf::FloatRect classDescriptionRect{ m_paperInnerRect };
+        classDescriptionRect.position.y = (util::bottom(m_avatarClassText) + vertPad);
+        classDescriptionRect.size.y     = (m_paperInnerRect.size.y * 0.5f);
 
-        m_classDescriptionTexts = TextLayout::layout(
+        m_classDescriptionTextLayout = TextLayout::typeset(
             t_context,
             avatarClassDescription(m_avatarType),
-            descriptionRect,
+            classDescriptionRect,
             descriptionTextDeatils);
 
         //

@@ -9,7 +9,6 @@
 #include "subsystem/context.hpp"
 #include "subsystem/font.hpp"
 #include "subsystem/screen-layout.hpp"
-#include "text-layout.hpp"
 #include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
 #include "util/texture-loader.hpp"
@@ -23,13 +22,40 @@ namespace bramblefore
         : m_info{}
         , m_innerRect{}
         , m_outerRect{}
+        , m_borderTopLeftTexture{}
+        , m_borderTopRightTexture{}
+        , m_borderBotLeftTexture{}
+        , m_borderBotRightTexture{}
+        , m_borderTopTexture{}
+        , m_borderBotTexture{}
+        , m_borderLeftTexture{}
+        , m_borderRightTexture{}
+        , m_smallBorderTopLeftTexture{}
+        , m_smallBorderTopRightTexture{}
+        , m_smallBorderBotLeftTexture{}
+        , m_smallBorderBotRightTexture{}
+        , m_smallBorderTopTexture{}
+        , m_smallBorderBotTexture{}
+        , m_smallBorderLeftTexture{}
+        , m_smallBorderRightTexture{}
+        , m_bgTopLeftTexture{}
+        , m_bgTopRightTexture{}
+        , m_bgBotLeftTexture{}
+        , m_bgBotRightTexture{}
+        , m_bgTopTexture{}
+        , m_bgBotTexture{}
+        , m_bgLeftTexture{}
+        , m_bgRightTexture{}
+        , m_tapeLeftTexture{}
+        , m_tapeRightTexture{}
+        , m_tapeMiddleTexture{}
         , m_bgColor{ 74, 76, 41 } // comes from the PNGs made by the artist
         , m_bgCenterRect{}
         , m_bgCenterVerts{}
+        , m_bgFadeVerts{}
         , m_sprites{}
         , m_titleText{ util::SfmlDefaults::instance().font() }
-        , m_contentTexts{}
-        , m_bgFadeVerts{}
+        , m_contextLayoutPack{}
     {
         m_bgCenterVerts.reserve(util::verts_per_quad);
         m_bgFadeVerts.reserve(util::verts_per_quad);
@@ -535,7 +561,8 @@ namespace bramblefore
             m_outerRect.position.y = tapeLeftSprite.getPosition().y;
         }
 
-        m_contentTexts = TextLayout::layout(t_context, m_info.content, m_innerRect, m_info.details);
+        m_contextLayoutPack =
+            TextLayout::typeset(t_context, m_info.content, m_innerRect, m_info.details);
     }
 
     void GuiWindow::draw(sf::RenderTarget & target, sf::RenderStates states) const
@@ -559,7 +586,7 @@ namespace bramblefore
 
         target.draw(m_titleText, states);
 
-        for (const sf::Text & text : m_contentTexts)
+        for (const sf::Text & text : m_contextLayoutPack.texts)
         {
             target.draw(text, states);
         }

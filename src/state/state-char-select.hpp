@@ -5,6 +5,7 @@
 //
 #include "player/player-info.hpp"
 #include "state/states.hpp"
+#include "ui/text-layout.hpp"
 
 #include <string>
 #include <vector>
@@ -57,9 +58,9 @@ namespace bramblefore
         sf::Sprite m_avatarSprite;
         sf::FloatRect m_paperInnerRect;
         sf::Text m_avatarTypeText;
-        std::vector<sf::Text> m_descriptionTexts;
+        TextLayoutPack m_descriptionTextLayout;
         sf::Text m_avatarClassText;
-        std::vector<sf::Text> m_classDescriptionTexts;
+        TextLayoutPack m_classDescriptionTextLayout;
         std::vector<sf::Sprite> m_avatarPoseSprites;
         sf::Texture m_buttonNextTexture;
         sf::Texture m_buttonNextTextureAlt;
