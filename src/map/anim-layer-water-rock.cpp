@@ -81,7 +81,8 @@ namespace bramblefore
 
         //
 
-        const float rockScale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.5f) };
+        const float rockScale{ t_context.layout.calScaleBasedOnResolution(t_context, 0.9f) *
+                               t_context.settings.map_scale };
 
         m_rockAnims.reserve(t_rockRects.size());
         for (const WaterRockRect & rockRect : t_rockRects)
