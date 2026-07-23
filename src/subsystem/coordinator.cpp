@@ -78,7 +78,7 @@ namespace bramblefore
         m_accentUPtr            = std::make_unique<AccentAnimations>();
         m_spellUPtr             = std::make_unique<SpellAnimations>();
         m_itemImageUPtr         = std::make_unique<ItemImages>();
-        m_levelInfoUPtr         = std::make_unique<LevelInfo>(m_setting);
+        m_levelInfoUPtr         = std::make_unique<LevelInfo>();
         m_playerInfoUPtr        = std::make_unique<PlayerInfo>();
         m_floatingTextUPtr      = std::make_unique<FloatingText>();
         m_mapCoordUPtr          = std::make_unique<MapCoordinator>();

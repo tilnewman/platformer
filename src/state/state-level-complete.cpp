@@ -6,6 +6,7 @@
 #include "state/state-level-complete.hpp"
 
 #include "bramblefore/settings.hpp"
+#include "map/level-info.hpp"
 #include "player/player-info.hpp"
 #include "state/state-manager.hpp"
 #include "subsystem/context.hpp"
@@ -64,6 +65,7 @@ namespace bramblefore
         , m_starBrightTexture{}
         , m_starAnims{}
         , m_timeBetweenStarAnimAndExit{ 10.0f }
+        , m_coinText{ util::SfmlDefaults::instance().font() }
     {
         m_starAnims.reserve(5);
     }
@@ -130,6 +132,12 @@ namespace bramblefore
             starHorizStopPos += (starWidth + horizSpacer);
             initialDelaySec += 0.5f;
         }
+
+        // coin text setup
+        std::string coinMessage{ std::to_string(t_context.level_info.coins()) };
+
+        m_coinText = t_context.font.makeText(
+            Font::General, FontSize::Medium, coinMessage, t_context.settings.off_white_color);
     }
 
     void LevelCompleteState::update(const Context & t_context, const float t_frameTimeSec)
@@ -150,6 +158,7 @@ namespace bramblefore
             if (m_elapsedTimeSec > m_timeBetweenStarAnimAndExit)
             {
                 t_context.map_coord.advance();
+                t_context.level_info.resetForNewLevel(t_context);
 
                 if (t_context.map_coord.filename().empty())
                 {

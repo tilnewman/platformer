@@ -7,6 +7,7 @@
 
 #include "avatar/spells-anim.hpp"
 #include "map/accents.hpp"
+#include "map/level-info.hpp"
 #include "map/level.hpp"
 #include "map/pickups.hpp"
 #include "player/player-info.hpp"
@@ -31,6 +32,8 @@ namespace bramblefore
 
     void MapCoordinator::respawn(const Context & t_context)
     {
+        t_context.level_info.resetForRespawn();
+
         t_context.accent.clear();
         t_context.pickup.clear();
         t_context.spell.clear();

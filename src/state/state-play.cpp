@@ -9,6 +9,7 @@
 #include "avatar/spells-anim.hpp"
 #include "bramblefore/settings.hpp"
 #include "map/accents.hpp"
+#include "map/level-info.hpp"
 #include "map/level.hpp"
 #include "map/pickups.hpp"
 #include "player/player-info-display.hpp"
@@ -185,6 +186,7 @@ namespace bramblefore
         m_spellSelectMenu.loadTextures(t_context.settings);
 
         t_context.map_coord.respawn(t_context);
+        t_context.level_info.resetForNewLevel(t_context);
 
         //
 
@@ -207,7 +209,7 @@ namespace bramblefore
 
         quitWindowInfo.details =
             TextDetails(Font::General, FontSize::Medium, t_context.settings.off_white_color);
-        
+
         quitWindowInfo.region                 = util::scaleRectInPlaceCopy(screenRect, 0.2f);
         quitWindowInfo.title                  = "Quit what exactly?";
         quitWindowInfo.will_draw_background   = true;

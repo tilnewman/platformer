@@ -67,6 +67,8 @@ namespace bramblefore
         sf::Texture m_starBrightTexture;
         std::vector<StarAnim> m_starAnims;
         float m_timeBetweenStarAnimAndExit;
+
+        sf::Text m_coinText;
     };
 
 } // namespace bramblefore
