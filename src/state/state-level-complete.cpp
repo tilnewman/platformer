@@ -56,17 +56,28 @@ namespace bramblefore
 
     //
 
+    CoinBounceAnim::CoinBounceAnim(const sf::Texture & t_texture)
+        : sprite{ t_texture }
+        , elapsed_time_sec{ 0.0f }
+        , frame_index{ 0 }
+        , velocity{ 0.0f, 0.0f }
+        , is_finished{ false }
+    {}
+
+    //
+
     LevelCompleteState::LevelCompleteState()
-        : m_knightTexture{}
+        : m_phase{ LevelCompletePhase::PreDelay }
+        , m_elapsedTimeSec{ 0.0f }
+        , m_knightTexture{}
         , m_knightSprite{ m_knightTexture }
         , m_text{ util::SfmlDefaults::instance().font() }
-        , m_elapsedTimeSec{ 0.0f }
         , m_starDimTexture{}
         , m_starBrightTexture{}
         , m_starAnims{}
-        , m_timeBetweenStarAnimAndExit{ 10.0f }
-        , m_areStarsAnimating{ true }
         , m_coinText{ util::SfmlDefaults::instance().font() }
+        , m_coinTexture{}
+        , m_coinAnims{}
     {
         m_starAnims.reserve(5);
     }
@@ -107,20 +118,23 @@ namespace bramblefore
             (t_context.settings.media_path / "image" / "ui" / "star-brown.png"),
             true);
 
-        sf::Sprite tempSprite(m_starBrightTexture);
-        const float tempScale{ t_context.layout.calScaleBasedOnResolution(t_context, 3.0f) };
-        tempSprite.setScale({ tempScale, tempScale });
-        const float starWidth{ tempSprite.getGlobalBounds().size.x };
+        const float starScale{ t_context.layout.calScaleBasedOnResolution(t_context, 3.0f) };
+
+        const sf::Vector2f starSize = [&]() {
+            sf::Sprite tempSprite(m_starBrightTexture);
+            tempSprite.setScale({ starScale, starScale });
+            return tempSprite.getGlobalBounds().size;
+        }();
 
         const float horizSpacer{ wholeRect.size.x * 0.01f };
-        const float starsTotalWidth{ (5.0f * starWidth) + ((4.0f * horizSpacer)) };
+        const float starsTotalWidth{ (5.0f * starSize.x) + ((4.0f * horizSpacer)) };
 
         const float starVertPosition{ util::bottom(m_text) + (wholeRect.size.y * 0.05f) };
-        const sf::Vector2f startPos{ (wholeRect.size.x + starWidth), starVertPosition };
+        const sf::Vector2f startPos{ (wholeRect.size.x + starSize.x), starVertPosition };
 
         const std::size_t starCount{ static_cast<std::size_t>(t_context.player.mapStarCount()) };
 
-        float initialDelaySec{ 2.0f };
+        float initialDelaySec{ 0.0f };
         float starHorizStopPos{ (wholeRect.size.x * 0.5f) - (starsTotalWidth * 0.5f) };
         for (std::size_t i{ 0 }; i < 5; ++i)
         {
@@ -128,9 +142,9 @@ namespace bramblefore
                                                                  : m_starBrightTexture };
 
             m_starAnims.emplace_back(
-                starTextureRef, startPos, tempScale, starHorizStopPos, initialDelaySec);
+                starTextureRef, startPos, starScale, starHorizStopPos, initialDelaySec);
 
-            starHorizStopPos += (starWidth + horizSpacer);
+            starHorizStopPos += (starSize.x + horizSpacer);
             initialDelaySec += 0.5f;
         }
 
@@ -147,40 +161,88 @@ namespace bramblefore
 
         m_coinText.setPosition(
             { ((wholeRect.size.x * 0.5f) - (m_coinText.getGlobalBounds().size.x * 0.5f)),
-              (starVertPosition + tempSprite.getGlobalBounds().size.y +
-               (wholeRect.size.y * 0.05f)) });
+              (starVertPosition + starSize.y + (wholeRect.size.y * 0.05f)) });
+
+        util::TextureLoader::load(
+            m_coinTexture, (t_context.settings.media_path / "image" / "anim" / "coin1.png"), true);
     }
 
-    void LevelCompleteState::update(const Context & t_context, const float t_frameTimeSec)
+    void LevelCompleteState::update(const Context & t_context, const float t_elapsedTimeSec)
+    {
+        if (LevelCompletePhase::PreDelay == m_phase)
+        {
+            updatePreDelay(t_context, t_elapsedTimeSec);
+        }
+        else if (LevelCompletePhase::StarAnimation == m_phase)
+        {
+            updateStarAnimation(t_context, t_elapsedTimeSec);
+        }
+        else if (LevelCompletePhase::CoinAnimation == m_phase)
+        {
+            updateCoinAnimation(t_context, t_elapsedTimeSec);
+        }
+        else
+        {
+            updatePostDelay(t_context, t_elapsedTimeSec);
+        }
+    }
+
+    void LevelCompleteState::updatePreDelay(const Context &, const float t_elapsedTimeSec)
+    {
+        m_elapsedTimeSec += t_elapsedTimeSec;
+        if (m_elapsedTimeSec > 2.0f)
+        {
+            m_elapsedTimeSec = 0.0f;
+            m_phase          = LevelCompletePhase::StarAnimation;
+        }
+    }
+
+    void LevelCompleteState::updateStarAnimation(
+        const Context & t_context, const float t_elapsedTimeSec)
     {
         bool areAllStarsFinishedAnimating{ true };
         for (StarAnim & anim : m_starAnims)
         {
             if (!anim.isFinished())
             {
-                anim.update(t_context, t_frameTimeSec);
                 areAllStarsFinishedAnimating = false;
+                anim.update(t_context, t_elapsedTimeSec);
             }
         }
 
-        m_areStarsAnimating = !areAllStarsFinishedAnimating;
-
-        if (!m_areStarsAnimating)
+        if (areAllStarsFinishedAnimating)
         {
-            m_elapsedTimeSec += t_frameTimeSec;
-            if (m_elapsedTimeSec > m_timeBetweenStarAnimAndExit)
-            {
-                t_context.map_coord.advance();
-                t_context.level_info.resetForNewLevel(t_context);
+            m_elapsedTimeSec = 0.0f;
+            m_phase          = LevelCompletePhase::CoinAnimation;
+        }
+    }
 
-                if (t_context.map_coord.filename().empty())
-                {
-                    t_context.state.setChangePending(State::Credits);
-                }
-                else
-                {
-                    t_context.state.setChangePending(State::Play);
-                }
+    void LevelCompleteState::updateCoinAnimation(const Context &, const float t_elapsedTimeSec)
+    {
+        m_elapsedTimeSec += t_elapsedTimeSec;
+        if (m_elapsedTimeSec > 3.0f)
+        {
+            m_elapsedTimeSec = 0.0f;
+            m_phase          = LevelCompletePhase::PostDelay;
+        }
+    }
+
+    void
+        LevelCompleteState::updatePostDelay(const Context & t_context, const float t_elapsedTimeSec)
+    {
+        m_elapsedTimeSec += t_elapsedTimeSec;
+        if (m_elapsedTimeSec > 6.0f)
+        {
+            t_context.map_coord.advance();
+            t_context.level_info.resetForNewLevel(t_context);
+
+            if (t_context.map_coord.filename().empty())
+            {
+                t_context.state.setChangePending(State::Credits);
+            }
+            else
+            {
+                t_context.state.setChangePending(State::Play);
             }
         }
     }
@@ -191,15 +253,39 @@ namespace bramblefore
         t_target.draw(m_knightSprite, t_states);
         t_target.draw(m_text, t_states);
 
-        if (!m_areStarsAnimating)
-        {
-            t_target.draw(m_coinText, t_states);
-        }
-
         for (const StarAnim & anim : m_starAnims)
         {
             t_target.draw(anim.sprite, t_states);
         }
+
+        if ((LevelCompletePhase::CoinAnimation == m_phase) ||
+            (LevelCompletePhase::PostDelay == m_phase))
+        {
+            t_target.draw(m_coinText, t_states);
+        }
+    }
+
+    std::size_t LevelCompleteState::coinFrameCount() const
+    {
+        if (m_coinTexture.getSize().y > 0)
+        {
+            return static_cast<std::size_t>(m_coinTexture.getSize().x / m_coinTexture.getSize().y);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    const sf::IntRect LevelCompleteState::coinTextureRect(const std::size_t t_frame) const
+    {
+        sf::IntRect rect;
+        rect.size.x     = static_cast<int>(m_coinTexture.getSize().y);
+        rect.size.y     = rect.size.x;
+        rect.position.y = 0;
+        rect.position.x = (static_cast<int>(t_frame) * rect.size.x);
+
+        return rect;
     }
 
 } // namespace bramblefore

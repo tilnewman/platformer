@@ -20,6 +20,16 @@ namespace bramblefore
 
     //
 
+    enum class LevelCompletePhase
+    {
+        PreDelay,
+        StarAnimation,
+        CoinAnimation,
+        PostDelay
+    };
+
+    //
+
     struct StarAnim
     {
         StarAnim(
@@ -41,6 +51,19 @@ namespace bramblefore
 
     //
 
+    struct CoinBounceAnim
+    {
+        CoinBounceAnim(const sf::Texture & t_texture);
+
+        sf::Sprite sprite;
+        float elapsed_time_sec;
+        std::size_t frame_index;
+        sf::Vector2f velocity;
+        bool is_finished;
+    };
+
+    //
+
     class LevelCompleteState : public IState
     {
       public:
@@ -48,7 +71,7 @@ namespace bramblefore
         virtual ~LevelCompleteState() override = default;
 
         [[nodiscard]] State which() const final { return State::LevelComplete; }
-        void update(const Context & t_context, const float t_frameTimeSec) final;
+        void update(const Context & t_context, const float t_elapsedTimeSec) final;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const final;
@@ -58,18 +81,29 @@ namespace bramblefore
         void onExit(const Context &) final {}
 
       private:
+        void updatePreDelay(const Context & t_context, const float t_elapsedTimeSec);
+        void updateStarAnimation(const Context & t_context, const float t_elapsedTimeSec);
+        void updateCoinAnimation(const Context & t_context, const float t_elapsedTimeSec);
+        void updatePostDelay(const Context & t_context, const float t_elapsedTimeSec);
+        [[nodiscard]] std::size_t coinFrameCount() const;
+        [[nodiscard]] const sf::IntRect coinTextureRect(const std::size_t frame) const;
+
+      private:
+        LevelCompletePhase m_phase;
+        float m_elapsedTimeSec;
+
         sf::Texture m_knightTexture;
         sf::Sprite m_knightSprite;
+
         sf::Text m_text;
-        float m_elapsedTimeSec;
 
         sf::Texture m_starDimTexture;
         sf::Texture m_starBrightTexture;
         std::vector<StarAnim> m_starAnims;
-        float m_timeBetweenStarAnimAndExit;
-        bool m_areStarsAnimating;
 
         sf::Text m_coinText;
+        sf::Texture m_coinTexture;
+        std::vector<CoinBounceAnim> m_coinAnims;
     };
 
 } // namespace bramblefore
