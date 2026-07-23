@@ -21,9 +21,9 @@ namespace bramblefore
 {
 
     MapCoordinator::MapCoordinator()
-        : m_names{ { "dungeon1-1.json", "Goblin Dungeon" },
+        : m_names{ { "castle-1.json", "Wightstone Castle" },
+                   { "dungeon1-1.json", "Goblin Dungeon" },
                    { "forest-1.json", "Woodsland" },
-                   { "castle-1.json", "Wightstone Castle" },
                    { "mountains-1.json", "Lake Mountain" },
                    { "cave-1.json", "Lava Cavern" } }
         , m_namesIter{ std::begin(m_names) }

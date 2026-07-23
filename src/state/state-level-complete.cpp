@@ -80,7 +80,7 @@ namespace bramblefore
 
         const sf::FloatRect wholeRect{ t_context.layout.wholeRect() };
         util::fitAndCenterInside(m_knightSprite, util::scaleRectInPlaceCopy(wholeRect, 0.3f));
-        m_knightSprite.move({ 0.0f, -(wholeRect.size.y * 0.1f) });
+        m_knightSprite.move({ 0.0f, -(wholeRect.size.y * 0.25f) });
 
         // You Survived! text setup
         std::string message{ t_context.map_coord.displayName() };
@@ -91,7 +91,7 @@ namespace bramblefore
 
         m_text.setPosition(
             { ((wholeRect.size.x * 0.5f) - (m_text.getGlobalBounds().size.x * 0.5f)),
-              (util::bottom(m_knightSprite) + (wholeRect.size.y * 0.015f)) });
+              (util::bottom(m_knightSprite) + (wholeRect.size.y * 0.01f)) });
 
         // star animations or you-got-no-stars text animation setup
         util::TextureLoader::load(
@@ -112,7 +112,7 @@ namespace bramblefore
         const float horizSpacer{ wholeRect.size.x * 0.01f };
         const float starsTotalWidth{ (5.0f * starWidth) + ((4.0f * horizSpacer)) };
 
-        const float starVertPosition{ util::bottom(m_text) + (wholeRect.size.y * 0.1f) };
+        const float starVertPosition{ util::bottom(m_text) + (wholeRect.size.y * 0.05f) };
         const sf::Vector2f startPos{ (wholeRect.size.x + starWidth), starVertPosition };
 
         const std::size_t starCount{ static_cast<std::size_t>(t_context.player.mapStarCount()) };
