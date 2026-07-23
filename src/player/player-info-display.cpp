@@ -387,16 +387,14 @@ namespace bramblefore
     void PlayerInfoDisplay::setStarCount(const int t_count)
     {
         // just keep stars offscreen until needed
-        m_starYellow1Sprite.setPosition({ -1000.0f, -1000.0f });
-        m_starYellow2Sprite.setPosition({ -1000.0f, -1000.0f });
-        m_starYellow3Sprite.setPosition({ -1000.0f, -1000.0f });
-        m_starYellow4Sprite.setPosition({ -1000.0f, -1000.0f });
-        m_starYellow5Sprite.setPosition({ -1000.0f, -1000.0f });
+        const sf::Vector2f offscreenPos{ -1000.0f, -1000.0f };
+        m_starYellow1Sprite.setPosition(offscreenPos);
+        m_starYellow2Sprite.setPosition(offscreenPos);
+        m_starYellow3Sprite.setPosition(offscreenPos);
+        m_starYellow4Sprite.setPosition(offscreenPos);
+        m_starYellow5Sprite.setPosition(offscreenPos);
 
-        if (0 == t_count)
-        {
-        }
-        else if (1 == t_count)
+        if (1 == t_count)
         {
             m_starYellow1Sprite.setPosition(m_starBrown1Sprite.getPosition());
         }
@@ -418,7 +416,7 @@ namespace bramblefore
             m_starYellow3Sprite.setPosition(m_starBrown3Sprite.getPosition());
             m_starYellow4Sprite.setPosition(m_starBrown4Sprite.getPosition());
         }
-        else
+        else if (5 == t_count)
         {
             m_starYellow1Sprite.setPosition(m_starBrown1Sprite.getPosition());
             m_starYellow2Sprite.setPosition(m_starBrown2Sprite.getPosition());
