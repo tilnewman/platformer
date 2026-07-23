@@ -28,7 +28,7 @@ namespace bramblefore
         const float t_horizStopPosition,
         const float t_initialDelaySec)
         : sprite{ t_texture }
-        , slider{ 0.5f, 0.5f }
+        , slider{ 0.65f, 0.5f }
         , elapsed_time_sec{ 0.0f }
         , initial_delay_sec{ t_initialDelaySec }
         , horiz_stop_pos{ t_horizStopPosition }
@@ -60,8 +60,10 @@ namespace bramblefore
         , m_knightSprite{ m_knightTexture }
         , m_youSurvivedText{ util::SfmlDefaults::instance().font() }
         , m_elapsedTimeSec{ 0.0f }
-        , m_starTexture{}
+        , m_starDimTexture{}
+        , m_starBrightTexture{}
         , m_starAnims{}
+        , m_timeBetweenStarAnimAndExit{ 10.0f }
     {
         m_starAnims.reserve(5);
     }
@@ -90,41 +92,40 @@ namespace bramblefore
 
         // star animations or you-got-no-stars text animation setup
         util::TextureLoader::load(
-            m_starTexture,
+            m_starBrightTexture,
             (t_context.settings.media_path / "image" / "ui" / "star-yellow.png"),
             true);
 
+        util::TextureLoader::load(
+            m_starDimTexture,
+            (t_context.settings.media_path / "image" / "ui" / "star-brown.png"),
+            true);
+
+        sf::Sprite tempSprite(m_starBrightTexture);
+        const float tempScale{ t_context.layout.calScaleBasedOnResolution(t_context, 3.0f) };
+        tempSprite.setScale({ tempScale, tempScale });
+        const float starWidth{ tempSprite.getGlobalBounds().size.x };
+
+        const float horizSpacer{ wholeRect.size.x * 0.01f };
+        const float starsTotalWidth{ (5.0f * starWidth) + ((4.0f * horizSpacer)) };
+
+        const float starVertPosition{ util::bottom(m_youSurvivedText) + (wholeRect.size.y * 0.1f) };
+        const sf::Vector2f startPos{ (wholeRect.size.x + starWidth), starVertPosition };
+
         const std::size_t starCount{ static_cast<std::size_t>(t_context.player.mapStarCount()) };
-        if (starCount > 0)
+
+        float initialDelaySec{ 2.0f };
+        float starHorizStopPos{ (wholeRect.size.x * 0.5f) - (starsTotalWidth * 0.5f) };
+        for (std::size_t i{ 0 }; i < 5; ++i)
         {
-            sf::Sprite tempSprite(m_starTexture);
-            const float tempScale{ t_context.layout.calScaleBasedOnResolution(t_context, 3.0f) };
-            tempSprite.setScale({ tempScale, tempScale });
-            const float starWidth{ tempSprite.getGlobalBounds().size.x };
+            const sf::Texture & starTextureRef{ (i >= starCount) ? m_starDimTexture
+                                                                 : m_starBrightTexture };
 
-            float starsTotalWidth{ static_cast<float>(starCount) * starWidth };
+            m_starAnims.emplace_back(
+                starTextureRef, startPos, tempScale, starHorizStopPos, initialDelaySec);
 
-            const float horizSpacer{ wholeRect.size.x * 0.01f };
-            if (starCount > 1)
-            {
-                starsTotalWidth += (static_cast<float>(starCount - 1) * horizSpacer);
-            }
-
-            const float starVertPosition{ util::bottom(m_youSurvivedText) +
-                                          (wholeRect.size.y * 0.2f) };
-
-            const sf::Vector2f startPos{ (wholeRect.size.x + starWidth), starVertPosition };
-
-            float initialDelaySec{ 2.0f };
-            float starHorizStopPos{ (wholeRect.size.x * 0.5f) - (starsTotalWidth * 0.5f) };
-            for (std::size_t i{ 0 }; i < starCount; ++i)
-            {
-                m_starAnims.emplace_back(
-                    m_starTexture, startPos, tempScale, starHorizStopPos, initialDelaySec);
-
-                starHorizStopPos += (starWidth + horizSpacer);
-                initialDelaySec += 0.5f;
-            }
+            starHorizStopPos += (starWidth + horizSpacer);
+            initialDelaySec += 0.5f;
         }
     }
 
@@ -133,10 +134,9 @@ namespace bramblefore
         bool areAllStarsFinishedAnimating{ true };
         for (StarAnim & anim : m_starAnims)
         {
-            anim.update(t_context, t_frameTimeSec);
-
             if (!anim.isFinished())
             {
+                anim.update(t_context, t_frameTimeSec);
                 areAllStarsFinishedAnimating = false;
             }
         }
@@ -144,7 +144,7 @@ namespace bramblefore
         if (areAllStarsFinishedAnimating)
         {
             m_elapsedTimeSec += t_frameTimeSec;
-            if (m_elapsedTimeSec > 14.0f)
+            if (m_elapsedTimeSec > m_timeBetweenStarAnimAndExit)
             {
                 t_context.map_coord.mapNameAdvance();
 

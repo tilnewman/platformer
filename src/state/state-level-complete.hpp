@@ -62,8 +62,10 @@ namespace bramblefore
         sf::Sprite m_knightSprite;
         sf::Text m_youSurvivedText;
         float m_elapsedTimeSec;
-        sf::Texture m_starTexture;
+        sf::Texture m_starDimTexture;
+        sf::Texture m_starBrightTexture;
         std::vector<StarAnim> m_starAnims;
+        float m_timeBetweenStarAnimAndExit;
     };
 
 } // namespace bramblefore
