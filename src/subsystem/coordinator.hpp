@@ -40,7 +40,7 @@ namespace bramblefore
     class Coordinator
     {
       public:
-        explicit Coordinator(const Settings & t_settings);
+        explicit Coordinator(const Settings & t_setting);
 
         void play();
 
@@ -56,28 +56,29 @@ namespace bramblefore
         void setupRenderWindow(sf::VideoMode & t_videoMode);
 
       private:
+        Settings m_setting;
         sf::RenderStates m_renderStates;
-        sf::RenderWindow m_window;
-        Settings m_settings;
-        util::Random m_random;
-        util::SoundPlayer m_sfx;
-        StateManager m_states;
-        FontManager m_fonts;
+
+        std::unique_ptr<sf::RenderWindow> m_windowUPtr;
+        std::unique_ptr<util::Random> m_randomUPtr;
+        std::unique_ptr<util::SoundPlayer> m_sfxUPtr;
+        std::unique_ptr<StateManager> m_stateUPtr;
+        std::unique_ptr<FontManager> m_fontUPtr;
         std::unique_ptr<Avatar> m_avatarUPtr;
-        ScreenLayout m_layout;
-        LevelFileLoader m_levelLoader;
-        Level m_level;
-        BackgroundImages m_backgroundImages;
-        PickupAnimations m_pickups;
-        AccentAnimations m_accents;
-        SpellAnimations m_spells;
-        ItemImages m_itemImages;
-        LevelInfo m_levelInfo;
-        PlayerInfo m_playerInfo;
+        std::unique_ptr<ScreenLayout> m_layoutUPtr;
+        std::unique_ptr<LevelFileLoader> m_levelLoaderUPtr;
+        std::unique_ptr<Level> m_levelUPtr;
+        std::unique_ptr<BackgroundImages> m_backgroundImageUPtr;
+        std::unique_ptr<PickupAnimations> m_pickupUPtr;
+        std::unique_ptr<AccentAnimations> m_accentUPtr;
+        std::unique_ptr<SpellAnimations> m_spellUPtr;
+        std::unique_ptr<ItemImages> m_itemImageUPtr;
+        std::unique_ptr<LevelInfo> m_levelInfoUPtr;
+        std::unique_ptr<PlayerInfo> m_playerInfoUPtr;
         std::unique_ptr<PlayerInfoDisplay> m_playerInfoDisplayUPtr;
-        FloatingText m_floatText;
-        MapCoordinator m_mapCoord;
-        FramerateDisplay m_framerateDisplay;
+        std::unique_ptr<FloatingText> m_floatingTextUPtr;
+        std::unique_ptr<MapCoordinator> m_mapCoordUPtr;
+        std::unique_ptr<FramerateDisplay> m_framerateDisplayUPtr;
         std::unique_ptr<BloodSplatManager> m_bloodSplatManagerUPtr;
 
         std::unique_ptr<Context> m_contextUPtr;

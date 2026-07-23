@@ -22,109 +22,146 @@
 namespace bramblefore
 {
 
-    Coordinator::Coordinator(const Settings & t_settings)
-        : m_renderStates{}
-        , m_window{}
-        , m_settings{ t_settings }
-        , m_random{}
-        , m_sfx{ m_random }
-        , m_states{}
-        , m_fonts{}
+    Coordinator::Coordinator(const Settings & t_setting)
+        : m_setting{ t_setting }
+        , m_windowUPtr{}
+        , m_renderStates{}
+        , m_randomUPtr{}
+        , m_sfxUPtr{}
+        , m_stateUPtr{}
+        , m_fontUPtr{}
         , m_avatarUPtr{}
-        , m_layout{}
-        , m_levelLoader{}
-        , m_level{}
-        , m_backgroundImages{}
-        , m_pickups{}
-        , m_accents{}
-        , m_spells{}
-        , m_itemImages{}
-        , m_levelInfo{ t_settings }
-        , m_playerInfo{}
+        , m_layoutUPtr{}
+        , m_levelLoaderUPtr{}
+        , m_levelUPtr{}
+        , m_backgroundImageUPtr{}
+        , m_pickupUPtr{}
+        , m_accentUPtr{}
+        , m_spellUPtr{}
+        , m_itemImageUPtr{}
+        , m_levelInfoUPtr{}
+        , m_playerInfoUPtr{}
         , m_playerInfoDisplayUPtr{}
-        , m_floatText{}
-        , m_mapCoord{}
-        , m_framerateDisplay{}
+        , m_floatingTextUPtr{}
+        , m_mapCoordUPtr{}
+        , m_framerateDisplayUPtr{}
         , m_bloodSplatManagerUPtr{}
         , m_contextUPtr{}
     {}
 
     void Coordinator::setup()
     {
-        setupRenderWindow(m_settings.video_mode);
-        m_window.setMouseCursorVisible(false);
-        m_window.setVerticalSyncEnabled(false);
-        m_window.setKeyRepeatEnabled(false);
+        m_windowUPtr = std::make_unique<sf::RenderWindow>();
+        setupRenderWindow(m_setting.video_mode);
+        m_windowUPtr->setMouseCursorVisible(false);
+        m_windowUPtr->setVerticalSyncEnabled(false);
+        m_windowUPtr->setKeyRepeatEnabled(false);
 
         // don't let SFML sleep between frames because we do this ourselves below
         // see settings.hpp for where the framerate is actually set
-        m_window.setFramerateLimit(0);
+        m_windowUPtr->setFramerateLimit(0);
 
         util::SfmlDefaults::instance().setup();
 
-        m_sfx.mediaPath(m_settings.media_path / "sound");
-        m_sfx.loadAll();
-        m_sfx.willLoop("walk", true);
-
+        m_randomUPtr            = std::make_unique<util::Random>();
+        m_sfxUPtr               = std::make_unique<util::SoundPlayer>(*m_randomUPtr);
+        m_layoutUPtr            = std::make_unique<ScreenLayout>();
+        m_fontUPtr              = std::make_unique<FontManager>();
+        m_stateUPtr             = std::make_unique<StateManager>();
         m_avatarUPtr            = std::make_unique<Avatar>();
         m_playerInfoDisplayUPtr = std::make_unique<PlayerInfoDisplay>();
         m_bloodSplatManagerUPtr = std::make_unique<BloodSplatManager>();
+        m_levelLoaderUPtr       = std::make_unique<LevelFileLoader>();
+        m_levelUPtr             = std::make_unique<Level>();
+        m_backgroundImageUPtr   = std::make_unique<BackgroundImages>();
+        m_pickupUPtr            = std::make_unique<PickupAnimations>();
+        m_accentUPtr            = std::make_unique<AccentAnimations>();
+        m_spellUPtr             = std::make_unique<SpellAnimations>();
+        m_itemImageUPtr         = std::make_unique<ItemImages>();
+        m_levelInfoUPtr         = std::make_unique<LevelInfo>(m_setting);
+        m_playerInfoUPtr        = std::make_unique<PlayerInfo>();
+        m_floatingTextUPtr      = std::make_unique<FloatingText>();
+        m_mapCoordUPtr          = std::make_unique<MapCoordinator>();
+        m_framerateDisplayUPtr  = std::make_unique<FramerateDisplay>();
 
         m_contextUPtr = std::make_unique<Context>(
-            m_settings,
-            m_random,
-            m_sfx,
-            m_states,
-            m_fonts,
+            m_setting,
+            *m_randomUPtr,
+            *m_sfxUPtr,
+            *m_stateUPtr,
+            *m_fontUPtr,
             *m_avatarUPtr,
-            m_layout,
-            m_levelLoader,
-            m_level,
-            m_backgroundImages,
-            m_pickups,
-            m_accents,
-            m_spells,
-            m_itemImages,
-            m_levelInfo,
-            m_playerInfo,
+            *m_layoutUPtr,
+            *m_levelLoaderUPtr,
+            *m_levelUPtr,
+            *m_backgroundImageUPtr,
+            *m_pickupUPtr,
+            *m_accentUPtr,
+            *m_spellUPtr,
+            *m_itemImageUPtr,
+            *m_levelInfoUPtr,
+            *m_playerInfoUPtr,
             *m_playerInfoDisplayUPtr,
-            m_floatText,
-            m_mapCoord,
+            *m_floatingTextUPtr,
+            *m_mapCoordUPtr,
             *m_bloodSplatManagerUPtr);
 
-        AvatarTextureManager::instance().setup(m_settings);
-        MonsterTextureManager::instance().setup(m_settings);
-        MapTextureManager::instance().setup();
-        MonsterSpellTextureManager::instance().setup(m_settings);
+        m_sfxUPtr->mediaPath(m_setting.media_path / "sound");
+        m_sfxUPtr->loadAll();
+        m_sfxUPtr->willLoop("walk", true);
 
-        m_layout.setup(m_window.getSize());
-        m_fonts.setup(m_settings);
-        m_itemImages.setup(m_settings);
-        m_pickups.setup(*m_contextUPtr);
-        m_accents.setup(*m_contextUPtr);
-        m_spells.setup(*m_contextUPtr);
-        m_framerateDisplay.setup(*m_contextUPtr);
+        AvatarTextureManager::instance().setup(m_setting);
+        MonsterTextureManager::instance().setup(m_setting);
+        MapTextureManager::instance().setup();
+        MonsterSpellTextureManager::instance().setup(m_setting);
+
+        m_layoutUPtr->setup(m_windowUPtr->getSize());
+        m_fontUPtr->setup(m_setting);
+        m_itemImageUPtr->setup(m_setting);
+        m_pickupUPtr->setup(*m_contextUPtr);
+        m_accentUPtr->setup(*m_contextUPtr);
+        m_spellUPtr->setup(*m_contextUPtr);
+        m_framerateDisplayUPtr->setup(*m_contextUPtr);
         m_bloodSplatManagerUPtr->setup(*m_contextUPtr);
 
-        m_states.setChangePending(State::Splash);
+        m_stateUPtr->setChangePending(State::Splash);
     }
 
     void Coordinator::teardown()
     {
+        m_framerateDisplayUPtr.reset();
+        m_mapCoordUPtr.reset();
+        m_playerInfoUPtr.reset();
+        m_levelInfoUPtr.reset();
+        m_itemImageUPtr.reset();
+        m_floatingTextUPtr.reset();
+        m_spellUPtr.reset();
+        m_accentUPtr.reset();
+        m_pickupUPtr.reset();
+        m_backgroundImageUPtr.reset();
+        m_levelUPtr.reset();
+        m_levelLoaderUPtr.reset();
         m_playerInfoDisplayUPtr.reset();
         m_bloodSplatManagerUPtr.reset();
         m_avatarUPtr.reset();
+        m_layoutUPtr.reset();
+        m_stateUPtr.reset();
+        m_fontUPtr.reset();
+        m_sfxUPtr.reset();
+
+        m_randomUPtr.reset();
 
         MonsterSpellTextureManager::instance().teardown();
         MapTextureManager::instance().teardown();
         AvatarTextureManager::instance().teardown();
         MonsterTextureManager::instance().teardown();
-        
+
         util::SfmlDefaults::instance().teardown();
 
         m_contextUPtr.reset();
 
-        m_window.close();
+        m_windowUPtr->close();
+        m_windowUPtr.reset();
 
         // util::TextureLoader::dumpInfo();
     }
@@ -139,12 +176,12 @@ namespace bramblefore
     void Coordinator::gameLoop()
     {
         sf::Clock frameClock;
-        while (m_window.isOpen() && (m_states.current().which() != State::Shutdown))
+        while (m_windowUPtr->isOpen() && (m_stateUPtr->current().which() != State::Shutdown))
         {
             frameClock.restart();
 
             handleEvents();
-            update(1.0f / m_settings.frame_rate);
+            update(1.0f / m_setting.frame_rate);
             draw();
 
             handleEndOfFrameTasks(frameClock.getElapsedTime().asSeconds());
@@ -153,7 +190,7 @@ namespace bramblefore
 
     void Coordinator::handleEvents()
     {
-        while (const std::optional event = m_window.pollEvent())
+        while (const std::optional event = m_windowUPtr->pollEvent())
         {
             handleEvent(event.value());
         }
@@ -163,39 +200,41 @@ namespace bramblefore
     {
         if (t_event.is<sf::Event::Closed>())
         {
-            m_states.setChangePending(State::Shutdown);
+            m_stateUPtr->setChangePending(State::Shutdown);
         }
         else if (const auto * const keyPtr = t_event.getIf<sf::Event::KeyPressed>())
         {
+            // TODO remove after testing
             if (keyPtr->scancode == sf::Keyboard::Scancode::Escape)
             {
-                m_states.setChangePending(State::Shutdown);
+                m_stateUPtr->setChangePending(State::Shutdown);
             }
         }
 
-        m_states.current().handleEvent(*m_contextUPtr, t_event);
+        m_stateUPtr->current().handleEvent(*m_contextUPtr, t_event);
     }
 
     void Coordinator::draw()
     {
-        m_window.clear(sf::Color::Black); // some states depend on the background color being black
-        m_states.current().draw(*m_contextUPtr, m_window, m_renderStates);
-        m_framerateDisplay.draw(*m_contextUPtr, m_window, m_renderStates);
-        m_window.display();
+        // some states depend on the background color being black
+        m_windowUPtr->clear(sf::Color::Black);
+        m_stateUPtr->current().draw(*m_contextUPtr, *m_windowUPtr, m_renderStates);
+        m_framerateDisplayUPtr->draw(*m_contextUPtr, *m_windowUPtr, m_renderStates);
+        m_windowUPtr->display();
     }
 
     void Coordinator::update(const float t_frameTimeSec)
     {
-        m_states.current().update(*m_contextUPtr, t_frameTimeSec);
-        m_states.changeIfPending(*m_contextUPtr);
+        m_stateUPtr->current().update(*m_contextUPtr, t_frameTimeSec);
+        m_stateUPtr->changeIfPending(*m_contextUPtr);
     }
 
     void Coordinator::handleEndOfFrameTasks(const float t_elapsedTimeSec)
     {
-        m_framerateDisplay.handleElapsedFrame(*m_contextUPtr, t_elapsedTimeSec);
+        m_framerateDisplayUPtr->handleElapsedFrame(*m_contextUPtr, t_elapsedTimeSec);
 
         // sleep until end of frame occurs
-        float timeRemainingSec{ (1.0f / m_settings.frame_rate) - t_elapsedTimeSec };
+        float timeRemainingSec{ (1.0f / m_setting.frame_rate) - t_elapsedTimeSec };
 
         sf::Clock delayClock;
         while (timeRemainingSec > 0.0f)
@@ -210,25 +249,25 @@ namespace bramblefore
     {
         std::cout << "Attempting video mode " << t_videoMode << "...";
 
-        if (!m_settings.video_mode.isValid())
+        if (!m_setting.video_mode.isValid())
         {
             std::cout << "but that is not suported.  Valid video modes at "
-                      << m_settings.video_mode.bitsPerPixel << "bpp:\n"
-                      << util::makeSupportedVideoModesString(m_settings.video_mode.bitsPerPixel)
+                      << m_setting.video_mode.bitsPerPixel << "bpp:\n"
+                      << util::makeSupportedVideoModesString(m_setting.video_mode.bitsPerPixel)
                       << '\n';
 
-            t_videoMode = util::findVideoModeClosestTo(m_settings.video_mode);
+            t_videoMode = util::findVideoModeClosestTo(m_setting.video_mode);
             setupRenderWindow(t_videoMode);
             return;
         }
 
-        m_window.create(t_videoMode, "Bramblefore", sf::State::Fullscreen);
+        m_windowUPtr->create(t_videoMode, "Bramblefore", sf::State::Fullscreen);
 
         // sometimes the resolution of the window created does not match what was specified
-        const unsigned actualWidth  = m_window.getSize().x;
-        const unsigned actualHeight = m_window.getSize().y;
-        if ((m_settings.video_mode.size.x == actualWidth) &&
-            (m_settings.video_mode.size.y == actualHeight))
+        const unsigned actualWidth  = m_windowUPtr->getSize().x;
+        const unsigned actualHeight = m_windowUPtr->getSize().y;
+        if ((m_setting.video_mode.size.x == actualWidth) &&
+            (m_setting.video_mode.size.y == actualHeight))
         {
             std::cout << "Success." << std::endl;
         }
@@ -236,10 +275,10 @@ namespace bramblefore
         {
             std::cout << "Failed" << ".  ";
 
-            m_settings.video_mode.size.x = actualWidth;
-            m_settings.video_mode.size.y = actualHeight;
+            m_setting.video_mode.size.x = actualWidth;
+            m_setting.video_mode.size.y = actualHeight;
 
-            std::cout << "Using " << m_settings.video_mode << " instead." << std::endl;
+            std::cout << "Using " << m_setting.video_mode << " instead." << std::endl;
         }
     }
 
