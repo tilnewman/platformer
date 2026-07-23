@@ -65,6 +65,7 @@ namespace bramblefore
         , m_starBrightTexture{}
         , m_starAnims{}
         , m_timeBetweenStarAnimAndExit{ 10.0f }
+        , m_areStarsAnimating{ true }
         , m_coinText{ util::SfmlDefaults::instance().font() }
     {
         m_starAnims.reserve(5);
@@ -134,10 +135,20 @@ namespace bramblefore
         }
 
         // coin text setup
-        std::string coinMessage{ std::to_string(t_context.level_info.coins()) };
+        std::string coinMessage{ std::to_string(t_context.level_info.coin()) };
+        coinMessage += " Coins Gathered!";
 
         m_coinText = t_context.font.makeText(
-            Font::General, FontSize::Medium, coinMessage, t_context.settings.off_white_color);
+            Font::Title,
+            FontSize::Large,
+            coinMessage,
+            t_context.settings.off_white_color,
+            sf::Text::Style::Bold);
+
+        m_coinText.setPosition(
+            { ((wholeRect.size.x * 0.5f) - (m_coinText.getGlobalBounds().size.x * 0.5f)),
+              (starVertPosition + tempSprite.getGlobalBounds().size.y +
+               (wholeRect.size.y * 0.05f)) });
     }
 
     void LevelCompleteState::update(const Context & t_context, const float t_frameTimeSec)
@@ -152,7 +163,9 @@ namespace bramblefore
             }
         }
 
-        if (areAllStarsFinishedAnimating)
+        m_areStarsAnimating = !areAllStarsFinishedAnimating;
+
+        if (!m_areStarsAnimating)
         {
             m_elapsedTimeSec += t_frameTimeSec;
             if (m_elapsedTimeSec > m_timeBetweenStarAnimAndExit)
@@ -177,6 +190,11 @@ namespace bramblefore
     {
         t_target.draw(m_knightSprite, t_states);
         t_target.draw(m_text, t_states);
+
+        if (!m_areStarsAnimating)
+        {
+            t_target.draw(m_coinText, t_states);
+        }
 
         for (const StarAnim & anim : m_starAnims)
         {

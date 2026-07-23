@@ -3,13 +3,15 @@
 //
 // level-info.hpp
 //
+#include "player/custom-types.hpp"
 
 namespace bramblefore
 {
     struct Context;
 
     // There are a lot of "level" classes, but this one is responsible for managing all the
-    // information about a level/map that is specific to that level.
+    // information about a level/map that is specific to that level.  So the coins tracked here are
+    // not how many the player has, but how manby they have gathered on the current level only.
     class LevelInfo
     {
       public:
@@ -22,11 +24,11 @@ namespace bramblefore
             m_playerLives += t_adjustment;
         }
 
-        [[nodiscard]] constexpr int coins() const noexcept { return m_coins; }
+        [[nodiscard]] constexpr int coin() const noexcept { return m_coins; }
 
-        constexpr void coinsAdjust(const int t_adjustment) noexcept { m_coins += t_adjustment; }
+        constexpr void coinAdjust(const Coin_t t_adjustment) noexcept { m_coins += t_adjustment; }
 
-        [[nodiscard]] constexpr int enemyKillCount() const noexcept { return m_enemyKillCount; } 
+        [[nodiscard]] constexpr Coin_t enemyKillCount() const noexcept { return m_enemyKillCount; }
 
         constexpr void enemyKillCountAdjust(const int t_adjustment) noexcept
         {
@@ -38,7 +40,7 @@ namespace bramblefore
 
       private:
         int m_playerLives;
-        int m_coins;
+        Coin_t m_coins;
         int m_enemyKillCount;
     };
 

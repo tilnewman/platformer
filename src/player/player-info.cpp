@@ -6,6 +6,7 @@
 #include "player/player-info.hpp"
 
 #include "avatar/spells-anim.hpp"
+#include "map/level-info.hpp"
 #include "player/player-info-display.hpp"
 #include "subsystem/context.hpp"
 #include "util/check-macros.hpp"
@@ -118,6 +119,7 @@ namespace bramblefore
         }
 
         t_context.player_display.setCoinCount(m_coins);
+        t_context.level_info.coinAdjust(t_adjustment);
 
         return m_coins;
     }
