@@ -8,6 +8,8 @@
 namespace bramblefore
 {
 
+    // There are a lot of "level" classes, but this one is responsible for managing all the
+    // information about a level/map that is specific to that level.
     class LevelInfo
     {
       public:
