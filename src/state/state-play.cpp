@@ -52,6 +52,7 @@ namespace bramblefore
         }
 
         t_context.avatar.update(t_context, t_frameTimeSec);
+
         if (!t_context.state.isChangePending())
         {
             // this order is NOT critical
@@ -193,7 +194,8 @@ namespace bramblefore
         const sf::FloatRect screenRect{ t_context.layout.wholeRect() };
         util::centerInside(m_pauseText, screenRect);
 
-        util::appendTriangleVerts(screenRect, m_pauseFadeVerts, sf::Color(0, 0, 0, 127));
+        util::appendTriangleVerts(
+            screenRect, m_pauseFadeVerts, t_context.settings.popup_window_background_fade_color);
 
         //
 
@@ -202,9 +204,12 @@ namespace bramblefore
         GuiWindowInfo quitWindowInfo;
         quitWindowInfo.border  = GuiWindowBorder::Fancy;
         quitWindowInfo.content = "Restart (l)evel, quit the (g)ame, or (n)evermind?";
-        quitWindowInfo.details = TextDetails(Font::General, FontSize::Medium, sf::Color::Black);
-        quitWindowInfo.region  = util::scaleRectInPlaceCopy(screenRect, 0.2f);
-        quitWindowInfo.title   = "Quit?";
+
+        quitWindowInfo.details =
+            TextDetails(Font::General, FontSize::Medium, t_context.settings.off_white_color);
+        
+        quitWindowInfo.region                 = util::scaleRectInPlaceCopy(screenRect, 0.2f);
+        quitWindowInfo.title                  = "Quit what exactly?";
         quitWindowInfo.will_draw_background   = true;
         quitWindowInfo.will_fade_whole_screen = true;
 

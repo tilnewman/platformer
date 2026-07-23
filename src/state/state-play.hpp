@@ -49,6 +49,7 @@ namespace bramblefore
         sf::Text m_pauseText;
         std::vector<sf::Vertex> m_pauseFadeVerts;
 
+        // the quit window needs no fade verts because it is built into GuiWindow
         bool m_isQuitting;
         GuiWindow m_quitWindow;
 
