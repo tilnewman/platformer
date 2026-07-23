@@ -58,7 +58,7 @@ namespace bramblefore
     LevelCompleteState::LevelCompleteState()
         : m_knightTexture{}
         , m_knightSprite{ m_knightTexture }
-        , m_youSurvivedText{ util::SfmlDefaults::instance().font() }
+        , m_text{ util::SfmlDefaults::instance().font() }
         , m_elapsedTimeSec{ 0.0f }
         , m_starDimTexture{}
         , m_starBrightTexture{}
@@ -83,11 +83,14 @@ namespace bramblefore
         m_knightSprite.move({ 0.0f, -(wholeRect.size.y * 0.1f) });
 
         // You Survived! text setup
-        m_youSurvivedText = t_context.font.makeText(
-            Font::Title, FontSize::Huge, "You Survived!", t_context.settings.off_white_color);
+        std::string message{ t_context.map_coord.displayName() };
+        message += " Level Complete";
 
-        m_youSurvivedText.setPosition(
-            { ((wholeRect.size.x * 0.5f) - (m_youSurvivedText.getGlobalBounds().size.x * 0.5f)),
+        m_text = t_context.font.makeText(
+            Font::Title, FontSize::Huge, message, t_context.settings.off_white_color);
+
+        m_text.setPosition(
+            { ((wholeRect.size.x * 0.5f) - (m_text.getGlobalBounds().size.x * 0.5f)),
               (util::bottom(m_knightSprite) + (wholeRect.size.y * 0.015f)) });
 
         // star animations or you-got-no-stars text animation setup
@@ -109,7 +112,7 @@ namespace bramblefore
         const float horizSpacer{ wholeRect.size.x * 0.01f };
         const float starsTotalWidth{ (5.0f * starWidth) + ((4.0f * horizSpacer)) };
 
-        const float starVertPosition{ util::bottom(m_youSurvivedText) + (wholeRect.size.y * 0.1f) };
+        const float starVertPosition{ util::bottom(m_text) + (wholeRect.size.y * 0.1f) };
         const sf::Vector2f startPos{ (wholeRect.size.x + starWidth), starVertPosition };
 
         const std::size_t starCount{ static_cast<std::size_t>(t_context.player.mapStarCount()) };
@@ -146,9 +149,9 @@ namespace bramblefore
             m_elapsedTimeSec += t_frameTimeSec;
             if (m_elapsedTimeSec > m_timeBetweenStarAnimAndExit)
             {
-                t_context.map_coord.mapNameAdvance();
+                t_context.map_coord.advance();
 
-                if (t_context.map_coord.mapName().empty())
+                if (t_context.map_coord.filename().empty())
                 {
                     t_context.state.setChangePending(State::Credits);
                 }
@@ -164,7 +167,7 @@ namespace bramblefore
         const Context &, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
         t_target.draw(m_knightSprite, t_states);
-        t_target.draw(m_youSurvivedText, t_states);
+        t_target.draw(m_text, t_states);
 
         for (const StarAnim & anim : m_starAnims)
         {

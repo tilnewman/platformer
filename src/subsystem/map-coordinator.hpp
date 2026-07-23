@@ -13,6 +13,19 @@ namespace bramblefore
 
     //
 
+    struct MapNames
+    {
+        MapNames(const std::string & t_file, const std::string & t_display)
+            : file{t_file}
+            , display{t_display}
+        {}
+
+        std::string file{};
+        std::string display{};
+    };
+
+    //
+
     class MapCoordinator
     {
       public:
@@ -23,12 +36,13 @@ namespace bramblefore
         void deathBeforeDelay(const Context & t_context);
         void deathAfterDelay(const Context & t_context);
 
-        [[nodiscard]] const std::string mapName() const;
-        void mapNameAdvance();
+        [[nodiscard]] const std::string filename() const;
+        [[nodiscard]] const std::string displayName() const;
+        void advance();
 
       private:
-        std::vector<std::string> m_mapNames;
-        std::vector<std::string>::const_iterator m_mapNameIter;
+        std::vector<MapNames> m_names;
+        std::vector<MapNames>::const_iterator m_namesIter;
     };
 
 } // namespace bramblefore

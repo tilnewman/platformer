@@ -60,8 +60,9 @@ namespace bramblefore
       private:
         sf::Texture m_knightTexture;
         sf::Sprite m_knightSprite;
-        sf::Text m_youSurvivedText;
+        sf::Text m_text;
         float m_elapsedTimeSec;
+
         sf::Texture m_starDimTexture;
         sf::Texture m_starBrightTexture;
         std::vector<StarAnim> m_starAnims;

@@ -21,10 +21,12 @@ namespace bramblefore
 {
 
     MapCoordinator::MapCoordinator()
-        : m_mapNames{
-            "dungeon1-1.json", "forest-1.json", "castle-1.json", "mountains-1.json", "cave-1.json"
-        }
-        , m_mapNameIter{ std::begin(m_mapNames) }
+        : m_names{ { "dungeon1-1.json", "Goblin Dungeon" },
+                   { "forest-1.json", "Woodsland" },
+                   { "castle-1.json", "Wightstone Castle" },
+                   { "mountains-1.json", "Lake Mountain" },
+                   { "cave-1.json", "Lava Cavern" } }
+        , m_namesIter{ std::begin(m_names) }
     {}
 
     void MapCoordinator::respawn(const Context & t_context)
@@ -38,7 +40,7 @@ namespace bramblefore
         t_context.player.manaReset(t_context);
         t_context.player.mapStarReset(t_context);
 
-        const std::string levelFilename{ mapName() };
+        const std::string levelFilename{ filename() };
         if (levelFilename.empty())
         {
             t_context.state.setChangePending(State::Credits);
@@ -63,23 +65,35 @@ namespace bramblefore
         t_context.state.setChangePending(State::LevelDeath);
     }
 
-    const std::string MapCoordinator::mapName() const
+    const std::string MapCoordinator::filename() const
     {
-        if (m_mapNameIter != std::end(m_mapNames))
-        {
-            return *m_mapNameIter;
-        }
-        else
+        if (m_namesIter == std::end(m_names))
         {
             return "";
         }
+        else
+        {
+            return m_namesIter->file;
+        }
     }
 
-    void MapCoordinator::mapNameAdvance()
+    const std::string MapCoordinator::displayName() const
     {
-        if (m_mapNameIter != std::end(m_mapNames))
+        if (m_namesIter == std::end(m_names))
         {
-            ++m_mapNameIter;
+            return "";
+        }
+        else
+        {
+            return m_namesIter->display;
+        }
+    }
+
+    void MapCoordinator::advance()
+    {
+        if (m_namesIter != std::end(m_names))
+        {
+            ++m_namesIter;
         }
     }
 
