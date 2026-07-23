@@ -82,7 +82,7 @@ namespace bramblefore
 
         const BackgroundImagesInfo infoPack{ infoFactory(t_context, t_name) };
 
-        // there won't always be a static background image
+        // there won't always be a static (unmoving) background image
         if (!infoPack.background_path.empty())
         {
             util::TextureLoader::load(m_backgroundTexture, infoPack.background_path);
@@ -90,7 +90,7 @@ namespace bramblefore
             util::scaleAndCenterInside(m_backgroundSprite, t_context.layout.wholeRect());
         }
 
-        // there won't always be a static overlay image
+        // there won't always be a static (unmoving) overlay image
         if (!infoPack.overlay_path.empty())
         {
             util::TextureLoader::load(m_overlayTexture, infoPack.overlay_path);
@@ -99,18 +99,19 @@ namespace bramblefore
         }
 
         //
-
         const sf::FloatRect wholeScreenRect{ t_context.layout.wholeRect() };
 
         m_slidingImages.clear();
-        m_slidingImages.reserve(16); // prevents reallocation
+
+        // critical, prevents reallocation, see infoFactory() for actual maximum
+        m_slidingImages.reserve(16); 
+
         for (const SlidingImageInfo & info : infoPack.sliding_images)
         {
             m_slidingImages.emplace_back(info, wholeScreenRect);
         }
 
         //
-
         m_fadeVerts.clear();
         if (infoPack.fade_alpha > 0)
         {
