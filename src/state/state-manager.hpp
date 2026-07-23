@@ -22,7 +22,10 @@ namespace bramblefore
 
         [[nodiscard]] inline IState & current() const { return *m_currentStateUPtr; }
 
-        void setChangePending(const State t_newState) noexcept;
+        constexpr void setChangePending(const State t_newState) noexcept
+        {
+            m_changePendingOpt = t_newState;
+        }
 
         [[nodiscard]] constexpr bool isChangePending() const noexcept
         {

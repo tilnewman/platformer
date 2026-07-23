@@ -22,11 +22,6 @@ namespace bramblefore
         , m_changePendingOpt{ std::nullopt }
     {}
 
-    void StateManager::setChangePending(const State t_state) noexcept
-    {
-        m_changePendingOpt = t_state;
-    }
-
     void StateManager::changeIfPending(const Context & t_context)
     {
         if (!m_changePendingOpt)
