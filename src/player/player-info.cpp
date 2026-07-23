@@ -76,8 +76,7 @@ namespace bramblefore
         if (m_healthMax > 0)
         {
             t_context.player_display.setHealthBar(
-                static_cast<float>(t_context.player.health()) /
-                static_cast<float>(t_context.player.healthMax()));
+                static_cast<float>(m_health) / static_cast<float>(m_healthMax));
         }
 
         return m_health;
@@ -96,8 +95,7 @@ namespace bramblefore
         if (m_manaMax > 0)
         {
             t_context.player_display.setManaBar(
-                static_cast<float>(t_context.player.mana()) /
-                static_cast<float>(t_context.player.manaMax()));
+                static_cast<float>(m_mana) / static_cast<float>(m_manaMax));
         }
 
         return m_mana;
@@ -115,7 +113,7 @@ namespace bramblefore
 
         if (m_coins < 0)
         {
-            util::log() << "Coins=" << m_coins << " after adj=" << t_adjustment << '\n';
+            util::log() << "Error: Coins=" << m_coins << " after adj=" << t_adjustment << '\n';
             m_coins = 0;
         }
 
