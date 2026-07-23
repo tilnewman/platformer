@@ -115,7 +115,12 @@ namespace bramblefore
 
         for (const sf::Sprite & sprite : m_sprites)
         {
-            const sf::FloatRect acidRect{ sprite.getGlobalBounds() };
+            // reduce the height to allow players to fall into the acid before dying
+            sf::FloatRect acidRect{ sprite.getGlobalBounds() };
+            const float offset{ acidRect.size.y * 0.425f };
+            acidRect.position.y += offset;
+            acidRect.size.y -= offset;
+
             if (t_avatarRect.findIntersection(acidRect))
             {
                 harm.rect   = acidRect;
