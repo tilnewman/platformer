@@ -24,8 +24,8 @@ namespace bramblefore
 
     Coordinator::Coordinator(const Settings & t_setting)
         : m_setting{ t_setting }
-        , m_windowUPtr{}
         , m_renderStates{}
+        , m_windowUPtr{}
         , m_randomUPtr{}
         , m_sfxUPtr{}
         , m_stateUPtr{}
