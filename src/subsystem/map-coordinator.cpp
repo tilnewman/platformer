@@ -38,14 +38,14 @@ namespace bramblefore
         t_context.player.manaReset(t_context);
         t_context.player.mapStarReset(t_context);
 
-        const std::string nextLevelFilename{ mapName() };
-        if (nextLevelFilename.empty())
+        const std::string levelFilename{ mapName() };
+        if (levelFilename.empty())
         {
             t_context.state.setChangePending(State::Credits);
         }
         else
         {
-            t_context.level.load(t_context, nextLevelFilename);
+            t_context.level.load(t_context, levelFilename);
             t_context.sfx.play("spawn");
         }
     }
@@ -53,9 +53,9 @@ namespace bramblefore
     void MapCoordinator::deathBeforeDelay(const Context & t_context)
     {
         t_context.sfx.play("death-avatar");
-        // t_context.map_stats.has_player_died = true;
-        // t_context.map_stats.enemy_killed    = 0;
-        // t_context.map_stats.coin_collected  = 0;
+        // t_context.level_info.has_player_died = true;
+        // t_context.level_info.enemy_killed    = 0;
+        // t_context.level_info.coin_collected  = 0;
     }
 
     void MapCoordinator::deathAfterDelay(const Context & t_context)
