@@ -77,6 +77,142 @@ namespace bramblefore
     }
 
     //
+    CoinAnimationManager::CoinAnimationManager()
+        : m_coinText{ util::SfmlDefaults::instance().font() }
+        , m_coinTexture{}
+        , m_coinAnims{}
+        , m_timeCoinEmitElapsedSec{ 0.0f }
+        , m_coinEmittedCount{ 0 }
+        , m_coinEmitPosition{}
+        , m_coinsFinishedAnimCount{ 0 }
+        , m_coinTextPosition{}
+    {}
+
+    void CoinAnimationManager::setup(
+        const Context & t_context,
+        const sf::Vector2f & t_starPosition,
+        const sf::Vector2f & t_starSize)
+    {
+        const sf::FloatRect wholeRect{ t_context.layout.wholeRect() };
+
+        m_coinText = t_context.font.makeText(Font::Title, FontSize::Large, "");
+
+        m_coinText.setPosition(
+            { ((wholeRect.size.x * 0.5f) - (m_coinText.getGlobalBounds().size.x * 0.5f)),
+              (t_starPosition.y + t_starSize.y + (wholeRect.size.y * 0.05f)) });
+
+        m_coinTextPosition = m_coinText.getPosition();
+
+        util::TextureLoader::load(
+            m_coinTexture, (t_context.settings.media_path / "image" / "anim" / "coin1.png"), true);
+
+        m_coinEmitPosition.x = (wholeRect.size.x * 0.5f);
+        m_coinEmitPosition.y = wholeRect.size.y - 50.0f;
+    }
+
+    void CoinAnimationManager::update(const Context & t_context, const float t_elapsedTimeSec)
+    {
+        const int coinsGathered{ t_context.level_info.coin() };
+        const float timePerCoinEmit{ util::map(coinsGathered, 0, 200, 0.2f, 0.01f) };
+        m_timeCoinEmitElapsedSec += t_elapsedTimeSec;
+        if ((m_timeCoinEmitElapsedSec > timePerCoinEmit) && (m_coinEmittedCount < coinsGathered))
+        {
+            ++m_coinEmittedCount;
+            m_timeCoinEmitElapsedSec -= timePerCoinEmit;
+
+            m_coinAnims.emplace_back(
+                t_context, m_coinTexture, coinTextureRect(0), m_coinEmitPosition);
+        }
+
+        for (CoinBounceAnim & anim : m_coinAnims)
+        {
+            const float timePerFrame{ 0.08f };
+            anim.elapsed_frame_time_sec += t_elapsedTimeSec;
+            if (anim.elapsed_frame_time_sec > timePerFrame)
+            {
+                anim.elapsed_frame_time_sec -= timePerFrame;
+
+                if (++anim.frame_index >= coinFrameCount())
+                {
+                    anim.frame_index = 0;
+                }
+
+                anim.sprite.setTextureRect(coinTextureRect(anim.frame_index));
+            }
+
+            const float gravity{ 10.0f };
+            anim.velocity += sf::Vector2f(0.0f, (gravity * t_elapsedTimeSec));
+            anim.sprite.move(anim.velocity);
+
+            anim.elapsed_scale_time_sec += t_elapsedTimeSec;
+            const float duration{ 1.5f };
+
+            const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.5f) +
+                               util::map(anim.elapsed_scale_time_sec, 0.0f, duration, 0.0f, 3.0f) };
+
+            anim.sprite.setScale({ scale, scale });
+
+            if (anim.elapsed_scale_time_sec > duration)
+            {
+                anim.is_finished = true;
+
+                t_context.sfx.play("pickup");
+
+                std::string coinMessage{ std::to_string(++m_coinsFinishedAnimCount) };
+                coinMessage += " Coins Gathered";
+
+                m_coinText = t_context.font.makeText(
+                    Font::Title,
+                    FontSize::Large,
+                    coinMessage,
+                    sf::Color(236, 218, 95),
+                    sf::Text::Style::Bold);
+
+                const sf::FloatRect wholeRect{ t_context.layout.wholeRect() };
+
+                m_coinText.setPosition(
+                    { ((wholeRect.size.x * 0.5f) - (m_coinText.getGlobalBounds().size.x * 0.5f)),
+                      m_coinTextPosition.y });
+            }
+        }
+
+        std::erase_if(m_coinAnims, [](const CoinBounceAnim & a) { return a.is_finished; });
+    }
+
+    void CoinAnimationManager::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
+    {
+        t_target.draw(m_coinText, t_states);
+
+        for (const CoinBounceAnim & anim : m_coinAnims)
+        {
+            t_target.draw(anim.sprite, t_states);
+        }
+    }
+
+    std::size_t CoinAnimationManager::coinFrameCount() const
+    {
+        if (m_coinTexture.getSize().y > 0)
+        {
+            return static_cast<std::size_t>(m_coinTexture.getSize().x / m_coinTexture.getSize().y);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    const sf::IntRect CoinAnimationManager::coinTextureRect(const std::size_t t_frame) const
+    {
+        sf::IntRect rect;
+        rect.size.x     = static_cast<int>(m_coinTexture.getSize().y);
+        rect.size.y     = rect.size.x;
+        rect.position.y = 0;
+        rect.position.x = (static_cast<int>(t_frame) * rect.size.x);
+
+        return rect;
+    }
+
+    //
 
     LevelCompleteState::LevelCompleteState()
         : m_tileBackground{}
@@ -88,14 +224,7 @@ namespace bramblefore
         , m_starDimTexture{}
         , m_starBrightTexture{}
         , m_starAnims{}
-        , m_coinText{ util::SfmlDefaults::instance().font() }
-        , m_coinTexture{}
-        , m_coinAnims{}
-        , m_timeCoinEmitElapsedSec{ 0.0f }
-        , m_coinEmittedCount{ 0 }
-        , m_coinEmitPosition{}
-        , m_coinsFinishedAnimCount{ 0 }
-        , m_coinTextPosition{}
+        , m_coinAnimation{}
     {
         m_starAnims.reserve(5);
     }
@@ -168,20 +297,9 @@ namespace bramblefore
             initialDelaySec += 0.5f;
         }
 
-        // coin text setup
-        m_coinText = t_context.font.makeText(Font::Title, FontSize::Large, "");
-
-        m_coinText.setPosition(
-            { ((wholeRect.size.x * 0.5f) - (m_coinText.getGlobalBounds().size.x * 0.5f)),
-              (starVertPosition + starSize.y + (wholeRect.size.y * 0.05f)) });
-
-        m_coinTextPosition = m_coinText.getPosition();
-
-        util::TextureLoader::load(
-            m_coinTexture, (t_context.settings.media_path / "image" / "anim" / "coin1.png"), true);
-
-        m_coinEmitPosition.x = (wholeRect.size.x * 0.5f);
-        m_coinEmitPosition.y = wholeRect.size.y - 50.0f;
+        //
+        m_coinAnimation.setup(
+            t_context, sf::Vector2f(starHorizStopPos, starVertPosition), starSize);
     }
 
     void LevelCompleteState::update(const Context & t_context, const float t_elapsedTimeSec)
@@ -240,78 +358,14 @@ namespace bramblefore
         const Context & t_context, const float t_elapsedTimeSec)
     {
         m_elapsedPhaseTimeSec += t_elapsedTimeSec;
-        if ((m_elapsedPhaseTimeSec > 3.0f) && m_coinAnims.empty())
+        if ((m_elapsedPhaseTimeSec > 3.0f) && m_coinAnimation.areAllFinished())
         {
             m_elapsedPhaseTimeSec = 0.0f;
             m_phase               = LevelCompletePhase::PostDelay;
             return;
         }
 
-        const int coinsGathered{ t_context.level_info.coin() };
-        const float timePerCoinEmit{ util::map(coinsGathered, 0, 200, 0.2f, 0.01f) };
-        m_timeCoinEmitElapsedSec += t_elapsedTimeSec;
-        if ((m_timeCoinEmitElapsedSec > timePerCoinEmit) && (m_coinEmittedCount < coinsGathered))
-        {
-            ++m_coinEmittedCount;
-            m_timeCoinEmitElapsedSec -= timePerCoinEmit;
-
-            m_coinAnims.emplace_back(
-                t_context, m_coinTexture, coinTextureRect(0), m_coinEmitPosition);
-        }
-
-        for (CoinBounceAnim & anim : m_coinAnims)
-        {
-            const float timePerFrame{ 0.08f };
-            anim.elapsed_frame_time_sec += t_elapsedTimeSec;
-            if (anim.elapsed_frame_time_sec > timePerFrame)
-            {
-                anim.elapsed_frame_time_sec -= timePerFrame;
-
-                if (++anim.frame_index >= coinFrameCount())
-                {
-                    anim.frame_index = 0;
-                }
-
-                anim.sprite.setTextureRect(coinTextureRect(anim.frame_index));
-            }
-
-            const float gravity{ 10.0f };
-            anim.velocity += sf::Vector2f(0.0f, (gravity * t_elapsedTimeSec));
-            anim.sprite.move(anim.velocity);
-
-            anim.elapsed_scale_time_sec += t_elapsedTimeSec;
-            const float duration{ 1.5f };
-
-            const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.5f) +
-                               util::map(anim.elapsed_scale_time_sec, 0.0f, duration, 0.0f, 3.0f) };
-
-            anim.sprite.setScale({ scale, scale });
-
-            if (anim.elapsed_scale_time_sec > duration)
-            {
-                anim.is_finished = true;
-
-                t_context.sfx.play("pickup");
-
-                std::string coinMessage{ std::to_string(++m_coinsFinishedAnimCount) };
-                coinMessage += " Coins Gathered";
-
-                m_coinText = t_context.font.makeText(
-                    Font::Title,
-                    FontSize::Large,
-                    coinMessage,
-                    sf::Color(236, 218, 95),
-                    sf::Text::Style::Bold);
-
-                const sf::FloatRect wholeRect{ t_context.layout.wholeRect() };
-
-                m_coinText.setPosition(
-                    { ((wholeRect.size.x * 0.5f) - (m_coinText.getGlobalBounds().size.x * 0.5f)),
-                      m_coinTextPosition.y });
-            }
-        }
-
-        std::erase_if(m_coinAnims, [](const CoinBounceAnim & a) { return a.is_finished; });
+        m_coinAnimation.update(t_context, t_elapsedTimeSec);
     }
 
     void
@@ -349,36 +403,8 @@ namespace bramblefore
         if ((LevelCompletePhase::CoinAnimation == m_phase) ||
             (LevelCompletePhase::PostDelay == m_phase))
         {
-            t_target.draw(m_coinText, t_states);
+            m_coinAnimation.draw(t_target, t_states);
         }
-
-        for (const CoinBounceAnim & anim : m_coinAnims)
-        {
-            t_target.draw(anim.sprite, t_states);
-        }
-    }
-
-    std::size_t LevelCompleteState::coinFrameCount() const
-    {
-        if (m_coinTexture.getSize().y > 0)
-        {
-            return static_cast<std::size_t>(m_coinTexture.getSize().x / m_coinTexture.getSize().y);
-        }
-        else
-        {
-            return 0;
-        }
-    }
-
-    const sf::IntRect LevelCompleteState::coinTextureRect(const std::size_t t_frame) const
-    {
-        sf::IntRect rect;
-        rect.size.x     = static_cast<int>(m_coinTexture.getSize().y);
-        rect.size.y     = rect.size.x;
-        rect.position.y = 0;
-        rect.position.x = (static_cast<int>(t_frame) * rect.size.x);
-
-        return rect;
     }
 
 } // namespace bramblefore

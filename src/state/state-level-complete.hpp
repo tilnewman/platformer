@@ -70,6 +70,37 @@ namespace bramblefore
 
     //
 
+    class CoinAnimationManager
+    {
+      public:
+        CoinAnimationManager();
+
+        void setup(
+            const Context & t_context,
+            const sf::Vector2f & t_starPosition,
+            const sf::Vector2f & t_starSize);
+
+        void update(const Context & t_context, const float t_elapsedTimeSec);
+        void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
+        [[nodiscard]] constexpr bool areAllFinished() noexcept { return m_coinAnims.empty(); }
+
+      private:
+        [[nodiscard]] std::size_t coinFrameCount() const;
+        [[nodiscard]] const sf::IntRect coinTextureRect(const std::size_t frame) const;
+
+      private:
+        sf::Text m_coinText;
+        sf::Texture m_coinTexture;
+        std::vector<CoinBounceAnim> m_coinAnims;
+        float m_timeCoinEmitElapsedSec;
+        int m_coinEmittedCount;
+        sf::Vector2f m_coinEmitPosition;
+        std::size_t m_coinsFinishedAnimCount;
+        sf::Vector2f m_coinTextPosition;
+    };
+
+    //
+
     class LevelCompleteState : public IState
     {
       public:
@@ -91,8 +122,6 @@ namespace bramblefore
         void updateStarAnimation(const Context & t_context, const float t_elapsedTimeSec);
         void updateCoinAnimation(const Context & t_context, const float t_elapsedTimeSec);
         void updatePostDelay(const Context & t_context, const float t_elapsedTimeSec);
-        [[nodiscard]] std::size_t coinFrameCount() const;
-        [[nodiscard]] const sf::IntRect coinTextureRect(const std::size_t frame) const;
 
       private:
         TileBackground m_tileBackground;
@@ -109,14 +138,7 @@ namespace bramblefore
         sf::Texture m_starBrightTexture;
         std::vector<StarAnim> m_starAnims;
 
-        sf::Text m_coinText;
-        sf::Texture m_coinTexture;
-        std::vector<CoinBounceAnim> m_coinAnims;
-        float m_timeCoinEmitElapsedSec;
-        int m_coinEmittedCount;
-        sf::Vector2f m_coinEmitPosition;
-        std::size_t m_coinsFinishedAnimCount;
-        sf::Vector2f m_coinTextPosition;
+        CoinAnimationManager m_coinAnimation;
     };
 
 } // namespace bramblefore
