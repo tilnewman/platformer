@@ -95,8 +95,8 @@ namespace bramblefore
 
         //
 
-        const sf::FloatRect m_bgRect = m_fullFrameSprite.getGlobalBounds();
-        util::appendTriangleVerts(m_bgRect, m_bgAvatarBgVerts, sf::Color::Black);
+        const sf::FloatRect bgRect = m_fullFrameSprite.getGlobalBounds();
+        util::appendTriangleVerts(bgRect, m_bgAvatarBgVerts, sf::Color::Black);
         const sf::Color avatarBgColor{ 64, 64, 64 };
         m_bgAvatarBgVerts.at(0).color = avatarBgColor;
         m_bgAvatarBgVerts.at(1).color = avatarBgColor;
@@ -107,7 +107,7 @@ namespace bramblefore
         m_avatarIconSprite.setTexture(
             AvatarTextureManager::instance().getIcon(t_context.player.avatarType()), true);
 
-        util::scaleAndCenterInside(m_avatarIconSprite, m_bgRect);
+        util::scaleAndCenterInside(m_avatarIconSprite, bgRect);
 
         //
 
