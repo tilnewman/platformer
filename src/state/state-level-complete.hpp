@@ -53,10 +53,15 @@ namespace bramblefore
 
     struct CoinBounceAnim
     {
-        CoinBounceAnim(const sf::Texture & t_texture);
+        CoinBounceAnim(
+            const Context & t_context,
+            const sf::Texture & t_texture,
+            const sf::IntRect & t_textureRect,
+            const sf::Vector2f & t_position);
 
         sf::Sprite sprite;
-        float elapsed_time_sec;
+        float elapsed_scale_time_sec;
+        float elapsed_frame_time_sec;
         std::size_t frame_index;
         sf::Vector2f velocity;
         bool is_finished;
@@ -90,7 +95,7 @@ namespace bramblefore
 
       private:
         LevelCompletePhase m_phase;
-        float m_elapsedTimeSec;
+        float m_elapsedPhaseTimeSec;
 
         sf::Texture m_knightTexture;
         sf::Sprite m_knightSprite;
@@ -104,6 +109,11 @@ namespace bramblefore
         sf::Text m_coinText;
         sf::Texture m_coinTexture;
         std::vector<CoinBounceAnim> m_coinAnims;
+        float m_timeCoinEmitElapsedSec;
+        int m_coinEmittedCount;
+        sf::Vector2f m_coinEmitPosition;
+        std::size_t m_coinsFinishedAnimCount;
+        sf::Vector2f m_coinTextPosition;
     };
 
 } // namespace bramblefore
