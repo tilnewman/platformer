@@ -6,6 +6,7 @@
 #include "bramblefore/settings.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
+#include "util/random.hpp"
 #include "util/texture-loader.hpp"
 
 namespace bramblefore
@@ -20,8 +21,14 @@ namespace bramblefore
     {
         const sf::FloatRect wholeRect{ t_context.layout.wholeRect() };
 
+        const int randomSelection{ t_context.random.fromTo(1, 3) };
+
+        std::string filename{ "tile" };
+        filename += std::to_string(randomSelection);
+        filename += ".png";
+
         util::TextureLoader::load(
-            m_texture, (t_context.settings.media_path / "image" / "splash" / "tile2.png"), false);
+            m_texture, (t_context.settings.media_path / "image" / "splash" / filename), false);
 
         m_texture.setRepeated(true);
 
