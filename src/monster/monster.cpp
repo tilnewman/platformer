@@ -23,7 +23,7 @@ namespace bramblefore
 
     Monster::Monster(const Context & t_context, const MonsterSetupInfo & t_setupInfo)
         : m_type{ t_setupInfo.type }
-        , m_spell{ t_setupInfo.spell } // Count means this monster does not cast spells
+        , m_spell{ t_setupInfo.spell }
         , m_region{ t_setupInfo.region }
         , m_anim{ MonsterAnim::Idle }
         , m_animFrame{ 0 }
@@ -39,7 +39,7 @@ namespace bramblefore
     {
         MonsterTextureManager::instance().acquire(t_context, m_type);
 
-        // Count means this monster does not cast spells
+        // MonsterSpell::Count means this monster does not cast spells
         if (MonsterSpell::Count != m_spell)
         {
             MonsterSpellTextureManager::instance().acquire(t_context, m_spell);

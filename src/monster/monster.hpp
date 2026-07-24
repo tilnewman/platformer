@@ -43,7 +43,7 @@ namespace bramblefore
         sf::FloatRect region;
         float image_height_ratio;
         float image_scale;
-        MonsterSpell spell; // Count means this monster does not cast spells
+        MonsterSpell spell; // MonsterSpell::Count means this monster does not cast spells
     };
 
     //
@@ -79,7 +79,9 @@ namespace bramblefore
         void resetAnimation();
 
         void initialSpriteSetup(
-            const Context & t_context, const float t_imageHeightOffsetRatio, const float t_imageScale);
+            const Context & t_context,
+            const float t_imageHeightOffsetRatio,
+            const float t_imageScale);
 
         void turnToFacePlayer(const Context & t_context);
 

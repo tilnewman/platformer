@@ -43,6 +43,8 @@ namespace bramblefore
 
     const Harm MonsterManager::avatarCollide(const sf::FloatRect & t_avatarRect)
     {
+        // While it is possible for the avatar to collide with multiple monsters at once,
+        // it is implemented where only one will happen per frame.
         for (auto & monsterUPtr : m_monsters)
         {
             const Harm harm{ monsterUPtr->avatarCollide(t_avatarRect) };
@@ -65,6 +67,8 @@ namespace bramblefore
 
     bool MonsterManager::avatarAttack(const Context & t_context, const AttackInfo & t_attackInfo)
     {
+        // While it is possible for the avatar to attack and hit multiple monsters at once,
+        // it is implemented where only one will happen per frame.
         for (auto & monsterUPtr : m_monsters)
         {
             if (monsterUPtr->avatarAttack(t_context, t_attackInfo))
