@@ -54,6 +54,8 @@ namespace bramblefore
 
     void LevelDeathState::update(const Context & t_context, const float t_frameTimeSec)
     {
+        m_tileBackground.update(t_context, t_frameTimeSec);
+
         m_elapsedTimeSec += t_frameTimeSec;
         if (m_elapsedTimeSec > 4.0f)
         {

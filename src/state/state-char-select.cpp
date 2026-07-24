@@ -46,7 +46,10 @@ namespace bramblefore
         , m_buttonPrevSprite{ m_buttonPrevTexture }
     {}
 
-    void CharacterSelectState::update(const Context &, const float) {}
+    void CharacterSelectState::update(const Context & t_context, const float t_elapsedTimeSec)
+    {
+        m_tileBackground.update(t_context, t_elapsedTimeSec);
+    }
 
     void CharacterSelectState::draw(
         const Context &, sf::RenderTarget & t_target, sf::RenderStates t_states) const

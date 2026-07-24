@@ -186,6 +186,8 @@ namespace bramblefore
 
     void LevelCompleteState::update(const Context & t_context, const float t_elapsedTimeSec)
     {
+        m_tileBackground.update(t_context, t_elapsedTimeSec);
+
         if (LevelCompletePhase::PreDelay == m_phase)
         {
             updatePreDelay(t_context, t_elapsedTimeSec);

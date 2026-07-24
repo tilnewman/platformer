@@ -21,6 +21,7 @@ namespace bramblefore
         TileBackground();
 
         void setup(const Context & t_context);
+        void update(const Context & t_context, const float t_elapsedTimeSec);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const final;
 
       private:

@@ -21,9 +21,7 @@ namespace bramblefore
         const sf::FloatRect wholeRect{ t_context.layout.wholeRect() };
 
         util::TextureLoader::load(
-            m_texture,
-            (t_context.settings.media_path / "image" / "splash" / "tile2.png"),
-            false);
+            m_texture, (t_context.settings.media_path / "image" / "splash" / "tile2.png"), false);
 
         m_texture.setRepeated(true);
 
@@ -32,6 +30,13 @@ namespace bramblefore
         m_sprite.setColor(sf::Color(255, 255, 255, 32));
         const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 4.0f) };
         m_sprite.setScale({ scale, scale });
+    }
+
+    void TileBackground::update(const Context &, const float t_elapsedTimeSec)
+    {
+        const float offset{ -10.0f * t_elapsedTimeSec };
+        const sf::Vector2f move({ offset, offset });
+        m_sprite.move(move);
     }
 
     void TileBackground::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
