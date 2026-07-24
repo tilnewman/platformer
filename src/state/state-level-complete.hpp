@@ -4,6 +4,7 @@
 // state-level-complete.hpp
 //
 #include "state/states.hpp"
+#include "ui/tile-background.hpp"
 #include "util/sliders.hpp"
 
 #include <vector>
@@ -94,6 +95,8 @@ namespace bramblefore
         [[nodiscard]] const sf::IntRect coinTextureRect(const std::size_t frame) const;
 
       private:
+        TileBackground m_tileBackground;
+
         LevelCompletePhase m_phase;
         float m_elapsedPhaseTimeSec;
 

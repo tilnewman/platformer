@@ -6,6 +6,7 @@
 #include "player/player-info.hpp"
 #include "state/states.hpp"
 #include "ui/text-layout.hpp"
+#include "ui/tile-background.hpp"
 
 #include <string>
 #include <vector>
@@ -50,6 +51,7 @@ namespace bramblefore
         const std::string avatarClassDescription(const AvatarType type) const;
 
       private:
+        TileBackground m_tileBackground;
         sf::Text m_titleText;
         sf::Text m_instructionsText;
         sf::Texture m_paperTexture;

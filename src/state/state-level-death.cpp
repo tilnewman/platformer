@@ -20,7 +20,8 @@ namespace bramblefore
 {
 
     LevelDeathState::LevelDeathState()
-        : m_texture{}
+        : m_tileBackground{}
+        , m_texture{}
         , m_sprite{ m_texture }
         , m_text{ util::SfmlDefaults::instance().font() }
         , m_elapsedTimeSec{ 0.0f }
@@ -28,6 +29,8 @@ namespace bramblefore
 
     void LevelDeathState::onEnter(const Context & t_context)
     {
+        m_tileBackground.setup(t_context);
+
         util::TextureLoader::load(
             m_texture,
             (t_context.settings.media_path / "image" / "splash" / "knight-loose.png"),
@@ -61,6 +64,7 @@ namespace bramblefore
     void LevelDeathState::draw(
         const Context &, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
+        t_target.draw(m_tileBackground, t_states);
         t_target.draw(m_sprite, t_states);
         t_target.draw(m_text, t_states);
     }

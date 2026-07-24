@@ -79,7 +79,8 @@ namespace bramblefore
     //
 
     LevelCompleteState::LevelCompleteState()
-        : m_phase{ LevelCompletePhase::PreDelay }
+        : m_tileBackground{}
+        , m_phase{ LevelCompletePhase::PreDelay }
         , m_elapsedPhaseTimeSec{ 0.0f }
         , m_knightTexture{}
         , m_knightSprite{ m_knightTexture }
@@ -101,6 +102,8 @@ namespace bramblefore
 
     void LevelCompleteState::onEnter(const Context & t_context)
     {
+        m_tileBackground.setup(t_context);
+
         // knight win image setup
         util::TextureLoader::load(
             m_knightTexture,
@@ -332,6 +335,7 @@ namespace bramblefore
     void LevelCompleteState::draw(
         const Context &, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
+        t_target.draw(m_tileBackground, t_states);
         t_target.draw(m_knightSprite, t_states);
         t_target.draw(m_text, t_states);
 

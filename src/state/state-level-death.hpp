@@ -4,6 +4,7 @@
 // state-level-death.hpp
 //
 #include "state/states.hpp"
+#include "ui/tile-background.hpp"
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -34,6 +35,7 @@ namespace bramblefore
         void onExit(const Context &) final {}
 
       private:
+        TileBackground m_tileBackground;
         sf::Texture m_texture;
         sf::Sprite m_sprite;
         sf::Text m_text;

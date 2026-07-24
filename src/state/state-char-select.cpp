@@ -25,7 +25,8 @@ namespace bramblefore
 {
 
     CharacterSelectState::CharacterSelectState()
-        : m_titleText{ util::SfmlDefaults::instance().font() }
+        : m_tileBackground{}
+        , m_titleText{ util::SfmlDefaults::instance().font() }
         , m_instructionsText{ util::SfmlDefaults::instance().font() }
         , m_paperTexture{}
         , m_paperSprite{ m_paperTexture }
@@ -50,6 +51,7 @@ namespace bramblefore
     void CharacterSelectState::draw(
         const Context &, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
+        t_target.draw(m_tileBackground, t_states);
         t_target.draw(m_titleText, t_states);
         t_target.draw(m_instructionsText, t_states);
         t_target.draw(m_paperSprite, t_states);
@@ -142,6 +144,12 @@ namespace bramblefore
 
     void CharacterSelectState::onEnter(const Context & t_context)
     {
+        const sf::FloatRect wholeRect{ t_context.layout.wholeRect() };
+
+        m_tileBackground.setup(t_context);
+
+        //
+
         m_titleText = t_context.font.makeText(
             Font::Title, FontSize::Huge, "Character Selection", t_context.settings.off_white_color);
 
@@ -160,8 +168,7 @@ namespace bramblefore
             sf::Text::Italic);
 
         m_instructionsText.setPosition(
-            { (util::center(t_context.layout.wholeRect()).x -
-               (m_instructionsText.getGlobalBounds().size.x * 0.5f)),
+            { (util::center(wholeRect).x - (m_instructionsText.getGlobalBounds().size.x * 0.5f)),
               (util::bottom(m_titleText) + (m_instructionsText.getGlobalBounds().size.y * 0.5f)) });
 
         //
@@ -173,8 +180,7 @@ namespace bramblefore
 
         m_paperSprite.setTexture(m_paperTexture, true);
 
-        util::fitAndCenterInside(
-            m_paperSprite, util::scaleRectInPlaceCopy(t_context.layout.wholeRect(), 0.5f));
+        util::fitAndCenterInside(m_paperSprite, util::scaleRectInPlaceCopy(wholeRect, 0.5f));
 
         const float paperScale{ m_paperSprite.getScale().x };
         m_paperInnerRect.position.x *= paperScale;
