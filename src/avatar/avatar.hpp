@@ -91,7 +91,6 @@ namespace bramblefore
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
         void setToSpawnPosition(const sf::FloatRect & t_rect);
         [[nodiscard]] const sf::FloatRect collisionRect() const;
-        [[nodiscard]] const sf::FloatRect attackRect() const;
         void triggerDeath(const Context & t_context);
         void triggerIdle();
         void resetBeforePlacingInNewLevel();
@@ -100,6 +99,7 @@ namespace bramblefore
         void changeType(const Context & t_context);
 
       private:
+        [[nodiscard]] const sf::FloatRect attackRect() const;
         void animate(const Context & t_context, const float t_frameTimeSec);
         void climbingMotion(const Context & t_context, const float t_frameTimeSec);
         void gravityMotion(const float t_frameTimeSec);
@@ -147,6 +147,7 @@ namespace bramblefore
         std::vector<sf::FloatRect> collisionRectCache;
         float m_facingDirectionOffsetRatio;
         bool m_willDisplayCollisionRect;
+        float m_warriorAttackRectHorizRatio;
     };
 
 } // namespace bramblefore

@@ -45,6 +45,7 @@ namespace bramblefore
         , collisionRectCache{}
         , m_facingDirectionOffsetRatio{ 0.0f }
         , m_willDisplayCollisionRect{ false }
+        , m_warriorAttackRectHorizRatio{ 0.0f }
     {
         // just a guess
         collisionRectCache.reserve(1024);
@@ -56,12 +57,13 @@ namespace bramblefore
     {
         m_runParticleEffect.setup(t_context);
 
-        m_avatarSizeRatio            = t_context.settings.avatar_collision_scale;
-        m_facingDirectionOffsetRatio = t_context.settings.avatar_collision_facing_offset_ratio;
-        m_willDisplayCollisionRect   = t_context.settings.avatar_collision_display;
-        m_type                       = t_context.player.avatarType();
-        m_anim                       = AvatarAnim::Walk;
-        m_state                      = AvatarState::Still;
+        m_avatarSizeRatio             = t_context.settings.avatar_collision_scale;
+        m_facingDirectionOffsetRatio  = t_context.settings.avatar_collision_facing_offset_ratio;
+        m_willDisplayCollisionRect    = t_context.settings.avatar_collision_display;
+        m_warriorAttackRectHorizRatio = t_context.settings.warrior_attack_rect_horiz_ratio;
+        m_type                        = t_context.player.avatarType();
+        m_anim                        = AvatarAnim::Walk;
+        m_state                       = AvatarState::Still;
 
         AvatarTextureManager & textureManager{ AvatarTextureManager::instance() };
         textureManager.acquire(t_context, m_type);
@@ -178,11 +180,6 @@ namespace bramblefore
 
     const sf::FloatRect Avatar::attackRect() const
     {
-        if ((AvatarState::Attack != m_state) && (AvatarState::AttackExtra != m_state))
-        {
-            return {};
-        }
-
         sf::FloatRect rect{ collisionRect() };
 
         // make the attack rect 2 pixels bigger vertically so players can attack up and down
@@ -193,7 +190,7 @@ namespace bramblefore
         if ((AvatarType::BlueKnight == m_type) || (AvatarType::RedKnight == m_type) ||
             (AvatarType::Viking == m_type))
         {
-            rect.size.x *= 1.2f; // TODO move this to settings
+            rect.size.x *= m_warriorAttackRectHorizRatio;
         }
 
         if (m_isFacingRight)

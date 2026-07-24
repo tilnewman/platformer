@@ -61,10 +61,12 @@ namespace bramblefore
         // It sounds wrong but feels so right. What the hell, mario did it.
         float avatar_jump_horiz_move_divisor = 3.0f;
 
+        // how much farther ahead the warrior class types swing weapons
+        float warrior_attack_rect_horiz_ratio = 1.2f;
+
         sf::Vector2f avatar_hurt_recoil_speed{ 2.25f, 3.5f };
 
         sf::Color off_white_color{ 220, 220, 220 };
-
         sf::Color popup_window_background_fade_color{ 0, 0, 0, 127 };
     };
 
