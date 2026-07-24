@@ -118,7 +118,7 @@ namespace bramblefore
         }
     }
 
-    void Avatar::draw(sf::RenderTarget & t_target, sf::RenderStates t_states)
+    void Avatar::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
         m_runParticleEffect.draw(t_target, t_states);
         t_target.draw(m_sprite, t_states);
