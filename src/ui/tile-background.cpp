@@ -22,7 +22,7 @@ namespace bramblefore
 
         util::TextureLoader::load(
             m_texture,
-            (t_context.settings.media_path / "image" / "splash" / "tiled-color.png"),
+            (t_context.settings.media_path / "image" / "splash" / "tile2.png"),
             false);
 
         m_texture.setRepeated(true);
