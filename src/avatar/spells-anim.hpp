@@ -24,6 +24,91 @@ namespace bramblefore
 
     //
 
+    enum class SpellFramePhase
+    {
+        Start,
+        Flying,
+        Finish
+    };
+
+    struct SpellFrames
+    {
+        SpellFrames(
+            const std::vector<std::size_t> & t_startFrames,
+            const std::vector<std::size_t> & t_flyingFrames,
+            const std::vector<std::size_t> & t_finishFrame)
+            : start{ t_startFrames }
+            , flying{ t_flyingFrames }
+            , finish{ t_finishFrame }
+        {}
+
+        SpellFrames(const std::size_t t_startFrameCount)
+            : start{}
+            , flying{}
+            , finish{}
+        {
+            start.reserve(t_startFrameCount);
+            for (std::size_t i{ 0 }; i < t_startFrameCount; ++i)
+            {
+                start.push_back(i);
+            }
+        }
+
+        [[nodiscard]] constexpr bool willFly() const noexcept
+        {
+            return (!flying.empty() && !finish.empty());
+        }
+
+        [[nodiscard]] constexpr std::size_t frameCount(const SpellFramePhase t_phase) const noexcept
+        {
+            if (SpellFramePhase::Start == t_phase)
+            {
+                return start.size();
+            }
+            else if (SpellFramePhase::Flying == t_phase)
+            {
+                return flying.size();
+            }
+            else
+            {
+                return finish.size();
+            }
+        }
+
+        std::vector<std::size_t> start{};
+        std::vector<std::size_t> flying{};
+        std::vector<std::size_t> finish{};
+    };
+
+    [[nodiscard]] inline const SpellFrames toFrames(const Spell t_spell) noexcept
+    {
+        // clang-format off
+        switch (t_spell)
+        {
+            case Spell::Comet:      return SpellFrames({0,1,2}, {3,4,5}, {6,7,8,9,10,11,12,13});
+            case Spell::Explosion:  return SpellFrames(9);
+            case Spell::Fire:       return SpellFrames({0,1,2}, {3,4,5}, {6,7,8,9});
+            case Spell::Freeze:     return SpellFrames({0,1}, {2,3,4}, {5,6,7,8,9,10,11,12});
+            case Spell::Gypno:      return SpellFrames(14);
+            case Spell::KillAll:    return SpellFrames(9);
+            case Spell::Light:      return SpellFrames(4);
+            case Spell::Lightning1: return SpellFrames(12);
+            case Spell::Lightning2: return SpellFrames(10);
+            case Spell::MidasHand:  return SpellFrames(8);
+            case Spell::Spikes1:    return SpellFrames(13);
+            case Spell::Spikes2:    return SpellFrames(11);
+            case Spell::SunStrike:  return SpellFrames(8);
+            case Spell::TeslaBall:  return SpellFrames(17);
+            case Spell::Tornado:    return SpellFrames(11);
+            case Spell::Water:      return SpellFrames({0,1}, {2,3,4}, {5,6,7,8,9,10});
+            case Spell::Count:      [[fallthrough]];
+            default:                return SpellFrames(0);
+        }
+        // clang-format on
+    }
+
+    //
+
     struct SpellAnim
     {
         explicit SpellAnim(
@@ -41,6 +126,8 @@ namespace bramblefore
         float time_per_frame_sec;
         bool is_facing_right;
         sf::Sprite sprite;
+        SpellFrames frames;
+        SpellFramePhase phase;
     };
 
     //
@@ -70,6 +157,13 @@ namespace bramblefore
         }
 
         constexpr void clear() noexcept { m_anims.clear(); }
+
+      private:
+        void updateNonFlyingAnimation(
+            const Context & t_context, const float t_frameTimeSec, SpellAnim & anim);
+
+        void updateFlyingAnimation(
+            const Context & t_context, const float t_frameTimeSec, SpellAnim & anim);
 
       private:
         std::vector<SpellTextures> m_textureSets;
