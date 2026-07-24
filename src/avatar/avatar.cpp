@@ -210,13 +210,13 @@ namespace bramblefore
         AvatarTextureManager & textureManager{ AvatarTextureManager::instance() };
         const std::size_t frameCount{ textureManager.frameCount(m_type, m_anim) };
 
-        const float timePerFrameSec{ avatarTimePerFrameSec(m_anim) };
-
         if (AvatarState::Still == m_state)
         {
             textureManager.set(m_sprite, m_type, m_anim, 0);
             return;
         }
+
+        const float timePerFrameSec{ avatarTimePerFrameSec(m_anim) };
 
         m_elapsedTimeSec += t_frameTimeSec;
         if (m_elapsedTimeSec > timePerFrameSec)
