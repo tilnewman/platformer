@@ -33,7 +33,7 @@ namespace bramblefore
         , is_facing_right{ t_isFacingRight }
         , sprite{ t_texture }
         , frames{ toFrames(t_spell) }
-        , phase{ SpellFramePhase::Start }
+        , phase{ SpellPhase::Start }
     {
         sprite.setScale(t_scale);
         util::setOriginToCenter(sprite);
@@ -124,13 +124,21 @@ namespace bramblefore
         bool didAnyFinish{ false };
         for (SpellAnim & anim : m_anims)
         {
-            if (anim.frames.willFly())
+            if ((SpellPhase::Start == anim.phase) && !anim.frames.start.empty())
             {
-                updateFlyingAnimation(t_context, t_frameTimeSec, anim);
+                updatePhaseStart(t_context, t_frameTimeSec, anim);
+            }
+            else if ((SpellPhase::Flying == anim.phase) && !anim.frames.flying.empty())
+            {
+                updatePhaseFlying(t_context, t_frameTimeSec, anim);
+            }
+            else if ((SpellPhase::Finish == anim.phase) && !anim.frames.finish.empty())
+            {
+                updatePhaseFinish(t_context, t_frameTimeSec, anim);
             }
             else
             {
-                updateNonFlyingAnimation(t_context, t_frameTimeSec, anim);
+                updateNonFlying(t_context, t_frameTimeSec, anim);
             }
 
             if (!anim.is_alive)
@@ -145,7 +153,82 @@ namespace bramblefore
         }
     }
 
-    void SpellAnimations::updateNonFlyingAnimation(
+    void SpellAnimations::updatePhaseStart(
+        const Context &, const float t_frameTimeSec, SpellAnim & anim)
+    {
+        anim.elapsed_time_sec += t_frameTimeSec;
+        if (anim.elapsed_time_sec > anim.time_per_frame_sec)
+        {
+            anim.elapsed_time_sec -= anim.time_per_frame_sec;
+
+            ++anim.frame_index;
+            if (anim.frame_index < anim.frames.start.size())
+            {
+                const std::vector<sf::Texture> & textures{
+                    m_textureSets.at(static_cast<std::size_t>(anim.spell)).textures
+                };
+
+                anim.sprite.setTexture(textures.at(anim.frames.start.at(anim.frame_index)));
+            }
+            else
+            {
+                anim.frame_index = 0;
+                anim.phase = SpellPhase::Flying;
+            }
+        }
+    }
+
+    void SpellAnimations::updatePhaseFlying(
+        const Context &, const float t_frameTimeSec, SpellAnim & anim)
+    {
+        anim.elapsed_time_sec += t_frameTimeSec;
+        if (anim.elapsed_time_sec > anim.time_per_frame_sec)
+        {
+            anim.elapsed_time_sec -= anim.time_per_frame_sec;
+
+            ++anim.frame_index;
+            if (anim.frame_index < anim.frames.flying.size())
+            {
+                const std::vector<sf::Texture> & textures{
+                    m_textureSets.at(static_cast<std::size_t>(anim.spell)).textures
+                };
+
+                anim.sprite.setTexture(textures.at(anim.frames.flying.at(anim.frame_index)));
+            }
+            else
+            {
+                anim.frame_index = 0;
+                anim.phase = SpellPhase::Finish;
+            }
+        }
+    }
+
+    void SpellAnimations::updatePhaseFinish(
+        const Context &, const float t_frameTimeSec, SpellAnim & anim)
+    {
+        anim.elapsed_time_sec += t_frameTimeSec;
+        if (anim.elapsed_time_sec > anim.time_per_frame_sec)
+        {
+            anim.elapsed_time_sec -= anim.time_per_frame_sec;
+
+            ++anim.frame_index;
+            if (anim.frame_index < anim.frames.finish.size())
+            {
+                const std::vector<sf::Texture> & textures{
+                    m_textureSets.at(static_cast<std::size_t>(anim.spell)).textures
+                };
+
+                anim.sprite.setTexture(textures.at(anim.frames.finish.at(anim.frame_index)));
+            }
+            else
+            {
+                anim.frame_index = 0;
+                anim.is_alive = false;
+            }
+        }
+    }
+
+    void SpellAnimations::updateNonFlying(
         const Context &, const float t_frameTimeSec, SpellAnim & anim)
     {
         anim.elapsed_time_sec += t_frameTimeSec;
@@ -161,30 +244,6 @@ namespace bramblefore
             if (anim.frame_index < textures.size())
             {
                 anim.sprite.setTexture(textures.at(anim.frame_index));
-            }
-            else
-            {
-                anim.is_alive = false;
-            }
-        }
-    }
-
-    void SpellAnimations::updateFlyingAnimation(
-        const Context &, const float t_frameTimeSec, SpellAnim & anim)
-    {
-        anim.elapsed_time_sec += t_frameTimeSec;
-        if (anim.elapsed_time_sec > anim.time_per_frame_sec)
-        {
-            anim.elapsed_time_sec -= anim.time_per_frame_sec;
-
-            const std::vector<sf::Texture> & textures{
-                m_textureSets.at(static_cast<std::size_t>(anim.spell)).textures
-            };
-
-            ++anim.frame_index;
-            if (anim.frame_index < anim.frames.flying.size())
-            {
-                anim.sprite.setTexture(textures.at(anim.frames.flying.at(anim.frame_index)));
             }
             else
             {

@@ -24,7 +24,7 @@ namespace bramblefore
 
     //
 
-    enum class SpellFramePhase
+    enum class SpellPhase
     {
         Start,
         Flying,
@@ -47,11 +47,6 @@ namespace bramblefore
             , flying{ t_flyingFrames }
             , finish{ t_finishFrame }
         {}
-
-        [[nodiscard]] constexpr bool willFly() const noexcept
-        {
-            return (!start.empty() && !flying.empty() && !finish.empty());
-        }
 
         std::vector<std::size_t> start;
         std::vector<std::size_t> flying;
@@ -102,7 +97,7 @@ namespace bramblefore
         bool is_facing_right;
         sf::Sprite sprite;
         SpellFrames frames;
-        SpellFramePhase phase;
+        SpellPhase phase;
     };
 
     //
@@ -134,10 +129,16 @@ namespace bramblefore
         constexpr void clear() noexcept { m_anims.clear(); }
 
       private:
-        void updateNonFlyingAnimation(
+        void updatePhaseStart(
             const Context & t_context, const float t_frameTimeSec, SpellAnim & anim);
 
-        void updateFlyingAnimation(
+        void updatePhaseFlying(
+            const Context & t_context, const float t_frameTimeSec, SpellAnim & anim);
+
+        void updatePhaseFinish(
+            const Context & t_context, const float t_frameTimeSec, SpellAnim & anim);
+
+        void updateNonFlying(
             const Context & t_context, const float t_frameTimeSec, SpellAnim & anim);
 
       private:
