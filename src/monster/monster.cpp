@@ -151,8 +151,6 @@ namespace bramblefore
         {
             t_target.draw(m_sprite, t_states);
             m_animations.draw(t_target, t_states);
-
-            util::drawRectangleShape(t_target, collisionRect(), false, sf::Color::Red);
         }
     }
 

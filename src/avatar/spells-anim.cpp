@@ -314,13 +314,6 @@ namespace bramblefore
         {
             // can't imagine a situation where these would be completely offscreen so don't check
             t_target.draw(anim.sprite, t_states);
-
-            util::drawRectangleShape(
-                t_target,
-                flyingSpellCollisionRect(
-                    anim.spell, anim.sprite.getGlobalBounds(), anim.is_facing_right),
-                false,
-                sf::Color::Yellow);
         }
     }
 
