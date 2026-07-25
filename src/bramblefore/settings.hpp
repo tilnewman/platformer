@@ -46,6 +46,7 @@ namespace bramblefore
         float jump_acc         = 600.0f;
         float high_jump_acc    = 750.0f;
         float ladder_speed     = 60.0f;
+        float spell_speed      = 300.0f;
 
         float wizard_walk_run_speed_adj_ratio = 1.35f;
         float wizard_jump_acc_offset          = 50.0f;

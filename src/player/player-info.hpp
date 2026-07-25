@@ -385,6 +385,57 @@ namespace bramblefore
         }
     }
 
+    struct SpellFrames
+    {
+        SpellFrames()
+            : start{}
+            , flying{}
+            , finish{}
+        {}
+
+        SpellFrames(
+            const std::vector<std::size_t> & t_startFrames,
+            const std::vector<std::size_t> & t_flyingFrames,
+            const std::vector<std::size_t> & t_finishFrame)
+            : start{ t_startFrames }
+            , flying{ t_flyingFrames }
+            , finish{ t_finishFrame }
+        {}
+
+        std::vector<std::size_t> start;
+        std::vector<std::size_t> flying;
+        std::vector<std::size_t> finish;
+    };
+
+    [[nodiscard]] inline const SpellFrames toFrames(const Spell t_spell)
+    {
+        if (Spell::Comet == t_spell)
+        {
+            return SpellFrames({ 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8, 9, 10, 11, 12, 13 });
+        }
+        else if (Spell::Fire == t_spell)
+        {
+            return SpellFrames({ 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8, 9 });
+        }
+        else if (Spell::Freeze == t_spell)
+        {
+            return SpellFrames({ 0, 1 }, { 2, 3, 4 }, { 5, 6, 7, 8, 9, 10, 11, 12 });
+        }
+        else if (Spell::Water == t_spell)
+        {
+            return SpellFrames({ 0, 1 }, { 2, 3, 4 }, { 5, 6, 7, 8, 9, 10 });
+        }
+        else
+        {
+            return SpellFrames();
+        }
+    }
+
+    [[nodiscard]] inline bool willFly(const Spell t_spell)
+    {
+        return !toFrames(t_spell).flying.empty();
+    }
+
     //
 
     struct PlayerSpell

@@ -22,8 +22,8 @@ namespace bramblefore
 {
 
     MapCoordinator::MapCoordinator()
-        : m_names{ { "castle-1.json", "Wightstone Castle" },
-                   { "dungeon1-1.json", "Goblin Dungeon" },
+        : m_names{ { "dungeon1-1.json", "Goblin Dungeon" },
+                   { "castle-1.json", "Wightstone Castle" },
                    { "forest-1.json", "Woodsland" },
                    { "mountains-1.json", "Lake Mountain" },
                    { "cave-1.json", "Lava Cavern" } }
