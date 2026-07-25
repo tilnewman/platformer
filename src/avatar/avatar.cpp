@@ -142,6 +142,7 @@ namespace bramblefore
         m_isFacingRight            = true;
         m_hasHitEnemy              = false;
         m_runParticleEffect.stop();
+        m_runParticleEffect.clear();
     }
 
     void Avatar::setToSpawnPosition(const sf::FloatRect & t_rect)

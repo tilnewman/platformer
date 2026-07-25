@@ -40,6 +40,7 @@ namespace bramblefore
         void update(const Context & t_context, const float t_elapsedTimeSec);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
         void move(const sf::Vector2f & t_move);
+        constexpr void clear() noexcept { m_particles.clear(); }
 
       private:
         [[nodiscard]] const sf::Texture & randomStarTexture(const Context & t_context) const;
