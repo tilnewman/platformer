@@ -321,24 +321,8 @@ namespace bramblefore
 
                 if (isWizard(m_type))
                 {
-                    const sf::Vector2f spellAnimPos = [&]() {
-                        const sf::FloatRect collRect{ collisionRect() };
-                        sf::Vector2f pos{ util::center(collRect) };
-
-                        const float facingDirectionOffsetRatio{ 1.5f };
-                        if (m_isFacingRight)
-                        {
-                            pos.x += (collRect.size.x * facingDirectionOffsetRatio);
-                        }
-                        else
-                        {
-                            pos.x -= (collRect.size.x * facingDirectionOffsetRatio);
-                        }
-
-                        return pos;
-                    }();
-
-                    t_context.player.castCurrentSpell(t_context, spellAnimPos, m_isFacingRight);
+                    t_context.player.castCurrentSpell(
+                        t_context, spellAnimationPosition(), m_isFacingRight);
                 }
                 else
                 {
@@ -368,6 +352,24 @@ namespace bramblefore
         }
     }
 
+    [[nodiscard]] const sf::Vector2f Avatar::spellAnimationPosition() const
+    {
+        const sf::FloatRect collRect{ collisionRect() };
+        sf::Vector2f pos{ util::center(collRect) };
+
+        const float facingDirectionOffsetRatio{ 1.5f };
+        if (m_isFacingRight)
+        {
+            pos.x += (collRect.size.x * facingDirectionOffsetRatio);
+        }
+        else
+        {
+            pos.x -= (collRect.size.x * facingDirectionOffsetRatio);
+        }
+
+        return pos;
+    }
+
     void Avatar::handleAttackingEnemies(const Context & t_context)
     {
         if ((AvatarState::Attack != m_state) && (AvatarState::AttackExtra != m_state))
@@ -377,6 +379,12 @@ namespace bramblefore
         }
 
         if (m_hasHitEnemy)
+        {
+            return;
+        }
+
+        // when a wizard casts a power spell let the spell animation code handle the avatarAttack()
+        if (isWizard(m_type) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::LShift))
         {
             return;
         }

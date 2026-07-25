@@ -199,11 +199,45 @@ namespace bramblefore
     void SpellAnimations::updatePhaseFlying(
         const Context & t_context, const float t_frameTimeSec, SpellAnim & anim)
     {
+        // detect collisions
+        const sf::FloatRect spellRect{ flyingSpellCollisionRect(
+            anim.spell, anim.sprite.getGlobalBounds(), anim.is_facing_right) };
+
+        if (t_context.level.monsters().avatarAttack(
+                t_context, AttackInfo(toDamage(anim.spell), spellRect)))
+        {
+            anim.frame_index = 0;
+            anim.phase = SpellPhase::Finish;
+            return;
+        }
+
+        for (const sf::FloatRect & collRect : t_context.level.collisions())
+        {
+            if (spellRect.findIntersection(collRect))
+            {
+                anim.frame_index = 0;
+                anim.phase = SpellPhase::Finish;
+                return;
+            }
+        }
+
+        for (const sf::FloatRect & collRect : t_context.level.layerCollisions())
+        {
+            if (spellRect.findIntersection(collRect))
+            {
+                anim.frame_index = 0;
+                anim.phase = SpellPhase::Finish;
+                return;
+            }
+        }
+
+        // move the spell
         const float moveAmount{ (t_context.settings.spell_speed * t_frameTimeSec) *
                                 ((anim.is_facing_right) ? 1.0f : -1.0f) };
 
         anim.sprite.move({ moveAmount, 0.0f });
 
+        // animate the spell
         anim.elapsed_time_sec += t_frameTimeSec;
         if (anim.elapsed_time_sec > anim.time_per_frame_sec)
         {
@@ -221,34 +255,6 @@ namespace bramblefore
             else
             {
                 anim.frame_index = 0;
-
-                const sf::FloatRect spellRect{ flyingSpellCollisionRect(
-                    anim.spell, anim.sprite.getGlobalBounds(), anim.is_facing_right) };
-
-                if (t_context.level.monsters().avatarAttack(
-                        t_context, AttackInfo(toDamage(anim.spell), spellRect)))
-                {
-                    anim.phase = SpellPhase::Finish;
-                    return;
-                }
-
-                for (const sf::FloatRect & collRect : t_context.level.collisions())
-                {
-                    if (spellRect.findIntersection(collRect))
-                    {
-                        anim.phase = SpellPhase::Finish;
-                        return;
-                    }
-                }
-
-                for (const sf::FloatRect & collRect : t_context.level.layerCollisions())
-                {
-                    if (spellRect.findIntersection(collRect))
-                    {
-                        anim.phase = SpellPhase::Finish;
-                        return;
-                    }
-                }
             }
         }
     }
@@ -309,12 +315,12 @@ namespace bramblefore
             // can't imagine a situation where these would be completely offscreen so don't check
             t_target.draw(anim.sprite, t_states);
 
-            // util::drawRectangleShape(
-            //     t_target,
-            //     flyingSpellCollisionRect(
-            //         anim.spell, anim.sprite.getGlobalBounds(), anim.is_facing_right),
-            //     false,
-            //     sf::Color::Red);
+            util::drawRectangleShape(
+                t_target,
+                flyingSpellCollisionRect(
+                    anim.spell, anim.sprite.getGlobalBounds(), anim.is_facing_right),
+                false,
+                sf::Color::Yellow);
         }
     }
 
