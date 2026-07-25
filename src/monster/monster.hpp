@@ -55,6 +55,8 @@ namespace bramblefore
         virtual ~Monster() override;
 
         // IMonster functions
+        [[nodiscard]] inline MonsterType type() const final { return m_type; }
+        void setup(const Context &) final {}
         void update(const Context & t_context, const float t_frameTimeSec) override;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)

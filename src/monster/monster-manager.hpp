@@ -46,6 +46,7 @@ namespace bramblefore
         const Harm avatarCollide(const sf::FloatRect & t_avatarRect);
         void appendCollisionRects(std::vector<sf::FloatRect> & t_rects) const;
         bool avatarAttack(const Context & t_context, const AttackInfo & t_attackInfo);
+        void setup(const Context & t_context);
 
       private:
         std::vector<std::unique_ptr<IMonster>> m_monsters;

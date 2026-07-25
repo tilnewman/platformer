@@ -50,6 +50,7 @@
 #include "monster/monster-little-knight.hpp"
 #include "monster/monster-lizard.hpp"
 #include "monster/monster-medusa.hpp"
+#include "monster/monster-mosquito.hpp"
 #include "monster/monster-orc.hpp"
 #include "monster/monster-salamander.hpp"
 #include "monster/monster-skeleton.hpp"
@@ -648,6 +649,10 @@ namespace bramblefore
             else if (name == "boss-wizard")
             {
                 t_context.level.monsters().add(std::make_unique<BossWizard>(t_context, rect));
+            }
+            else if (name == "mosquito")
+            {
+                t_context.level.monsters().add(std::make_unique<Mosquito>(t_context, rect));
             }
             else
             {

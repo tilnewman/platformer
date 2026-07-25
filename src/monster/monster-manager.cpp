@@ -80,4 +80,12 @@ namespace bramblefore
         return false;
     }
 
+    void MonsterManager::setup(const Context & t_context)
+    {
+        for (auto & monsterUPtr : m_monsters)
+        {
+            monsterUPtr->setup(t_context);
+        }
+    }
+
 } // namespace bramblefore

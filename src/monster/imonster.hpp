@@ -55,6 +55,7 @@ namespace bramblefore
         BossTribal,
         BossKnight,
         BossWizard,
+        Mosquito,
         Count
     };
 
@@ -93,6 +94,7 @@ namespace bramblefore
             case MonsterType::BossTribal:    { return "boss-tribal";    }
             case MonsterType::BossKnight:    { return "boss-knight";    }
             case MonsterType::BossWizard:    { return "boss-wizard";    }
+            case MonsterType::Mosquito:      { return "mosquito";       }
             case MonsterType::Count:         [[fallthrough]];     
             default:              { return "Error_unknown_MonsterType"; }
         }
@@ -134,6 +136,7 @@ namespace bramblefore
             case MonsterType::BossTribal:    { return 200; }
             case MonsterType::BossKnight:    { return 200; }
             case MonsterType::BossWizard:    { return 200; }
+            case MonsterType::Mosquito:      { return 16;  }
             case MonsterType::Count:         [[fallthrough]]; 
             default:                         { return 0;   }
         }
@@ -175,6 +178,7 @@ namespace bramblefore
             case MonsterType::BossTribal:    { return 75.0f; }
             case MonsterType::BossKnight:    { return 75.0f; }
             case MonsterType::BossWizard:    { return 75.0f; }
+            case MonsterType::Mosquito:      { return 40.0f; }
             case MonsterType::Count:         [[fallthrough]];    
             default:                         { return 0.0f;  }
         }
@@ -217,6 +221,7 @@ namespace bramblefore
             case MonsterType::BossTribal:    { return 1; }
             case MonsterType::BossKnight:    { return 1; }
             case MonsterType::BossWizard:    { return 1; }
+            case MonsterType::Mosquito:      { return 7; }
             case MonsterType::Count:         [[fallthrough]];    
             default:                         { return 0;  }
         }
@@ -259,6 +264,7 @@ namespace bramblefore
             case MonsterType::BossTribal:    { return ""; }
             case MonsterType::BossKnight:    { return ""; }
             case MonsterType::BossWizard:    { return ""; }
+            case MonsterType::Mosquito:      { return ""; }
             case MonsterType::Count:         [[fallthrough]];
             default:                         { return "";  }
         }
@@ -301,6 +307,7 @@ namespace bramblefore
             case MonsterType::BossTribal:    { return ""; }
             case MonsterType::BossKnight:    { return ""; }
             case MonsterType::BossWizard:    { return ""; }
+            case MonsterType::Mosquito:      { return ""; }
             case MonsterType::Count:         [[fallthrough]];
             default:                         { return "";  }
         }
@@ -343,6 +350,7 @@ namespace bramblefore
             case MonsterType::BossTribal:    { return ""; }
             case MonsterType::BossKnight:    { return ""; }
             case MonsterType::BossWizard:    { return ""; }
+            case MonsterType::Mosquito:      { return ""; }
             case MonsterType::Count:         [[fallthrough]];
             default:                         { return "";  }
         }
@@ -385,6 +393,7 @@ namespace bramblefore
             case MonsterType::BossTribal:    { return ""; }
             case MonsterType::BossKnight:    { return ""; }
             case MonsterType::BossWizard:    { return ""; }
+            case MonsterType::Mosquito:      { return ""; }
             case MonsterType::Count:         [[fallthrough]];
             default:                         { return "";  }
         }
@@ -443,6 +452,8 @@ namespace bramblefore
     {
         virtual ~IMonster() = default;
 
+        virtual MonsterType type() const                                                      = 0;
+        virtual void setup(const Context & t_context)                                         = 0;
         virtual void update(const Context & t_context, const float t_frameTimeSec)            = 0;
         virtual void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const  = 0;
         virtual void move(const sf::Vector2f & t_move)                                        = 0;

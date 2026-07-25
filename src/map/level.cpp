@@ -72,6 +72,8 @@ namespace bramblefore
 
         t_context.avatar.resetBeforePlacingInNewLevel();
         t_context.avatar.setToSpawnPosition(m_enterRect);
+
+        m_monsters.setup(t_context);
     }
 
     void Level::setupDetails(

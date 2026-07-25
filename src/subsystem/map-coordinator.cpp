@@ -22,8 +22,8 @@ namespace bramblefore
 {
 
     MapCoordinator::MapCoordinator()
-        : m_names{ { "dungeon1-1.json", "Goblin Dungeon" },
-                   { "castle-1.json", "Wightstone Castle" },
+        : m_names{ { "castle-1.json", "Wightstone Castle" },
+                   { "dungeon1-1.json", "Goblin Dungeon" },
                    { "forest-1.json", "Woodsland" },
                    { "mountains-1.json", "Lake Mountain" },
                    { "cave-1.json", "Lava Cavern" } }
@@ -58,9 +58,6 @@ namespace bramblefore
     void MapCoordinator::deathBeforeDelay(const Context & t_context)
     {
         t_context.sfx.play("death-avatar");
-        // t_context.level_info.has_player_died = true;
-        // t_context.level_info.enemy_killed    = 0;
-        // t_context.level_info.coin_collected  = 0;
     }
 
     void MapCoordinator::deathAfterDelay(const Context & t_context)
