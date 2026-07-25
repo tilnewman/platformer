@@ -201,7 +201,7 @@ namespace bramblefore
 
         if (m_mana >= manaCost)
         {
-            t_context.spell.add(pos, spell, t_isFacingRight);
+            t_context.spell.add(t_context, pos, spell, t_isFacingRight);
             manaAdjust(t_context, -manaCost);
         }
         else

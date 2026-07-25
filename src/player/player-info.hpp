@@ -199,7 +199,7 @@ namespace bramblefore
         Lightning1,
         MidasHand,
         Spikes1,
-        Gypno,
+        Hypno,
         TeslaBall,
         Water,
 
@@ -215,7 +215,7 @@ namespace bramblefore
             case Spell::Explosion:  { return "Explosion";       }
             case Spell::Fire:       { return "Inferno";         }
             case Spell::Freeze:     { return "Freeze";          }
-            case Spell::Gypno:      { return "Hypno";           }
+            case Spell::Hypno:      { return "Hypnotize";       }
             case Spell::KillAll:    { return "Death Rattle";    }
             case Spell::Light:      { return "Blinding Light";  }
             case Spell::Lightning1: { return "Sparks";          }
@@ -242,7 +242,7 @@ namespace bramblefore
             case Spell::Explosion:  { return "explosion";   }
             case Spell::Fire:       { return "fire";        }
             case Spell::Freeze:     { return "freeze";      }
-            case Spell::Gypno:      { return "gypno";       }
+            case Spell::Hypno:      { return "hypno";       }
             case Spell::KillAll:    { return "kill-all";    }
             case Spell::Light:      { return "light";       }
             case Spell::Lightning1: { return "lightning1";  }
@@ -270,7 +270,7 @@ namespace bramblefore
             case Spell::Explosion:  { return 10; }
             case Spell::Fire:       { return 10; }
             case Spell::Freeze:     { return 10; }
-            case Spell::Gypno:      { return 10; }
+            case Spell::Hypno:      { return 10; }
             case Spell::KillAll:    { return 10; }
             case Spell::Light:      { return 10; }
             case Spell::Lightning1: { return 10; }
@@ -298,7 +298,7 @@ namespace bramblefore
             case Spell::Explosion:  { return 10; }
             case Spell::Fire:       { return 10; }
             case Spell::Freeze:     { return 10; }
-            case Spell::Gypno:      { return 10; }
+            case Spell::Hypno:      { return 10; }
             case Spell::KillAll:    { return 10; }
             case Spell::Light:      { return 10; }
             case Spell::Lightning1: { return 10; }
@@ -314,6 +314,38 @@ namespace bramblefore
             default:                { return 0;  }
         }
         // clang-format on
+    }
+
+    [[nodiscard]] constexpr float toCastVertOffset(const Spell t_spell) noexcept
+    {
+        if (Spell::Comet == t_spell)
+        {
+            return -7.5f;
+        }
+        else if (Spell::Fire == t_spell)
+        {
+            return -12.5f;
+        }
+        else if (Spell::Freeze == t_spell)
+        {
+            return -5.0f;
+        }
+        else if (Spell::Water == t_spell)
+        {
+            return -6.0f;
+        }
+        else if (Spell::Spikes1 == t_spell)
+        {
+            return 5.0f;
+        }
+        else if (Spell::Lightning2 == t_spell)
+        {
+            return -10.0f;
+        }
+        else
+        {
+            return 0.0f;
+        }
     }
 
     [[nodiscard]] constexpr float timePerFrameSec(const Spell t_spell) noexcept
@@ -344,7 +376,7 @@ namespace bramblefore
         else if (AvatarType::Enchantress == t_type)
         {
             return {
-                Spell::TeslaBall, Spell::Spikes1, Spell::Gypno, Spell::Lightning1, Spell::MidasHand
+                Spell::TeslaBall, Spell::Spikes1, Spell::Hypno, Spell::Lightning1, Spell::MidasHand
             };
         }
         else

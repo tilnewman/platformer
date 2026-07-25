@@ -82,6 +82,7 @@ namespace bramblefore
     struct SpellAnim
     {
         explicit SpellAnim(
+            const Context & t_context,
             const Spell t_spell,
             const sf::Texture & t_texture,
             const float t_timePerFrameSec,
@@ -116,17 +117,21 @@ namespace bramblefore
         SpellAnimations();
 
         void setup(const Context & t_context);
-        void add(const sf::Vector2f & t_pos, const Spell t_spell, const bool t_isFacingRight);
         void update(const Context & t_context, const float t_frameTimeSec);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
         void move(const sf::Vector2f & t_move);
+        constexpr void clear() noexcept { m_anims.clear(); }
 
         [[nodiscard]] inline const sf::Texture & iconTexture(const Spell spell) const
         {
             return m_textureSets.at(static_cast<std::size_t>(spell)).icon_texture;
         }
 
-        constexpr void clear() noexcept { m_anims.clear(); }
+        void
+            add(const Context & t_context,
+                const sf::Vector2f & t_pos,
+                const Spell t_spell,
+                const bool t_isFacingRight);
 
       private:
         void updatePhaseStart(
@@ -140,6 +145,9 @@ namespace bramblefore
 
         void updateNonFlying(
             const Context & t_context, const float t_frameTimeSec, SpellAnim & anim);
+
+        [[nodiscard]] const sf::FloatRect flyingSpellCollisionRect(
+            const Spell t_spell, const sf::FloatRect & t_bounds, const bool t_isFacingRight) const;
 
       private:
         std::vector<SpellTextures> m_textureSets;

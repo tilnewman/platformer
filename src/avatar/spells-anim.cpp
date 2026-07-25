@@ -6,6 +6,7 @@
 #include "avatar/spells-anim.hpp"
 
 #include "bramblefore/settings.hpp"
+#include "map/level.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "util/check-macros.hpp"
@@ -19,6 +20,7 @@ namespace bramblefore
 {
 
     SpellAnim::SpellAnim(
+        const Context & t_context,
         const Spell t_spell,
         const sf::Texture & t_texture,
         const float t_timePerFrameSec,
@@ -43,6 +45,13 @@ namespace bramblefore
         {
             sprite.setScale({ -1.0f, 1.0f });
         }
+
+        // spells are generally too low so raise them up a bit
+        const float vertOffset{ t_context.layout.calScaleBasedOnResolution(
+                                    t_context, toCastVertOffset(t_spell)) *
+                                t_context.settings.map_scale };
+
+        sprite.move({ 0.0f, vertOffset });
     }
 
     //
@@ -99,7 +108,10 @@ namespace bramblefore
     }
 
     void SpellAnimations::add(
-        const sf::Vector2f & t_pos, const Spell t_spell, const bool t_isFacingRight)
+        const Context & t_context,
+        const sf::Vector2f & t_pos,
+        const Spell t_spell,
+        const bool t_isFacingRight)
     {
         const std::size_t spellIndex{ static_cast<std::size_t>(t_spell) };
 
@@ -116,7 +128,13 @@ namespace bramblefore
                                       << " has no images loaded. Maybe setup() was not called?");
 
         m_anims.emplace_back(
-            t_spell, textures.at(0), timePerFrameSec(t_spell), m_scale, t_pos, t_isFacingRight);
+            t_context,
+            t_spell,
+            textures.at(0),
+            timePerFrameSec(t_spell),
+            m_scale,
+            t_pos,
+            t_isFacingRight);
     }
 
     void SpellAnimations::update(const Context & t_context, const float t_frameTimeSec)
@@ -173,14 +191,19 @@ namespace bramblefore
             else
             {
                 anim.frame_index = 0;
-                anim.phase = SpellPhase::Flying;
+                anim.phase       = SpellPhase::Flying;
             }
         }
     }
 
     void SpellAnimations::updatePhaseFlying(
-        const Context &, const float t_frameTimeSec, SpellAnim & anim)
+        const Context & t_context, const float t_frameTimeSec, SpellAnim & anim)
     {
+        const float moveAmount{ (20.0f * t_frameTimeSec) *
+                                ((anim.is_facing_right) ? 1.0f : -1.0f) };
+
+        anim.sprite.move({ moveAmount, 0.0f });
+
         anim.elapsed_time_sec += t_frameTimeSec;
         if (anim.elapsed_time_sec > anim.time_per_frame_sec)
         {
@@ -198,7 +221,18 @@ namespace bramblefore
             else
             {
                 anim.frame_index = 0;
-                anim.phase = SpellPhase::Finish;
+
+                const sf::FloatRect spellRect{ flyingSpellCollisionRect(
+                    anim.spell, anim.sprite.getGlobalBounds(), anim.is_facing_right) };
+
+                for (const sf::FloatRect & collRect : t_context.level.collisions())
+                {
+                    if (spellRect.findIntersection(collRect))
+                    {
+                        anim.phase = SpellPhase::Finish;
+                        break;
+                    }
+                }
             }
         }
     }
@@ -223,7 +257,7 @@ namespace bramblefore
             else
             {
                 anim.frame_index = 0;
-                anim.is_alive = false;
+                anim.is_alive    = false;
             }
         }
     }
@@ -258,6 +292,13 @@ namespace bramblefore
         {
             // can't imagine a situation where these would be completely offscreen so don't check
             t_target.draw(anim.sprite, t_states);
+
+            util::drawRectangleShape(
+                t_target,
+                flyingSpellCollisionRect(
+                    anim.spell, anim.sprite.getGlobalBounds(), anim.is_facing_right),
+                false,
+                sf::Color::Red);
         }
     }
 
@@ -267,6 +308,108 @@ namespace bramblefore
         {
             anim.sprite.move(t_move);
         }
+    }
+
+    const sf::FloatRect SpellAnimations::flyingSpellCollisionRect(
+        const Spell t_spell, const sf::FloatRect & t_bounds, const bool t_isFacingRight) const
+    {
+        sf::FloatRect rect{ t_bounds };
+
+        float horizOffset{ 0.0f };
+        float vertOffset{ 0.0f };
+        sf::Vector2f scale({ 1.0f, 1.0f });
+
+        if (Spell::Comet == t_spell)
+        {
+            horizOffset = rect.size.x * -0.05f;
+            vertOffset  = rect.size.y * 0.05f;
+            scale       = { 0.1f, 0.125f };
+        }
+        else if (Spell::Fire == t_spell)
+        {
+            horizOffset = rect.size.x * -0.125f;
+            vertOffset  = rect.size.y * 0.15f;
+            scale       = { 0.2f, 0.25f };
+        }
+        else if (Spell::Freeze == t_spell)
+        {
+            horizOffset = rect.size.x * 0.0f;
+            vertOffset  = rect.size.y * 0.04f;
+            scale       = { 0.35f, 0.125f };
+        }
+        else if (Spell::Water == t_spell)
+        {
+            horizOffset = rect.size.x * -0.05f;
+            vertOffset  = rect.size.y * 0.05f;
+            scale       = { 0.1f, 0.1f };
+        }
+        else if (Spell::Explosion == t_spell)
+        {
+            scale       = { 0.3f, 0.3f };
+        }
+        else if (Spell::Spikes2 == t_spell)
+        {
+            scale       = { 0.5f, 0.5f };
+        }
+        else if (Spell::Lightning2 == t_spell)
+        {
+            scale       = { 0.3f, 0.4f };
+        }
+        else if (Spell::KillAll == t_spell)
+        {
+            scale       = { 0.5f, 0.6f };
+        }
+        else if (Spell::Light == t_spell)
+        {
+            scale       = { 0.6f, 0.6f };
+        }
+        else if (Spell::SunStrike == t_spell)
+        {
+            scale       = { 0.3f, 0.35f };
+        }
+        else if (Spell::Tornado == t_spell)
+        {
+            scale       = { 0.3f, 0.45f };
+        }
+        else if (Spell::TeslaBall == t_spell)
+        {
+            scale       = { 0.5f, 0.5f };
+        }
+        else if (Spell::Spikes1 == t_spell)
+        {
+            scale       = { 0.5f, 0.2f };
+        }
+        else if (Spell::Hypno == t_spell)
+        {
+            scale       = { 0.75f, 0.75f };
+        }
+        else if (Spell::Lightning1 == t_spell)
+        {
+            horizOffset = rect.size.x * -0.075f;
+            vertOffset  = rect.size.y * 0.0f;
+            scale       = { 0.5f, 0.3f };
+        }
+        else if (Spell::MidasHand == t_spell)
+        {
+            horizOffset = rect.size.x * -0.1f;
+            vertOffset  = rect.size.y * 0.0f;
+            scale       = { 0.6f, 0.5f };
+        }
+
+        util::scaleRectInPlace(rect, scale);
+
+        rect.position.y += vertOffset;
+
+        if (t_isFacingRight)
+        {
+            rect.position.x -= horizOffset;
+        }
+        else
+        {
+            rect.position.x += horizOffset;
+        }
+
+        return rect;
     }
 
 } // namespace bramblefore
