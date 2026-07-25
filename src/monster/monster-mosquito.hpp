@@ -6,13 +6,13 @@
 #include "imonster.hpp"
 #include "subsystem/harm.hpp"
 
-#include <vector>
 #include <string_view>
+#include <vector>
 
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
-#include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Texture.hpp>
 
 namespace sf
 {
@@ -56,6 +56,37 @@ namespace bramblefore
         // clang-format on
     }
 
+    [[nodiscard]] constexpr float toTimeBetweenFrames(const MosquitoAnim t_anim) noexcept
+    {
+        if (MosquitoAnim::Idle == t_anim)
+        {
+            return 0.15f;
+        }
+        else if (MosquitoAnim::Flying == t_anim)
+        {
+            return 0.05f;
+        }
+        else if (MosquitoAnim::AttackCycle == t_anim)
+        {
+            return 0.075f;
+        }
+        else
+        {
+            return 0.1f;
+        }
+    }
+
+    enum class MosquitoTask
+    {
+        // before spotting the player
+        Idle,
+        Wander,
+
+        // after spotting the player
+        Attack,
+        Reset
+    };
+
     //
 
     class Mosquito : public IMonster
@@ -67,7 +98,7 @@ namespace bramblefore
         // IMonster functions
         [[nodiscard]] inline MonsterType type() const final { return MonsterType::Mosquito; }
         void setup(const Context & t_context) final;
-        void update(const Context & t_context, const float t_frameTimeSec) override;
+        void update(const Context & t_context, const float t_elapsedTimeSec) override;
 
         void draw(const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states)
             const override;
@@ -81,14 +112,26 @@ namespace bramblefore
         const sf::FloatRect attackCollisionRect() const final;
 
       private:
+        // pick a random postion in the top half of m_flyBounds
+        [[nodiscard]] const sf::Vector2f randomResetPosition(const Context & t_context) const;
+
+        void turnToFacePlayer(const Context & t_context);
+        void turnToFacePosition(const sf::Vector2f & t_position);
+        void turnAround();
+        [[nodiscard]] float randomIdleDurationSec(const Context & t_context) const;
 
       private:
         MosquitoAnim m_anim;
+        MosquitoTask m_task;
         std::vector<std::vector<sf::Texture>> m_animTextures;
         sf::Sprite m_sprite;
-        float m_elapsedTimeSec;
+        float m_elapsedAnimTimeSec;
+        float m_taskTimeRemainingSec;
         sf::FloatRect m_flyBounds;
-        sf::Vector2f m_spawnPosition;
+        bool m_isFacingRight;
+        bool m_hasSpottedPlayer;
+        sf::Vector2f m_resetPosition;
+        std::size_t m_frameIndex;
     };
 
 } // namespace bramblefore
