@@ -146,7 +146,7 @@ namespace bramblefore
     }
 
     void SpellAnimations::updateNonFlyingAnimation(
-        const Context & t_context, const float t_frameTimeSec, SpellAnim & anim)
+        const Context &, const float t_frameTimeSec, SpellAnim & anim)
     {
         anim.elapsed_time_sec += t_frameTimeSec;
         if (anim.elapsed_time_sec > anim.time_per_frame_sec)
@@ -170,7 +170,7 @@ namespace bramblefore
     }
 
     void SpellAnimations::updateFlyingAnimation(
-        const Context & t_context, const float t_frameTimeSec, SpellAnim & anim)
+        const Context &, const float t_frameTimeSec, SpellAnim & anim)
     {
         anim.elapsed_time_sec += t_frameTimeSec;
         if (anim.elapsed_time_sec > anim.time_per_frame_sec)
