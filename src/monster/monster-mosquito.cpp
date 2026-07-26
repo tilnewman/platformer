@@ -111,10 +111,7 @@ namespace bramblefore
                  t_context, t_context.random.fromTo(150.0f, 300.0f)) *
              t_context.settings.map_scale);
 
-        if ((MosquitoTask::Attack == t_task) || (MosquitoTask::Reset == t_task))
-        {
-            m_hasSpottedPlayer = true;
-        }
+        m_hasSpottedPlayer = ((MosquitoTask::Attack == t_task) || (MosquitoTask::Reset == t_task));
 
         if ((MosquitoTask::Reset == t_task) || (MosquitoTask::Wander == t_task))
         {
@@ -162,7 +159,7 @@ namespace bramblefore
         }
 
         // spot the player if not already
-        if (!m_hasSpottedPlayer && t_context.avatar.collisionRect().findIntersection(m_flyBounds))
+        if (!m_hasSpottedPlayer && t_context.avatar.collisionRect().findIntersection(spottedRect()))
         {
             if (t_context.random.boolean())
             {
@@ -200,11 +197,13 @@ namespace bramblefore
             }
         }
 
+        const float distanceCloseEnough{ 5.0f };
+
         if (MosquitoTask::Wander == m_task)
         {
             const sf::Vector2f mosquitoPos{ util::center(m_sprite.getGlobalBounds()) };
 
-            if (util::distance(m_resetPosition, mosquitoPos) < collisionRect().size.x)
+            if (util::distance(m_resetPosition, mosquitoPos) < distanceCloseEnough)
             {
                 setupTask(t_context, MosquitoTask::Idle, MosquitoAnim::Idle);
             }
@@ -222,7 +221,7 @@ namespace bramblefore
             const sf::Vector2f mosquitoPos{ util::center(m_sprite.getGlobalBounds()) };
 
             if ((util::distance(playerPos, mosquitoPos) > m_resetDistance) ||
-                (util::distance(m_resetPosition, mosquitoPos) < 5.0f))
+                (util::distance(m_resetPosition, mosquitoPos) < distanceCloseEnough))
             {
                 setupTask(t_context, MosquitoTask::Attack, MosquitoAnim::AttackPrep);
             }
@@ -247,7 +246,11 @@ namespace bramblefore
             m_sprite.move(
                 diffVec * (flyingSpeed(MosquitoTask::Attack) * m_speedMult * t_elapsedTimeSec));
 
-            if (monsterRect.findIntersection(playerRect))
+            if (!monsterRect.findIntersection(m_flyBounds))
+            {
+                setupTask(t_context, MosquitoTask::Wander, MosquitoAnim::Flying);
+            }
+            else if (monsterRect.findIntersection(playerRect))
             {
                 setupTask(t_context, MosquitoTask::Reset, MosquitoAnim::Flying);
                 t_context.sfx.play("ui-select-thock-slide");
@@ -259,6 +262,19 @@ namespace bramblefore
                 setupTask(t_context, MosquitoTask::Reset, MosquitoAnim::Flying);
             }
         }
+    }
+
+    const sf::FloatRect Mosquito::spottedRect() const
+    {
+        sf::FloatRect rect{ m_sprite.getGlobalBounds() };
+
+        const float horizOffset{ rect.size.x * 1.5f };
+        rect.position.x -= horizOffset;
+        rect.size.x += (horizOffset * 2.0f);
+
+        rect.size.y += 99999.0f;
+
+        return rect;
     }
 
     float Mosquito::flyingSpeed(const MosquitoTask t_task) const

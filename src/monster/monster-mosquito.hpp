@@ -79,11 +79,8 @@ namespace bramblefore
 
     enum class MosquitoTask
     {
-        // before spotting the player
         Idle,
         Wander,
-
-        // after spotting the player
         Attack,
         Reset
     };
@@ -139,6 +136,8 @@ namespace bramblefore
             const Context & t_context, const MosquitoTask t_task, const MosquitoAnim t_anim);
 
         [[nodiscard]] float flyingSpeed(const MosquitoTask t_task) const;
+
+        [[nodiscard]] const sf::FloatRect spottedRect() const;
 
       private:
         MosquitoAnim m_anim;
