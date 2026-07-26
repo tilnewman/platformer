@@ -156,7 +156,7 @@ namespace bramblefore
         Health_t m_health;
         MosquitoAnim m_anim;
         MosquitoTask m_task;
-        std::vector<std::vector<sf::Texture>> m_animTextures;
+        inline static std::vector<std::vector<sf::Texture>> m_animTextures{};
         sf::Sprite m_sprite;
         float m_elapsedAnimTimeSec;
         float m_taskTimeRemainingSec;
