@@ -47,34 +47,31 @@ namespace bramblefore
     void Mosquito::setup(const Context & t_context)
     {
         // load all textures
-        if (m_animTextures.empty())
+        // exact size to prevent re-allocations
+        m_animTextures.reserve(static_cast<std::size_t>(MosquitoAnim::Count));
+
+        for (std::size_t i{ 0 }; i < static_cast<std::size_t>(MosquitoAnim::Count); ++i)
         {
-            // exact size to prevent re-allocations
-            m_animTextures.reserve(static_cast<std::size_t>(MosquitoAnim::Count));
+            const MosquitoAnim anim{ static_cast<MosquitoAnim>(i) };
 
-            for (std::size_t i{ 0 }; i < static_cast<std::size_t>(MosquitoAnim::Count); ++i)
+            std::vector<sf::Texture> & textures = m_animTextures.emplace_back();
+
+            const std::filesystem::path imageDirPath{ t_context.settings.media_path / "image" /
+                                                      "monster" / "mosquito" / toString(anim) };
+
+            const std::vector<std::filesystem::path> files{ util::findFilesInDirectory(
+                imageDirPath, ".png") };
+
+            M_CHECK(
+                !files.empty(),
+                "Failed to find any MosquitoAnim::" << toString(anim) << " images!");
+
+            textures.reserve(files.size()); // exact size to prevent re-allocations
+
+            for (const std::filesystem::path & path : files)
             {
-                const MosquitoAnim anim{ static_cast<MosquitoAnim>(i) };
-
-                std::vector<sf::Texture> & textures = m_animTextures.emplace_back();
-
-                const std::filesystem::path imageDirPath{ t_context.settings.media_path / "image" /
-                                                          "monster" / "mosquito" / toString(anim) };
-
-                const std::vector<std::filesystem::path> files{ util::findFilesInDirectory(
-                    imageDirPath, ".png") };
-
-                M_CHECK(
-                    !files.empty(),
-                    "Failed to find any MosquitoAnim::" << toString(anim) << " images!");
-
-                textures.reserve(files.size()); // exact size to prevent re-allocations
-
-                for (const std::filesystem::path & path : files)
-                {
-                    sf::Texture & texture{ textures.emplace_back() };
-                    util::TextureLoader::load(texture, path, true);
-                }
+                sf::Texture & texture{ textures.emplace_back() };
+                util::TextureLoader::load(texture, path, true);
             }
         }
 
