@@ -21,7 +21,6 @@ namespace bramblefore
     {
         std::size_t ref_count{ 0 };
         std::vector<sf::Texture> textures{};
-        sf::Texture icon_texture{};
     };
 
     //
@@ -44,8 +43,6 @@ namespace bramblefore
             const MonsterType t_type,
             const MonsterAnim t_anim,
             const std::size_t t_frame) const;
-
-        void setIconTexture(sf::Sprite & t_sprite, const MonsterType t_type) const;
 
         [[nodiscard]] std::size_t frameCount(const MonsterType t_type, const MonsterAnim t_anim) const;
 

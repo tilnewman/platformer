@@ -75,12 +75,6 @@ namespace bramblefore
 
                 util::TextureLoader::load(texture, path, true);
             }
-
-            util::TextureLoader::load(
-                set.icon_texture,
-                (t_context.settings.media_path / "image" / "monster" /
-                 std::string(toString(t_type)) / "icon.png"),
-                true);
         }
 
         ++set.ref_count;
@@ -117,20 +111,6 @@ namespace bramblefore
     {
         t_sprite.setTexture(getTexture(t_type, t_anim));
         t_sprite.setTextureRect(getTextureRect(t_type, t_anim, t_frame));
-    }
-
-    void
-        MonsterTextureManager::setIconTexture(sf::Sprite & t_sprite, const MonsterType t_type) const
-    {
-        const std::size_t typeIndex{ static_cast<std::size_t>(t_type) };
-
-        M_CHECK(
-            (typeIndex < m_textureSets.size()),
-            toString(t_type) << " of " << typeIndex << " >= " << m_textureSets.size());
-
-        const MonsterTextures & set{ m_textureSets.at(typeIndex) };
-
-        t_sprite.setTexture(set.icon_texture, true);
     }
 
     std::size_t
