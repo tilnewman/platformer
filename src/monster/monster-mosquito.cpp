@@ -211,8 +211,9 @@ namespace bramblefore
             else
             {
                 const sf::Vector2f diffVec{ util::normalize(m_resetPosition - mosquitoPos) };
-                const float wanderSpeed{ 100.0f };
-                m_sprite.move(diffVec * (wanderSpeed * m_speedMult * t_elapsedTimeSec));
+
+                m_sprite.move(
+                    diffVec * (flyingSpeed(MosquitoTask::Wander) * m_speedMult * t_elapsedTimeSec));
             }
         }
         else if (MosquitoTask::Reset == m_task)
@@ -228,8 +229,9 @@ namespace bramblefore
             else
             {
                 const sf::Vector2f diffVec{ util::normalize(m_resetPosition - mosquitoPos) };
-                const float resetSpeed{ 150.0f };
-                m_sprite.move(diffVec * (resetSpeed * m_speedMult * t_elapsedTimeSec));
+
+                m_sprite.move(
+                    diffVec * (flyingSpeed(MosquitoTask::Reset) * m_speedMult * t_elapsedTimeSec));
             }
         }
         else if (MosquitoTask::Attack == m_task)
@@ -240,14 +242,34 @@ namespace bramblefore
             const sf::Vector2f playerPos{ util::center(playerRect) };
             const sf::Vector2f mosquitoPos{ util::center(m_sprite.getGlobalBounds()) };
             const sf::Vector2f diffVec{ util::normalize(playerPos - mosquitoPos) };
-            const float attackSpeed{ 200.0f };
-            m_sprite.move(diffVec * (attackSpeed * m_speedMult * t_elapsedTimeSec));
+            const sf::FloatRect monsterRect{ collisionRect() };
 
-            if (collisionRect().findIntersection(playerRect))
+            m_sprite.move(
+                diffVec * (flyingSpeed(MosquitoTask::Attack) * m_speedMult * t_elapsedTimeSec));
+
+            if (monsterRect.findIntersection(playerRect))
             {
                 setupTask(t_context, MosquitoTask::Reset, MosquitoAnim::Flying);
                 t_context.sfx.play("ui-select-thock-slide");
+                // TOOD hurt the player
+                // TODO move to avoid actually hitting the player
             }
+            else if (util::bottom(monsterRect) > util::center(playerRect).y)
+            {
+                setupTask(t_context, MosquitoTask::Reset, MosquitoAnim::Flying);
+            }
+        }
+    }
+
+    float Mosquito::flyingSpeed(const MosquitoTask t_task) const
+    {
+        switch (t_task)
+        {
+            case MosquitoTask::Attack: return 200.0f;
+            case MosquitoTask::Reset: return 150.0f;
+            case MosquitoTask::Wander: return 100.0f;
+            case MosquitoTask::Idle:
+            default: return 0.0f;
         }
     }
 

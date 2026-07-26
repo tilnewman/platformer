@@ -138,6 +138,8 @@ namespace bramblefore
         void setupTask(
             const Context & t_context, const MosquitoTask t_task, const MosquitoAnim t_anim);
 
+        [[nodiscard]] float flyingSpeed(const MosquitoTask t_task) const;
+
       private:
         MosquitoAnim m_anim;
         MosquitoTask m_task;
