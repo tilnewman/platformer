@@ -8,12 +8,14 @@
 #include "map/level.hpp"
 #include "monster/monster-manager.hpp"
 #include "subsystem/context.hpp"
+#include "subsystem/font.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "util/check-macros.hpp"
 #include "util/filesystem-util.hpp"
 #include "util/random.hpp"
 #include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
+#include "util/sound-player.hpp"
 #include "util/texture-loader.hpp"
 
 #include <filesystem>
@@ -34,6 +36,10 @@ namespace bramblefore
         , m_isFacingRight{ true }
         , m_resetPosition{}
         , m_frameIndex{ 0 }
+        , m_speedMult{ t_context.random.fromTo(0.8f, 1.2f) }
+        , m_isAlive{ true }
+        , m_resetDistance{ 0.0f }
+        , m_debugText{ util::SfmlDefaults::instance().font() }
     {}
 
     Mosquito::~Mosquito() {}
@@ -85,10 +91,44 @@ namespace bramblefore
         {
             turnAround();
         }
+
+        //
+        m_debugText = t_context.font.makeText(Font::General, FontSize::Small, "", sf::Color::Red);
+    }
+
+    void Mosquito::setupTask(
+        const Context & t_context, const MosquitoTask t_task, const MosquitoAnim t_anim)
+    {
+        m_task                 = t_task;
+        m_anim                 = t_anim;
+        m_frameIndex           = 0;
+        m_elapsedAnimTimeSec   = 0.0f;
+        m_resetPosition        = randomResetPosition(t_context);
+        m_taskTimeRemainingSec = randomIdleDurationSec(t_context);
+
+        m_resetDistance =
+            (t_context.layout.calScaleBasedOnResolution(
+                 t_context, t_context.random.fromTo(150.0f, 300.0f)) *
+             t_context.settings.map_scale);
+
+        if ((MosquitoTask::Attack == t_task) || (MosquitoTask::Reset == t_task))
+        {
+            m_hasSpottedPlayer = true;
+        }
+
+        if ((MosquitoTask::Reset == t_task) || (MosquitoTask::Wander == t_task))
+        {
+            turnToFacePosition(m_resetPosition);
+        }
     }
 
     void Mosquito::update(const Context & t_context, const float t_elapsedTimeSec)
     {
+        if (!m_isAlive)
+        {
+            return;
+        }
+
         // animate frame by frame
         m_elapsedAnimTimeSec += t_elapsedTimeSec;
         const float timeBetweenFrames{ toTimeBetweenFrames(m_anim) };
@@ -101,27 +141,42 @@ namespace bramblefore
             if (++m_frameIndex >= textures.size())
             {
                 m_frameIndex = 0;
+
+                if (MosquitoAnim::AttackPrep == m_anim)
+                {
+                    m_anim = MosquitoAnim::AttackCycle;
+                }
+                else if (MosquitoAnim::Death == m_anim)
+                {
+                    m_isAlive = false;
+                    return;
+                }
+                else if (MosquitoAnim::Hurt == m_anim)
+                {
+                    setupTask(t_context, MosquitoTask::Reset, MosquitoAnim::Flying);
+                    return;
+                }
             }
 
             m_sprite.setTexture(textures.at(m_frameIndex));
         }
 
-        /*
         // spot the player if not already
-        if (!m_hasSpottedPlayer)
+        if (!m_hasSpottedPlayer && t_context.avatar.collisionRect().findIntersection(m_flyBounds))
         {
-            if (t_context.avatar.collisionRect().findIntersection(m_flyBounds))
+            if (t_context.random.boolean())
             {
-                m_hasSpottedPlayer     = true;
-                m_frameIndex           = 0;
-                m_elapsedAnimTimeSec   = 0.0f;
-                m_taskTimeRemainingSec = randomIdleDurationSec(t_context);
-                m_anim                 = MosquitoAnim::Flying;
-                m_resetPosition        = randomResetPosition(t_context);
-                return;
+                setupTask(t_context, MosquitoTask::Reset, MosquitoAnim::Flying);
             }
+            else
+            {
+                setupTask(t_context, MosquitoTask::Attack, MosquitoAnim::AttackPrep);
+            }
+
+            // TODO play a buzzing "i see you" sfx
+            t_context.sfx.play("pickup");
+            return;
         }
-        */
 
         // change tasks if time to do so
         m_taskTimeRemainingSec -= t_elapsedTimeSec;
@@ -133,42 +188,65 @@ namespace bramblefore
             {
                 if (t_context.random.fromTo(1, 10) <= 3)
                 {
-                    m_task                 = MosquitoTask::Idle;
-                    m_anim                 = MosquitoAnim::Idle;
-                    m_frameIndex           = 0;
-                    m_taskTimeRemainingSec = randomIdleDurationSec(t_context);
+                    setupTask(t_context, MosquitoTask::Idle, MosquitoAnim::Idle);
                     turnAround();
                     return;
                 }
                 else
                 {
-                    m_task          = MosquitoTask::Wander;
-                    m_anim          = MosquitoAnim::Flying;
-                    m_frameIndex    = 0;
-                    m_resetPosition = randomResetPosition(t_context);
-                    turnToFacePosition(m_resetPosition);
+                    setupTask(t_context, MosquitoTask::Wander, MosquitoAnim::Flying);
                     return;
                 }
             }
         }
 
-        // wander
         if (MosquitoTask::Wander == m_task)
         {
-            if (util::distance(m_resetPosition, util::center(m_sprite.getGlobalBounds())) <
-                collisionRect().size.x)
+            const sf::Vector2f mosquitoPos{ util::center(m_sprite.getGlobalBounds()) };
+
+            if (util::distance(m_resetPosition, mosquitoPos) < collisionRect().size.x)
             {
-                m_task                 = MosquitoTask::Idle;
-                m_anim                 = MosquitoAnim::Idle;
-                m_frameIndex           = 0;
-                m_taskTimeRemainingSec = randomIdleDurationSec(t_context);
+                setupTask(t_context, MosquitoTask::Idle, MosquitoAnim::Idle);
             }
             else
             {
-                const sf::Vector2f diffVec{ util::normalize(
-                    m_resetPosition - util::center(m_sprite.getGlobalBounds())) };
+                const sf::Vector2f diffVec{ util::normalize(m_resetPosition - mosquitoPos) };
+                const float wanderSpeed{ 100.0f };
+                m_sprite.move(diffVec * (wanderSpeed * m_speedMult * t_elapsedTimeSec));
+            }
+        }
+        else if (MosquitoTask::Reset == m_task)
+        {
+            const sf::Vector2f playerPos{ util::center(t_context.avatar.collisionRect()) };
+            const sf::Vector2f mosquitoPos{ util::center(m_sprite.getGlobalBounds()) };
 
-                m_sprite.move(diffVec * (100.0f * t_elapsedTimeSec));
+            if ((util::distance(playerPos, mosquitoPos) > m_resetDistance) ||
+                (util::distance(m_resetPosition, mosquitoPos) < 5.0f))
+            {
+                setupTask(t_context, MosquitoTask::Attack, MosquitoAnim::AttackPrep);
+            }
+            else
+            {
+                const sf::Vector2f diffVec{ util::normalize(m_resetPosition - mosquitoPos) };
+                const float resetSpeed{ 150.0f };
+                m_sprite.move(diffVec * (resetSpeed * m_speedMult * t_elapsedTimeSec));
+            }
+        }
+        else if (MosquitoTask::Attack == m_task)
+        {
+            turnToFacePlayer(t_context);
+
+            const sf::FloatRect playerRect{ t_context.avatar.collisionRect() };
+            const sf::Vector2f playerPos{ util::center(playerRect) };
+            const sf::Vector2f mosquitoPos{ util::center(m_sprite.getGlobalBounds()) };
+            const sf::Vector2f diffVec{ util::normalize(playerPos - mosquitoPos) };
+            const float attackSpeed{ 200.0f };
+            m_sprite.move(diffVec * (attackSpeed * m_speedMult * t_elapsedTimeSec));
+
+            if (collisionRect().findIntersection(playerRect))
+            {
+                setupTask(t_context, MosquitoTask::Reset, MosquitoAnim::Flying);
+                t_context.sfx.play("ui-select-thock-slide");
             }
         }
     }
@@ -176,10 +254,26 @@ namespace bramblefore
     void Mosquito::draw(
         const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
+        if (!m_isAlive)
+        {
+            return;
+        }
+
         const sf::FloatRect wholeRect{ t_context.layout.wholeRect() };
         if (wholeRect.findIntersection(m_sprite.getGlobalBounds()))
         {
             t_target.draw(m_sprite, t_states);
+
+            std::string str{ toString(m_task) };
+            str += ", ";
+            str += toString(m_anim);
+            str += ", ";
+            str += std::to_string(m_frameIndex);
+            //
+            m_debugText.setString(str);
+            util::setOriginToPosition(m_debugText);
+            m_debugText.setPosition({ util::right(collisionRect()), collisionRect().position.y });
+            t_target.draw(m_debugText, t_states);
         }
     }
 

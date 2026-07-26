@@ -12,6 +12,7 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
 namespace sf
@@ -87,6 +88,20 @@ namespace bramblefore
         Reset
     };
 
+    [[nodiscard]] constexpr std::string_view toString(const MosquitoTask t_task) noexcept
+    {
+        // clang-format off
+        switch (t_task)
+        {
+            case MosquitoTask::Idle:    { return "idle";    }
+            case MosquitoTask::Wander:  { return "wander";  }
+            case MosquitoTask::Attack:  { return "attack";  }
+            case MosquitoTask::Reset:   { return "reset";   }
+            default: { return "Error_MosquitoTask_Unknown"; }
+        }
+        // clang-format on
+    }
+
     //
 
     class Mosquito : public IMonster
@@ -120,6 +135,9 @@ namespace bramblefore
         void turnAround();
         [[nodiscard]] float randomIdleDurationSec(const Context & t_context) const;
 
+        void setupTask(
+            const Context & t_context, const MosquitoTask t_task, const MosquitoAnim t_anim);
+
       private:
         MosquitoAnim m_anim;
         MosquitoTask m_task;
@@ -132,6 +150,10 @@ namespace bramblefore
         bool m_hasSpottedPlayer;
         sf::Vector2f m_resetPosition;
         std::size_t m_frameIndex;
+        float m_speedMult;
+        bool m_isAlive;
+        float m_resetDistance;
+        mutable sf::Text m_debugText;
     };
 
 } // namespace bramblefore
