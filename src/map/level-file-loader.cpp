@@ -30,6 +30,7 @@
 #include "map/pickups.hpp"
 #include "monster/monster-baby-dragon.hpp"
 #include "monster/monster-bear.hpp"
+#include "monster/monster-beholder.hpp"
 #include "monster/monster-big-knight.hpp"
 #include "monster/monster-bone-dragon.hpp"
 #include "monster/monster-boss-knight.hpp"
@@ -653,6 +654,10 @@ namespace bramblefore
             else if (name == "mosquito")
             {
                 t_context.level.monsters().add(std::make_unique<Mosquito>(t_context, rect));
+            }
+            else if (name == "beholder")
+            {
+                t_context.level.monsters().add(std::make_unique<Beholder>(t_context, rect));
             }
             else
             {

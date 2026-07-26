@@ -431,15 +431,15 @@
                  "y":160
                 }, 
                 {
-                 "height":384,
+                 "height":64,
                  "id":38,
-                 "name":"mosquito",
+                 "name":"beholder",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":736,
                  "x":512,
-                 "y":448
+                 "y":768
                 }],
          "opacity":1,
          "type":"objectgroup",

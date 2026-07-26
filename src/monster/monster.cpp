@@ -154,6 +154,8 @@ namespace bramblefore
         {
             t_target.draw(m_sprite, t_states);
             m_animations.draw(t_target, t_states);
+            // util::drawRectangleShape(t_target, collisionRect(), false, sf::Color::Red);
+            // util::drawRectangleShape(t_target, collisionRect(), false, sf::Color::Yellow);
         }
     }
 
@@ -398,8 +400,9 @@ namespace bramblefore
         m_sprite.scale({ t_imageScale, t_imageScale });
         util::setOriginToCenter(m_sprite);
 
-        m_sprite.setPosition({ t_context.random.fromTo(m_region.position.x, util::right(m_region)),
-                               (util::bottom(m_region) - m_sprite.getGlobalBounds().size.y) });
+        m_sprite.setPosition(
+            { t_context.random.fromTo(m_region.position.x, util::right(m_region)),
+              (util::bottom(m_region) - m_sprite.getGlobalBounds().size.y) });
 
         m_sprite.move({ 0.0f, (t_imageHeightOffsetRatio * m_sprite.getGlobalBounds().size.y) });
     }

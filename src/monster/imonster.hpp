@@ -56,6 +56,7 @@ namespace bramblefore
         BossKnight,
         BossWizard,
         Mosquito,
+        Beholder,
         Count
     };
 
@@ -95,6 +96,7 @@ namespace bramblefore
             case MonsterType::BossKnight:    { return "boss-knight";    }
             case MonsterType::BossWizard:    { return "boss-wizard";    }
             case MonsterType::Mosquito:      { return "mosquito";       }
+            case MonsterType::Beholder:      { return "beholder";       }
             case MonsterType::Count:         [[fallthrough]];     
             default:              { return "Error_unknown_MonsterType"; }
         }
@@ -137,6 +139,7 @@ namespace bramblefore
             case MonsterType::BossKnight:    { return 200; }
             case MonsterType::BossWizard:    { return 200; }
             case MonsterType::Mosquito:      { return 16;  }
+            case MonsterType::Beholder:      { return 42;  }
             case MonsterType::Count:         [[fallthrough]]; 
             default:                         { return 0;   }
         }
@@ -179,6 +182,7 @@ namespace bramblefore
             case MonsterType::BossKnight:    { return 75.0f; }
             case MonsterType::BossWizard:    { return 75.0f; }
             case MonsterType::Mosquito:      { return 40.0f; }
+            case MonsterType::Beholder:      { return 30.0f; }
             case MonsterType::Count:         [[fallthrough]];    
             default:                         { return 0.0f;  }
         }
@@ -222,6 +226,7 @@ namespace bramblefore
             case MonsterType::BossKnight:    { return 1; }
             case MonsterType::BossWizard:    { return 1; }
             case MonsterType::Mosquito:      { return 7; }
+            case MonsterType::Beholder:      { return 12; }
             case MonsterType::Count:         [[fallthrough]];    
             default:                         { return 0;  }
         }
@@ -265,6 +270,7 @@ namespace bramblefore
             case MonsterType::BossKnight:    { return ""; }
             case MonsterType::BossWizard:    { return ""; }
             case MonsterType::Mosquito:      { return ""; }
+            case MonsterType::Beholder:      { return ""; }
             case MonsterType::Count:         [[fallthrough]];
             default:                         { return "";  }
         }
@@ -308,6 +314,7 @@ namespace bramblefore
             case MonsterType::BossKnight:    { return ""; }
             case MonsterType::BossWizard:    { return ""; }
             case MonsterType::Mosquito:      { return ""; }
+            case MonsterType::Beholder:      { return ""; }
             case MonsterType::Count:         [[fallthrough]];
             default:                         { return "";  }
         }
@@ -351,6 +358,7 @@ namespace bramblefore
             case MonsterType::BossKnight:    { return ""; }
             case MonsterType::BossWizard:    { return ""; }
             case MonsterType::Mosquito:      { return ""; }
+            case MonsterType::Beholder:      { return ""; }
             case MonsterType::Count:         [[fallthrough]];
             default:                         { return "";  }
         }
@@ -394,6 +402,7 @@ namespace bramblefore
             case MonsterType::BossKnight:    { return ""; }
             case MonsterType::BossWizard:    { return ""; }
             case MonsterType::Mosquito:      { return ""; }
+            case MonsterType::Beholder:      { return ""; }
             case MonsterType::Count:         [[fallthrough]];
             default:                         { return "";  }
         }
