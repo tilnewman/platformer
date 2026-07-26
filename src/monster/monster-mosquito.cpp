@@ -401,8 +401,8 @@ namespace bramblefore
     const sf::FloatRect Mosquito::attackCollisionRect() const
     {
         sf::FloatRect rect{ collisionRect() };
-        rect.position -= sf::Vector2f(2.0f, 2.0f);
-        rect.size += sf::Vector2f(4.0f, 4.0f);
+        rect.position += sf::Vector2f(2.0f, 2.0f);
+        rect.size += sf::Vector2f(2.0f, 2.0f);
         return rect;
     }
 
