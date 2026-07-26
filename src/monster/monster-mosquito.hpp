@@ -168,7 +168,6 @@ namespace bramblefore
         float m_speedMult;
         bool m_isAlive;
         float m_resetDistance;
-        mutable sf::Text m_debugText;
     };
 
 } // namespace bramblefore

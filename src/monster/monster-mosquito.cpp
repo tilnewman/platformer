@@ -40,7 +40,6 @@ namespace bramblefore
         , m_speedMult{ t_context.random.fromTo(0.8f, 1.2f) }
         , m_isAlive{ true }
         , m_resetDistance{ 0.0f }
-        , m_debugText{ util::SfmlDefaults::instance().font() }
     {}
 
     Mosquito::~Mosquito() {}
@@ -95,9 +94,6 @@ namespace bramblefore
         {
             turnAround();
         }
-
-        //
-        m_debugText = t_context.font.makeText(Font::General, FontSize::Small, "", sf::Color::Red);
     }
 
     void Mosquito::setupTask(
@@ -308,19 +304,6 @@ namespace bramblefore
         if (t_context.layout.wholeRect().findIntersection(m_sprite.getGlobalBounds()))
         {
             t_target.draw(m_sprite, t_states);
-
-            // std::string str{ toString(m_task) };
-            // str += ", ";
-            // str += toString(m_anim);
-            // str += ", ";
-            // str += std::to_string(m_frameIndex);
-            // str += ", ";
-            // str += std::to_string(m_health);
-            // //
-            // m_debugText.setString(str);
-            // util::setOriginToPosition(m_debugText);
-            // m_debugText.setPosition({ util::right(collisionRect()), collisionRect().position.y
-            // }); t_target.draw(m_debugText, t_states);
         }
     }
 
