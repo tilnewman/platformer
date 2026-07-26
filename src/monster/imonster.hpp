@@ -269,7 +269,7 @@ namespace bramblefore
             case MonsterType::BossTribal:    { return ""; }
             case MonsterType::BossKnight:    { return ""; }
             case MonsterType::BossWizard:    { return ""; }
-            case MonsterType::Mosquito:      { return ""; }
+            case MonsterType::Mosquito:      { return "hit-mosquito"; }
             case MonsterType::Beholder:      { return ""; }
             case MonsterType::Count:         [[fallthrough]];
             default:                         { return "";  }
@@ -313,7 +313,7 @@ namespace bramblefore
             case MonsterType::BossTribal:    { return ""; }
             case MonsterType::BossKnight:    { return ""; }
             case MonsterType::BossWizard:    { return ""; }
-            case MonsterType::Mosquito:      { return ""; }
+            case MonsterType::Mosquito:      { return "attack-mosquito"; }
             case MonsterType::Beholder:      { return ""; }
             case MonsterType::Count:         [[fallthrough]];
             default:                         { return "";  }
@@ -357,7 +357,7 @@ namespace bramblefore
             case MonsterType::BossTribal:    { return ""; }
             case MonsterType::BossKnight:    { return ""; }
             case MonsterType::BossWizard:    { return ""; }
-            case MonsterType::Mosquito:      { return ""; }
+            case MonsterType::Mosquito:      { return "hurt-mosquito"; }
             case MonsterType::Beholder:      { return ""; }
             case MonsterType::Count:         [[fallthrough]];
             default:                         { return "";  }
@@ -401,7 +401,7 @@ namespace bramblefore
             case MonsterType::BossTribal:    { return ""; }
             case MonsterType::BossKnight:    { return ""; }
             case MonsterType::BossWizard:    { return ""; }
-            case MonsterType::Mosquito:      { return ""; }
+            case MonsterType::Mosquito:      { return "death-mosquito"; }
             case MonsterType::Beholder:      { return ""; }
             case MonsterType::Count:         [[fallthrough]];
             default:                         { return "";  }
