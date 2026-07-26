@@ -243,23 +243,28 @@ namespace bramblefore
             const sf::Vector2f diffVec{ util::normalize(playerPos - mosquitoPos) };
             const sf::FloatRect monsterRect{ collisionRect() };
 
-            m_sprite.move(
-                diffVec * (flyingSpeed(MosquitoTask::Attack) * m_speedMult * t_elapsedTimeSec));
+            const sf::Vector2f move{ diffVec * (flyingSpeed(MosquitoTask::Attack) * m_speedMult *
+                                                t_elapsedTimeSec) };
 
-            if (!monsterRect.findIntersection(m_flyBounds))
-            {
-                setupTask(t_context, MosquitoTask::Wander, MosquitoAnim::Flying);
-            }
-            else if (monsterRect.findIntersection(playerRect))
+            m_sprite.move(move);
+
+            if (attackCollisionRect().findIntersection(playerRect))
             {
                 setupTask(t_context, MosquitoTask::Reset, MosquitoAnim::Flying);
                 t_context.sfx.play("ui-select-thock-slide");
+                
                 // TOOD hurt the player
-                // TODO move to avoid actually hitting the player
+                
+                // move to avoid actually hitting the player
+                m_sprite.move(move * -1.0f);
             }
             else if (util::bottom(monsterRect) > util::center(playerRect).y)
             {
                 setupTask(t_context, MosquitoTask::Reset, MosquitoAnim::Flying);
+            }
+            else if (!monsterRect.findIntersection(m_flyBounds))
+            {
+                setupTask(t_context, MosquitoTask::Wander, MosquitoAnim::Flying);
             }
         }
     }
@@ -302,16 +307,16 @@ namespace bramblefore
         {
             t_target.draw(m_sprite, t_states);
 
-            std::string str{ toString(m_task) };
-            str += ", ";
-            str += toString(m_anim);
-            str += ", ";
-            str += std::to_string(m_frameIndex);
-            //
-            m_debugText.setString(str);
-            util::setOriginToPosition(m_debugText);
-            m_debugText.setPosition({ util::right(collisionRect()), collisionRect().position.y });
-            t_target.draw(m_debugText, t_states);
+            // std::string str{ toString(m_task) };
+            // str += ", ";
+            // str += toString(m_anim);
+            // str += ", ";
+            // str += std::to_string(m_frameIndex);
+            // //
+            // m_debugText.setString(str);
+            // util::setOriginToPosition(m_debugText);
+            // m_debugText.setPosition({ util::right(collisionRect()), collisionRect().position.y
+            // }); t_target.draw(m_debugText, t_states);
         }
     }
 
