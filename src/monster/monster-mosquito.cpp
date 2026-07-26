@@ -163,7 +163,7 @@ namespace bramblefore
         // spot the player if not already
         if ((MosquitoTask::Hurt != m_task) && (MosquitoTask::Death != m_task) &&
             !m_hasSpottedPlayer &&
-            t_context.avatar.collisionRect().findIntersection(spottedRect()))
+            t_context.avatar.collisionRect().findIntersection(spottedRect(t_context)))
         {
             if (t_context.random.boolean())
             {
@@ -175,7 +175,6 @@ namespace bramblefore
             }
 
             // TODO play a buzzing "i see you" sfx
-            t_context.sfx.play("pickup");
             return;
         }
 
@@ -246,21 +245,22 @@ namespace bramblefore
             const sf::Vector2f mosquitoPos{ util::center(m_sprite.getGlobalBounds()) };
             const sf::Vector2f diffVec{ util::normalize(playerPos - mosquitoPos) };
             const sf::FloatRect monsterRect{ collisionRect() };
+            const sf::FloatRect attackRect{ attackCollisionRect() };
 
             const sf::Vector2f move{ diffVec * (flyingSpeed(MosquitoTask::Attack) * m_speedMult *
                                                 t_elapsedTimeSec) };
 
             m_sprite.move(move);
 
-            if (attackCollisionRect().findIntersection(playerRect))
+            if (attackRect.findIntersection(playerRect))
             {
                 setupTask(t_context, MosquitoTask::Reset, MosquitoAnim::Flying);
-                t_context.sfx.play("ui-select-thock-slide");
 
-                // TOOD hurt the player
-
-                // move to avoid actually hitting the player
-                // m_sprite.move(move * -1.0f);
+                Harm harm;
+                harm.damage = attackDamage(type());
+                harm.rect   = attackRect;
+                harm.sfx    = hitSfx(type());
+                t_context.avatar.harm(t_context, harm);
             }
             else if (util::bottom(monsterRect) > util::center(playerRect).y)
             {
@@ -273,7 +273,7 @@ namespace bramblefore
         }
     }
 
-    const sf::FloatRect Mosquito::spottedRect() const
+    const sf::FloatRect Mosquito::spottedRect(const Context & t_context) const
     {
         sf::FloatRect rect{ m_sprite.getGlobalBounds() };
 
@@ -281,7 +281,7 @@ namespace bramblefore
         rect.position.x -= horizOffset;
         rect.size.x += (horizOffset * 2.0f);
 
-        rect.size.y += 99999.0f;
+        rect.size.y += t_context.layout.wholeRect().size.y;
 
         return rect;
     }
@@ -303,23 +303,22 @@ namespace bramblefore
     void Mosquito::draw(
         const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
-        const sf::FloatRect wholeRect{ t_context.layout.wholeRect() };
-        if (wholeRect.findIntersection(m_sprite.getGlobalBounds()))
+        if (t_context.layout.wholeRect().findIntersection(m_sprite.getGlobalBounds()))
         {
             t_target.draw(m_sprite, t_states);
 
-            std::string str{ toString(m_task) };
-            str += ", ";
-            str += toString(m_anim);
-            str += ", ";
-            str += std::to_string(m_frameIndex);
-            str += ", ";
-            str += std::to_string(m_health);
-            //
-            m_debugText.setString(str);
-            util::setOriginToPosition(m_debugText);
-            m_debugText.setPosition({ util::right(collisionRect()), collisionRect().position.y });
-            t_target.draw(m_debugText, t_states);
+            // std::string str{ toString(m_task) };
+            // str += ", ";
+            // str += toString(m_anim);
+            // str += ", ";
+            // str += std::to_string(m_frameIndex);
+            // str += ", ";
+            // str += std::to_string(m_health);
+            // //
+            // m_debugText.setString(str);
+            // util::setOriginToPosition(m_debugText);
+            // m_debugText.setPosition({ util::right(collisionRect()), collisionRect().position.y
+            // }); t_target.draw(m_debugText, t_states);
         }
     }
 
@@ -372,11 +371,12 @@ namespace bramblefore
     {
         Harm harm;
 
-        if ((MosquitoTask::Attack == m_task) &&
-            t_avatarRect.findIntersection(attackCollisionRect()))
+        const sf::FloatRect attackRect{ attackCollisionRect() };
+
+        if ((MosquitoTask::Attack == m_task) && t_avatarRect.findIntersection(attackRect))
         {
             harm.damage = attackDamage(type());
-            harm.rect   = collisionRect();
+            harm.rect   = attackRect;
             harm.sfx    = hitSfx(type());
         }
 

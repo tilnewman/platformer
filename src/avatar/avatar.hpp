@@ -94,6 +94,7 @@ namespace bramblefore
         void triggerDeath(const Context & t_context);
         void triggerIdle();
         void resetBeforePlacingInNewLevel();
+        void harm(const Context & t_context, const Harm & t_harm);
 
         // TODO remove after testing
         void changeType(const Context & t_context);
@@ -119,7 +120,6 @@ namespace bramblefore
         void exitCollisions(const Context & t_context) const;
         void hurtCollisions(const Context & t_context);
         void killCollisions(const Context & t_context);
-        void harm(const Context & t_context, const Harm & t_harm);
         void calculateMovementDetails(const Context & t_context);
         [[nodiscard]] const sf::Vector2f spellAnimationPosition() const;
 

@@ -932,6 +932,11 @@ namespace bramblefore
 
     void Avatar::harm(const Context & t_context, const Harm & t_harm)
     {
+        if (AvatarState::Death == m_state)
+        {
+            return;
+        }
+
         if (!t_harm.isAnyHarmDone())
         {
             return;

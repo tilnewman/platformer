@@ -145,7 +145,7 @@ namespace bramblefore
             const Context & t_context, const MosquitoTask t_task, const MosquitoAnim t_anim);
 
         [[nodiscard]] float flyingSpeed(const MosquitoTask t_task) const;
-        [[nodiscard]] const sf::FloatRect spottedRect() const;
+        [[nodiscard]] const sf::FloatRect spottedRect(const Context & t_context) const;
         void handleDying(const Context & t_context);
 
       private:
