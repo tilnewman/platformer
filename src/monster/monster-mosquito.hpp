@@ -71,6 +71,10 @@ namespace bramblefore
         {
             return 0.075f;
         }
+        else if ((MosquitoAnim::Hurt == t_anim) || (MosquitoAnim::Death == t_anim))
+        {
+            return 0.25f;
+        }
         else
         {
             return 0.1f;
@@ -82,7 +86,9 @@ namespace bramblefore
         Idle,
         Wander,
         Attack,
-        Reset
+        Reset,
+        Death,
+        Hurt
     };
 
     [[nodiscard]] constexpr std::string_view toString(const MosquitoTask t_task) noexcept
@@ -94,6 +100,8 @@ namespace bramblefore
             case MosquitoTask::Wander:  { return "wander";  }
             case MosquitoTask::Attack:  { return "attack";  }
             case MosquitoTask::Reset:   { return "reset";   }
+            case MosquitoTask::Death:   { return "death";   }
+            case MosquitoTask::Hurt:    { return "hurt";   }
             default: { return "Error_MosquitoTask_Unknown"; }
         }
         // clang-format on
@@ -136,10 +144,11 @@ namespace bramblefore
             const Context & t_context, const MosquitoTask t_task, const MosquitoAnim t_anim);
 
         [[nodiscard]] float flyingSpeed(const MosquitoTask t_task) const;
-
         [[nodiscard]] const sf::FloatRect spottedRect() const;
+        void handleDying(const Context & t_context);
 
       private:
+        Health_t m_health;
         MosquitoAnim m_anim;
         MosquitoTask m_task;
         std::vector<std::vector<sf::Texture>> m_animTextures;

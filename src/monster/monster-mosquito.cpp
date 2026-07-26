@@ -8,6 +8,7 @@
 #include "map/level.hpp"
 #include "monster/monster-manager.hpp"
 #include "subsystem/context.hpp"
+#include "subsystem/floating-text.hpp"
 #include "subsystem/font.hpp"
 #include "subsystem/screen-layout.hpp"
 #include "util/check-macros.hpp"
@@ -26,7 +27,8 @@ namespace bramblefore
 {
 
     Mosquito::Mosquito(const Context & t_context, const sf::FloatRect & t_region)
-        : m_anim{ MosquitoAnim::Idle }
+        : m_health{ startingHealth(type()) }
+        , m_anim{ MosquitoAnim::Idle }
         , m_task{ MosquitoTask::Idle }
         , m_animTextures{}
         , m_sprite{ util::SfmlDefaults::instance().texture() }
@@ -145,7 +147,7 @@ namespace bramblefore
                 }
                 else if (MosquitoAnim::Death == m_anim)
                 {
-                    m_isAlive = false;
+                    handleDying(t_context);
                     return;
                 }
                 else if (MosquitoAnim::Hurt == m_anim)
@@ -159,7 +161,9 @@ namespace bramblefore
         }
 
         // spot the player if not already
-        if (!m_hasSpottedPlayer && t_context.avatar.collisionRect().findIntersection(spottedRect()))
+        if ((MosquitoTask::Hurt != m_task) && (MosquitoTask::Death != m_task) &&
+            !m_hasSpottedPlayer &&
+            t_context.avatar.collisionRect().findIntersection(spottedRect()))
         {
             if (t_context.random.boolean())
             {
@@ -252,11 +256,11 @@ namespace bramblefore
             {
                 setupTask(t_context, MosquitoTask::Reset, MosquitoAnim::Flying);
                 t_context.sfx.play("ui-select-thock-slide");
-                
+
                 // TOOD hurt the player
-                
+
                 // move to avoid actually hitting the player
-                m_sprite.move(move * -1.0f);
+                // m_sprite.move(move * -1.0f);
             }
             else if (util::bottom(monsterRect) > util::center(playerRect).y)
             {
@@ -289,6 +293,8 @@ namespace bramblefore
             case MosquitoTask::Attack: return 200.0f;
             case MosquitoTask::Reset: return 150.0f;
             case MosquitoTask::Wander: return 100.0f;
+            case MosquitoTask::Death:
+            case MosquitoTask::Hurt:
             case MosquitoTask::Idle:
             default: return 0.0f;
         }
@@ -307,16 +313,18 @@ namespace bramblefore
         {
             t_target.draw(m_sprite, t_states);
 
-            // std::string str{ toString(m_task) };
-            // str += ", ";
-            // str += toString(m_anim);
-            // str += ", ";
-            // str += std::to_string(m_frameIndex);
-            // //
-            // m_debugText.setString(str);
-            // util::setOriginToPosition(m_debugText);
-            // m_debugText.setPosition({ util::right(collisionRect()), collisionRect().position.y
-            // }); t_target.draw(m_debugText, t_states);
+            std::string str{ toString(m_task) };
+            str += ", ";
+            str += toString(m_anim);
+            str += ", ";
+            str += std::to_string(m_frameIndex);
+            str += ", ";
+            str += std::to_string(m_health);
+            //
+            m_debugText.setString(str);
+            util::setOriginToPosition(m_debugText);
+            m_debugText.setPosition({ util::right(collisionRect()), collisionRect().position.y });
+            t_target.draw(m_debugText, t_states);
         }
     }
 
@@ -327,16 +335,57 @@ namespace bramblefore
         m_resetPosition += t_move;
     }
 
-    bool Mosquito::avatarAttack(const Context &, const AttackInfo &)
+    bool Mosquito::avatarAttack(const Context & t_context, const AttackInfo & t_attackInfo)
     {
-        // TODO
-        return false;
+        if (!m_isAlive || (MosquitoAnim::Death == m_anim) || (MosquitoAnim::Hurt == m_anim))
+        {
+            return false;
+        }
+
+        if (!t_attackInfo.rect.findIntersection(collisionRect()))
+        {
+            return false;
+        }
+
+        m_health -= t_attackInfo.damage;
+
+        if (m_health > 0)
+        {
+            setupTask(t_context, MosquitoTask::Hurt, MosquitoAnim::Hurt);
+
+            const std::string hurtSfxName{ hurtSfx(type()) };
+            if (!hurtSfxName.empty())
+            {
+                t_context.sfx.play(hurtSfxName);
+            }
+        }
+        else
+        {
+            setupTask(t_context, MosquitoTask::Death, MosquitoAnim::Death);
+
+            const std::string deathSfxName{ deathSfx(type()) };
+            if (!deathSfxName.empty())
+            {
+                t_context.sfx.play(deathSfxName);
+            }
+        }
+
+        return true;
     }
 
-    const Harm Mosquito::avatarCollide(const sf::FloatRect &)
+    const Harm Mosquito::avatarCollide(const sf::FloatRect & t_avatarRect)
     {
-        // TODO
-        return Harm();
+        Harm harm;
+
+        if ((MosquitoTask::Attack == m_task) &&
+            t_avatarRect.findIntersection(attackCollisionRect()))
+        {
+            harm.damage = attackDamage(type());
+            harm.rect   = collisionRect();
+            harm.sfx    = hitSfx(type());
+        }
+
+        return harm;
     }
 
     const sf::FloatRect Mosquito::collisionRect() const
@@ -405,6 +454,27 @@ namespace bramblefore
     float Mosquito::randomIdleDurationSec(const Context & t_context) const
     {
         return t_context.random.fromTo(1.5f, 4.0f);
+    }
+
+    void Mosquito::handleDying(const Context & t_context)
+    {
+        m_isAlive = false;
+
+        const Experience_t xpBonus{ startingHealth(type()) };
+
+        std::string message{ "+" };
+        message += std::to_string(xpBonus);
+        message += "xp";
+
+        const sf::Vector2f messagePos{ util::center(m_sprite).x, m_sprite.getPosition().y };
+
+        t_context.float_text.add(
+            t_context, message, t_context.settings.off_white_color, messagePos);
+
+        t_context.player.experienceAdjust(xpBonus);
+
+        auto & textures{ m_animTextures.at(static_cast<std::size_t>(m_anim)) };
+        m_sprite.setTexture(textures.at(textures.size() - 1));
     }
 
 } // namespace bramblefore

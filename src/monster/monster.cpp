@@ -131,7 +131,8 @@ namespace bramblefore
 
         const sf::Vector2f messagePos{ util::center(m_sprite).x, m_sprite.getPosition().y };
 
-        t_context.float_text.add(t_context, message, sf::Color(200, 200, 200), messagePos);
+        t_context.float_text.add(
+            t_context, message, t_context.settings.off_white_color, messagePos);
 
         t_context.player.experienceAdjust(xpBonus);
 
