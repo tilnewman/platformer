@@ -75,6 +75,10 @@ namespace bramblefore
         {
             return 0.25f;
         }
+        else if (MosquitoAnim::AttackPrep == t_anim)
+        {
+            return 0.2f;
+        }
         else
         {
             return 0.1f;
