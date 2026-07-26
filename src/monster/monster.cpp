@@ -143,6 +143,8 @@ namespace bramblefore
             m_type,
             MonsterAnim::Death,
             (manager.frameCount(m_type, MonsterAnim::Death) - 1));
+
+        m_animations.clear();
     }
 
     void Monster::draw(

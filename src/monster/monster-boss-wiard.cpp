@@ -17,28 +17,21 @@ namespace bramblefore
 
     const sf::FloatRect BossWizard::collisionRect() const
     {
-        if (MonsterAnim::Death == m_anim)
+        sf::FloatRect rect{ m_sprite.getGlobalBounds() };
+        util::scaleRectInPlace(rect, { 0.25f, 0.35f });
+
+        rect.position.y += (rect.size.x * 0.15f);
+
+        if (m_isFacingRight)
         {
-            return { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
+            rect.position.x -= (rect.size.x * 0.75f);
         }
         else
         {
-            sf::FloatRect rect{ m_sprite.getGlobalBounds() };
-            util::scaleRectInPlace(rect, { 0.25f, 0.35f });
-
-            rect.position.y += (rect.size.x * 0.15f);
-
-            if (m_isFacingRight)
-            {
-                rect.position.x -= (rect.size.x * 0.75f);
-            }
-            else
-            {
-                rect.position.x += (rect.size.x * 0.75f);
-            }
-
-            return rect;
+            rect.position.x += (rect.size.x * 0.75f);
         }
+
+        return rect;
     }
 
     const sf::FloatRect BossWizard::attackCollisionRect() const

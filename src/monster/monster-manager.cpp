@@ -22,6 +22,8 @@ namespace bramblefore
         {
             monsterUPtr->update(t_context, t_frameTimeSec);
         }
+
+        std::erase_if(m_monsters, [](const auto & uptr) { return !uptr->isAlive(); });
     }
 
     void MonsterManager::draw(

@@ -117,6 +117,7 @@ namespace bramblefore
 
         // IMonster functions
         [[nodiscard]] inline MonsterType type() const final { return MonsterType::Mosquito; }
+        [[nodiscard]] bool isAlive() const final { return m_isAlive; }
         void setup(const Context & t_context) final;
         void update(const Context & t_context, const float t_elapsedTimeSec) override;
 

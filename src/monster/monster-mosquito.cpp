@@ -303,11 +303,6 @@ namespace bramblefore
     void Mosquito::draw(
         const Context & t_context, sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
-        if (!m_isAlive)
-        {
-            return;
-        }
-
         const sf::FloatRect wholeRect{ t_context.layout.wholeRect() };
         if (wholeRect.findIntersection(m_sprite.getGlobalBounds()))
         {

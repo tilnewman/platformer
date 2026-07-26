@@ -17,24 +17,17 @@ namespace bramblefore
 
     const sf::FloatRect Bear::collisionRect() const
     {
-        if (MonsterAnim::Death == m_anim)
-        {
-            return { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
-        }
-        else
-        {
-            sf::FloatRect rect{ m_sprite.getGlobalBounds() };
-            util::scaleRectInPlace(rect, { 0.6f, 0.4f });
-            rect.position.x -= (rect.size.x * 0.2f);
-            rect.position.y += (rect.size.y * 0.4f);
+        sf::FloatRect rect{ m_sprite.getGlobalBounds() };
+        util::scaleRectInPlace(rect, { 0.6f, 0.4f });
+        rect.position.x -= (rect.size.x * 0.2f);
+        rect.position.y += (rect.size.y * 0.4f);
 
-            if (!m_isFacingRight)
-            {
-                rect.position.x += (rect.size.x * 0.3f);
-            }
-
-            return rect;
+        if (!m_isFacingRight)
+        {
+            rect.position.x += (rect.size.x * 0.3f);
         }
+
+        return rect;
     }
 
     const sf::FloatRect Bear::attackCollisionRect() const

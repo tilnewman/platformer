@@ -17,16 +17,9 @@ namespace bramblefore
 
     const sf::FloatRect Goblin::collisionRect() const
     {
-        if (MonsterAnim::Death == m_anim)
-        {
-            return { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
-        }
-        else
-        {
-            sf::FloatRect rect{ m_sprite.getGlobalBounds() };
-            util::scaleRectInPlace(rect, 0.35f);
-            return rect;
-        }
+        sf::FloatRect rect{ m_sprite.getGlobalBounds() };
+        util::scaleRectInPlace(rect, 0.35f);
+        return rect;
     }
 
     const sf::FloatRect Goblin::attackCollisionRect() const

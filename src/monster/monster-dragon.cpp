@@ -18,27 +18,20 @@ namespace bramblefore
 
     const sf::FloatRect Dragon::collisionRect() const
     {
-        if (MonsterAnim::Death == m_anim)
+        sf::FloatRect rect{ m_sprite.getGlobalBounds() };
+        util::scaleRectInPlace(rect, { 0.4f, 0.25f });
+        rect.position.y += (rect.size.y * 0.5f);
+
+        if (m_isFacingRight)
         {
-            return { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
+            rect.position.x += (rect.size.x * 0.2f);
         }
         else
         {
-            sf::FloatRect rect{ m_sprite.getGlobalBounds() };
-            util::scaleRectInPlace(rect, { 0.4f, 0.25f });
-            rect.position.y += (rect.size.y * 0.5f);
-
-            if (m_isFacingRight)
-            {
-                rect.position.x += (rect.size.x * 0.2f);
-            }
-            else
-            {
-                rect.position.x -= (rect.size.x * 0.2f);
-            }
-
-            return rect;
+            rect.position.x -= (rect.size.x * 0.2f);
         }
+
+        return rect;
     }
 
     const sf::FloatRect Dragon::attackCollisionRect() const

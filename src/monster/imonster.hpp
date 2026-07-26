@@ -453,6 +453,7 @@ namespace bramblefore
         virtual ~IMonster() = default;
 
         virtual MonsterType type() const                                                      = 0;
+        virtual bool isAlive() const                                                          = 0;
         virtual void setup(const Context & t_context)                                         = 0;
         virtual void update(const Context & t_context, const float t_frameTimeSec)            = 0;
         virtual void draw(const Context & c, sf::RenderTarget & t, sf::RenderStates s) const  = 0;

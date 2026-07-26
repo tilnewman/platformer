@@ -56,6 +56,7 @@ namespace bramblefore
 
         // IMonster functions
         [[nodiscard]] inline MonsterType type() const final { return m_type; }
+        [[nodiscard]] bool isAlive() const final { return m_isAlive; }
         void setup(const Context &) final {}
         void update(const Context & t_context, const float t_frameTimeSec) override;
 
