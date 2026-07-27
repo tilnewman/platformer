@@ -109,7 +109,7 @@ namespace bramblefore
             const auto & texturesVec{ MosquitoTextureManager::instance().textures() };
             auto & textures{ texturesVec.at(static_cast<std::size_t>(m_anim)) };
 
-            if (++m_frameIndex >= textures.size())
+            if (m_frameIndex >= textures.size())
             {
                 m_frameIndex = 0;
 
@@ -130,6 +130,7 @@ namespace bramblefore
             }
 
             m_sprite.setTexture(textures.at(m_frameIndex));
+            ++m_frameIndex;
         }
 
         // spot the player if not already
