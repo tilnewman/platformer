@@ -433,11 +433,11 @@
                 {
                  "height":64,
                  "id":38,
-                 "name":"beholder",
+                 "name":"dragon",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":736,
+                 "width":352,
                  "x":512,
                  "y":768
                 }],

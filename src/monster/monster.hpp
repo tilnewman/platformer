@@ -4,7 +4,6 @@
 // monster.hpp
 //
 #include "monster/imonster.hpp"
-#include "monster/monster-spell-anim.hpp"
 #include "player/custom-types.hpp"
 #include "subsystem/harm.hpp"
 
@@ -30,20 +29,17 @@ namespace bramblefore
             const MonsterType t_monsterType,
             const sf::FloatRect & t_roamRegion,
             const float t_imageHeightRatio,
-            const float t_imageScale   = 1.0f,
-            const MonsterSpell t_spell = MonsterSpell::Count)
+            const float t_imageScale   = 1.0f)
             : type(t_monsterType)
             , region(t_roamRegion)
             , image_height_ratio(t_imageHeightRatio)
             , image_scale(t_imageScale)
-            , spell(t_spell)
         {}
 
         MonsterType type;
         sf::FloatRect region;
         float image_height_ratio;
         float image_scale;
-        MonsterSpell spell; // MonsterSpell::Count means this monster does not cast spells
     };
 
     //
@@ -77,7 +73,7 @@ namespace bramblefore
         virtual void changeStateBeforeSeeingPlayer(const Context & t_context);
         virtual void changeStateAfterSeeingPlayer(const Context & t_context);
         virtual void turnAround();
-        virtual void startAttackAnimation(const Context &) {}
+        //virtual void startAttackAnimation(const Context &) {}
 
         void resetAnimation();
 
@@ -90,7 +86,6 @@ namespace bramblefore
 
       protected:
         MonsterType m_type;
-        MonsterSpell m_spell;
         sf::FloatRect m_region;
         MonsterAnim m_anim;
         std::size_t m_animFrame;
@@ -102,7 +97,6 @@ namespace bramblefore
         bool m_hasSpottedPlayer;
         Health_t m_health;
         bool m_isAlive;
-        MonsterSpellAnimations m_animations;
     };
 
 } // namespace bramblefore
