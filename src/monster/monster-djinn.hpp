@@ -25,6 +25,7 @@ namespace bramblefore
 
       protected:
         void turnAround() final;
+        void startAttackAnimation(const Context & t_context) final;
     };
 
 } // namespace bramblefore

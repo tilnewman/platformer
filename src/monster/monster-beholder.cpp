@@ -60,4 +60,19 @@ namespace bramblefore
         m_isFacingRight = !m_isFacingRight;
     }
 
+    void Beholder::startAttackAnimation(const Context & t_context)
+    {
+        const sf::FloatRect collRect{ collisionRect() };
+
+        sf::Vector2f pos{ collRect.position };
+        pos.y -= (collRect.size.y * 0.45f);
+
+        if (m_isFacingRight)
+        {
+            pos.x = util::right(collRect);
+        }
+
+        m_attackAnims.add(t_context, m_type, pos, m_isFacingRight);
+    }
+
 } // namespace bramblefore

@@ -110,7 +110,6 @@ namespace bramblefore
         , sprite{ t_texture, t_textureRect }
     {
         sprite.setScale({ t_scale, t_scale });
-        util::setOriginToCenter(sprite);
         sprite.setPosition(t_position);
 
         if (!t_isFacingRight)

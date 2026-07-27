@@ -70,4 +70,25 @@ namespace bramblefore
         m_isFacingRight = !m_isFacingRight;
     }
 
+    void Vampire::startAttackAnimation(const Context & t_context)
+    {
+        const sf::FloatRect collRect{ collisionRect() };
+
+        sf::Vector2f pos{ collRect.position };
+        pos.y -= (collRect.size.y * 0.25f);
+
+        const float horizOffset{ collRect.size.x * 0.1f };
+        if (m_isFacingRight)
+        {
+            pos.x = util::right(collRect);
+            pos.x -= horizOffset;
+        }
+        else
+        {
+            pos.x += horizOffset;
+        }
+
+        m_attackAnims.add(t_context, m_type, pos, m_isFacingRight);
+    }
+
 } // namespace bramblefore

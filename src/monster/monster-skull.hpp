@@ -22,6 +22,9 @@ namespace bramblefore
 
         const sf::FloatRect collisionRect() const final;
         const sf::FloatRect attackCollisionRect() const final;
+
+      protected:
+        void startAttackAnimation(const Context & t_context) final;
     };
 
 } // namespace bramblefore

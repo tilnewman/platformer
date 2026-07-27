@@ -58,10 +58,17 @@ namespace bramblefore
         const sf::FloatRect collRect{ collisionRect() };
 
         sf::Vector2f pos{ collRect.position };
+        pos.y -= (collRect.size.y * 0.75f);
 
+        const float horizOffset{ collRect.size.x * 0.35f };
         if (m_isFacingRight)
         {
             pos.x = util::right(collRect);
+            pos.x -= horizOffset;
+        }
+        else
+        {
+            pos.x += horizOffset;
         }
 
         m_attackAnims.add(t_context, m_type, pos, m_isFacingRight);
