@@ -7,6 +7,7 @@
 #include "bramblefore/settings.hpp"
 #include "map/level.hpp"
 #include "monster/monster-manager.hpp"
+#include "monster/mosquito-textures.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/floating-text.hpp"
 #include "subsystem/font.hpp"
@@ -40,44 +41,19 @@ namespace bramblefore
         , m_speedMult{ t_context.random.fromTo(0.8f, 1.2f) }
         , m_isAlive{ true }
         , m_resetDistance{ 0.0f }
-    {}
+    {
+        MosquitoTextureManager::instance().acquire(t_context);
+    }
 
-    Mosquito::~Mosquito() {}
+    Mosquito::~Mosquito() { MosquitoTextureManager::instance().release(); }
 
     void Mosquito::setup(const Context & t_context)
     {
-        // load all textures
-        // exact size to prevent re-allocations
-        m_animTextures.reserve(static_cast<std::size_t>(MosquitoAnim::Count));
-
-        for (std::size_t i{ 0 }; i < static_cast<std::size_t>(MosquitoAnim::Count); ++i)
-        {
-            const MosquitoAnim anim{ static_cast<MosquitoAnim>(i) };
-
-            std::vector<sf::Texture> & textures = m_animTextures.emplace_back();
-
-            const std::filesystem::path imageDirPath{ t_context.settings.media_path / "image" /
-                                                      "monster" / "mosquito" / toString(anim) };
-
-            const std::vector<std::filesystem::path> files{ util::findFilesInDirectory(
-                imageDirPath, ".png") };
-
-            M_CHECK(
-                !files.empty(),
-                "Failed to find any MosquitoAnim::" << toString(anim) << " images!");
-
-            textures.reserve(files.size()); // exact size to prevent re-allocations
-
-            for (const std::filesystem::path & path : files)
-            {
-                sf::Texture & texture{ textures.emplace_back() };
-                util::TextureLoader::load(texture, path, true);
-            }
-        }
-
         // setup the sprite
+        const auto & texturesVec{ MosquitoTextureManager::instance().textures() };
+
         m_sprite.setTexture(
-            m_animTextures.at(static_cast<std::size_t>(MosquitoAnim::Idle)).front(), true);
+            texturesVec.at(static_cast<std::size_t>(MosquitoAnim::Idle)).front(), true);
 
         const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 1.0f) *
                            t_context.settings.monster_scale };
@@ -130,7 +106,8 @@ namespace bramblefore
         {
             m_elapsedAnimTimeSec -= timeBetweenFrames;
 
-            auto & textures{ m_animTextures.at(static_cast<std::size_t>(m_anim)) };
+            const auto & texturesVec{ MosquitoTextureManager::instance().textures() };
+            auto & textures{ texturesVec.at(static_cast<std::size_t>(m_anim)) };
 
             if (++m_frameIndex >= textures.size())
             {
@@ -450,7 +427,8 @@ namespace bramblefore
 
         t_context.player.experienceAdjust(xpBonus);
 
-        auto & textures{ m_animTextures.at(static_cast<std::size_t>(m_anim)) };
+        const auto & texturesVec{ MosquitoTextureManager::instance().textures() };
+        auto & textures{ texturesVec.at(static_cast<std::size_t>(m_anim)) };
         m_sprite.setTexture(textures.at(textures.size() - 1));
     }
 
