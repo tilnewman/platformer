@@ -106,14 +106,16 @@ namespace bramblefore
     struct MonsterAnimation
     {
         MonsterAnimation(
-            const sf::Texture & t_texture,
+            const sf::Texture & t_monsterTexture,
+            const sf::Texture & t_graveTexture,
             const float t_scale,
             const sf::Vector2f & t_position,
             const float t_initialDelaySec,
             const float t_horizStopPos,
             const bool t_didSurvive);
 
-        sf::Sprite sprite;
+        sf::Sprite monster_sprite;
+        sf::Sprite grave_sprite;
         util::SliderRatio<float> slider;
         float elapsed_time_sec;
         float initial_delay_sec;

@@ -218,13 +218,15 @@ namespace bramblefore
     //
 
     MonsterAnimation::MonsterAnimation(
-        const sf::Texture & t_texture,
+        const sf::Texture & t_monsterTexture,
+        const sf::Texture & t_graveTexture,
         const float t_scale,
         const sf::Vector2f & t_position,
         const float t_initialDelaySec,
         const float t_horizStopPos,
         const bool t_didSurvive)
-        : sprite{ t_texture }
+        : monster_sprite{ t_monsterTexture }
+        , grave_sprite{ t_graveTexture }
         , slider{ 0.75f, 0.5f }
         , elapsed_time_sec{ 0.0f }
         , initial_delay_sec{ t_initialDelaySec }
@@ -232,8 +234,22 @@ namespace bramblefore
         , is_moving{ true }
         , did_survive{ t_didSurvive }
     {
-        sprite.setScale({ t_scale, t_scale });
-        sprite.setPosition(t_position);
+        monster_sprite.setScale({ t_scale, t_scale });
+        monster_sprite.setPosition(t_position);
+
+        if (did_survive)
+        {
+            grave_sprite.setPosition({ t_position.y, t_position.y });
+        }
+        else
+        {
+            monster_sprite.setColor(sf::Color(255, 50, 50));
+
+            const float graveScaleRatio{ 0.8f };
+            grave_sprite.setScale({ (t_scale * graveScaleRatio), (t_scale * graveScaleRatio) });
+            util::centerInside(grave_sprite, monster_sprite.getGlobalBounds());
+            grave_sprite.setColor(sf::Color(255, 255, 255, 220));
+        }
     }
 
     //
@@ -331,6 +347,7 @@ namespace bramblefore
         {
             m_anims.emplace_back(
                 m_textures.at(static_cast<std::size_t>(info.type)),
+                m_graveTexture,
                 scale,
                 pos,
                 initialDelaySec,
@@ -357,7 +374,12 @@ namespace bramblefore
                 const float horizPos{ wholeRect.size.x -
                                       util::map(ratio, 0.5f, 1.0f, 0.0f, horizTravelDistance) };
 
-                anim.sprite.setPosition({ horizPos, anim.sprite.getPosition().y });
+                anim.monster_sprite.setPosition({ horizPos, anim.monster_sprite.getPosition().y });
+
+                if (!anim.did_survive)
+                {
+                    util::centerInside(anim.grave_sprite, anim.monster_sprite.getGlobalBounds());
+                }
 
                 if (anim.slider.isMoving())
                 {
@@ -377,7 +399,12 @@ namespace bramblefore
     {
         for (const MonsterAnimation & anim : m_anims)
         {
-            t_target.draw(anim.sprite, t_states);
+            t_target.draw(anim.monster_sprite, t_states);
+
+            if (!anim.did_survive)
+            {
+                t_target.draw(anim.grave_sprite, t_states);
+            }
         }
     }
 
