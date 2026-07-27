@@ -102,7 +102,7 @@ namespace bramblefore
 
         m_coinText.setPosition(
             { ((wholeRect.size.x * 0.5f) - (m_coinText.getGlobalBounds().size.x * 0.5f)),
-              (t_starPosition.y + t_starSize.y + (wholeRect.size.y * 0.05f)) });
+              (t_starPosition.y + t_starSize.y + (wholeRect.size.y * 0.035f)) });
 
         m_coinTextPosition = m_coinText.getPosition();
 
@@ -474,7 +474,7 @@ namespace bramblefore
         const float horizSpacer{ wholeRect.size.x * 0.01f };
         const float starsTotalWidth{ (5.0f * starSize.x) + ((4.0f * horizSpacer)) };
 
-        const float starVertPosition{ util::bottom(m_text) + (wholeRect.size.y * 0.05f) };
+        const float starVertPosition{ util::bottom(m_text) + (wholeRect.size.y * 0.02f) };
         const sf::Vector2f startPos{ (wholeRect.size.x + starSize.x), starVertPosition };
 
         const std::size_t starCount{ static_cast<std::size_t>(t_context.player.mapStarCount()) };
