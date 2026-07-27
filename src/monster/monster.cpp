@@ -7,6 +7,7 @@
 
 #include "avatar/avatar.hpp"
 #include "bramblefore/settings.hpp"
+#include "monster/attack-animations.hpp"
 #include "monster/monster-textures.hpp"
 #include "subsystem/context.hpp"
 #include "subsystem/floating-text.hpp"
@@ -34,31 +35,31 @@ namespace bramblefore
         , m_hasSpottedPlayer{ false }
         , m_health{ startingHealth(t_setupInfo.type) }
         , m_isAlive{ true }
+        , m_attackAnims{}
     {
         MonsterTextureManager::instance().acquire(t_context, m_type);
 
-        // MonsterSpell::Count means this monster does not cast spells
-        // if (MonsterSpell::Count != m_spell)
-        //{
-        //    MonsterSpellTextureManager::instance().acquire(t_context, m_spell);
-        //}
+        if (hasAttackAnimation(m_type))
+        {
+            AttackAnimTextureManager::instance().acquire(t_context, m_type);
+        }
 
         initialSpriteSetup(t_context, t_setupInfo.image_height_ratio, t_setupInfo.image_scale);
     }
 
     Monster::~Monster()
     {
-        // if (MonsterSpell::Count != m_spell)
-        //{
-        //     MonsterSpellTextureManager::instance().release(m_spell);
-        // }
+        if (hasAttackAnimation(m_type))
+        {
+            AttackAnimTextureManager::instance().release(m_type);
+        }
 
         MonsterTextureManager::instance().release(m_type);
     }
 
     void Monster::update(const Context & t_context, const float t_frameTimeSec)
     {
-        // m_animations.update(t_frameTimeSec);
+        m_attackAnims.update(t_context, t_frameTimeSec);
 
         if (!m_isAlive)
         {
@@ -142,7 +143,7 @@ namespace bramblefore
             MonsterAnim::Death,
             (manager.frameCount(m_type, MonsterAnim::Death) - 1));
 
-        // m_animations.clear();
+        m_attackAnims.clear();
     }
 
     void Monster::draw(
@@ -151,7 +152,7 @@ namespace bramblefore
         if (t_context.layout.wholeRect().findIntersection(m_sprite.getGlobalBounds()))
         {
             t_target.draw(m_sprite, t_states);
-            // m_animations.draw(t_target, t_states);
+            m_attackAnims.draw(t_target, t_states);
 
             //  util::drawRectangleShape(t_target, collisionRect(), false, sf::Color::Red);
             //  util::drawRectangleShape(t_target, collisionRect(), false, sf::Color::Yellow);
@@ -162,7 +163,7 @@ namespace bramblefore
     {
         m_sprite.move(t_move);
         m_region.position += t_move;
-        // m_animations.move(t_move);
+        m_attackAnims.move(t_move);
     }
 
     bool Monster::avatarAttack(const Context & t_context, const AttackInfo & t_attackInfo)
@@ -326,10 +327,10 @@ namespace bramblefore
                 t_context.sfx.play(attackSfxName);
             }
 
-            // if (MonsterSpell::Count != m_spell)
-            // {
-            //     startAttackAnimation(t_context);
-            // }
+            if (hasAttackAnimation(m_type))
+            {
+                startAttackAnimation(t_context);
+            }
         }
     }
 

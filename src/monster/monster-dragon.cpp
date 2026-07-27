@@ -53,23 +53,18 @@ namespace bramblefore
         return rect;
     }
 
-    // void Dragon::startAttackAnimation(const Context &)
-    //{
-    //     const sf::FloatRect collRect{ collisionRect() };
-    //
-    //     sf::Vector2f pos;
-    //     pos.y = collRect.position.y;
-    //
-    //     if (m_isFacingRight)
-    //     {
-    //         pos.x = util::right(collRect);
-    //     }
-    //     else
-    //     {
-    //         pos.x = collRect.position.x;
-    //     }
-    //
-    //     m_animations.add(pos, m_spell, m_isFacingRight);
-    // }
+    void Dragon::startAttackAnimation(const Context & t_context)
+    {
+        const sf::FloatRect collRect{ collisionRect() };
+
+        sf::Vector2f pos{ collRect.position };
+
+        if (m_isFacingRight)
+        {
+            pos.x = util::right(collRect);
+        }
+
+        m_attackAnims.add(t_context, m_type, pos, m_isFacingRight);
+    }
 
 } // namespace bramblefore

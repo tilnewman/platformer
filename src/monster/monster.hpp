@@ -3,6 +3,7 @@
 //
 // monster.hpp
 //
+#include "monster/attack-animations.hpp"
 #include "monster/imonster.hpp"
 #include "player/custom-types.hpp"
 #include "subsystem/harm.hpp"
@@ -29,7 +30,7 @@ namespace bramblefore
             const MonsterType t_monsterType,
             const sf::FloatRect & t_roamRegion,
             const float t_imageHeightRatio,
-            const float t_imageScale   = 1.0f)
+            const float t_imageScale = 1.0f)
             : type(t_monsterType)
             , region(t_roamRegion)
             , image_height_ratio(t_imageHeightRatio)
@@ -73,7 +74,7 @@ namespace bramblefore
         virtual void changeStateBeforeSeeingPlayer(const Context & t_context);
         virtual void changeStateAfterSeeingPlayer(const Context & t_context);
         virtual void turnAround();
-        //virtual void startAttackAnimation(const Context &) {}
+        virtual void startAttackAnimation(const Context &) {}
 
         void resetAnimation();
 
@@ -97,6 +98,7 @@ namespace bramblefore
         bool m_hasSpottedPlayer;
         Health_t m_health;
         bool m_isAlive;
+        AttackAnimManager m_attackAnims;
     };
 
 } // namespace bramblefore

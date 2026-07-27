@@ -7,6 +7,7 @@
 
 #include "avatar/avatar-textures.hpp"
 #include "map/map-textures.hpp"
+#include "monster/attack-animations.hpp"
 #include "monster/monster-textures.hpp"
 #include "ui/gui-window.hpp"
 #include "util/sfml-defaults.hpp"
@@ -112,6 +113,7 @@ namespace bramblefore
         AvatarTextureManager::instance().setup(m_setting);
         MonsterTextureManager::instance().setup(m_setting);
         MapTextureManager::instance().setup();
+        AttackAnimTextureManager::instance().setup();
 
         m_layoutUPtr->setup(m_windowUPtr->getSize());
         m_fontUPtr->setup(m_setting);
@@ -152,6 +154,7 @@ namespace bramblefore
         MapTextureManager::instance().teardown();
         AvatarTextureManager::instance().teardown();
         MonsterTextureManager::instance().teardown();
+        AttackAnimTextureManager::instance().teardown();
 
         util::SfmlDefaults::instance().teardown();
 

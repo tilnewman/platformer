@@ -103,6 +103,14 @@ namespace bramblefore
         // clang-format on
     }
 
+    constexpr bool hasAttackAnimation(const MonsterType t_type) noexcept
+    {
+        return (
+            (MonsterType::Beholder == t_type) || (MonsterType::Dragon == t_type) ||
+            (MonsterType::Djinn == t_type) || (MonsterType::Skull == t_type) ||
+            (MonsterType::Vampire == t_type));
+    }
+
     constexpr Health_t startingHealth(const MonsterType t_type) noexcept
     {
         // clang-format off
