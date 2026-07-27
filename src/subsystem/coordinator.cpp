@@ -7,7 +7,6 @@
 
 #include "avatar/avatar-textures.hpp"
 #include "map/map-textures.hpp"
-#include "monster/monster-spell-anim.hpp"
 #include "monster/monster-textures.hpp"
 #include "ui/gui-window.hpp"
 #include "util/sfml-defaults.hpp"
@@ -113,7 +112,6 @@ namespace bramblefore
         AvatarTextureManager::instance().setup(m_setting);
         MonsterTextureManager::instance().setup(m_setting);
         MapTextureManager::instance().setup();
-        MonsterSpellTextureManager::instance().setup(m_setting);
 
         m_layoutUPtr->setup(m_windowUPtr->getSize());
         m_fontUPtr->setup(m_setting);
@@ -151,7 +149,6 @@ namespace bramblefore
 
         m_randomUPtr.reset();
 
-        MonsterSpellTextureManager::instance().teardown();
         MapTextureManager::instance().teardown();
         AvatarTextureManager::instance().teardown();
         MonsterTextureManager::instance().teardown();
