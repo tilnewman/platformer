@@ -225,7 +225,7 @@ namespace bramblefore
         const float t_horizStopPos,
         const bool t_didSurvive)
         : sprite{ t_texture }
-        , slider{ 5.0f, 0.5f }
+        , slider{ 0.75f, 0.5f }
         , elapsed_time_sec{ 0.0f }
         , initial_delay_sec{ t_initialDelaySec }
         , horiz_stop_pos{ t_horizStopPos }
@@ -233,12 +233,7 @@ namespace bramblefore
         , did_survive{ t_didSurvive }
     {
         sprite.setScale({ t_scale, t_scale });
-        sprite.setPosition({ t_horizStopPos, t_position.y });
-
-        if (!did_survive)
-        {
-            sprite.setColor(sf::Color::Red);
-        }
+        sprite.setPosition(t_position);
     }
 
     //
@@ -330,7 +325,7 @@ namespace bramblefore
 
         // add all the animations
         sf::Vector2f pos{ util::right(wholeRect), (wholeRect.size.y * 0.75f) };
-        float initialDelaySec{ 1.0f };
+        float initialDelaySec{ 0.25f };
         float horizStopPos{ firstImageHorizPos };
         for (const MonsterInfo & info : monsters)
         {
@@ -347,7 +342,36 @@ namespace bramblefore
         }
     }
 
-    void MonsterAnimationManager::update(const Context &, const float) {}
+    bool MonsterAnimationManager::update(const Context & t_context, const float t_elapsedTimeSec)
+    {
+        bool areAllFinished{ true };
+        for (MonsterAnimation & anim : m_anims)
+        {
+            anim.elapsed_time_sec += t_elapsedTimeSec;
+            if (anim.elapsed_time_sec > anim.initial_delay_sec)
+            {
+                const float ratio{ anim.slider.update(t_elapsedTimeSec) };
+                const sf::FloatRect wholeRect{ t_context.layout.wholeRect() };
+                const float horizTravelDistance{ wholeRect.size.x - anim.horiz_stop_pos };
+
+                const float horizPos{ wholeRect.size.x -
+                                      util::map(ratio, 0.5f, 1.0f, 0.0f, horizTravelDistance) };
+
+                anim.sprite.setPosition({ horizPos, anim.sprite.getPosition().y });
+
+                if (anim.slider.isMoving())
+                {
+                    areAllFinished = false;
+                }
+            }
+            else
+            {
+                areAllFinished = false;
+            }
+        }
+
+        return areAllFinished;
+    }
 
     void MonsterAnimationManager::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
@@ -356,8 +380,6 @@ namespace bramblefore
             t_target.draw(anim.sprite, t_states);
         }
     }
-
-    bool MonsterAnimationManager::areAllFinished() const { return true; }
 
     //
 
@@ -524,14 +546,11 @@ namespace bramblefore
     void LevelCompleteState::updateMonsterAnimation(
         const Context & t_context, const float t_elapsedTimeSec)
     {
-        if (m_monsterAnimations.areAllFinished())
+        if (m_monsterAnimations.update(t_context, t_elapsedTimeSec))
         {
             m_elapsedPhaseTimeSec = 0.0f;
             m_phase               = LevelCompletePhase::PostDelay;
-            return;
         }
-
-        m_monsterAnimations.update(t_context, t_elapsedTimeSec);
     }
 
     void

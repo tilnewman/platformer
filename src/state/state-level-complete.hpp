@@ -130,9 +130,8 @@ namespace bramblefore
         MonsterAnimationManager();
 
         void setup(const Context & t_context);
-        void update(const Context & t_context, const float t_elapsedTimeSec);
+        bool update(const Context & t_context, const float t_elapsedTimeSec);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
-        [[nodiscard]] bool areAllFinished() const;
 
       private:
         std::vector<MonsterAnimation> m_anims;
