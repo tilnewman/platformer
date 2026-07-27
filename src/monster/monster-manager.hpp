@@ -6,9 +6,10 @@
 #include "monster/imonster.hpp"
 #include "subsystem/harm.hpp"
 
+#include <map>
 #include <memory>
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -22,6 +23,10 @@ namespace bramblefore
 {
 
     struct Context;
+
+    //
+    
+    using MonsterTypeCountMap_t = std::map<MonsterType, std::size_t>;
 
     //
 
@@ -47,6 +52,7 @@ namespace bramblefore
         void appendCollisionRects(std::vector<sf::FloatRect> & t_rects) const;
         bool avatarAttack(const Context & t_context, const AttackInfo & t_attackInfo);
         void setup(const Context & t_context);
+        const MonsterTypeCountMap_t makeTypeCountMap() const;
 
       private:
         std::vector<std::unique_ptr<IMonster>> m_monsters;

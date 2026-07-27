@@ -3,6 +3,7 @@
 //
 // state-level-complete.hpp
 //
+#include "monster/imonster.hpp"
 #include "state/states.hpp"
 #include "ui/tile-background.hpp"
 #include "util/sliders.hpp"
@@ -26,6 +27,7 @@ namespace bramblefore
         PreDelay,
         StarAnimation,
         CoinAnimation,
+        MonsterAnimation,
         PostDelay
     };
 
@@ -101,6 +103,45 @@ namespace bramblefore
 
     //
 
+    struct MonsterAnimation
+    {
+        MonsterAnimation(
+            const sf::Texture & t_texture,
+            const float t_scale,
+            const sf::Vector2f & t_position,
+            const float t_initialDelaySec,
+            const float t_horizStopPos,
+            const bool t_didSurvive);
+
+        sf::Sprite sprite;
+        util::SliderRatio<float> slider;
+        float elapsed_time_sec;
+        float initial_delay_sec;
+        float horiz_stop_pos;
+        bool is_moving;
+        bool did_survive;
+    };
+
+    //
+
+    class MonsterAnimationManager
+    {
+      public:
+        MonsterAnimationManager();
+
+        void setup(const Context & t_context);
+        void update(const Context & t_context, const float t_elapsedTimeSec);
+        void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
+        [[nodiscard]] bool areAllFinished() const;
+
+      private:
+        std::vector<MonsterAnimation> m_anims;
+        std::vector<sf::Texture> m_textures;
+        sf::Texture m_graveTexture;
+    };
+
+    //
+
     class LevelCompleteState : public IState
     {
       public:
@@ -121,6 +162,7 @@ namespace bramblefore
         void updatePreDelay(const Context & t_context, const float t_elapsedTimeSec);
         void updateStarAnimation(const Context & t_context, const float t_elapsedTimeSec);
         void updateCoinAnimation(const Context & t_context, const float t_elapsedTimeSec);
+        void updateMonsterAnimation(const Context & t_context, const float t_elapsedTimeSec);
         void updatePostDelay(const Context & t_context, const float t_elapsedTimeSec);
 
       private:
@@ -138,7 +180,8 @@ namespace bramblefore
         sf::Texture m_starBrightTexture;
         std::vector<StarAnim> m_starAnims;
 
-        CoinAnimationManager m_coinAnimation;
+        CoinAnimationManager m_coinAnimations;
+        MonsterAnimationManager m_monsterAnimations;
     };
 
 } // namespace bramblefore

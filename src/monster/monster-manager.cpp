@@ -90,4 +90,16 @@ namespace bramblefore
         }
     }
 
+    const MonsterTypeCountMap_t MonsterManager::makeTypeCountMap() const
+    {
+        MonsterTypeCountMap_t map;
+        
+        for (const auto & monsterUPtr : m_monsters)
+        {
+            ++map[monsterUPtr->type()];
+        }
+
+        return map;
+    }
+
 } // namespace bramblefore

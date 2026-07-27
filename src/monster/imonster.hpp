@@ -65,40 +65,40 @@ namespace bramblefore
         // clang-format off
         switch (t_type)
         {
-            case MonsterType::BabyDragon:    { return "baby-dragon";    }
-            case MonsterType::Bear:          { return "bear";           }
-            case MonsterType::BigKnight:     { return "big-knight";     }
-            case MonsterType::BoneDragon:    { return "bone-dragon";    }
-            case MonsterType::Demon:         { return "demon";          }
-            case MonsterType::Dino:          { return "dino";           }
-            case MonsterType::Djinn:         { return "djinn";          }
-            case MonsterType::Dragon:        { return "dragon";         }
-            case MonsterType::Dwarf:         { return "dwarf";          }
-            case MonsterType::Ent:           { return "ent";            }
-            case MonsterType::FireImp:       { return "fire-imp";       }
-            case MonsterType::FireKnight:    { return "fire-knight";    }
-            case MonsterType::Ghost:         { return "ghost";          }
-            case MonsterType::Goblin:        { return "goblin";         }
-            case MonsterType::Hound:         { return "hound";          }
-            case MonsterType::Imp:           { return "imp";            }
-            case MonsterType::LittleKnight:  { return "little-knight";  }
-            case MonsterType::Lizard:        { return "lizard";         }
-            case MonsterType::Medusa:        { return "medusa";         }
-            case MonsterType::Orc:           { return "orc";            }
-            case MonsterType::Salamander:    { return "salamander";     }
-            case MonsterType::Skeleton:      { return "skeleton";       }
-            case MonsterType::Skull:         { return "skull";          }
-            case MonsterType::Snake:         { return "snake";          }
-            case MonsterType::Spider:        { return "spider";         }
-            case MonsterType::Vampire:       { return "vampire";        }
-            case MonsterType::Yeti:          { return "yeti";           }
-            case MonsterType::BossTribal:    { return "boss-tribal";    }
-            case MonsterType::BossKnight:    { return "boss-knight";    }
-            case MonsterType::BossWizard:    { return "boss-wizard";    }
-            case MonsterType::Mosquito:      { return "mosquito";       }
-            case MonsterType::Beholder:      { return "beholder";       }
+            case MonsterType::BabyDragon:    { return "baby-dragon";   }
+            case MonsterType::Bear:          { return "bear";          }
+            case MonsterType::BigKnight:     { return "big-knight";    }
+            case MonsterType::BoneDragon:    { return "bone-dragon";   }
+            case MonsterType::Demon:         { return "demon";         }
+            case MonsterType::Dino:          { return "dino";          }
+            case MonsterType::Djinn:         { return "djinn";         }
+            case MonsterType::Dragon:        { return "dragon";        }
+            case MonsterType::Dwarf:         { return "dwarf";         }
+            case MonsterType::Ent:           { return "ent";           }
+            case MonsterType::FireImp:       { return "fire-imp";      }
+            case MonsterType::FireKnight:    { return "fire-knight";   }
+            case MonsterType::Ghost:         { return "ghost";         }
+            case MonsterType::Goblin:        { return "goblin";        }
+            case MonsterType::Hound:         { return "hound";         }
+            case MonsterType::Imp:           { return "imp";           }
+            case MonsterType::LittleKnight:  { return "little-knight"; }
+            case MonsterType::Lizard:        { return "lizard";        }
+            case MonsterType::Medusa:        { return "medusa";        }
+            case MonsterType::Orc:           { return "orc";           }
+            case MonsterType::Salamander:    { return "salamander";    }
+            case MonsterType::Skeleton:      { return "skeleton";      }
+            case MonsterType::Skull:         { return "skull";         }
+            case MonsterType::Snake:         { return "snake";         }
+            case MonsterType::Spider:        { return "spider";        }
+            case MonsterType::Vampire:       { return "vampire";       }
+            case MonsterType::Yeti:          { return "yeti";          }
+            case MonsterType::BossTribal:    { return "boss-tribal";   }
+            case MonsterType::BossKnight:    { return "boss-knight";   }
+            case MonsterType::BossWizard:    { return "boss-wizard";   }
+            case MonsterType::Mosquito:      { return "mosquito";      }
+            case MonsterType::Beholder:      { return "beholder";      }
             case MonsterType::Count:         [[fallthrough]];     
-            default:              { return "Error_unknown_MonsterType"; }
+            default:             { return "Error_unknown_MonsterType"; }
         }
         // clang-format on
     }

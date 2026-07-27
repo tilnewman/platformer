@@ -7,6 +7,8 @@
 
 #include "bramblefore/settings.hpp"
 #include "map/level-info.hpp"
+#include "map/level.hpp"
+#include "monster/monster-manager.hpp"
 #include "player/player-info.hpp"
 #include "state/state-manager.hpp"
 #include "subsystem/context.hpp"
@@ -77,6 +79,7 @@ namespace bramblefore
     }
 
     //
+
     CoinAnimationManager::CoinAnimationManager()
         : m_coinText{ util::SfmlDefaults::instance().font() }
         , m_coinTexture{}
@@ -214,6 +217,150 @@ namespace bramblefore
 
     //
 
+    MonsterAnimation::MonsterAnimation(
+        const sf::Texture & t_texture,
+        const float t_scale,
+        const sf::Vector2f & t_position,
+        const float t_initialDelaySec,
+        const float t_horizStopPos,
+        const bool t_didSurvive)
+        : sprite{ t_texture }
+        , slider{ 5.0f, 0.5f }
+        , elapsed_time_sec{ 0.0f }
+        , initial_delay_sec{ t_initialDelaySec }
+        , horiz_stop_pos{ t_horizStopPos }
+        , is_moving{ true }
+        , did_survive{ t_didSurvive }
+    {
+        sprite.setScale({ t_scale, t_scale });
+        sprite.setPosition({ t_horizStopPos, t_position.y });
+
+        if (!did_survive)
+        {
+            sprite.setColor(sf::Color::Red);
+        }
+    }
+
+    //
+
+    MonsterAnimationManager::MonsterAnimationManager()
+        : m_anims{}
+        , m_textures{}
+        , m_graveTexture{}
+    {
+        // the one and only size to prevent reallocations
+        m_textures.resize(static_cast<std::size_t>(MonsterType::Count));
+    }
+
+    void MonsterAnimationManager::setup(const Context & t_context)
+    {
+        //
+        const std::filesystem::path graveImagePath{ t_context.settings.media_path / "image" /
+                                                    "gravestone.png" };
+
+        util::TextureLoader::load(m_graveTexture, graveImagePath);
+
+        //
+        for (std::size_t index{ 0 }; index < static_cast<std::size_t>(MonsterType::Count); ++index)
+        {
+            const MonsterType type{ static_cast<MonsterType>(index) };
+
+            const std::filesystem::path path{ t_context.settings.media_path / "image" / "monster" /
+                                              toString(type) / "icon.png" };
+
+            util::TextureLoader::load(m_textures.at(index), path);
+        }
+
+        //
+        const MonsterTypeCountMap_t mapBefore{ t_context.level.monsterTypeCountMap() };
+        const MonsterTypeCountMap_t mapAfter{ t_context.level.monsters().makeTypeCountMap() };
+
+        struct MonsterInfo
+        {
+            MonsterType type{ MonsterType::Count };
+            bool did_survive{ false };
+        };
+
+        std::vector<MonsterInfo> monsters;
+        monsters.reserve(64);
+        for (const auto & beforePair : mapBefore)
+        {
+            const MonsterType type{ beforePair.first };
+            const std::size_t originalCount{ beforePair.second };
+
+            std::size_t survivedCount{ 0 };
+            if (const auto foundIter{ mapAfter.find(type) }; foundIter != std::end(mapAfter))
+            {
+                survivedCount = foundIter->second;
+            }
+
+            const std::size_t diedCount{ originalCount - survivedCount };
+
+            for (std::size_t i{ 0 }; i < diedCount; ++i)
+            {
+                monsters.emplace_back(type, false);
+            }
+
+            for (std::size_t i{ 0 }; i < survivedCount; ++i)
+            {
+                monsters.emplace_back(type, true);
+            }
+        }
+
+        if (monsters.empty())
+        {
+            return;
+        }
+
+        // calculate the image size and horizontal positions
+        const sf::FloatRect wholeRect{ t_context.layout.wholeRect() };
+
+        const float scale{ t_context.layout.calScaleBasedOnResolution(t_context, 2.0f) };
+
+        sf::Sprite tempSprite(m_textures.at(0));
+        tempSprite.setScale({ scale, scale });
+        const sf::Vector2f imageSize{ tempSprite.getGlobalBounds().size };
+
+        const float horizSpacer{ wholeRect.size.x * 0.01f };
+
+        const float allImagesWidth{ (static_cast<float>(monsters.size()) * imageSize.x) +
+                                    (horizSpacer * static_cast<float>(monsters.size() - 1)) };
+
+        const float firstImageHorizPos{ util::center(wholeRect).x - (allImagesWidth * 0.5f) };
+
+        // add all the animations
+        sf::Vector2f pos{ util::right(wholeRect), (wholeRect.size.y * 0.75f) };
+        float initialDelaySec{ 1.0f };
+        float horizStopPos{ firstImageHorizPos };
+        for (const MonsterInfo & info : monsters)
+        {
+            m_anims.emplace_back(
+                m_textures.at(static_cast<std::size_t>(info.type)),
+                scale,
+                pos,
+                initialDelaySec,
+                horizStopPos,
+                info.did_survive);
+
+            initialDelaySec += 0.25f;
+            horizStopPos += (imageSize.x + horizSpacer);
+        }
+    }
+
+    void MonsterAnimationManager::update(const Context &, const float) {}
+
+    void MonsterAnimationManager::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
+    {
+        for (const MonsterAnimation & anim : m_anims)
+        {
+            t_target.draw(anim.sprite, t_states);
+        }
+    }
+
+    bool MonsterAnimationManager::areAllFinished() const { return true; }
+
+    //
+
     LevelCompleteState::LevelCompleteState()
         : m_tileBackground{}
         , m_phase{ LevelCompletePhase::PreDelay }
@@ -224,7 +371,7 @@ namespace bramblefore
         , m_starDimTexture{}
         , m_starBrightTexture{}
         , m_starAnims{}
-        , m_coinAnimation{}
+        , m_coinAnimations{}
     {
         m_starAnims.reserve(5);
     }
@@ -298,8 +445,10 @@ namespace bramblefore
         }
 
         //
-        m_coinAnimation.setup(
+        m_coinAnimations.setup(
             t_context, sf::Vector2f(starHorizStopPos, starVertPosition), starSize);
+
+        m_monsterAnimations.setup(t_context);
     }
 
     void LevelCompleteState::update(const Context & t_context, const float t_elapsedTimeSec)
@@ -317,6 +466,10 @@ namespace bramblefore
         else if (LevelCompletePhase::CoinAnimation == m_phase)
         {
             updateCoinAnimation(t_context, t_elapsedTimeSec);
+        }
+        else if (LevelCompletePhase::MonsterAnimation == m_phase)
+        {
+            updateMonsterAnimation(t_context, t_elapsedTimeSec);
         }
         else
         {
@@ -358,21 +511,34 @@ namespace bramblefore
         const Context & t_context, const float t_elapsedTimeSec)
     {
         m_elapsedPhaseTimeSec += t_elapsedTimeSec;
-        if ((m_elapsedPhaseTimeSec > 3.0f) && m_coinAnimation.areAllFinished())
+        if ((m_elapsedPhaseTimeSec > 3.0f) && m_coinAnimations.areAllFinished())
+        {
+            m_elapsedPhaseTimeSec = 0.0f;
+            m_phase               = LevelCompletePhase::MonsterAnimation;
+            return;
+        }
+
+        m_coinAnimations.update(t_context, t_elapsedTimeSec);
+    }
+
+    void LevelCompleteState::updateMonsterAnimation(
+        const Context & t_context, const float t_elapsedTimeSec)
+    {
+        if (m_monsterAnimations.areAllFinished())
         {
             m_elapsedPhaseTimeSec = 0.0f;
             m_phase               = LevelCompletePhase::PostDelay;
             return;
         }
 
-        m_coinAnimation.update(t_context, t_elapsedTimeSec);
+        m_monsterAnimations.update(t_context, t_elapsedTimeSec);
     }
 
     void
         LevelCompleteState::updatePostDelay(const Context & t_context, const float t_elapsedTimeSec)
     {
         m_elapsedPhaseTimeSec += t_elapsedTimeSec;
-        if (m_elapsedPhaseTimeSec > 6.0f)
+        if (m_elapsedPhaseTimeSec > 5.0f)
         {
             t_context.map_coord.advance();
             t_context.level_info.resetForNewLevel(t_context);
@@ -403,8 +569,10 @@ namespace bramblefore
         if ((LevelCompletePhase::CoinAnimation == m_phase) ||
             (LevelCompletePhase::PostDelay == m_phase))
         {
-            m_coinAnimation.draw(t_target, t_states);
+            m_coinAnimations.draw(t_target, t_states);
         }
+
+        m_monsterAnimations.draw(t_target, t_states);
     }
 
 } // namespace bramblefore

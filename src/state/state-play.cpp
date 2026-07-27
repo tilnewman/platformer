@@ -218,6 +218,6 @@ namespace bramblefore
         m_quitWindow.arrange(t_context, quitWindowInfo);
     }
 
-    void PlayState::onExit(const Context & t_context) { t_context.level.reset(); }
+    void PlayState::onExit(const Context &) {}
 
 } // namespace bramblefore

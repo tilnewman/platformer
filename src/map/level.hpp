@@ -117,6 +117,8 @@ namespace bramblefore
         const std::optional<sf::FloatRect>
             ladderCollisionRect(const sf::FloatRect & avatarRect) const;
 
+        inline const MonsterTypeCountMap_t monsterTypeCountMap() const { return m_monsterMap; }
+
       private:
         void appendVertLayers(const Context & t_context);
         void dumpInfo(const std::string & t_filename) const;
@@ -142,6 +144,7 @@ namespace bramblefore
         std::vector<std::unique_ptr<ITileLayer>> m_tileLayers;
 
         MonsterManager m_monsters;
+        MonsterTypeCountMap_t m_monsterMap;
 
         float m_farthestHorizTraveled;
         float m_farthestHorizMapPixel;

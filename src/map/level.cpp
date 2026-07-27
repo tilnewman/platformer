@@ -37,6 +37,7 @@ namespace bramblefore
         , m_tileSize{}
         , m_tileLayers{}
         , m_monsters{}
+        , m_monsterMap{}
         , m_farthestHorizTraveled{ 0.0f }
         , m_farthestHorizMapPixel{ 0.0f }
         , m_traveledVert{ 0.0f }
@@ -57,6 +58,7 @@ namespace bramblefore
         m_layerCollisions.clear();
         m_ladders.clear();
         m_monsters.clear();
+        m_monsterMap.clear();
         m_farthestHorizTraveled = 0.0f;
         m_farthestHorizMapPixel = 0.0f;
         m_traveledVert          = 0.0f;
@@ -74,6 +76,7 @@ namespace bramblefore
         t_context.avatar.setToSpawnPosition(m_enterRect);
 
         m_monsters.setup(t_context);
+        m_monsterMap = m_monsters.makeTypeCountMap();
     }
 
     void Level::setupDetails(
