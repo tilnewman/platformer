@@ -97,20 +97,19 @@ namespace bramblefore
         //
 
         util::TextureLoader::load(
-            m_emitterUpTexture,
-            (t_context.settings.media_path / "image" / "anim" / "flame-trap-up.png"));
+            m_emitterUpTexture, (t_context.settings.media_path / "image" / "flame-trap-up.png"));
 
         util::TextureLoader::load(
             m_emitterDownTexture,
-            (t_context.settings.media_path / "image" / "anim" / "flame-trap-down.png"));
+            (t_context.settings.media_path / "image" / "flame-trap-down.png"));
 
         util::TextureLoader::load(
             m_emitterLeftTexture,
-            (t_context.settings.media_path / "image" / "anim" / "flame-trap-left.png"));
+            (t_context.settings.media_path / "image" / "flame-trap-left.png"));
 
         util::TextureLoader::load(
             m_emitterRightTexture,
-            (t_context.settings.media_path / "image" / "anim" / "flame-trap-right.png"));
+            (t_context.settings.media_path / "image" / "flame-trap-right.png"));
 
         //
 
@@ -338,7 +337,8 @@ namespace bramblefore
         return rect;
     }
 
-    const Harm FlameTrapAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
+    const Harm
+        FlameTrapAnimationLayer::avatarCollide(const Context &, const sf::FloatRect & t_avatarRect)
     {
         Harm harm;
 

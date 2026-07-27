@@ -129,8 +129,7 @@ namespace bramblefore
         {
             ChestTextures & textures{ m_textureSets.emplace_back() };
 
-            const std::filesystem::path path{ t_context.settings.media_path / "image" / "anim" /
-                                              "chest" };
+            const std::filesystem::path path{ t_context.settings.media_path / "image" / "chest" };
 
             util::TextureLoader::load(
                 textures.open,

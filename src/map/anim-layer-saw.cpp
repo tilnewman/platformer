@@ -25,7 +25,7 @@ namespace bramblefore
 
         //
         util::TextureLoader::load(
-            m_texture, (t_context.settings.media_path / "image" / "anim" / "saw.png"));
+            m_texture, (t_context.settings.media_path / "image" / "saw.png"));
 
         //
         m_anims.reserve(t_rects.size());

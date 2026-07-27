@@ -142,13 +142,13 @@ namespace bramblefore
         //
 
         util::TextureLoader::load(
-            m_dripTexture1, (t_context.settings.media_path / "image" / "anim" / "lava-drop1.png"));
+            m_dripTexture1, (t_context.settings.media_path / "image" / "lava-drop1.png"));
 
         util::TextureLoader::load(
-            m_dripTexture2, (t_context.settings.media_path / "image" / "anim" / "lava-drop2.png"));
+            m_dripTexture2, (t_context.settings.media_path / "image" / "lava-drop2.png"));
 
         util::TextureLoader::load(
-            m_dripTexture3, (t_context.settings.media_path / "image" / "anim" / "lava-drop3.png"));
+            m_dripTexture3, (t_context.settings.media_path / "image" / "lava-drop3.png"));
 
         //
 

@@ -94,7 +94,7 @@ namespace bramblefore
 
         util::TextureLoader::load(
             m_skullBlockTexture,
-            (t_context.settings.media_path / "image" / "anim" / "skull-flames-block.png"));
+            (t_context.settings.media_path / "image" / "skull-flames-block.png"));
 
         util::TextureLoader::load(
             m_flamesUpTexture,

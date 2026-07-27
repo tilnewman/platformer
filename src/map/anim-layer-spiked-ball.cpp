@@ -62,7 +62,7 @@ namespace bramblefore
         HarmCollisionManager::instance().addOwner(*this);
 
         util::TextureLoader::load(
-            m_texture, (t_context.settings.media_path / "image" / "anim" / "spiked-ball.png"));
+            m_texture, (t_context.settings.media_path / "image" / "spiked-ball.png"));
 
         m_anims.reserve(t_rects.size());
         for (const sf::FloatRect & rect : t_rects)

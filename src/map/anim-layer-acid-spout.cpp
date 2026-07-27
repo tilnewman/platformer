@@ -100,8 +100,7 @@ namespace bramblefore
             m_spoutTexture, (t_context.settings.media_path / "image" / "anim" / "acid-spout.png"));
 
         util::TextureLoader::load(
-            m_dropTexture,
-            (t_context.settings.media_path / "image" / "anim" / "acid-spout-drop.png"));
+            m_dropTexture, (t_context.settings.media_path / "image" / "acid-spout-drop.png"));
 
         util::TextureLoader::load(
             m_splashTexture,
