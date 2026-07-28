@@ -68,7 +68,7 @@ namespace bramblefore
         , elapsed_scale_time_sec{ 0.0f }
         , elapsed_frame_time_sec{ 0.0f }
         , frame_index{ 0 }
-        , velocity{ t_context.random.fromTo(-2.0f, 2.0f), -10.0f }
+        , velocity{ t_context.random.fromTo(-2.0f, 2.0f), -11.0f }
         , is_finished{ false }
     {
         util::setOriginToCenter(sprite);
@@ -110,7 +110,7 @@ namespace bramblefore
             m_coinTexture, (t_context.settings.media_path / "image" / "anim" / "coin1.png"), true);
 
         m_coinEmitPosition.x = (wholeRect.size.x * 0.5f);
-        m_coinEmitPosition.y = wholeRect.size.y - 50.0f;
+        m_coinEmitPosition.y = wholeRect.size.y;
     }
 
     void CoinAnimationManager::update(const Context & t_context, const float t_elapsedTimeSec)
@@ -239,7 +239,7 @@ namespace bramblefore
         monster_sprite.setPosition(t_position);
 
         border_rectangle.setFillColor(sf::Color::Transparent);
-        border_rectangle.setOutlineColor(sf::Color(255, 255, 255, 92));
+        border_rectangle.setOutlineColor(sf::Color(255, 255, 255, 64));
         border_rectangle.setOutlineThickness(1.0f);
 
         border_rectangle.setPosition(
@@ -650,6 +650,7 @@ namespace bramblefore
         }
 
         if ((LevelCompletePhase::CoinAnimation == m_phase) ||
+            (LevelCompletePhase::MonsterAnimation == m_phase) ||
             (LevelCompletePhase::PostDelay == m_phase))
         {
             m_coinAnimations.draw(t_target, t_states);
