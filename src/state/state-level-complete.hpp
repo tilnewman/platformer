@@ -10,6 +10,7 @@
 
 #include <vector>
 
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -122,6 +123,7 @@ namespace bramblefore
         float horiz_stop_pos;
         bool is_moving;
         bool did_survive;
+        sf::RectangleShape border_rectangle;
     };
 
     //

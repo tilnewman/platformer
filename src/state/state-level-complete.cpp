@@ -233,9 +233,19 @@ namespace bramblefore
         , horiz_stop_pos{ t_horizStopPos }
         , is_moving{ true }
         , did_survive{ t_didSurvive }
+        , border_rectangle{}
     {
         monster_sprite.setScale({ t_scale, t_scale });
         monster_sprite.setPosition(t_position);
+
+        border_rectangle.setFillColor(sf::Color::Transparent);
+        border_rectangle.setOutlineColor(sf::Color(255, 255, 255, 92));
+        border_rectangle.setOutlineThickness(1.0f);
+
+        border_rectangle.setPosition(
+            monster_sprite.getGlobalBounds().position - sf::Vector2f(1.0f, 1.0f));
+
+        border_rectangle.setSize(monster_sprite.getGlobalBounds().size + sf::Vector2f(2.0f, 2.0f));
 
         if (did_survive)
         {
@@ -343,7 +353,7 @@ namespace bramblefore
         const float firstImageHorizPos{ util::center(wholeRect).x - (allImagesWidth * 0.5f) };
 
         // add all the animations
-        sf::Vector2f pos{ util::right(wholeRect), (wholeRect.size.y * 0.75f) };
+        sf::Vector2f pos{ (util::right(wholeRect) + horizSpacer), (wholeRect.size.y * 0.75f) };
         float initialDelaySec{ 0.25f };
         float horizStopPos{ firstImageHorizPos };
         for (const MonsterInfo & info : monsters)
@@ -398,6 +408,9 @@ namespace bramblefore
                     util::centerInside(anim.grave_sprite, anim.monster_sprite.getGlobalBounds());
                 }
 
+                anim.border_rectangle.setPosition(
+                    anim.monster_sprite.getPosition() - sf::Vector2f(1.0f, 1.0f));
+
                 if (anim.slider.isMoving())
                 {
                     areAllFinished = false;
@@ -416,6 +429,7 @@ namespace bramblefore
     {
         for (const MonsterAnimation & anim : m_anims)
         {
+            t_target.draw(anim.border_rectangle, t_states);
             t_target.draw(anim.monster_sprite, t_states);
 
             if (!anim.did_survive)
