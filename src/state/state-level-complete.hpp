@@ -54,9 +54,9 @@ namespace bramblefore
 
     //
 
-    struct CoinBounceAnim
+    struct CoinAnim
     {
-        CoinBounceAnim(
+        CoinAnim(
             const Context & t_context,
             const sf::Texture & t_texture,
             const sf::IntRect & t_textureRect,
@@ -93,7 +93,7 @@ namespace bramblefore
       private:
         sf::Text m_coinText;
         sf::Texture m_coinTexture;
-        std::vector<CoinBounceAnim> m_coinAnims;
+        std::vector<CoinAnim> m_coinAnims;
         float m_timeCoinEmitElapsedSec;
         int m_coinEmittedCount;
         sf::Vector2f m_coinEmitPosition;

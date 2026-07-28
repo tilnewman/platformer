@@ -59,7 +59,7 @@ namespace bramblefore
 
     //
 
-    CoinBounceAnim::CoinBounceAnim(
+    CoinAnim::CoinAnim(
         const Context & t_context,
         const sf::Texture & t_texture,
         const sf::IntRect & t_textureRect,
@@ -68,7 +68,7 @@ namespace bramblefore
         , elapsed_scale_time_sec{ 0.0f }
         , elapsed_frame_time_sec{ 0.0f }
         , frame_index{ 0 }
-        , velocity{ 1.5f, -10.0f }
+        , velocity{ t_context.random.fromTo(-2.0f, 2.0f), -10.0f }
         , is_finished{ false }
     {
         util::setOriginToCenter(sprite);
@@ -127,7 +127,7 @@ namespace bramblefore
                 t_context, m_coinTexture, coinTextureRect(0), m_coinEmitPosition);
         }
 
-        for (CoinBounceAnim & anim : m_coinAnims)
+        for (CoinAnim & anim : m_coinAnims)
         {
             const float timePerFrame{ 0.08f };
             anim.elapsed_frame_time_sec += t_elapsedTimeSec;
@@ -179,14 +179,14 @@ namespace bramblefore
             }
         }
 
-        std::erase_if(m_coinAnims, [](const CoinBounceAnim & a) { return a.is_finished; });
+        std::erase_if(m_coinAnims, [](const CoinAnim & a) { return a.is_finished; });
     }
 
     void CoinAnimationManager::draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
         t_target.draw(m_coinText, t_states);
 
-        for (const CoinBounceAnim & anim : m_coinAnims)
+        for (const CoinAnim & anim : m_coinAnims)
         {
             t_target.draw(anim.sprite, t_states);
         }
@@ -425,7 +425,8 @@ namespace bramblefore
         }
     }
 
-    void MonsterAnimationManager::drawText(sf::RenderTarget & t_target, sf::RenderStates t_states) const
+    void MonsterAnimationManager::drawText(
+        sf::RenderTarget & t_target, sf::RenderStates t_states) const
     {
         t_target.draw(m_text, t_states);
     }
