@@ -134,11 +134,13 @@ namespace bramblefore
         void setup(const Context & t_context);
         bool update(const Context & t_context, const float t_elapsedTimeSec);
         void draw(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
+        void drawText(sf::RenderTarget & t_target, sf::RenderStates t_states) const;
 
       private:
         std::vector<MonsterAnimation> m_anims;
         std::vector<sf::Texture> m_textures;
         sf::Texture m_graveTexture;
+        sf::Text m_text;
     };
 
     //

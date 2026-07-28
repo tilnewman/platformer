@@ -248,7 +248,7 @@ namespace bramblefore
             const float graveScaleRatio{ 0.8f };
             grave_sprite.setScale({ (t_scale * graveScaleRatio), (t_scale * graveScaleRatio) });
             util::centerInside(grave_sprite, monster_sprite.getGlobalBounds());
-            grave_sprite.setColor(sf::Color(255, 255, 255, 220));
+            grave_sprite.setColor(sf::Color(255, 255, 255, 200));
         }
     }
 
@@ -258,6 +258,7 @@ namespace bramblefore
         : m_anims{}
         , m_textures{}
         , m_graveTexture{}
+        , m_text{ util::SfmlDefaults::instance().font() }
     {
         // the one and only size to prevent reallocations
         m_textures.resize(static_cast<std::size_t>(MonsterType::Count));
@@ -292,6 +293,7 @@ namespace bramblefore
             bool did_survive{ false };
         };
 
+        std::size_t monsterKilledCount{ 0 };
         std::vector<MonsterInfo> monsters;
         monsters.reserve(64);
         for (const auto & beforePair : mapBefore)
@@ -310,6 +312,7 @@ namespace bramblefore
             for (std::size_t i{ 0 }; i < diedCount; ++i)
             {
                 monsters.emplace_back(type, false);
+                ++monsterKilledCount;
             }
 
             for (std::size_t i{ 0 }; i < survivedCount; ++i)
@@ -357,6 +360,20 @@ namespace bramblefore
             initialDelaySec += 0.25f;
             horizStopPos += (imageSize.x + horizSpacer);
         }
+
+        // text message
+        std::string str{ "You killed " };
+        str += std::to_string(monsterKilledCount);
+        str += " out of ";
+        str += std::to_string(monsters.size());
+        str += " monsters!";
+
+        m_text =
+            t_context.font.makeText(Font::Title, FontSize::Medium, str, sf::Color(180, 180, 180));
+
+        m_text.setPosition(
+            { (util::center(wholeRect).x - (m_text.getGlobalBounds().size.x * 0.5f)),
+              (pos.y + imageSize.y + (wholeRect.size.y * 0.02f)) });
     }
 
     bool MonsterAnimationManager::update(const Context & t_context, const float t_elapsedTimeSec)
@@ -406,6 +423,11 @@ namespace bramblefore
                 t_target.draw(anim.grave_sprite, t_states);
             }
         }
+    }
+
+    void MonsterAnimationManager::drawText(sf::RenderTarget & t_target, sf::RenderStates t_states) const
+    {
+        t_target.draw(m_text, t_states);
     }
 
     //
@@ -584,7 +606,7 @@ namespace bramblefore
         LevelCompleteState::updatePostDelay(const Context & t_context, const float t_elapsedTimeSec)
     {
         m_elapsedPhaseTimeSec += t_elapsedTimeSec;
-        if (m_elapsedPhaseTimeSec > 5.0f)
+        if (m_elapsedPhaseTimeSec > 6.0f)
         {
             t_context.map_coord.advance();
             t_context.level_info.resetForNewLevel(t_context);
@@ -619,6 +641,11 @@ namespace bramblefore
         }
 
         m_monsterAnimations.draw(t_target, t_states);
+
+        if (LevelCompletePhase::PostDelay == m_phase)
+        {
+            m_monsterAnimations.drawText(t_target, t_states);
+        }
     }
 
 } // namespace bramblefore
