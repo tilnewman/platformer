@@ -12,6 +12,7 @@
 #include "subsystem/screen-layout.hpp"
 #include "util/sfml-defaults.hpp"
 #include "util/sfml-util.hpp"
+#include "util/sound-player.hpp"
 #include "util/texture-loader.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -50,6 +51,8 @@ namespace bramblefore
         m_text.setPosition(
             { ((wholeRect.size.x * 0.5f) - (m_text.getGlobalBounds().size.x * 0.5f)),
               (util::bottom(m_sprite) + (wholeRect.size.y * 0.015f)) });
+
+        t_context.sfx.play("lose-2");
     }
 
     void LevelDeathState::update(const Context & t_context, const float t_frameTimeSec)
@@ -57,7 +60,7 @@ namespace bramblefore
         m_tileBackground.update(t_context, t_frameTimeSec);
 
         m_elapsedTimeSec += t_frameTimeSec;
-        if (m_elapsedTimeSec > 4.0f)
+        if (m_elapsedTimeSec > 5.0f)
         {
             t_context.state.setChangePending(State::Credits);
         }
