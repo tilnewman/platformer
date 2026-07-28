@@ -68,7 +68,6 @@ namespace bramblefore
             avatarCollide(const Context & t_context, const sf::FloatRect & t_avatarRect) final;
 
       private:
-        float m_speed;
         float m_scale;
         sf::Texture m_texture;
         std::vector<SpikedBallAnim> m_anims;
